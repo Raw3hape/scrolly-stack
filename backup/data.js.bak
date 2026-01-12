@@ -1,0 +1,310 @@
+/**
+ * Data Configuration for Scrolly-Stack
+ * 
+ * Defines content AND geometry for each layer and block.
+ * All layout/sizing can be configured here without touching components.
+ * 
+ * COLOR PALETTE: Soft pastels with visible gradients
+ * Balance between vibrant and muted - "premium frosted glass" aesthetic
+ * colorA = lighter corner, colorB = deeper/richer edge (MORE CONTRAST for visible gradient)
+ */
+
+// =============================================================================
+// LAYERS CONFIGURATION
+// =============================================================================
+
+export const layers = [
+  // ─────────────────────────────────────────────────────────────────────────────
+  // LEVEL A: TOP QUADRANTS (2x2 Grid)
+  // Soft lavender/violet with visible gradient
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    id: 'layer-a',
+    level: 'A',
+    layout: 'grid',
+    cols: 2,
+    rows: 2,
+    blocks: [
+      // Pink: soft pink → rich pink (noticeable gradient)
+      {
+        id: 0,
+        gridPosition: [0, 0],
+        label: 'Sales',
+        color: '#f5dce8',           // Light rose blush
+        gradientColorB: '#e8a4c4',  // Richer dusty rose
+        activeColor: '#ecc8d8',
+        activeGradientColorB: '#d890b0',
+        textColor: '#804060',
+        slideDirection: [0, 0],
+        
+        tooltipTitle: 'Sales',
+        tooltipSubhead: 'Win more jobs',
+        bullets: ['Lead handling', 'Follow-up system', 'Conversion tracking'],
+      },
+      // Lavender: pale → medium lavender
+      {
+        id: 1,
+        gridPosition: [0, 1],
+        label: 'Ops',
+        color: '#ecdcf4',           // Pale lavender
+        gradientColorB: '#c8a8dc',  // Medium lavender
+        activeColor: '#e0ccea',
+        activeGradientColorB: '#b898cc',
+        textColor: '#604878',
+        slideDirection: [0, 0],
+        
+        tooltipTitle: 'Operations',
+        tooltipSubhead: 'Run jobs clean',
+        bullets: ['Schedule crews', 'Track production', 'Quality control'],
+      },
+      // Periwinkle: light → richer periwinkle-blue
+      {
+        id: 2,
+        gridPosition: [1, 0],
+        label: 'Finance',
+        color: '#e4e0f8',           // Light periwinkle
+        gradientColorB: '#b8b0e0',  // Deeper periwinkle
+        activeColor: '#d8d0f0',
+        activeGradientColorB: '#a8a0d0',
+        textColor: '#504878',
+        slideDirection: [0, 0],
+        
+        tooltipTitle: 'Finance',
+        tooltipSubhead: 'Know your numbers',
+        bullets: ['Job costing', 'Cash visibility', 'Profit analysis'],
+      },
+      // Violet-blue gradient
+      {
+        id: 3,
+        gridPosition: [1, 1],
+        label: 'Exit',
+        color: '#dce4f8',           // Pale blue-violet
+        gradientColorB: '#a8c0e8',  // Soft blue
+        activeColor: '#d0d8f0',
+        activeGradientColorB: '#98b0dc',
+        textColor: '#485878',
+        slideDirection: [0, 0],
+        
+        tooltipTitle: 'Exit',
+        tooltipSubhead: 'Exit on your terms',
+        bullets: ['Clean financials', 'Diligence-ready', 'Valuation support'],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // LEVEL B: MIDDLE STRIPS (3 horizontal strips)
+  // Cool blue transition with gradient
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    id: 'layer-b',
+    level: 'B',
+    layout: 'row',
+    cols: 3,
+    depth: 6.5,
+    align: 'center',
+    blocks: [
+      // Sky blue gradient
+      {
+        id: 4,
+        label: 'OS',
+        color: '#d8ecf8',           // Pale sky
+        gradientColorB: '#a0cce8',  // Soft sky blue
+        activeColor: '#c8e0f0',
+        activeGradientColorB: '#90bcd8',
+        textColor: '#406080',
+        slideDirection: [0, 0],
+        
+        tooltipTitle: 'One Operating System',
+        tooltipSubhead: 'Everything connects',
+        bullets: ['Lead → Review flow', 'Unified data', 'Single source of truth'],
+      },
+      // Cyan-teal gradient
+      {
+        id: 5,
+        label: 'Team',
+        color: '#d4f0f0',           // Pale aqua
+        gradientColorB: '#98d8dc',  // Soft teal
+        activeColor: '#c4e4e8',
+        activeGradientColorB: '#88c8cc',
+        textColor: '#38686c',
+        slideDirection: [0, 0],
+        
+        tooltipTitle: 'One Accountable Team',
+        tooltipSubhead: 'Done-for-you execution',
+        bullets: ['Not just advice', 'Implementation partner', 'Ongoing support'],
+      },
+      // Teal gradient
+      {
+        id: 6,
+        label: 'Plan',
+        color: '#d0f0ec',           // Pale mint-teal
+        gradientColorB: '#90d8d0',  // Soft teal
+        activeColor: '#c0e4e0',
+        activeGradientColorB: '#80c8c0',
+        textColor: '#387068',
+        slideDirection: [0, 0],
+        
+        tooltipTitle: 'One Clear Plan',
+        tooltipSubhead: 'Partner → Exit',
+        bullets: ['Align', 'Transform', 'Scale'],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // LEVEL C: BOTTOM FULL TILES (8 full-width layers)
+  // Gradient from cool mint → warm peach/rose
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    id: 'layer-c',
+    level: 'C',
+    layout: 'full',
+    blocks: [
+      // Mint seafoam
+      {
+        id: 7,
+        label: 'Lead OS',
+        color: '#d4f4ec',           // Pale mint
+        gradientColorB: '#8cd8c8',  // Soft seafoam
+        activeColor: '#c4e8e0',
+        activeGradientColorB: '#7cc8b8',
+        textColor: '#387060',
+        
+        tooltipTitle: 'Lead-to-Review OS',
+        tooltipSubhead: 'End-to-end workflow',
+        bullets: ['Demand', 'Sales', 'Production', 'Review'],
+      },
+      // Sage green
+      {
+        id: 8,
+        label: 'CRM',
+        color: '#dcf4dc',           // Pale sage
+        gradientColorB: '#a0dca0',  // Soft sage
+        activeColor: '#cce8cc',
+        activeGradientColorB: '#90cc90',
+        textColor: '#406840',
+        
+        tooltipTitle: 'CRM + Marketing Engine',
+        tooltipSubhead: 'Trackable & repeatable',
+        bullets: ['CRM installation', 'Pipeline management', 'Marketing auto'],
+      },
+      // Yellow-green (chartreuse hint)
+      {
+        id: 9,
+        label: 'Acct',
+        color: '#e8f4dc',           // Pale lime
+        gradientColorB: '#c0e0a0',  // Soft chartreuse
+        activeColor: '#dce8d0',
+        activeGradientColorB: '#b0d490',
+        textColor: '#506840',
+        
+        tooltipTitle: 'Unified Accounting',
+        tooltipSubhead: 'Financial clarity',
+        bullets: ['Job costing', 'Reporting', 'Operating system link'],
+      },
+      // Warm cream/butter
+      {
+        id: 10,
+        label: 'RevOps',
+        color: '#f8f4dc',           // Cream
+        gradientColorB: '#e8d8a0',  // Soft butter
+        activeColor: '#f0e8d0',
+        activeGradientColorB: '#dcc890',
+        textColor: '#706830',
+        
+        tooltipTitle: 'RevOps Controls',
+        tooltipSubhead: 'System becomes behavior',
+        bullets: ['Governance', 'Playbooks', 'Adoption tracking'],
+      },
+      // Soft peach
+      {
+        id: 11,
+        label: 'Savings',
+        color: '#fcf0dc',           // Pale peach
+        gradientColorB: '#e8c498',  // Soft peach
+        activeColor: '#f4e4d0',
+        activeGradientColorB: '#d8b488',
+        textColor: '#805830',
+        
+        tooltipTitle: 'Efficiency Savings',
+        tooltipSubhead: 'Cut leaks',
+        bullets: ['Reduce overhead', 'Smoother handoffs', 'Standardization'],
+      },
+      // Coral blush
+      {
+        id: 12,
+        label: 'Services',
+        color: '#fce8dc',           // Pale coral
+        gradientColorB: '#e8a898',  // Soft coral
+        activeColor: '#f4dcd0',
+        activeGradientColorB: '#d89888',
+        textColor: '#804838',
+        
+        tooltipTitle: 'Shared Services',
+        tooltipSubhead: 'Dedicated bench',
+        bullets: ['Build support', 'Maintenance', 'Keep stack running'],
+      },
+      // Rose pink
+      {
+        id: 13,
+        label: 'Scale',
+        color: '#fce4e4',           // Pale rose
+        gradientColorB: '#e898a8',  // Dusty rose
+        activeColor: '#f4d8d8',
+        activeGradientColorB: '#d88898',
+        textColor: '#803848',
+        
+        tooltipTitle: 'Scale + Leverage',
+        tooltipSubhead: 'Group power',
+        bullets: ['8-12 businesses', 'Leverage economies', 'Unified growth'],
+      },
+      // Mauve/lilac (loops back toward top)
+      {
+        id: 14,
+        label: 'Exit',
+        color: '#f4e0ec',           // Pale mauve
+        gradientColorB: '#d8a8c8',  // Soft mauve
+        activeColor: '#e8d4e0',
+        activeGradientColorB: '#c898b8',
+        textColor: '#704060',
+        
+        tooltipTitle: 'Institutional Exit Options',
+        tooltipSubhead: 'Premium exit positioning',
+        bullets: ['Audit logs', 'Data room', 'Transferability'],
+      },
+    ],
+  },
+];
+
+
+// =============================================================================
+// DERIVED: Flat list of all steps (for Overlay compatibility)
+// =============================================================================
+
+export const steps = layers.flatMap(layer => 
+  layer.blocks.map(block => ({
+    ...block,
+    level: layer.level,
+  }))
+);
+
+
+// =============================================================================
+// HELPER: Get step by ID
+// =============================================================================
+
+export function getStepById(id) {
+  return steps.find(step => step.id === id);
+}
+
+
+// =============================================================================
+// HELPER: Get layer containing a step
+// =============================================================================
+
+export function getLayerByStepId(id) {
+  return layers.find(layer => 
+    layer.blocks.some(block => block.id === id)
+  );
+}

@@ -1,0 +1,120 @@
+/**
+ * App Layout Styles
+ * 
+ * Uses the unified layout system from index.css
+ * Two-column layout: content + 3D visualization
+ * 
+ * Key principle: Container is full-width, content is positioned
+ * to align with header edges using calc() based padding.
+ */
+
+/* =============================================================================
+   MAIN LAYOUT CONTAINER
+   ============================================================================= */
+
+.layout-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: row;
+  padding-top: var(--header-height);
+}
+
+
+/* =============================================================================
+   CONTENT COLUMN (Left - Text)
+   ============================================================================= */
+
+.col-content {
+  width: var(--content-width);
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  
+  /* Align content with header's left edge:
+     Header container is max 1400px centered with padding.
+     So left edge of header content is at: max((100vw - 1400px) / 2, container-padding) */
+  padding-left: max(
+    var(--container-padding-responsive),
+    calc((100vw - var(--container-max)) / 2 + var(--container-padding-responsive))
+  );
+  padding-right: var(--space-2xl);
+}
+
+
+/* =============================================================================
+   VISUAL COLUMN (Right - 3D)
+   ============================================================================= */
+
+.col-visual {
+  width: var(--visual-width);
+  height: calc(100vh - var(--header-height));
+  position: sticky;
+  top: var(--header-height);
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;  /* Don't clip 3D elements */
+  
+  /* Align 3D to right edge similarly */
+  padding-right: max(
+    var(--container-padding-responsive),
+    calc((100vw - var(--container-max)) / 2 + var(--container-padding-responsive))
+  );
+}
+
+
+/* =============================================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================================= */
+
+@media (max-width: 1024px) {
+  .col-content {
+    width: 50%;
+    padding-left: var(--space-xl);
+    padding-right: var(--space-lg);
+  }
+  
+  .col-visual {
+    width: 50%;
+    padding-right: var(--space-xl);
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-container {
+    flex-direction: column;
+    padding-top: 64px;  /* Mobile header height */
+  }
+
+  .col-content {
+    width: 100%;
+    order: 2;
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+
+  .col-visual {
+    width: 100%;
+    height: 50vh;
+    position: sticky;
+    top: 64px;
+    z-index: 20;
+    order: 1;
+    padding-right: var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .col-content {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+  
+  .col-visual {
+    padding-right: var(--space-md);
+  }
+}
+

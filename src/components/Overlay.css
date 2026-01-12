@@ -1,0 +1,275 @@
+/* ===================================
+   Overlay Component Styles
+   Uses CSS variables from index.css
+   =================================== */
+
+/* === Container === */
+.overlay {
+  padding: 0;  /* Padding handled by parent container */
+  padding-bottom: 50vh;
+  font-family: var(--font-family);
+  width: 100%;
+}
+
+/* === Hero Section === */
+.hero {
+  min-height: calc(100vh - var(--header-height, 72px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--content-max-width, 520px);
+}
+
+/* Eyebrow (Small label above headline) */
+.hero__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg);
+  font-weight: 700;
+}
+
+/* Headline */
+.hero__headline {
+  font-size: var(--text-3xl);
+  line-height: 1.1;
+  margin-bottom: var(--space-lg);
+  letter-spacing: -0.025em;
+  color: var(--color-text-primary);
+  font-weight: 800;
+}
+
+/* Subheadline */
+.hero__subheadline {
+  font-size: var(--text-xl);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2xl);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* CTA container */
+.hero__cta-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+/* Primary CTA Button */
+.hero__cta-button {
+  padding: var(--space-md) var(--space-xl);
+  padding-right: 2.5rem;
+  background: var(--color-text-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast);
+}
+
+.hero__cta-button:hover {
+  transform: scale(1.02);
+}
+
+.hero__cta-button:focus-visible {
+  outline: 2px solid var(--color-blue-500);
+  outline-offset: 2px;
+}
+
+/* Fear reducer / Status line */
+.hero__status {
+  font-size: var(--text-sm);
+  color: var(--color-text-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 500;
+}
+
+.hero__status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-emerald-500);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+/* Scroll hint */
+.hero__scroll-hint {
+  margin-top: var(--space-3xl);
+  opacity: 0.6;
+}
+
+.hero__scroll-hint p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+/* === Steps Section === */
+.steps-container {
+  position: relative;
+}
+
+.step {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+/* === Step Card (Tooltip Style) === */
+.step-card {
+  padding: var(--space-xl) var(--space-2xl);
+  border-radius: var(--radius-lg);
+  max-width: var(--card-max-width, 380px);
+  width: 100%;
+  transition: all var(--transition-smooth);
+  backdrop-filter: blur(4px);
+}
+
+.step-card--active {
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-xl);
+  opacity: 1;
+  transform: translateX(20px);
+  backdrop-filter: none;
+}
+
+.step-card--inactive {
+  background: var(--color-bg-card-inactive);
+  box-shadow: none;
+  opacity: 0.3;
+  transform: translateX(0);
+}
+
+/* Card colored border */
+.step-card--active {
+  border-left: 6px solid var(--step-color);
+}
+
+.step-card--inactive {
+  border-left: 6px solid transparent;
+}
+
+/* Step card title */
+.step-card__title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  color: var(--color-text-primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  letter-spacing: -0.025em;
+  white-space: nowrap;  /* Keep title on single line */
+}
+
+/* Step card subhead */
+.step-card__subhead {
+  margin: var(--space-sm) 0 var(--space-lg) 0;
+  font-weight: 600;
+  font-size: var(--text-lg);
+  filter: saturate(1.2) brightness(0.9);
+}
+
+/* Bullets list */
+.step-card__bullets {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.step-card__bullets li {
+  margin-bottom: var(--space-xs);
+}
+
+/* Mini CTA inside card */
+.step-card__cta {
+  margin-top: var(--space-lg);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  transition: opacity var(--transition-base);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.step-card__cta--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.step-card__cta-arrow {
+  transition: transform 0.2s;
+}
+
+.step-card__cta:hover .step-card__cta-arrow {
+  transform: translateX(4px);
+}
+
+/* === Loading State === */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-primary);
+  z-index: 100;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--color-slate-100);
+  border-top-color: var(--color-violet-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: var(--space-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .hero__headline {
+    font-size: 2.5rem;
+  }
+  
+  .hero__subheadline {
+    font-size: var(--text-base);
+  }
+  
+  .step-card {
+    max-width: 100%;
+  }
+  
+  .step-card__title {
+    font-size: var(--text-xl);
+  }
+}
