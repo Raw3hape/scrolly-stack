@@ -15,7 +15,7 @@ export const geometry = {
     totalWidth: 5.5,       // Reduced from 6.5
     totalDepth: 5.5,       // Reduced from 6.5
     layerHeight: 0.42,     // Reduced from 0.5
-    borderRadius: 0.08,    // Slightly reduced
+    borderRadius: 0.05,      // Subtle rounding
     smoothness: 8,
   },
   
