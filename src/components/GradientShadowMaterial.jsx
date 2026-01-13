@@ -17,6 +17,7 @@ export default function GradientShadowMaterial({
   colorB = '#fce7f3',
   isActive = false,
   isHovered = false,
+  isHeroState = false,  // NEW: hero state for saturated colors
   animatedColorReveal = null,  // react-spring animated value: 0=white, 1=real colors
 }) {
   const shaderRef = useRef(null);
@@ -24,6 +25,8 @@ export default function GradientShadowMaterial({
   // Smooth hover transition refs
   const currentHoverRef = useRef(0);
   const targetHoverRef = useRef(0);
+  // Smooth saturation transition refs
+  const currentSaturationRef = useRef(1.0);
   
   const materialKey = useMemo(() => {
     materialVersion++;
@@ -51,6 +54,7 @@ export default function GradientShadowMaterial({
       shader.uniforms.uTime = { value: 0 };
       shader.uniforms.uIsHovered = { value: 0.0 };
       shader.uniforms.uColorReveal = { value: 1.0 };  // 0=white, 1=real colors
+      shader.uniforms.uSaturationBoost = { value: 1.0 };  // 1.0=normal, >1=saturated (hero)
       
       // Vertex shader
       shader.vertexShader = shader.vertexShader.replace(
@@ -73,8 +77,16 @@ export default function GradientShadowMaterial({
         uniform float uTime;
         uniform float uColorReveal;
         uniform float uIsHovered;
+        uniform float uSaturationBoost;
         varying vec3 vLocalPos;
         varying vec3 vLocalNorm;
+        
+        // Helper function to boost saturation
+        vec3 adjustSaturation(vec3 color, float saturation) {
+          float grey = dot(color, vec3(0.2126, 0.7152, 0.0722));
+          return mix(vec3(grey), color, saturation);
+        }
+        
         void main() {
         `
       );
@@ -142,6 +154,12 @@ export default function GradientShadowMaterial({
         vec3 hiddenColor = vec3(0.973, 0.980, 0.988);  // #f8fafc - matches background
         baseColor = mix(hiddenColor, baseColor, uColorReveal);
         
+        // ═══════════════════════════════════════════════════════════════════
+        // SATURATION BOOST FOR HERO STATE
+        // ═══════════════════════════════════════════════════════════════════
+        
+        baseColor = adjustSaturation(baseColor, uSaturationBoost);
+        
         baseColor = min(baseColor, vec3(1.0));
         
         vec4 diffuseColor = vec4(baseColor, 1.0);
@@ -174,6 +192,17 @@ export default function GradientShadowMaterial({
       }
       
       shaderRef.current.uniforms.uIsHovered.value = currentHoverRef.current;
+      
+      // Smooth saturation transition (hero=1.55, scroll=1.0)
+      const targetSaturation = isHeroState ? 1.55 : 1.0;
+      const satLerpSpeed = 0.06;  // Slower for smooth transition
+      currentSaturationRef.current += (targetSaturation - currentSaturationRef.current) * satLerpSpeed;
+      
+      if (Math.abs(targetSaturation - currentSaturationRef.current) < 0.001) {
+        currentSaturationRef.current = targetSaturation;
+      }
+      
+      shaderRef.current.uniforms.uSaturationBoost.value = currentSaturationRef.current;
       
       // Update color reveal from animated spring value
       if (animatedColorReveal) {

@@ -183,6 +183,7 @@ export default function Block({
           colorB={currentColorB}
           isActive={isActive}
           isHovered={isHovered}
+          isHeroState={!isRevealed}
           animatedColorReveal={springColorReveal}
         />
       </RoundedBox>

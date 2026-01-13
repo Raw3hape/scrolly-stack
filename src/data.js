@@ -18,16 +18,16 @@ export const layers = [
     cols: 2,
     rows: 2,
     blocks: [
-      // CYAN (top-left) - cool blue
+      // BLUE (top-left) - true blue, not cyan
       {
         id: 0,
         gridPosition: [0, 0],
         label: 'Sales',
-        color: '#67e8f9',           // Cyan 300 - distinct cyan
-        gradientColorB: '#a5f3fc',  // Cyan 200
-        activeColor: '#22d3ee',
-        activeGradientColorB: '#67e8f9',
-        textColor: '#155e75',
+        color: '#93c5fd',           // Blue 300 - true blue
+        gradientColorB: '#bfdbfe',  // Blue 200
+        activeColor: '#60a5fa',
+        activeGradientColorB: '#93c5fd',
+        textColor: '#1e3a5f',
         slideDirection: [0, 0],
         tooltipTitle: 'Sales',
         tooltipSubhead: 'Win more jobs',

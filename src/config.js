@@ -135,22 +135,22 @@ export const materials = {
 
 export const lighting = {
   ambient: {
-    intensity: 0.2,           // VERY low = DEEP shadow contrast!
+    intensity: 0.15,          // Lower = deeper shadow contrast
   },
   
   main: {
-    position: [4, 12, 4],     // Higher angle for longer shadows
-    intensity: 2.2,           // Higher to compensate for ultra-low ambient
+    position: [5, 14, 5],     // Higher angle for better shadow projection
+    intensity: 2.4,           // Compensate for lower ambient
     castShadow: true,
-    shadowMapSize: 2048,
-    shadowBias: -0.0003,      // Reduced for sharper shadows
-    shadowRadius: 12,         // Lower = sharper edge, higher = softer
+    shadowMapSize: 2048,      // Balanced resolution for performance
+    shadowBias: -0.0002,      // Fine-tuned bias
+    shadowRadius: 20,         // Higher = softer, more blurred edges
   },
   
   fill: {
-    position: [-6, 10, -6],
-    intensity: 0.15,          // Reduced - less fill = more shadow contrast
-    color: '#f0f0ff',
+    position: [-6, 12, -6],
+    intensity: 0.1,           // Lower fill = deeper shadows remain visible
+    color: '#e8e8ff',
   },
   
   bottom: {

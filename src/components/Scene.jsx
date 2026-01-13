@@ -14,6 +14,10 @@ import Stack from './Stack';
 import HoverTooltip from './HoverTooltip';
 import { animation, lighting, shadows, postProcessing, render } from '../config';
 
+// Mouse parallax intensity (radians)
+const PARALLAX_INTENSITY = 0.04; // ~2.3 degrees max rotation
+const PARALLAX_LERP_SPEED = 0.05; // Smooth "jelly" feeling
+
 // =============================================================================
 // LOADING INDICATOR
 // =============================================================================
@@ -143,6 +147,37 @@ function ZoomController({ targetZoom }) {
 }
 
 // =============================================================================
+// MOUSE PARALLAX CONTROLLER
+// =============================================================================
+
+function MouseParallaxGroup({ children, mouseX, mouseY }) {
+  const groupRef = useRef();
+  const currentRotation = useRef({ x: 0, y: 0 });
+  
+  useFrame(() => {
+    if (!groupRef.current) return;
+    
+    // Calculate target rotation based on mouse position (-1 to 1)
+    const targetX = -mouseY * PARALLAX_INTENSITY;
+    const targetY = mouseX * PARALLAX_INTENSITY;
+    
+    // Smooth lerp for "jelly" feeling
+    currentRotation.current.x += (targetX - currentRotation.current.x) * PARALLAX_LERP_SPEED;
+    currentRotation.current.y += (targetY - currentRotation.current.y) * PARALLAX_LERP_SPEED;
+    
+    // Apply rotation
+    groupRef.current.rotation.x = currentRotation.current.x;
+    groupRef.current.rotation.y = currentRotation.current.y;
+  });
+  
+  return (
+    <group ref={groupRef}>
+      {children}
+    </group>
+  );
+}
+
+// =============================================================================
 // LIGHTING SETUP
 // =============================================================================
 
@@ -251,9 +286,18 @@ export default function Scene({ currentStep, onBlockClick }) {
     }
   }, []);
   
-  // Track mouse movement for tooltip positioning when hovering
+  // Mouse parallax state for 3D model rotation
+  const [parallaxMouse, setParallaxMouse] = useState({ x: 0, y: 0 });
+  
+  // Track mouse for parallax effect (normalized -1 to 1)
   useEffect(() => {
     const handleMouseMove = (e) => {
+      // Normalize mouse position to -1 to 1 range
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+      setParallaxMouse({ x, y });
+      
+      // Also update tooltip position if hovering
       if (hoveredBlock) {
         setMousePosition({ x: e.clientX, y: e.clientY });
       }
@@ -288,23 +332,25 @@ export default function Scene({ currentStep, onBlockClick }) {
         />
 
         <Suspense fallback={<Loader />}>
-          <PresentationControls
-            global={false}
-            cursor={true}
-            snap={true}
-            speed={1}
-            zoom={1}
-            rotation={[0, 0, 0]}
-            polar={[-Infinity, Infinity]}
-            azimuth={[-Infinity, Infinity]}
-            config={{ mass: 1, tension: 170, friction: 26 }}
-          >
-            <Stack 
-              currentStep={currentStep} 
-              onBlockClick={handleBlockClick}
-              onBlockHover={handleBlockHover}
-            />
-          </PresentationControls>
+          <MouseParallaxGroup mouseX={parallaxMouse.x} mouseY={parallaxMouse.y}>
+            <PresentationControls
+              global={false}
+              cursor={true}
+              snap={true}
+              speed={1}
+              zoom={1}
+              rotation={[0, 0, 0]}
+              polar={[-Infinity, Infinity]}
+              azimuth={[-Infinity, Infinity]}
+              config={{ mass: 1, tension: 170, friction: 26 }}
+            >
+              <Stack 
+                currentStep={currentStep} 
+                onBlockClick={handleBlockClick}
+                onBlockHover={handleBlockHover}
+              />
+            </PresentationControls>
+          </MouseParallaxGroup>
         </Suspense>
 
         {/* ContactShadows only if enabled in config */}

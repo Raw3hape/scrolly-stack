@@ -32,10 +32,10 @@
 
 /* Headline */
 .hero__headline {
-  font-size: clamp(2.25rem, 4.5vw, 3rem);
-  line-height: 1.15;
+  font-size: clamp(2.75rem, 5.5vw, 3.75rem);
+  line-height: 1.1;
   margin-bottom: var(--space-lg);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   color: var(--color-text-primary);
   font-weight: 600; /* Thinner */
 }
