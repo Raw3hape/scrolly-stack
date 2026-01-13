@@ -5,7 +5,7 @@
 
 /* === Container === */
 .overlay {
-  padding: 0;  /* Padding handled by parent container */
+  padding: 0; /* Padding handled by parent container */
   padding-bottom: 50vh;
   font-family: var(--font-family);
   width: 100%;
@@ -111,9 +111,27 @@
   font-style: italic;
 }
 
-/* === Steps Section === */
+/* === Steps Section - Timeline Style === */
 .steps-container {
   position: relative;
+  padding-left: 72px; /* Space for larger timeline dots */
+}
+
+/* Timeline vertical line - positioned to align with center of larger dots */
+.timeline-line {
+  position: absolute;
+  left: 24px; /* Center of 48px offset from edge to dot center */
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-slate-400) 10%,
+    var(--color-slate-400) 90%,
+    transparent 100%
+  );
+  opacity: 0.3;
 }
 
 .step {
@@ -121,79 +139,118 @@
   display: flex;
   align-items: center;
   margin-bottom: var(--space-xl);
+  position: relative;
+  /* Opacity based on distance from active step */
+  opacity: calc(1 - (var(--step-distance, 0) * 0.25));
+  transition: opacity var(--transition-smooth);
 }
 
-/* === Step Card (Tooltip Style) === */
-.step-card {
-  padding: var(--space-xl) var(--space-2xl);
-  border-radius: var(--radius-lg);
-  max-width: var(--card-max-width, 380px);
+.step--active {
+  opacity: 1;
+}
+
+/* === Step Content (no card background) === */
+.step-content {
+  max-width: var(--card-max-width, 420px);
   width: 100%;
   transition: all var(--transition-smooth);
-  backdrop-filter: blur(4px);
+  padding: var(--space-lg) 0;
 }
 
-.step-card--active {
-  background: var(--color-bg-card);
-  box-shadow: var(--shadow-xl);
+.step-content--active {
   opacity: 1;
-  transform: translateX(20px);
-  backdrop-filter: none;
+  /* Removed translateX to prevent shifting the dot off the line */
 }
 
-.step-card--inactive {
-  background: var(--color-bg-card-inactive);
-  box-shadow: none;
-  opacity: 0.3;
-  transform: translateX(0);
+.step-content--inactive {
+  opacity: 0.4;
+  filter: blur(0.5px);
 }
 
-/* Card colored border */
-.step-card--active {
-  border-left: 6px solid var(--step-color);
-}
-
-.step-card--inactive {
-  border-left: 6px solid transparent;
-}
-
-/* Step card title */
-.step-card__title {
-  margin: 0;
-  font-size: var(--text-2xl);
-  color: var(--color-text-primary);
-  font-weight: 700;
+/* Title row - contains dot and title inline - NO TRANSFORM on this row */
+.step-content__title-row {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  letter-spacing: -0.025em;
-  white-space: nowrap;  /* Keep title on single line */
+  gap: var(--space-lg);
+  margin-left: -72px; /* Pull back to include the timeline area (matches container padding) */
+  padding-left: 0;
 }
 
-/* Step card subhead */
-.step-card__subhead {
+/* Timeline dot with icon inside - larger circle */
+.timeline-dot {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid var(--color-bg-primary);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-smooth);
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icon inside the dot */
+.timeline-dot__icon {
+  width: 20px;
+  height: 20px;
+  transition: all var(--transition-smooth);
+}
+
+.timeline-dot--active {
+  width: 52px;
+  height: 52px;
+  box-shadow: 
+    0 0 0 4px rgba(0, 0, 0, 0.04), 
+    0 0 24px var(--step-color),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.timeline-dot--active .timeline-dot__icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Title - Large and prominent */
+.step-content__title {
+  margin: 0;
+  font-size: 2.5rem;
+  color: var(--color-text-primary);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* Subhead */
+.step-content__subhead {
   margin: var(--space-sm) 0 var(--space-lg) 0;
   font-weight: 600;
   font-size: var(--text-lg);
-  filter: saturate(1.2) brightness(0.9);
+  filter: saturate(1.2) brightness(0.85);
 }
 
 /* Bullets list */
-.step-card__bullets {
+.step-content__bullets {
   margin: 0;
   padding-left: 1.2rem;
   color: var(--color-text-secondary);
   font-size: var(--text-base);
-  line-height: 1.6;
+  line-height: 1.7;
   font-weight: 500;
 }
 
-.step-card__bullets li {
+.step-content__bullets li {
   margin-bottom: var(--space-xs);
 }
 
-/* Mini CTA inside card */
-.step-card__cta {
+.step-content__bullets li::marker {
+  color: var(--step-color);
+}
+
+/* Mini CTA */
+.step-content__cta {
   margin-top: var(--space-lg);
   font-size: 0.9rem;
   font-weight: 700;
@@ -202,22 +259,22 @@
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  transition: opacity var(--transition-base);
+  transition: all var(--transition-base);
   background: none;
   border: none;
   padding: 0;
 }
 
-.step-card__cta--hidden {
+.step-content__cta--hidden {
   opacity: 0;
   pointer-events: none;
 }
 
-.step-card__cta-arrow {
+.step-content__cta-arrow {
   transition: transform 0.2s;
 }
 
-.step-card__cta:hover .step-card__cta-arrow {
+.step-content__cta:hover .step-content__cta-arrow {
   transform: translateX(4px);
 }
 
@@ -260,16 +317,49 @@
   .hero__headline {
     font-size: 2.5rem;
   }
-  
+
   .hero__subheadline {
     font-size: var(--text-base);
   }
-  
-  .step-card {
+
+  .steps-container {
+    padding-left: 56px;
+  }
+
+  .timeline-line {
+    left: 18px;
+  }
+
+  .step-content__title-row {
+    margin-left: -56px;
+    gap: var(--space-md);
+  }
+
+  .timeline-dot {
+    width: 32px;
+    height: 32px;
+  }
+
+  .timeline-dot--active {
+    width: 38px;
+    height: 38px;
+  }
+
+  .timeline-dot__icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .timeline-dot--active .timeline-dot__icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .step-content {
     max-width: 100%;
   }
-  
-  .step-card__title {
-    font-size: var(--text-xl);
+
+  .step-content__title {
+    font-size: 1.5rem;
   }
 }

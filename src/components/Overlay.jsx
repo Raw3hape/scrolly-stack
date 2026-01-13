@@ -77,10 +77,16 @@ export default function Overlay({ currentStep, setStep }) {
         </div>
       </header>
 
-      {/* STEPS SECTION */}
+      {/* STEPS SECTION - Timeline Style */}
       <div className="steps-container" role="region" aria-label="Business transformation steps">
+        {/* Timeline connecting line */}
+        <div className="timeline-line" aria-hidden="true" />
+        
         {steps.map((step, index) => {
           const isActive = currentStep === index;
+          const isPrev = currentStep > index;
+          const isNext = currentStep < index;
+          const distance = Math.abs(currentStep - index);
 
           return (
             <div
@@ -88,29 +94,51 @@ export default function Overlay({ currentStep, setStep }) {
               id={`step-${step.id}`}
               data-index={index}
               ref={(el) => (stepRefs.current[index] = el)}
-              className="step"
+              className={`step ${isActive ? 'step--active' : ''} ${isPrev ? 'step--prev' : ''} ${isNext ? 'step--next' : ''}`}
+              style={{ 
+                '--step-color': step.color,
+                '--step-distance': distance,
+              }}
             >
-              {/* TOOLTIP / CARD STYLE */}
+              {/* Content without card background */}
               <div
-                className={`step-card ${isActive ? 'step-card--active' : 'step-card--inactive'}`}
-                style={{ '--step-color': step.color }}
+                className={`step-content ${isActive ? 'step-content--active' : 'step-content--inactive'}`}
                 aria-current={isActive ? 'step' : undefined}
               >
-                {/* Tooltip Title */}
-                <h3 className="step-card__title">
-                  {step.tooltipTitle}
-                </h3>
+                {/* Title row with icon-dot combo */}
+                <div className="step-content__title-row">
+                  {/* Timeline dot with icon inside */}
+                  <div 
+                    className={`timeline-dot ${isActive ? 'timeline-dot--active' : ''}`}
+                    style={{ backgroundColor: step.color }}
+                    aria-hidden="true"
+                  >
+                    <svg 
+                      viewBox="0 0 24 24" 
+                      fill="white"
+                      className="timeline-dot__icon"
+                      aria-hidden="true"
+                    >
+                      <path d={step.icon} />
+                    </svg>
+                  </div>
+                  
+                  {/* Title */}
+                  <h3 className="step-content__title">
+                    {step.tooltipTitle}
+                  </h3>
+                </div>
 
-                {/* Tooltip Subhead */}
+                {/* Subhead */}
                 <p
-                  className="step-card__subhead"
-                  style={{ color: step.color === '#1f2937' ? 'var(--color-text-secondary)' : step.color }}
+                  className="step-content__subhead"
+                  style={{ color: step.color }}
                 >
                   {step.tooltipSubhead}
                 </p>
 
                 {/* Bullets */}
-                <ul className="step-card__bullets">
+                <ul className="step-content__bullets">
                   {step.bullets.map((bullet, i) => (
                     <li key={i}>{bullet}</li>
                   ))}
@@ -118,12 +146,12 @@ export default function Overlay({ currentStep, setStep }) {
 
                 {/* Mini CTA */}
                 <button
-                  className={`step-card__cta ${!isActive ? 'step-card__cta--hidden' : ''}`}
+                  className={`step-content__cta ${!isActive ? 'step-content__cta--hidden' : ''}`}
                   aria-label={`Learn more about ${step.tooltipTitle}`}
                   tabIndex={isActive ? 0 : -1}
                 >
                   See if I qualify
-                  <span className="step-card__cta-arrow" aria-hidden="true">→</span>
+                  <span className="step-content__cta-arrow" aria-hidden="true">→</span>
                 </button>
               </div>
             </div>

@@ -10,25 +10,25 @@
 // =============================================================================
 
 export const geometry = {
-  // Overall stack dimensions
+  // Overall stack dimensions - reduced for better balance
   stack: {
-    totalWidth: 6.5,
-    totalDepth: 6.5,
-    layerHeight: 0.5,
-    borderRadius: 0.10,
+    totalWidth: 5.5,       // Reduced from 6.5
+    totalDepth: 5.5,       // Reduced from 6.5
+    layerHeight: 0.42,     // Reduced from 0.5
+    borderRadius: 0.08,    // Slightly reduced
     smoothness: 8,
   },
   
-  // Gaps between elements
+  // Gaps between elements - proportionally reduced
   gaps: {
-    horizontal: 0.15,  // Gap between blocks on same layer
-    vertical: 0.5,     // Gap between layers
+    horizontal: 0.12,      // Reduced from 0.15
+    vertical: 0.42,        // Reduced from 0.5
   },
   
   // Per-level defaults (can be overridden in data.js)
   levels: {
     A: { layout: 'grid', cols: 2, rows: 2 },
-    B: { layout: 'row', cols: 3, depth: 2.0, align: 'front' },
+    B: { layout: 'row', cols: 3, depth: 1.7, align: 'front' },  // Reduced depth
     C: { layout: 'full' },
   },
 };
