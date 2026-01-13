@@ -18,10 +18,15 @@
   height: 72px;
   display: flex;
   align-items: center;
-  /* Frosted glass effect - subtle */
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: saturate(180%) blur(12px);
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  /* Frosted glass effect - more pronounced */
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  /* Stronger, more diffused shadow */
+  box-shadow: 
+    0 4px 40px rgba(0, 0, 0, 0.04),
+    0 12px 60px rgba(0, 0, 0, 0.03);
   transition: 
     background-color 0.3s ease,
     box-shadow 0.3s ease,
@@ -40,10 +45,14 @@
 }
 
 .header--scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  /* Stronger, very soft shadow when scrolled */
+  box-shadow: 
+    0 8px 50px rgba(0, 0, 0, 0.06),
+    0 20px 80px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .header--hidden {

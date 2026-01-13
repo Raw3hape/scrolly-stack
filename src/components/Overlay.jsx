@@ -1,10 +1,38 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { steps } from '../data';
 import './Overlay.css';
 
 export default function Overlay({ currentStep, setStep }) {
   const stepRefs = useRef([]);
   const heroRef = useRef(null);
+  const [heroOpacity, setHeroOpacity] = useState(1);
+
+  // Scroll-based hero fade for mobile
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      // Start fading at 50px scroll, fully transparent by 250px
+      const fadeStart = 50;
+      const fadeEnd = 250;
+      
+      if (scrollY <= fadeStart) {
+        setHeroOpacity(1);
+      } else if (scrollY >= fadeEnd) {
+        setHeroOpacity(0);
+      } else {
+        const progress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
+        setHeroOpacity(1 - progress);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -17,17 +45,15 @@ export default function Overlay({ currentStep, setStep }) {
         });
       },
       {
-        rootMargin: '-45% 0px -45% 0px',
+        rootMargin: '-40% 0px -50% 0px',
         threshold: 0,
       }
     );
 
-    // Observe Steps
     stepRefs.current.forEach((ref) => {
       if (ref) observer.observe(ref);
     });
 
-    // Observe Hero
     if (heroRef.current) observer.observe(heroRef.current);
 
     return () => observer.disconnect();
@@ -41,6 +67,7 @@ export default function Overlay({ currentStep, setStep }) {
         data-index="-1"
         className="hero"
         role="banner"
+        style={{ opacity: heroOpacity }}
       >
         {/* Headline with single highlighted keyword */}
         <h1 className="hero__headline">

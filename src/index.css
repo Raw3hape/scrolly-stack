@@ -64,6 +64,9 @@
   --content-max-width: 520px;        /* Max width for text content */
   --card-max-width: 460px;           /* Max width for cards — fits long titles */
   --header-height: 72px;
+  --header-height-mobile: 64px;
+  --visual-height-mobile: 55vh;  /* Larger frame for 3D model */
+  --content-height-mobile: calc(100vh - var(--visual-height-mobile) - var(--header-height-mobile));
   
   /* Responsive adjustments via clamp */
   --container-padding-responsive: clamp(1rem, 3vw, 3rem);
