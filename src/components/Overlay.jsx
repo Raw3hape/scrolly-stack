@@ -42,19 +42,15 @@ export default function Overlay({ currentStep, setStep }) {
         className="hero"
         role="banner"
       >
-        {/* Eyebrow */}
-        <p className="hero__eyebrow">
-          For founder-led roofing companies planning a succession path
-        </p>
-
-        {/* Headline */}
+        {/* Headline with single highlighted keyword */}
         <h1 className="hero__headline">
-          Build a roofing business that runs clean—and sells at a premium.
+          Build a roofing business that runs clean—and sells at a{' '}
+          <span className="hero__headline-accent">premium.</span>
         </h1>
 
         {/* Subheadline */}
         <p className="hero__subheadline">
-          We install CRM + marketing systems, drive efficiency savings, and prepare you for an institutional-quality exit (target 7–10× EBITDA).
+          We install CRM + marketing systems, drive efficiency savings, and prepare you for an institutional-quality exit.
         </p>
 
         {/* CTA + Fear Reducer */}
@@ -70,10 +66,6 @@ export default function Overlay({ currentStep, setStep }) {
             <span className="hero__status-dot" aria-hidden="true"></span>
             Only for qualified roofers. Confidential application.
           </p>
-        </div>
-
-        <div className="hero__scroll-hint">
-          <p>Scroll to explore the stack ↓</p>
         </div>
       </header>
 

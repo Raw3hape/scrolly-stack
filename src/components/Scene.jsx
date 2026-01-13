@@ -5,12 +5,13 @@
  * All settings driven by config.js.
  */
 
-import { Suspense, useState, useEffect, useCallback } from 'react';
+import { Suspense, useState, useEffect, useCallback, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, PresentationControls, ContactShadows, useProgress, Html } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import Stack from './Stack';
+import HoverTooltip from './HoverTooltip';
 import { animation, lighting, shadows, postProcessing, render } from '../config';
 
 // =============================================================================
@@ -84,8 +85,8 @@ function CameraRig({ currentStep }) {
 // ZOOM CONTROLLER
 // =============================================================================
 
-function useResponsiveZoom() {
-  const [zoom, setZoom] = useState(() => {
+function useResponsiveZoom(currentStep) {
+  const [baseZoom, setBaseZoom] = useState(() => {
     if (typeof window === 'undefined') return animation.zoom.desktop;
     return window.innerWidth < animation.zoom.mobileBreakpoint
       ? animation.zoom.mobile
@@ -94,7 +95,7 @@ function useResponsiveZoom() {
 
   const handleResize = useCallback(() => {
     const width = window.innerWidth;
-    setZoom(
+    setBaseZoom(
       width < animation.zoom.mobileBreakpoint
         ? animation.zoom.mobile
         : animation.zoom.desktop
@@ -115,7 +116,15 @@ function useResponsiveZoom() {
     };
   }, [handleResize]);
 
-  return zoom;
+  // Return larger zoom for hero state (-1), normal zoom otherwise
+  const isHero = currentStep === -1;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < animation.zoom.mobileBreakpoint;
+  
+  if (isHero) {
+    return isMobile ? animation.zoom.heroMobile : animation.zoom.heroDesktop;
+  }
+  
+  return baseZoom;
 }
 
 function ZoomController({ targetZoom }) {
@@ -210,7 +219,13 @@ function Effects() {
 // =============================================================================
 
 export default function Scene({ currentStep, onBlockClick }) {
-  const zoom = useResponsiveZoom();
+  // Pass currentStep to get larger zoom in hero state
+  const zoom = useResponsiveZoom(currentStep);
+  
+  // Hover state for tooltip
+  const [hoveredBlock, setHoveredBlock] = useState(null);
+  const [mousePosition, setMousePosition] = useState(null);
+  const containerRef = useRef(null);
   
   // Handle block click - scroll to corresponding step
   const handleBlockClick = useCallback((blockId) => {
@@ -224,60 +239,95 @@ export default function Scene({ currentStep, onBlockClick }) {
       onBlockClick(blockId);
     }
   }, [onBlockClick]);
+  
+  // Handle block hover changes
+  const handleBlockHover = useCallback((blockData, isHovered, mousePos) => {
+    if (isHovered && blockData) {
+      setHoveredBlock(blockData);
+      setMousePosition(mousePos);
+    } else {
+      setHoveredBlock(null);
+      setMousePosition(null);
+    }
+  }, []);
+  
+  // Track mouse movement for tooltip positioning when hovering
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (hoveredBlock) {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+      }
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [hoveredBlock]);
 
   return (
-    <Canvas
-      shadows={{ type: THREE.VSMShadowMap }}
-      dpr={render.dpr}
-      orthographic
-      camera={{
-        zoom: zoom,
-        position: animation.camera.positions.hero,
-        fov: 25,
-      }}
-      style={{ width: '100%', height: '100%', background: 'transparent' }}
-      gl={{ antialias: true, alpha: true }}
-    >
-      <CameraRig currentStep={currentStep} />
-      <ZoomController targetZoom={zoom} />
-      
-      <Lights />
-      
-      <Environment 
-        preset={lighting.environment.preset} 
-        environmentIntensity={lighting.environment.intensity}
-      />
-
-      <Suspense fallback={<Loader />}>
-        <PresentationControls
-          global={false}
-          cursor={true}
-          snap={true}
-          speed={1}
-          zoom={1}
-          rotation={[0, 0, 0]}
-          polar={[-Infinity, Infinity]}
-          azimuth={[-Infinity, Infinity]}
-          config={{ mass: 1, tension: 170, friction: 26 }}
-        >
-          <Stack currentStep={currentStep} onBlockClick={handleBlockClick} />
-        </PresentationControls>
-      </Suspense>
-
-      {/* ContactShadows only if enabled in config */}
-      {shadows.enabled && (
-        <ContactShadows
-          position={shadows.contact.position}
-          opacity={shadows.contact.opacity}
-          scale={shadows.contact.scale}
-          blur={shadows.contact.blur}
-          far={shadows.contact.far}
-          resolution={shadows.contact.resolution}
-          color={shadows.contact.color}
+    <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <Canvas
+        shadows={{ type: THREE.VSMShadowMap }}
+        dpr={render.dpr}
+        orthographic
+        camera={{
+          zoom: zoom,
+          position: animation.camera.positions.hero,
+          fov: 25,
+        }}
+        style={{ width: '100%', height: '100%', background: 'transparent' }}
+        gl={{ antialias: true, alpha: true }}
+      >
+        <CameraRig currentStep={currentStep} />
+        <ZoomController targetZoom={zoom} />
+        
+        <Lights />
+        
+        <Environment 
+          preset={lighting.environment.preset} 
+          environmentIntensity={lighting.environment.intensity}
         />
-      )}
+
+        <Suspense fallback={<Loader />}>
+          <PresentationControls
+            global={false}
+            cursor={true}
+            snap={true}
+            speed={1}
+            zoom={1}
+            rotation={[0, 0, 0]}
+            polar={[-Infinity, Infinity]}
+            azimuth={[-Infinity, Infinity]}
+            config={{ mass: 1, tension: 170, friction: 26 }}
+          >
+            <Stack 
+              currentStep={currentStep} 
+              onBlockClick={handleBlockClick}
+              onBlockHover={handleBlockHover}
+            />
+          </PresentationControls>
+        </Suspense>
+
+        {/* ContactShadows only if enabled in config */}
+        {shadows.enabled && (
+          <ContactShadows
+            position={shadows.contact.position}
+            opacity={shadows.contact.opacity}
+            scale={shadows.contact.scale}
+            blur={shadows.contact.blur}
+            far={shadows.contact.far}
+            resolution={shadows.contact.resolution}
+            color={shadows.contact.color}
+          />
+        )}
+        
+        <Effects />
+      </Canvas>
       
-      <Effects />
-    </Canvas>
+      {/* Hover tooltip - rendered outside Canvas as HTML overlay */}
+      <HoverTooltip 
+        hoveredBlock={hoveredBlock} 
+        mousePosition={mousePosition} 
+      />
+    </div>
   );
 }

@@ -152,7 +152,7 @@ export const layers = [
     level: 'C',
     layout: 'full',
     blocks: [
-      // Soft fuchsia
+      // Fuchsia/pink (balanced saturation)
       {
         id: 7,
         label: 'Lead OS',
@@ -166,7 +166,7 @@ export const layers = [
         bullets: ['Demand', 'Sales', 'Production', 'Review'],
         icon: 'M22 12l-4-4v3H3v2h15v3l4-4z', // Arrow flow
       },
-      // Soft pink
+      // Pink (balanced saturation)
       {
         id: 8,
         label: 'CRM',
@@ -180,7 +180,7 @@ export const layers = [
         bullets: ['CRM installation', 'Pipeline management', 'Marketing auto'],
         icon: 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z', // Person/Contact
       },
-      // Soft rose
+      // Rose (balanced saturation)
       {
         id: 9,
         label: 'Acct',
@@ -194,71 +194,71 @@ export const layers = [
         bullets: ['Job costing', 'Reporting', 'Operating system link'],
         icon: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z', // Document/Ledger
       },
-      // Soft coral
+      // Orange/peach (balanced saturation)
       {
         id: 10,
         label: 'RevOps',
-        color: '#fca5a5',           // Red 300 (coral)
-        gradientColorB: '#fecaca',  // Red 200
-        activeColor: '#f87171',
-        activeGradientColorB: '#fca5a5',
-        textColor: '#7f1d1d',
-        tooltipTitle: 'RevOps Controls',
-        tooltipSubhead: 'System becomes behavior',
-        bullets: ['Governance', 'Playbooks', 'Adoption tracking'],
-        icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z', // Checkmark/Control
-      },
-      // Soft peach
-      {
-        id: 11,
-        label: 'Savings',
         color: '#fdba74',           // Orange 300
         gradientColorB: '#fed7aa',  // Orange 200
         activeColor: '#fb923c',
         activeGradientColorB: '#fdba74',
         textColor: '#7c2d12',
-        tooltipTitle: 'Efficiency Savings',
-        tooltipSubhead: 'Cut leaks',
-        bullets: ['Reduce overhead', 'Smoother handoffs', 'Standardization'],
-        icon: 'M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z', // Tag/Savings
+        tooltipTitle: 'RevOps Controls',
+        tooltipSubhead: 'System becomes behavior',
+        bullets: ['Governance', 'Playbooks', 'Adoption tracking'],
+        icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z', // Checkmark/Control
       },
-      // Soft amber
+      // Amber (balanced saturation)
       {
-        id: 12,
-        label: 'Services',
+        id: 11,
+        label: 'Savings',
         color: '#fcd34d',           // Amber 300
         gradientColorB: '#fde68a',  // Amber 200
         activeColor: '#fbbf24',
         activeGradientColorB: '#fcd34d',
         textColor: '#78350f',
+        tooltipTitle: 'Efficiency Savings',
+        tooltipSubhead: 'Cut leaks',
+        bullets: ['Reduce overhead', 'Smoother handoffs', 'Standardization'],
+        icon: 'M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z', // Tag/Savings
+      },
+      // Rose/pink (balanced, no green)
+      {
+        id: 12,
+        label: 'Services',
+        color: '#fda4af',           // Rose 300
+        gradientColorB: '#fecdd3',  // Rose 200
+        activeColor: '#fb7185',
+        activeGradientColorB: '#fda4af',
+        textColor: '#881337',
         tooltipTitle: 'Shared Services',
         tooltipSubhead: 'Dedicated bench',
         bullets: ['Build support', 'Maintenance', 'Keep stack running'],
         icon: 'M22 9V7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14zM6 13h5v4H6zm6-6h4v3h-4zm0 4h4v6h-4zM6 7h5v5H6z', // Grid/Services
       },
-      // Back to soft pink (loop)
+      // Purple/violet (balanced)
       {
         id: 13,
         label: 'Scale',
-        color: '#f9a8d4',           // Pink 300
-        gradientColorB: '#fbcfe8',  // Pink 200
-        activeColor: '#f472b6',
-        activeGradientColorB: '#f9a8d4',
-        textColor: '#831843',
-        tooltipTitle: 'Scale + Leverage',
-        tooltipSubhead: 'Group power',
-        bullets: ['8-12 businesses', 'Leverage economies', 'Unified growth'],
-        icon: 'M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z', // Growth chart
-      },
-      // Soft lavender (final)
-      {
-        id: 14,
-        label: 'Exit',
         color: '#d8b4fe',           // Purple 300
         gradientColorB: '#e9d5ff',  // Purple 200
         activeColor: '#c084fc',
         activeGradientColorB: '#d8b4fe',
         textColor: '#581c87',
+        tooltipTitle: 'Scale + Leverage',
+        tooltipSubhead: 'Group power',
+        bullets: ['8-12 businesses', 'Leverage economies', 'Unified growth'],
+        icon: 'M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z', // Growth chart
+      },
+      // Deep violet (back to cool, completing the arc)
+      {
+        id: 14,
+        label: 'Exit',
+        color: '#c4b5fd',           // Violet 300 - soft lavender
+        gradientColorB: '#ddd6fe',  // Violet 200
+        activeColor: '#a78bfa',
+        activeGradientColorB: '#c4b5fd',
+        textColor: '#4c1d95',
         tooltipTitle: 'Institutional Exit Options',
         tooltipSubhead: 'Premium exit positioning',
         bullets: ['Audit logs', 'Data room', 'Transferability'],

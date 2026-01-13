@@ -63,10 +63,12 @@ export default function Block({
   isAboveActive,
   slideDirection = animation.active.slideDirection,
   onClick,
+  onHoverChange,  // NEW: Callback for hover state changes
+  blockData,      // NEW: Complete block data from data.js
   blockId,
   opacity = 1,
-  staggerDelay = 0,    // NEW: Stagger delay for accordion effect
-  isRevealed = true,   // NEW: Whether stack is revealed
+  staggerDelay = 0,
+  isRevealed = true,
 }) {
   const meshRef = useRef();
   const [isHovered, setIsHovered] = useState(false);
@@ -101,6 +103,16 @@ export default function Block({
     },
   });
   
+  // Spring animation for hover scale
+  const { springScale } = useSpring({
+    springScale: isHovered ? (animation.hover?.scale || 1.025) : 1,
+    config: {
+      tension: 300,   // Slightly snappier for hover feedback
+      friction: 20,
+      mass: 0.5,
+    },
+  });
+  
   // Current colors (solid or gradient)
   const currentColorA = isActive ? activeColor : color;
   const currentColorB = isActive 
@@ -112,13 +124,24 @@ export default function Block({
     e.stopPropagation();
     document.body.style.cursor = 'pointer';
     setIsHovered(true);
-  }, []);
+    // Notify parent with block data and mouse position
+    if (onHoverChange && blockData) {
+      onHoverChange(blockData, true, {
+        x: e.clientX || e.nativeEvent?.clientX || 0,
+        y: e.clientY || e.nativeEvent?.clientY || 0,
+      });
+    }
+  }, [onHoverChange, blockData]);
   
   const handlePointerOut = useCallback((e) => {
     e.stopPropagation();
     document.body.style.cursor = 'auto';
     setIsHovered(false);
-  }, []);
+    // Notify parent that hover ended
+    if (onHoverChange) {
+      onHoverChange(null, false, null);
+    }
+  }, [onHoverChange]);
   
   // Click handler
   const handleClick = useCallback((e) => {
@@ -140,7 +163,10 @@ export default function Block({
   });
   
   return (
-    <AnimatedGroup position={springPosition}>
+    <AnimatedGroup 
+      position={springPosition}
+      scale={springScale}
+    >
       <RoundedBox
         ref={meshRef}
         args={dimensions}

@@ -92,7 +92,7 @@ function calculateLayerOpacity(layer, currentStep) {
 /**
  * Stack Component
  */
-export default function Stack({ currentStep, onBlockClick }) {
+export default function Stack({ currentStep, onBlockClick, onBlockHover }) {
   // Calculate which blocks are above the active one
   const blocksAboveActive = useMemo(
     () => calculateBlocksAboveActive(currentStep),
@@ -127,6 +127,7 @@ export default function Stack({ currentStep, onBlockClick }) {
             currentStep={currentStep}
             allBlocksAboveActive={blocksAboveActive}
             onBlockClick={onBlockClick}
+            onBlockHover={onBlockHover}
             opacity={opacity}
             staggerDelay={staggerDelay}
             isRevealed={isRevealed}
@@ -136,4 +137,5 @@ export default function Stack({ currentStep, onBlockClick }) {
     </group>
   );
 }
+
 

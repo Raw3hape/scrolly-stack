@@ -8,6 +8,7 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { animation } from '../config';
 
 let materialVersion = 0;
 
@@ -20,6 +21,9 @@ export default function GradientShadowMaterial({
 }) {
   const shaderRef = useRef(null);
   const materialRef = useRef(null);
+  // Smooth hover transition refs
+  const currentHoverRef = useRef(0);
+  const targetHoverRef = useRef(0);
   
   const materialKey = useMemo(() => {
     materialVersion++;
@@ -158,7 +162,19 @@ export default function GradientShadowMaterial({
   useFrame((state) => {
     if (shaderRef.current) {
       shaderRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-      shaderRef.current.uniforms.uIsHovered.value = isHovered ? 1.0 : 0.0;
+      
+      // Smooth hover transition using lerp
+      targetHoverRef.current = isHovered ? 1.0 : 0.0;
+      const lerpSpeed = animation.hover?.lerpSpeed || 0.12;
+      currentHoverRef.current += (targetHoverRef.current - currentHoverRef.current) * lerpSpeed;
+      
+      // Clamp to avoid floating point artifacts
+      if (Math.abs(targetHoverRef.current - currentHoverRef.current) < 0.001) {
+        currentHoverRef.current = targetHoverRef.current;
+      }
+      
+      shaderRef.current.uniforms.uIsHovered.value = currentHoverRef.current;
+      
       // Update color reveal from animated spring value
       if (animatedColorReveal) {
         shaderRef.current.uniforms.uColorReveal.value = animatedColorReveal.get();

@@ -18,9 +18,10 @@ export default function Layer({
   currentStep,
   allBlocksAboveActive,
   onBlockClick,
+  onBlockHover,    // NEW: Callback for block hover changes
   opacity = 1,
-  staggerDelay = 0,    // NEW: Stagger delay for accordion effect
-  isRevealed = true,   // NEW: Whether stack is revealed
+  staggerDelay = 0,
+  isRevealed = true,
 }) {
   const blocks = calculateBlockPositions(layer, baseY);
   
@@ -48,6 +49,8 @@ export default function Layer({
             isAboveActive={isAboveActive}
             slideDirection={block.slideDirection ?? animation.active.slideDirection}
             onClick={onBlockClick}
+            onHoverChange={onBlockHover}
+            blockData={block}
             blockId={block.id}
             opacity={opacity}
             staggerDelay={blockStagger}
@@ -58,4 +61,5 @@ export default function Layer({
     </group>
   );
 }
+
 

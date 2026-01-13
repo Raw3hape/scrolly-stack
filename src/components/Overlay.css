@@ -32,12 +32,21 @@
 
 /* Headline */
 .hero__headline {
-  font-size: var(--text-3xl);
-  line-height: 1.1;
+  font-size: clamp(2.25rem, 4.5vw, 3rem);
+  line-height: 1.15;
   margin-bottom: var(--space-lg);
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   color: var(--color-text-primary);
-  font-weight: 800;
+  font-weight: 600; /* Thinner */
+}
+
+/* Highlighted words in headline */
+.hero__headline-accent {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
 }
 
 /* Subheadline */
@@ -57,28 +66,62 @@
   align-items: flex-start;
 }
 
-/* Primary CTA Button */
+/* Primary CTA Button - Modern Gradient */
 .hero__cta-button {
-  padding: var(--space-md) var(--space-xl);
-  padding-right: 2.5rem;
-  background: var(--color-text-primary);
+  padding: var(--btn-padding, 0.75rem 1.5rem);
+  background: var(--gradient-primary);
   color: #fff;
   border: none;
-  border-radius: var(--radius-full);
+  border-radius: var(--btn-radius, 10px);
   font-size: var(--text-base);
-  font-weight: 600;
+  font-weight: var(--btn-font-weight, 600);
   cursor: pointer;
-  box-shadow: var(--shadow-md);
-  transition: transform var(--transition-fast);
+  box-shadow: 
+    var(--shadow-md),
+    0 4px 20px rgba(139, 92, 246, 0.25);
+  transition: 
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer effect on button */
+.hero__cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.hero__cta-button:hover::before {
+  left: 100%;
 }
 
 .hero__cta-button:hover {
-  transform: scale(1.02);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    var(--shadow-lg),
+    var(--glow-primary);
+}
+
+.hero__cta-button:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .hero__cta-button:focus-visible {
-  outline: 2px solid var(--color-blue-500);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-violet-500);
+  outline-offset: 3px;
 }
 
 /* Fear reducer / Status line */
@@ -99,17 +142,7 @@
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
-/* Scroll hint */
-.hero__scroll-hint {
-  margin-top: var(--space-3xl);
-  opacity: 0.6;
-}
 
-.hero__scroll-hint p {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  font-style: italic;
-}
 
 /* === Steps Section - Timeline Style === */
 .steps-container {
@@ -123,7 +156,7 @@
   left: 24px; /* Center of 48px offset from edge to dot center */
   top: 0;
   bottom: 0;
-  width: 2px;
+  width: 1px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
@@ -176,15 +209,17 @@
   padding-left: 0;
 }
 
-/* Timeline dot with icon inside - larger circle */
+/* Timeline square with icon inside - matches 3D blocks */
 .timeline-dot {
   flex-shrink: 0;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  border: 3px solid var(--color-bg-primary);
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all var(--transition-smooth);
+  border-radius: 8px; /* Square with rounded corners */
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   z-index: 2;
   display: flex;
@@ -192,25 +227,29 @@
   justify-content: center;
 }
 
-/* Icon inside the dot */
+/* Icon inside the square */
 .timeline-dot__icon {
   width: 20px;
   height: 20px;
-  transition: all var(--transition-smooth);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
 }
 
 .timeline-dot--active {
   width: 52px;
   height: 52px;
+  border-radius: 10px;
+  border-color: rgba(255, 255, 255, 0.9);
   box-shadow: 
-    0 0 0 4px rgba(0, 0, 0, 0.04), 
-    0 0 24px var(--step-color),
-    0 4px 12px rgba(0, 0, 0, 0.15);
+    0 0 0 3px rgba(255, 255, 255, 0.4), 
+    0 0 25px var(--step-color),
+    0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .timeline-dot--active .timeline-dot__icon {
   width: 24px;
   height: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 /* Title - Large and prominent */

@@ -1,0 +1,60 @@
+/**
+ * BackgroundEffects Styles
+ * 
+ * Simple dot grid pattern with subtle styling.
+ * No gradient orbs - clean, minimalist.
+ */
+
+/* =============================================================================
+   CONTAINER - Fixed behind all content
+   ============================================================================= */
+
+.bg-effects {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: transparent;
+}
+
+/* =============================================================================
+   DOT GRID PATTERN WITH PARALLAX
+   ============================================================================= */
+
+.bg-effects__grid {
+  position: absolute;
+  inset: -100% 0;
+  height: 400%;
+  /* Square grid using linear gradients (graph paper style) */
+  background-image: 
+    linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  /* Fade out at edges for smooth transition */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  will-change: transform;
+}
+
+/* =============================================================================
+   REDUCED MOTION
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-effects__grid {
+    transform: none !important;
+  }
+}

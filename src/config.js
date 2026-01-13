@@ -81,8 +81,24 @@ export const animation = {
   zoom: {
     desktop: 65,
     mobile: 40,
+    // Larger zoom for hero state (3D fills more of the viewport)
+    heroDesktop: 90,
+    heroMobile: 55,
     mobileBreakpoint: 768,
     lerpSpeed: 3,
+  },
+  
+  // Hover effect settings
+  hover: {
+    lerpSpeed: 0.12,           // Smooth transition speed per frame
+    glowIntensity: 0.15,       // Subtle glow strength
+    scale: 1.025,              // Scale on hover (2.5% increase)
+    tooltip: {
+      offsetX: 16,             // Cursor offset X
+      offsetY: 16,             // Cursor offset Y
+      fadeInDuration: 200,     // ms
+      fadeOutDuration: 150,    // ms
+    },
   },
 };
 
