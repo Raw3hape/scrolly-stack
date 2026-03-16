@@ -39,8 +39,8 @@ export default function Overlay({ currentStep, setStep }) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const index = Number(entry.target.getAttribute('data-index'));
-            setStep(index);
+            const stepId = entry.target.getAttribute('data-step-id');
+            setStep(stepId === 'hero' ? -1 : Number(stepId));
           }
         });
       },
@@ -64,7 +64,7 @@ export default function Overlay({ currentStep, setStep }) {
       {/* HERO SECTION */}
       <header
         ref={heroRef}
-        data-index="-1"
+        data-step-id="hero"
         className="hero"
         role="banner"
         style={{ opacity: heroOpacity }}
@@ -82,12 +82,13 @@ export default function Overlay({ currentStep, setStep }) {
 
         {/* CTA + Fear Reducer */}
         <div className="hero__cta-wrapper">
-          <button
+          <a
+            href="https://google.com"
             className="hero__cta-button"
             aria-label="Check if you qualify for the program"
           >
-            See if I qualify
-          </button>
+            See if I qualify →
+          </a>
 
           <p className="hero__status">
             <span className="hero__status-dot" aria-hidden="true"></span>
@@ -111,7 +112,7 @@ export default function Overlay({ currentStep, setStep }) {
             <div
               key={step.id}
               id={`step-${step.id}`}
-              data-index={index}
+              data-step-id={step.id}
               ref={(el) => (stepRefs.current[index] = el)}
               className={`step ${isActive ? 'step--active' : ''} ${isPrev ? 'step--prev' : ''} ${isNext ? 'step--next' : ''}`}
               style={{ 
@@ -164,14 +165,15 @@ export default function Overlay({ currentStep, setStep }) {
                 </ul>
 
                 {/* Mini CTA */}
-                <button
+                <a
+                  href="https://google.com"
                   className={`step-content__cta ${!isActive ? 'step-content__cta--hidden' : ''}`}
                   aria-label={`Learn more about ${step.tooltipTitle}`}
                   tabIndex={isActive ? 0 : -1}
                 >
                   See if I qualify
                   <span className="step-content__cta-arrow" aria-hidden="true">→</span>
-                </button>
+                </a>
               </div>
             </div>
           );

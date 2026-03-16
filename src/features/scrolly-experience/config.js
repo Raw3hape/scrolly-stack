@@ -221,7 +221,7 @@ export const postProcessing = {
 
 export const labels = {
   fontSize: 0.36,
-  font: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff',
+  font: '/fonts/Inter-Regular.woff',
   color: 'white',
   maxWidth: 1.5,
   lineHeight: 1.1,
