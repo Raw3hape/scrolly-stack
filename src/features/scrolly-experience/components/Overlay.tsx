@@ -1,10 +1,18 @@
+/**
+ * Overlay Component
+ *
+ * Narrative layer: hero section + scrollytelling steps.
+ * Uses IntersectionObserver to track current step by block .id.
+ */
+
 import { useEffect, useRef, useState } from 'react';
 import { steps } from '../data';
+import type { OverlayProps, StepData } from '../types';
 import './Overlay.css';
 
-export default function Overlay({ currentStep, setStep }) {
-  const stepRefs = useRef([]);
-  const heroRef = useRef(null);
+export default function Overlay({ currentStep, setStep }: OverlayProps) {
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const heroRef = useRef<HTMLElement>(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
 
   // Scroll-based hero fade for mobile
@@ -14,10 +22,9 @@ export default function Overlay({ currentStep, setStep }) {
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      // Start fading at 50px scroll, fully transparent by 250px
       const fadeStart = 50;
       const fadeEnd = 250;
-      
+
       if (scrollY <= fadeStart) {
         setHeroOpacity(1);
       } else if (scrollY >= fadeEnd) {
@@ -29,8 +36,8 @@ export default function Overlay({ currentStep, setStep }) {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
-    
+    handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -69,18 +76,15 @@ export default function Overlay({ currentStep, setStep }) {
         role="banner"
         style={{ opacity: heroOpacity }}
       >
-        {/* Headline with single highlighted keyword */}
         <h1 className="hero__headline">
           Build a roofing business that runs clean—and sells at a{' '}
           <span className="hero__headline-accent">premium.</span>
         </h1>
 
-        {/* Subheadline */}
         <p className="hero__subheadline">
           We install CRM + marketing systems, drive efficiency savings, and prepare you for an institutional-quality exit.
         </p>
 
-        {/* CTA + Fear Reducer */}
         <div className="hero__cta-wrapper">
           <a
             href="https://google.com"
@@ -97,12 +101,11 @@ export default function Overlay({ currentStep, setStep }) {
         </div>
       </header>
 
-      {/* STEPS SECTION - Timeline Style */}
+      {/* STEPS SECTION */}
       <div className="steps-container" role="region" aria-label="Business transformation steps">
-        {/* Timeline connecting line */}
         <div className="timeline-line" aria-hidden="true" />
-        
-        {steps.map((step, index) => {
+
+        {(steps as StepData[]).map((step, index) => {
           const isActive = currentStep === index;
           const isPrev = currentStep > index;
           const isNext = currentStep < index;
@@ -113,28 +116,25 @@ export default function Overlay({ currentStep, setStep }) {
               key={step.id}
               id={`step-${step.id}`}
               data-step-id={step.id}
-              ref={(el) => (stepRefs.current[index] = el)}
+              ref={(el) => { stepRefs.current[index] = el; }}
               className={`step ${isActive ? 'step--active' : ''} ${isPrev ? 'step--prev' : ''} ${isNext ? 'step--next' : ''}`}
-              style={{ 
+              style={{
                 '--step-color': step.color,
                 '--step-distance': distance,
-              }}
+              } as React.CSSProperties}
             >
-              {/* Content without card background */}
               <div
                 className={`step-content ${isActive ? 'step-content--active' : 'step-content--inactive'}`}
                 aria-current={isActive ? 'step' : undefined}
               >
-                {/* Title row with icon-dot combo */}
                 <div className="step-content__title-row">
-                  {/* Timeline dot with icon inside */}
-                  <div 
+                  <div
                     className={`timeline-dot ${isActive ? 'timeline-dot--active' : ''}`}
                     style={{ backgroundColor: step.color }}
                     aria-hidden="true"
                   >
-                    <svg 
-                      viewBox="0 0 24 24" 
+                    <svg
+                      viewBox="0 0 24 24"
                       fill="white"
                       className="timeline-dot__icon"
                       aria-hidden="true"
@@ -142,14 +142,12 @@ export default function Overlay({ currentStep, setStep }) {
                       <path d={step.icon} />
                     </svg>
                   </div>
-                  
-                  {/* Title */}
+
                   <h3 className="step-content__title">
                     {step.tooltipTitle}
                   </h3>
                 </div>
 
-                {/* Subhead */}
                 <p
                   className="step-content__subhead"
                   style={{ color: step.color }}
@@ -157,14 +155,12 @@ export default function Overlay({ currentStep, setStep }) {
                   {step.tooltipSubhead}
                 </p>
 
-                {/* Bullets */}
                 <ul className="step-content__bullets">
                   {step.bullets.map((bullet, i) => (
                     <li key={i}>{bullet}</li>
                   ))}
                 </ul>
 
-                {/* Mini CTA */}
                 <a
                   href="https://google.com"
                   className={`step-content__cta ${!isActive ? 'step-content__cta--hidden' : ''}`}
