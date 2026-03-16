@@ -1,0 +1,73 @@
+/* ============================================================================
+ * COLOR TOKENS — Foundation Projects
+ * 
+ * RESKIN: Change these values to rebrand the entire site.
+ * All components use semantic tokens, not raw palette values.
+ * ========================================================================== */
+
+:root {
+  /* === Palette (raw values — don't use directly in components) === */
+  --color-slate-50:  #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+
+  /* Brand */
+  --color-fuchsia-500: #d946ef;
+  --color-fuchsia-700: #a21caf;
+  --color-violet-500:  #8b5cf6;
+  --color-violet-700:  #6d28d9;
+  --color-purple-500:  #a855f7;
+  --color-purple-700:  #7e22ce;
+  --color-indigo-500:  #6366f1;
+  --color-indigo-700:  #4338ca;
+  --color-blue-500:    #3b82f6;
+  --color-blue-700:    #1d4ed8;
+  --color-emerald-500: #10b981;
+
+  /* === Semantic tokens (USE THESE in components) === */
+
+  /* Surfaces */
+  --surface-base:       var(--color-slate-50);
+  --surface-card:       #ffffff;
+  --surface-card-hover: var(--color-slate-100);
+  --surface-overlay:    rgba(255, 255, 255, 0.8);
+  --surface-glass:      rgba(255, 255, 255, 0.6);
+
+  /* Text */
+  --text-primary:   var(--color-slate-900);
+  --text-secondary: var(--color-slate-600);
+  --text-muted:     var(--color-slate-500);
+  --text-subtle:    var(--color-slate-400);
+  --text-inverse:   #ffffff;
+
+  /* Brand */
+  --accent-brand:       var(--color-violet-500);
+  --accent-brand-hover: var(--color-violet-700);
+
+  /* Borders */
+  --border-default: var(--color-slate-200);
+  --border-hover:   var(--color-slate-300);
+  --border-focus:   var(--color-violet-500);
+
+  /* Status */
+  --status-success: #10b981;
+  --status-warning: #f59e0b;
+  --status-error:   #ef4444;
+  --status-info:    #3b82f6;
+
+  /* Gradients */
+  --gradient-primary:       linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%);
+  --gradient-subtle:        linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+
+  /* Glows */
+  --glow-primary:         0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+  --glow-primary-intense: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+}

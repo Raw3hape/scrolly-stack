@@ -1,0 +1,82 @@
+/* ============================================================================
+ * FOOTER STYLES — Foundation Projects
+ * ========================================================================== */
+
+.footer {
+  border-top: 1px solid var(--border-default);
+  background: var(--surface-base);
+  padding-block: var(--space-2xl);
+}
+
+.footer-container {
+  /* Inherits .container from utilities.css */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--border-default);
+}
+
+/* Brand */
+.footer-brand {
+  max-width: 400px;
+}
+
+.footer-wordmark {
+  font: var(--font-h4);
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: var(--space-sm);
+}
+
+.footer-description {
+  font: var(--font-body-sm);
+  color: var(--text-muted);
+}
+
+/* Navigation */
+.footer-nav-title {
+  font: var(--font-caption);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  margin-bottom: var(--space-md);
+}
+
+.footer-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer-nav-list a {
+  font: var(--font-body-sm);
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.footer-nav-list a:hover {
+  color: var(--text-primary);
+}
+
+/* Copyright bar */
+.footer-bottom {
+  padding-top: var(--space-lg);
+}
+
+.footer-copyright {
+  font: var(--font-caption);
+  color: var(--text-subtle);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+}

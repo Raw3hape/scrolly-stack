@@ -1,0 +1,32 @@
+/* ============================================================================
+ * SPACING TOKENS — Foundation Projects
+ * 
+ * RESKIN: Adjust clamp values to change spacing density.
+ * Fluid spacing auto-adapts from 320px to 1400px viewport.
+ * ========================================================================== */
+
+:root {
+  /* === Fluid Spacing Scale === */
+  --space-xs:  clamp(0.25rem, 0.2rem + 0.25vw,  0.375rem);  /* 4→6px   */
+  --space-sm:  clamp(0.5rem,  0.4rem + 0.5vw,   0.75rem);   /* 8→12px  */
+  --space-md:  clamp(0.875rem, 0.75rem + 0.625vw, 1.25rem);  /* 14→20px */
+  --space-lg:  clamp(1.25rem, 1rem + 1.25vw,     2rem);      /* 20→32px */
+  --space-xl:  clamp(1.75rem, 1.25rem + 2.5vw,   3rem);      /* 28→48px */
+  --space-2xl: clamp(2.5rem,  1.75rem + 3.75vw,  4.5rem);    /* 40→72px */
+  --space-3xl: clamp(3.5rem,  2.5rem + 5vw,      6rem);      /* 56→96px */
+
+  /* === Section Spacing === */
+  --section-gap:     clamp(4rem, 3rem + 5vw, 8rem);    /* Between page sections */
+  --section-gap-sm:  clamp(2.5rem, 2rem + 2.5vw, 4rem);
+
+  /* === Layout === */
+  --container-max: 1400px;
+  --container-padding: clamp(1rem, 3vw, 3rem);
+  --header-height: 72px;
+  --header-height-mobile: 64px;
+  --content-width: 45%;
+  --visual-width: 55%;
+  --content-max-width: 520px;
+  --card-max-width: 460px;
+  --visual-height-mobile: 55vh;
+}

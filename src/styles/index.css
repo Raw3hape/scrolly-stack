@@ -1,0 +1,19 @@
+/* ============================================================================
+ * STYLES BARREL — Foundation Projects
+ * 
+ * Single import point: @import '@/styles/index.css' in layout.tsx
+ * ========================================================================== */
+
+/* Tokens */
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/motion.css';
+@import './tokens/effects.css';
+
+/* Base */
+@import './base/reset.css';
+@import './base/globals.css';
+
+/* Utilities */
+@import './utilities.css';

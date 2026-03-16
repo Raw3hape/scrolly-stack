@@ -1,0 +1,80 @@
+/* ============================================================================
+ * CSS UTILITIES — Foundation Projects
+ * 
+ * Reusable layout and visual utility classes for all pages.
+ * ========================================================================== */
+
+/* === Container === */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.container--narrow { max-width: 800px; }
+.container--wide   { max-width: 1600px; }
+.container--full   { max-width: none; }
+
+/* === Section === */
+.section {
+  padding-block: var(--section-gap);
+}
+
+.section--compact {
+  padding-block: var(--section-gap-sm);
+}
+
+/* === Flex === */
+.flex        { display: flex; }
+.flex-col    { display: flex; flex-direction: column; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+
+/* === Grid === */
+.grid      { display: grid; }
+.grid-2    { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
+.grid-3    { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+.grid-4    { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-lg); }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: var(--space-lg); }
+
+/* Responsive grid collapse */
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .grid-3, .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* === Text === */
+.text-balance { text-wrap: balance; }
+.text-pretty  { text-wrap: pretty; }
+.text-center  { text-align: center; }
+
+/* === Visual === */
+.glass {
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-saturation) var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-saturation) var(--glass-blur);
+  border: var(--glass-border);
+}
+
+/* === Visibility === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

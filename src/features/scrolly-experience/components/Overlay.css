@@ -1,0 +1,457 @@
+/* ===================================
+   Overlay Component Styles
+   Uses CSS variables from index.css
+   =================================== */
+
+/* === Container === */
+.overlay {
+  padding: 0; /* Padding handled by parent container */
+  padding-bottom: 50vh;
+  font-family: var(--font-family);
+  width: 100%;
+}
+
+/* === Hero Section === */
+.hero {
+  min-height: calc(100vh - var(--header-height, 72px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--content-max-width, 520px);
+}
+
+/* Eyebrow (Small label above headline) */
+.hero__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-lg);
+  font-weight: 700;
+}
+
+/* Headline */
+.hero__headline {
+  font-size: clamp(2.75rem, 5.5vw, 3.75rem);
+  line-height: 1.1;
+  margin-bottom: var(--space-lg);
+  letter-spacing: -0.025em;
+  color: var(--color-text-primary);
+  font-weight: 600; /* Thinner */
+}
+
+/* Highlighted words in headline */
+.hero__headline-accent {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+/* Subheadline */
+.hero__subheadline {
+  font-size: var(--text-xl);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2xl);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* CTA container */
+.hero__cta-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+/* Primary CTA Button - Modern Gradient */
+.hero__cta-button {
+  padding: var(--btn-padding, 0.75rem 1.5rem);
+  background: var(--gradient-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--btn-radius, 10px);
+  font-size: var(--text-base);
+  font-weight: var(--btn-font-weight, 600);
+  cursor: pointer;
+  box-shadow: 
+    var(--shadow-md),
+    0 4px 20px rgba(139, 92, 246, 0.25);
+  transition: 
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer effect on button */
+.hero__cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.hero__cta-button:hover::before {
+  left: 100%;
+}
+
+.hero__cta-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    var(--shadow-lg),
+    var(--glow-primary);
+}
+
+.hero__cta-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.hero__cta-button:focus-visible {
+  outline: 2px solid var(--color-violet-500);
+  outline-offset: 3px;
+}
+
+/* Fear reducer / Status line */
+.hero__status {
+  font-size: var(--text-sm);
+  color: var(--color-text-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 500;
+}
+
+.hero__status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-emerald-500);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+
+
+/* === Steps Section - Timeline Style === */
+.steps-container {
+  position: relative;
+  padding-left: 72px; /* Space for larger timeline dots */
+}
+
+/* Timeline vertical line - positioned to align with center of larger dots */
+.timeline-line {
+  position: absolute;
+  left: 24px; /* Center of 48px offset from edge to dot center */
+  top: 0;  /* Start from top of steps-container, not above */
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color-slate-400) 5%,
+    var(--color-slate-400) 95%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+.step {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  position: relative;
+  /* Much gentler opacity falloff - stays readable longer */
+  opacity: calc(1 - (var(--step-distance, 0) * 0.12));
+  transition: opacity var(--transition-smooth);
+}
+
+.step--active {
+  opacity: 1;
+}
+
+/* === Step Content (no card background) === */
+.step-content {
+  max-width: var(--card-max-width, 420px);
+  width: 100%;
+  transition: all var(--transition-smooth);
+  padding: var(--space-lg) 0;
+}
+
+.step-content--active {
+  opacity: 1;
+  /* Removed translateX to prevent shifting the dot off the line */
+}
+
+.step-content--inactive {
+  opacity: 0.7;  /* Much more readable when inactive */
+  filter: blur(0.25px);  /* Very subtle blur */
+}
+
+/* Title row - contains dot and title inline - NO TRANSFORM on this row */
+.step-content__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-left: -72px; /* Pull back to include the timeline area (matches container padding) */
+  padding-left: 0;
+}
+
+/* Timeline square with icon inside - matches 3D blocks */
+.timeline-dot {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px; /* Square with rounded corners */
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icon inside the square */
+.timeline-dot__icon {
+  width: 20px;
+  height: 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+}
+
+.timeline-dot--active {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 0 0 3px rgba(255, 255, 255, 0.4), 
+    0 0 25px var(--step-color),
+    0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.timeline-dot--active .timeline-dot__icon {
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Title - Large and prominent */
+.step-content__title {
+  margin: 0;
+  font-size: 2.5rem;
+  color: var(--color-text-primary);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* Subhead */
+.step-content__subhead {
+  margin: var(--space-sm) 0 var(--space-lg) 0;
+  font-weight: 600;
+  font-size: var(--text-lg);
+  filter: saturate(1.2) brightness(0.85);
+}
+
+/* Bullets list */
+.step-content__bullets {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+.step-content__bullets li {
+  margin-bottom: var(--space-xs);
+}
+
+.step-content__bullets li::marker {
+  color: var(--step-color);
+}
+
+/* Mini CTA */
+.step-content__cta {
+  margin-top: var(--space-lg);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  transition: all var(--transition-base);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.step-content__cta--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.step-content__cta-arrow {
+  transition: transform 0.2s;
+}
+
+.step-content__cta:hover .step-content__cta-arrow {
+  transform: translateX(4px);
+}
+
+/* === Loading State === */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-primary);
+  z-index: 100;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--color-slate-100);
+  border-top-color: var(--color-violet-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: var(--space-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .overlay {
+    padding-bottom: 30vh;
+  }
+
+  .hero {
+    min-height: calc(100vh - var(--header-height-mobile) - var(--visual-height-mobile));
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-2xl);
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;  /* Content starts at top of hero area */
+    /* Opacity controlled by JS based on scroll */
+    transition: opacity 0.15s ease-out;
+  }
+
+  .hero__headline {
+    font-size: 2rem;
+  }
+
+  .hero__subheadline {
+    font-size: var(--text-base);
+  }
+
+  .steps-container {
+    padding-left: 56px;
+  }
+
+  .timeline-line {
+    left: 18px;
+  }
+
+  .step {
+    min-height: 90vh;  /* Much more spacing between sections */
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-3xl);
+    /* Always 100% opacity on mobile - no fade effect */
+    opacity: 1 !important;
+  }
+  
+  .step-content--inactive {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* Frosted glass background for step content on mobile */
+  .step-content {
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: saturate(150%) blur(16px);
+    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    /* Stronger, very soft diffused shadows */
+    box-shadow: 
+      0 12px 50px rgba(0, 0, 0, 0.08),
+      0 30px 80px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .step-content__title-row {
+    margin-left: calc(-56px + var(--space-lg));  /* Account for card padding */
+    gap: var(--space-md);
+    /* Bring dot back to timeline position */
+    position: relative;
+    left: calc(-1 * var(--space-lg));
+  }
+  
+  .timeline-dot {
+    /* Position on the timeline line */
+    margin-left: calc(18px - 16px);  /* line position minus half dot width */
+  }
+
+  .timeline-dot {
+    width: 32px;
+    height: 32px;
+  }
+
+  .timeline-dot--active {
+    width: 38px;
+    height: 38px;
+  }
+
+  .timeline-dot__icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .timeline-dot--active .timeline-dot__icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .step-content {
+    max-width: 100%;
+  }
+
+  .step-content__title {
+    font-size: 1.5rem;
+  }
+}

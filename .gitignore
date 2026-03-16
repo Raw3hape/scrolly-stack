@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 .vercel
 RBP.zip
+.next/
+next-env.d.ts
