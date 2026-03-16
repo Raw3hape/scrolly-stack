@@ -9,11 +9,12 @@ import { useMemo } from 'react';
 import Layer from './Layer';
 import { getLayerHeight } from '../utils/layoutUtils';
 import { layers, steps } from '../data';
+import { isHeroStep } from '../utils/stepNavigation';
 import type { StackProps, LayerData, StepData } from '../types';
 
 /** Calculate which blocks should be in "above active" state */
 function calculateBlocksAboveActive(currentStep: number): number[] {
-  if (currentStep === -1) return [];
+  if (isHeroStep(currentStep)) return [];
 
   const activeStep = (steps as StepData[]).find((s) => s.id === currentStep);
   if (!activeStep) return [];
@@ -63,7 +64,7 @@ function calculateLayerPositions(): Array<{ layer: LayerData; baseY: number }> {
 
 /** Calculate opacity for each layer based on current step */
 function calculateLayerOpacity(layer: LayerData, currentStep: number): number {
-  if (currentStep === -1) {
+  if (isHeroStep(currentStep)) {
     return layer.level === 'A' ? 1 : 0;
   }
   return 1;
@@ -78,7 +79,7 @@ export default function Stack({ currentStep, onBlockClick, onBlockHover }: Stack
 
   const layerPositions = useMemo(() => calculateLayerPositions(), []);
 
-  const isRevealed = currentStep !== -1;
+  const isRevealed = !isHeroStep(currentStep);
 
   return (
     <group position={[0, -1, 0]}>

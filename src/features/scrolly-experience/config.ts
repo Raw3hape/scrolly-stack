@@ -74,6 +74,7 @@ export const animation = {
     heroMobile: 55,
     mobileBreakpoint: 768,
     lerpSpeed: 3,
+    snapThreshold: 0.1,      // minimum delta before zoom lerp triggers
   },
   
   // Hover effect settings
@@ -87,6 +88,17 @@ export const animation = {
       fadeInDuration: 200,     // ms
       fadeOutDuration: 150,    // ms
     },
+  },
+  
+  // Mouse parallax
+  parallax: {
+    intensity: 0.04,           // radians of rotation
+    lerpSpeed: 0.05,           // smoothing per frame
+  },
+  
+  // Viewport / resize
+  viewport: {
+    resizeDebounceMs: 150,
   },
 };
 
@@ -133,6 +145,14 @@ export const lighting = {
     shadowMapSize: 2048,      // Balanced resolution for performance
     shadowBias: -0.0002,      // Fine-tuned bias
     shadowRadius: 20,         // Higher = softer, more blurred edges
+    blurSamples: 25,
+    shadowCamera: {
+      far: 60,
+      left: -15,
+      right: 15,
+      top: 15,
+      bottom: -15,
+    },
   },
   
   fill: {

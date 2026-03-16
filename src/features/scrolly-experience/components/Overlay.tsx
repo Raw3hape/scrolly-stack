@@ -8,6 +8,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { steps } from '../data';
 import { heroContent, stepCta } from '@/config/content';
+import { HERO_STEP, getStepElementId } from '../utils/stepNavigation';
 import type { OverlayProps, StepData } from '../types';
 import './Overlay.css';
 
@@ -48,7 +49,7 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const stepId = entry.target.getAttribute('data-step-id');
-            setStep(stepId === 'hero' ? -1 : Number(stepId));
+            setStep(stepId === 'hero' ? HERO_STEP : Number(stepId));
           }
         });
       },
@@ -116,7 +117,7 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
           return (
             <div
               key={step.id}
-              id={`step-${step.id}`}
+              id={getStepElementId(step.id)}
               data-step-id={step.id}
               ref={(el) => { stepRefs.current[index] = el; }}
               className={`step ${isActive ? 'step--active' : ''} ${isPrev ? 'step--prev' : ''} ${isNext ? 'step--next' : ''}`}
