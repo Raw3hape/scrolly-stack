@@ -1,115 +1,79 @@
-# Scrolly Stack 🏠
+# Foundation Projects — Marketing Website
 
-Интерактивный 3D scrollytelling сайт для презентации продукта Roofs.
+Interactive 3D scrollytelling marketing site for Foundation Projects, a roofing business consulting company.
 
-## 🌐 Live Demo
+## Tech Stack
 
-**[scrolly-stack.vercel.app](https://scrolly-stack.vercel.app)**
+- **Framework:** Next.js 16 (App Router, Turbopack)
+- **Language:** TypeScript (strict mode)
+- **3D:** React Three Fiber 9 + drei + postprocessing
+- **Styling:** CSS Custom Properties (design tokens)
+- **Fonts:** Satoshi (self-hosted via next/font/local)
 
----
-
-## 🚀 Быстрый старт
-
-### Установка зависимостей
+## Quick Start
 
 ```bash
 npm install
+npm run dev      # → http://localhost:3000
 ```
 
-### Запуск локально
+## Scripts
 
-```bash
-npm run dev
-```
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm run start` | Serve production build |
+| `npm run lint` | Run ESLint |
+| `npm run typecheck` | Run TypeScript check |
 
-Откройте [http://localhost:5173](http://localhost:5173) в браузере.
-
----
-
-## 📦 Деплой на Vercel
-
-### Автоматический деплой (рекомендуется)
-
-Проект подключен к Vercel. Каждый `git push` в `main` автоматически деплоит изменения!
-
-```bash
-# Внести изменения, затем:
-git add .
-git commit -m "Описание изменений"
-git push
-```
-
-### Ручной деплой
-
-```bash
-npx vercel --prod
-```
-
----
-
-## 🛠 Workflow: Как вносить изменения
-
-### 1. Редактирование контента
-
-Основные данные находятся в:
-
-- `src/data.js` — тексты и структура шагов
-- `src/components/Overlay.jsx` — Hero секция и layout
-- `src/components/Block.jsx` — 3D блоки и их цвета
-
-### 2. Редактирование стилей
-
-- `src/index.css` — глобальные стили
-- `src/components/*.css` — стили компонентов
-
-### 3. После изменений
-
-```bash
-# 1. Проверить локально
-npm run dev
-
-# 2. Закоммитить и запушить
-git add .
-git commit -m "Описание изменений"
-git push
-
-# 3. Vercel автоматически задеплоит за ~30 секунд
-```
-
----
-
-## 📁 Структура проекта
+## Project Structure
 
 ```
-scrolly-stack/
-├── src/
-│   ├── components/
-│   │   ├── Stack.jsx          # 3D модель (стек блоков)
-│   │   ├── Block.jsx          # Отдельный 3D блок
-│   │   ├── Overlay.jsx        # UI слой (тексты, hero)
-│   │   ├── Header.jsx         # Навигация
-│   │   ├── HoverTooltip.jsx   # Тултип при наведении
-│   │   └── BackgroundEffects.jsx # Фоновые эффекты
-│   ├── data.js                # Контент и данные
-│   ├── App.jsx                # Главный компонент
-│   └── index.css              # Глобальные стили
-├── public/                    # Статические файлы
-└── package.json
+src/
+├── app/                     # Pages (App Router)
+│   ├── layout.tsx           # Root layout (font, Header, Footer)
+│   ├── page.tsx             # Home (3D scrolly experience)
+│   ├── about/               # About page
+│   ├── how-it-works/        # Roofers & Investors pages
+│   ├── schedule/            # CTA → Calendly (coming soon)
+│   ├── shadow-local/
+│   └── 3b-opt-in/
+├── features/                # Feature modules
+│   └── scrolly-experience/  # 3D scrollytelling (client-only)
+├── components/              # Shared UI (Header, Footer, etc.)
+├── styles/                  # Design system
+│   ├── tokens/              # Colors, typography, spacing, motion, effects
+│   ├── base/                # Reset, globals
+│   └── utilities.css        # .container, .section, .grid, .glass
+├── config/                  # Site & navigation config
+└── fonts/                   # Self-hosted Satoshi + Inter
 ```
 
----
+## Reskinning
 
-## 🔗 Ссылки
+To change the entire visual identity, edit only the token files:
 
-- **Live сайт:** [scrolly-stack.vercel.app](https://scrolly-stack.vercel.app)
-- **GitHub:** [github.com/Raw3hape/scrolly-stack](https://github.com/Raw3hape/scrolly-stack)
-- **Vercel Dashboard:** [vercel.com/nikitas-projects-3a31754b/scrolly-stack](https://vercel.com/nikitas-projects-3a31754b/scrolly-stack)
+| What to change | File |
+|---|---|
+| Colors & gradients | `src/styles/tokens/colors.css` |
+| Typography & fonts | `src/styles/tokens/typography.css` |
+| Spacing | `src/styles/tokens/spacing.css` |
+| Animations | `src/styles/tokens/motion.css` |
+| Shadows, radii | `src/styles/tokens/effects.css` |
+| 3D block colors | `src/features/scrolly-experience/config/data.js` |
+| Font files | `src/fonts/` + update `src/app/layout.tsx` |
 
----
+## For AI Agents
 
-## 🔧 Технологии
+Read `AGENTS.md` in the project root first. It contains:
+- Critical rules for server vs client components
+- File structure conventions
+- Data flow architecture
+- Common task instructions
 
-- **React** + **Vite** — фреймворк и сборка
-- **Three.js** + **React Three Fiber** — 3D графика
-- **GSAP** + **ScrollTrigger** — анимации скролла
-- **Vercel** — хостинг и CI/CD
+Workflows: `.agents/workflows/add-page.md`, `.agents/workflows/add-component.md`
+
+## Deploy
+
+Optimized for Vercel. Push to main to deploy.
