@@ -5,6 +5,7 @@
  */
 
 import { test, expect } from '@playwright/test';
+import { ctaConfig } from '../src/config/nav';
 
 test.describe('Home Page', () => {
   test.beforeEach(async ({ page }) => {
@@ -59,7 +60,7 @@ test.describe('Home Page', () => {
   test('hero CTA has correct href', async ({ page }) => {
     const cta = page.locator('.hero__cta-button');
     await expect(cta).toBeAttached();
-    await expect(cta).toHaveAttribute('href', 'https://google.com');
+    await expect(cta).toHaveAttribute('href', ctaConfig.href);
     await expect(cta).toContainText('qualify');
   });
 
@@ -74,7 +75,7 @@ test.describe('Home Page', () => {
 
     // At least one CTA has correct href
     const firstVisible = stepCtas.first();
-    await expect(firstVisible).toHaveAttribute('href', 'https://google.com');
+    await expect(firstVisible).toHaveAttribute('href', ctaConfig.href);
   });
 
   // =========================================================================

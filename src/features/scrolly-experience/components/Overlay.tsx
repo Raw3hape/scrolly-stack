@@ -7,6 +7,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { steps } from '../data';
+import { heroContent, stepCta } from '@/config/content';
 import type { OverlayProps, StepData } from '../types';
 import './Overlay.css';
 
@@ -77,26 +78,26 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
         style={{ opacity: heroOpacity }}
       >
         <h1 className="hero__headline">
-          Build a roofing business that runs clean—and sells at a{' '}
-          <span className="hero__headline-accent">premium.</span>
+          {heroContent.headline}{' '}
+          <span className="hero__headline-accent">{heroContent.headlineAccent}</span>
         </h1>
 
         <p className="hero__subheadline">
-          We install CRM + marketing systems, drive efficiency savings, and prepare you for an institutional-quality exit.
+          {heroContent.subheadline}
         </p>
 
         <div className="hero__cta-wrapper">
           <a
-            href="https://google.com"
+            href={heroContent.ctaHref}
             className="hero__cta-button"
-            aria-label="Check if you qualify for the program"
+            aria-label={heroContent.ctaAriaLabel}
           >
-            See if I qualify →
+            {heroContent.ctaLabel}
           </a>
 
           <p className="hero__status">
             <span className="hero__status-dot" aria-hidden="true"></span>
-            Only for qualified roofers. Confidential application.
+            {heroContent.statusText}
           </p>
         </div>
       </header>
@@ -106,10 +107,11 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
         <div className="timeline-line" aria-hidden="true" />
 
         {(steps as StepData[]).map((step, index) => {
-          const isActive = currentStep === index;
-          const isPrev = currentStep > index;
-          const isNext = currentStep < index;
-          const distance = Math.abs(currentStep - index);
+          const isActive = currentStep === step.id;
+          const currentIndex = (steps as StepData[]).findIndex(s => s.id === currentStep);
+          const isPrev = currentIndex >= 0 && currentIndex > index;
+          const isNext = currentIndex >= 0 && currentIndex < index;
+          const distance = currentIndex >= 0 ? Math.abs(currentIndex - index) : index;
 
           return (
             <div
@@ -162,13 +164,13 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
                 </ul>
 
                 <a
-                  href="https://google.com"
+                  href={heroContent.ctaHref}
                   className={`step-content__cta ${!isActive ? 'step-content__cta--hidden' : ''}`}
-                  aria-label={`Learn more about ${step.tooltipTitle}`}
+                  aria-label={stepCta.ariaLabel(step.tooltipTitle)}
                   tabIndex={isActive ? 0 : -1}
                 >
-                  See if I qualify
-                  <span className="step-content__cta-arrow" aria-hidden="true">→</span>
+                  {stepCta.label}
+                  <span className="step-content__cta-arrow" aria-hidden="true">{stepCta.arrowText}</span>
                 </a>
               </div>
             </div>

@@ -11,8 +11,7 @@
 @import './tokens/motion.css';
 @import './tokens/effects.css';
 
-/* Compatibility (maps old variable names → new tokens) */
-@import './compat.css';
+
 
 /* Base */
 @import './base/reset.css';

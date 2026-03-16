@@ -61,7 +61,7 @@ To change the entire visual identity, edit only the token files:
 | Spacing | `src/styles/tokens/spacing.css` |
 | Animations | `src/styles/tokens/motion.css` |
 | Shadows, radii | `src/styles/tokens/effects.css` |
-| 3D block colors | `src/features/scrolly-experience/config/data.js` |
+| 3D block colors | `src/features/scrolly-experience/data.ts` |
 | Font files | `src/fonts/` + update `src/app/layout.tsx` |
 
 ## For AI Agents
@@ -72,7 +72,7 @@ Read `AGENTS.md` in the project root first. It contains:
 - Data flow architecture
 - Common task instructions
 
-Workflows: `.agents/workflows/add-page.md`, `.agents/workflows/add-component.md`
+Workflows: `.agents/workflows/add-page.md`, `.agents/workflows/add-component.md`, `.agents/workflows/add-scroll-step.md`
 
 ## Deploy
 

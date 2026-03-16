@@ -2,17 +2,23 @@
  * Types for the scrolly-experience feature module.
  *
  * Central type definitions — imported by all components.
- * Keep in sync with data.js structure.
+ * Single source of truth for data shapes used by data.ts, config.ts, and components.
  */
 
 import type { SpringValue } from '@react-spring/three';
 
 // =============================================================================
-// DATA TYPES (mirrors data.js structure)
+// LEVEL TYPE
 // =============================================================================
 
-/** Individual block within a layer */
-export interface BlockData {
+export type Level = 'A' | 'B' | 'C';
+
+// =============================================================================
+// DATA TYPES — matches data.ts structure exactly
+// =============================================================================
+
+/** Individual block as stored in data.ts (no level — that lives on the layer) */
+export interface RawBlockData {
   id: number;
   label: string;
   tooltipTitle: string;
@@ -24,28 +30,60 @@ export interface BlockData {
   activeGradientColorB: string;
   textColor: string;
   icon: string;
-  level: 'A' | 'B' | 'C';
   slideDirection?: [number, number];
+  /** Only present on grid layout blocks (Layer A) */
+  gridPosition?: [number, number];
 }
 
-/** Layer (A, B, or C) containing multiple blocks */
-export interface LayerData {
-  id: string;
-  level: 'A' | 'B' | 'C';
-  layout: string;
-  blocks: BlockData[];
+/**
+ * Block with level — produced by flatMap in data.ts.
+ * Used by Overlay, HoverTooltip, and any consumer that needs level context.
+ */
+export interface BlockData extends RawBlockData {
+  level: Level;
 }
 
-/** Step derived from block data for the Overlay */
-export interface StepData extends BlockData {
-  // steps = blocks with additional derived fields from data.js
-}
+/** Alias for clarity — blocks after flatMap are steps */
+export type StepData = BlockData;
 
 /** Computed block position from layoutUtils */
-export interface ComputedBlock extends BlockData {
+export interface ComputedBlock extends RawBlockData {
   position: [number, number, number];
   dimensions: [number, number, number];
 }
+
+// =============================================================================
+// LAYER TYPES — discriminated union by layout
+// =============================================================================
+
+interface LayerBase {
+  id: string;
+  level: Level;
+  gap?: number;
+}
+
+export interface GridLayer extends LayerBase {
+  layout: 'grid';
+  cols: number;
+  rows: number;
+  blocks: RawBlockData[];
+}
+
+export interface RowLayer extends LayerBase {
+  layout: 'row';
+  cols: number;
+  depth?: number;
+  align?: 'front' | 'center' | 'back';
+  blocks: RawBlockData[];
+}
+
+export interface FullLayer extends LayerBase {
+  layout: 'full';
+  blocks: RawBlockData[];
+}
+
+/** Any layer — use in arrays and generic handlers */
+export type LayerData = GridLayer | RowLayer | FullLayer;
 
 // =============================================================================
 // COMPONENT PROP TYPES
@@ -89,8 +127,8 @@ export interface BlockProps {
   isAboveActive: boolean;
   slideDirection?: [number, number];
   onClick?: (blockId: number) => void;
-  onHoverChange?: (blockData: BlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
-  blockData?: BlockData;
+  onHoverChange?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
+  blockData?: RawBlockData;
   blockId?: number;
   opacity?: number;
   staggerDelay?: number;
@@ -104,7 +142,7 @@ export interface LayerProps {
   currentStep: number;
   allBlocksAboveActive: number[];
   onBlockClick?: (blockId: number) => void;
-  onBlockHover?: (blockData: BlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
+  onBlockHover?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
   opacity?: number;
   staggerDelay?: number;
   isRevealed?: boolean;
@@ -114,12 +152,12 @@ export interface LayerProps {
 export interface StackProps {
   currentStep: number;
   onBlockClick?: (blockId: number) => void;
-  onBlockHover?: (blockData: BlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
+  onBlockHover?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
 }
 
 /** HoverTooltip component props */
 export interface HoverTooltipProps {
-  hoveredBlock: BlockData | null;
+  hoveredBlock: RawBlockData | null;
   mousePosition: MousePosition | null;
 }
 

@@ -24,8 +24,8 @@
 .hero__eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
   margin-bottom: var(--space-lg);
   font-weight: 700;
 }
@@ -36,7 +36,7 @@
   line-height: 1.1;
   margin-bottom: var(--space-lg);
   letter-spacing: -0.025em;
-  color: var(--color-text-primary);
+  color: var(--text-primary);
   font-weight: 600; /* Thinner */
 }
 
@@ -51,8 +51,8 @@
 
 /* Subheadline */
 .hero__subheadline {
-  font-size: var(--text-xl);
-  color: var(--color-text-secondary);
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
   margin-bottom: var(--space-2xl);
   line-height: 1.6;
   font-weight: 400;
@@ -73,7 +73,7 @@
   color: #fff;
   border: none;
   border-radius: var(--btn-radius, 10px);
-  font-size: var(--text-base);
+  font-size: var(--font-size-base);
   font-weight: var(--btn-font-weight, 600);
   cursor: pointer;
   box-shadow: 
@@ -126,8 +126,8 @@
 
 /* Fear reducer / Status line */
 .hero__status {
-  font-size: var(--text-sm);
-  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+  color: var(--text-subtle);
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -256,7 +256,7 @@
 .step-content__title {
   margin: 0;
   font-size: 2.5rem;
-  color: var(--color-text-primary);
+  color: var(--text-primary);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -266,7 +266,7 @@
 .step-content__subhead {
   margin: var(--space-sm) 0 var(--space-lg) 0;
   font-weight: 600;
-  font-size: var(--text-lg);
+  font-size: var(--font-size-lg);
   filter: saturate(1.2) brightness(0.85);
 }
 
@@ -274,8 +274,8 @@
 .step-content__bullets {
   margin: 0;
   padding-left: 1.2rem;
-  color: var(--color-text-secondary);
-  font-size: var(--text-base);
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
   line-height: 1.7;
   font-weight: 500;
 }
@@ -293,7 +293,7 @@
   margin-top: var(--space-lg);
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--color-text-primary);
+  color: var(--text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -325,7 +325,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-primary);
+  background: var(--surface-base);
   z-index: 100;
 }
 
@@ -340,8 +340,8 @@
 
 .loading-text {
   margin-top: var(--space-md);
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -374,7 +374,7 @@
   }
 
   .hero__subheadline {
-    font-size: var(--text-base);
+    font-size: var(--font-size-base);
   }
 
   .steps-container {

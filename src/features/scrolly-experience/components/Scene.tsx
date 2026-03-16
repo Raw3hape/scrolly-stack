@@ -16,7 +16,7 @@ import * as THREE from 'three';
 import Stack from './Stack';
 import HoverTooltip from './HoverTooltip';
 import { animation, lighting, shadows, postProcessing, render } from '../config';
-import type { SceneProps, BlockData, MousePosition } from '../types';
+import type { SceneProps, RawBlockData, MousePosition } from '../types';
 
 // Mouse parallax intensity (radians)
 const PARALLAX_INTENSITY = 0.04;
@@ -272,7 +272,7 @@ export default function Scene({ currentStep, onBlockClick }: SceneProps) {
   const zoom = useResponsiveZoom(currentStep);
 
   // Hover state for tooltip (DOM overlay — needs state for re-render)
-  const [hoveredBlock, setHoveredBlock] = useState<BlockData | null>(null);
+  const [hoveredBlock, setHoveredBlock] = useState<RawBlockData | null>(null);
   const [mousePosition, setMousePosition] = useState<MousePosition | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -293,7 +293,7 @@ export default function Scene({ currentStep, onBlockClick }: SceneProps) {
     }
   }, [onBlockClick]);
 
-  const handleBlockHover = useCallback((blockData: BlockData | null, isHovered: boolean, mousePos: MousePosition | null) => {
+  const handleBlockHover = useCallback((blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => {
     if (isHovered && blockData) {
       setHoveredBlock(blockData);
       setMousePosition(mousePos);
@@ -322,7 +322,7 @@ export default function Scene({ currentStep, onBlockClick }: SceneProps) {
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
       <Canvas
-        shadows={{ type: THREE.VSMShadowMap }}
+        shadows={{ type: THREE[render.shadowMapType as keyof typeof THREE] as THREE.ShadowMapType }}
         dpr={render.dpr as [number, number]}
         orthographic
         camera={{

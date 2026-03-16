@@ -25,12 +25,6 @@ export const geometry = {
     vertical: 0.42,        // Reduced from 0.5
   },
   
-  // Per-level defaults (can be overridden in data.js)
-  levels: {
-    A: { layout: 'grid', cols: 2, rows: 2 },
-    B: { layout: 'row', cols: 3, depth: 1.7, align: 'front' },  // Reduced depth
-    C: { layout: 'full' },
-  },
 };
 
 
@@ -44,12 +38,6 @@ export const animation = {
     tension: 170,
     friction: 26,
     mass: 1,
-  },
-  
-  // Alternative timing-based config (use either spring OR timing)
-  timing: {
-    duration: 600,   // ms
-    easing: 'easeOutQuart',
   },
   
   // Active block behavior
@@ -108,18 +96,18 @@ export const animation = {
 // =============================================================================
 
 export const materials = {
-  // Block material - matte finish for better text readability
+  // Block material — clean pastel look
   block: {
-    roughness: 0.85,          // Very matte like competitor
+    roughness: 0.35,
     metalness: 0.0,
-    envMapIntensity: 0.2,
+    envMapIntensity: 0.3,
   },
   
-  // Active state - same matte look
+  // Active state — slightly shinier
   active: {
-    roughness: 0.8,
+    roughness: 0.25,
     metalness: 0.0,
-    envMapIntensity: 0.25,
+    envMapIntensity: 0.3,
   },
   
   // Color transition
@@ -221,7 +209,7 @@ export const postProcessing = {
 
 export const labels = {
   fontSize: 0.36,
-  font: 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff',
+  font: '/fonts/Inter-Regular.woff',
   color: 'white',
   maxWidth: 1.5,
   lineHeight: 1.1,
@@ -241,7 +229,7 @@ export const labels = {
 export const render = {
   dpr: [1, 2],           // Device pixel ratio range
   shadows: true,
-  shadowMapType: 'PCFSoftShadowMap',  // 'BasicShadowMap' | 'PCFShadowMap' | 'PCFSoftShadowMap' | 'VSMShadowMap'
+  shadowMapType: 'VSMShadowMap',  // 'BasicShadowMap' | 'PCFShadowMap' | 'PCFSoftShadowMap' | 'VSMShadowMap'
 };
 
 

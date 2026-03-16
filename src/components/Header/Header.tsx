@@ -8,12 +8,13 @@ import './Header.css';
 /**
  * Header component — Foundation Projects
  *
- * Features: glassmorphism, hide-on-scroll-down, show-on-scroll-up.
+ * Features: glassmorphism, hide-on-scroll-down, show-on-scroll-up, mobile drawer.
  * Uses 'use client' because of scroll event listeners.
  */
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
 
   const handleScroll = useCallback(() => {
@@ -37,41 +38,106 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
+
+  // Close menu on escape
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
   const headerClasses = [
     'header',
     isScrolled ? 'header--scrolled' : '',
     isHidden ? 'header--hidden' : '',
   ].filter(Boolean).join(' ');
 
-  return (
-    <header className={headerClasses}>
-      <div className="header-container">
-        {/* Brand */}
-        <Link href="/" className="header-brand">
-          <span className="header-wordmark">{brandConfig.wordmark}</span>
-          <span className="header-tagline">{brandConfig.tagline}</span>
-        </Link>
+  const closeMenu = () => setIsMenuOpen(false);
 
-        {/* Navigation */}
-        <nav className="header-nav" aria-label="Main navigation">
+  return (
+    <>
+      <header className={headerClasses}>
+        <div className="header-container">
+          {/* Brand */}
+          <Link href="/" className="header-brand">
+            <span className="header-wordmark">{brandConfig.wordmark}</span>
+            <span className="header-tagline">{brandConfig.tagline}</span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="header-nav" aria-label="Main navigation">
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="header-nav-link">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* CTA + Burger */}
+          <div className="header-cta-wrapper">
+            <a href={ctaConfig.href} className="header-cta">
+              {ctaConfig.label}
+              {ctaConfig.arrowIcon && <span className="header-cta-arrow" aria-hidden="true">→</span>}
+            </a>
+            {ctaConfig.microcopy && (
+              <span className="header-cta-microcopy">{ctaConfig.microcopy}</span>
+            )}
+
+            {/* Mobile burger button */}
+            <button
+              className={`header-burger ${isMenuOpen ? 'header-burger--open' : ''}`}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMenuOpen}
+            >
+              <span className="header-burger__line" />
+              <span className="header-burger__line" />
+              <span className="header-burger__line" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Drawer Overlay */}
+      <div
+        className={`header-overlay ${isMenuOpen ? 'header-overlay--open' : ''}`}
+        onClick={closeMenu}
+        aria-hidden="true"
+      />
+
+      {/* Mobile Drawer */}
+      <nav
+        className={`header-drawer ${isMenuOpen ? 'header-drawer--open' : ''}`}
+        aria-label="Mobile navigation"
+      >
+        <div className="header-drawer__links">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="header-nav-link">
+            <Link
+              key={link.href}
+              href={link.href}
+              className="header-drawer__link"
+              onClick={closeMenu}
+            >
               {link.label}
             </Link>
           ))}
-        </nav>
-
-        {/* CTA */}
-        <div className="header-cta-wrapper">
-          <a href={ctaConfig.href} className="header-cta">
-            {ctaConfig.label}
-            {ctaConfig.arrowIcon && <span className="header-cta-arrow" aria-hidden="true">→</span>}
-          </a>
-          {ctaConfig.microcopy && (
-            <span className="header-cta-microcopy">{ctaConfig.microcopy}</span>
-          )}
         </div>
-      </div>
-    </header>
+        <a href={ctaConfig.href} className="header-cta header-drawer__cta" onClick={closeMenu}>
+          {ctaConfig.label}
+          {ctaConfig.arrowIcon && <span className="header-cta-arrow" aria-hidden="true">→</span>}
+        </a>
+      </nav>
+    </>
   );
 }

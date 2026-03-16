@@ -26,7 +26,9 @@
   --header-height-mobile: 64px;
   --content-width: 45%;
   --visual-width: 55%;
+  --container-padding-responsive: clamp(1rem, 3vw, 3rem);
   --content-max-width: 520px;
   --card-max-width: 460px;
   --visual-height-mobile: 55vh;
+  --content-height-mobile: calc(100vh - var(--visual-height-mobile) - var(--header-height-mobile));
 }

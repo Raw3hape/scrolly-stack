@@ -8,7 +8,7 @@
 import { useMemo, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { animation } from '../config';
+import { animation, materials } from '../config';
 import type { GradientShadowMaterialProps } from '../types';
 
 let materialVersion = 0;
@@ -39,9 +39,9 @@ export default function GradientShadowMaterial({
 
     const mat = new THREE.MeshStandardMaterial({
       color: '#ffffff',
-      roughness: isActive ? 0.25 : 0.35,
-      metalness: 0.0,
-      envMapIntensity: 0.3,
+      roughness: isActive ? materials.active.roughness : materials.block.roughness,
+      metalness: isActive ? materials.active.metalness : materials.block.metalness,
+      envMapIntensity: isActive ? materials.active.envMapIntensity : materials.block.envMapIntensity,
     });
 
     mat.customProgramCacheKey = () => materialKey;

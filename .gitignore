@@ -26,3 +26,6 @@ dist-ssr
 RBP.zip
 .next/
 next-env.d.ts
+backup/
+test-results/
+*.tsbuildinfo

@@ -2,7 +2,7 @@
  * Stack Component
  *
  * Data-driven container that renders all layers.
- * Reads layer configurations from data.js and calculates "above active" logic.
+ * Reads layer configurations from data.ts and calculates "above active" logic.
  */
 
 import { useMemo } from 'react';
