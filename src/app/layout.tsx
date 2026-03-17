@@ -65,6 +65,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${satoshi.variable} ${dmSerif.variable}`}>
       <body>
+        {/* Reset scroll on reload — disable browser scroll restoration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `history.scrollRestoration='manual';window.scrollTo(0,0);`,
+          }}
+        />
         <a href="#main" className="skip-link">
           Skip to content
         </a>

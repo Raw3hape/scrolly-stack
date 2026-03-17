@@ -1,11 +1,17 @@
 /**
  * App Layout Styles
- * 
- * Uses the unified layout system from index.css
- * Two-column layout: content + 3D visualization
- * 
- * Key principle: Container is full-width, content is positioned
- * to align with header edges using calc() based padding.
+ *
+ * ARCHITECTURE: Canvas is ALWAYS position:fixed fullscreen.
+ * "Right column" mode is emulated via 3D scene offset (Stack.tsx).
+ *
+ * STACKING ORDER:
+ * - col-visual (canvas):  z-index: --z-canvas (50)  — below everything
+ * - col-content (text):   z-index: --z-content (100) — above canvas
+ * - header:               z-index: --z-header (1000) — above everything
+ *
+ * POINTER EVENTS:
+ * - col-visual: pointer-events: none by default → clicks pass through to content
+ * - When mosaic is settled (via JS), pointer-events: auto enables tile hover/click
  */
 
 /* =============================================================================
@@ -22,19 +28,16 @@
 
 
 /* =============================================================================
-   CONTENT COLUMN (Left - Text)
+   CONTENT COLUMN (Left - Text) — above canvas, below header
    ============================================================================= */
 
 .col-content {
   width: var(--content-width);
   position: relative;
-  z-index: var(--z-overlay);
+  z-index: var(--z-content);
   display: flex;
   flex-direction: column;
-  
-  /* Align content with header's left edge:
-     Header container is max 1400px centered with padding.
-     So left edge of header content is at: max((100vw - 1400px) / 2, container-padding) */
+
   padding-left: max(
     var(--container-padding-responsive),
     calc((100vw - var(--container-max)) / 2 + var(--container-padding-responsive))
@@ -44,25 +47,21 @@
 
 
 /* =============================================================================
-   VISUAL COLUMN (Right - 3D)
+   VISUAL COLUMN (3D Canvas) — ALWAYS fullscreen fixed, below header
    ============================================================================= */
 
 .col-visual {
-  width: var(--visual-width);
-  height: calc(100vh - var(--header-height));
-  position: sticky;
-  top: var(--header-height);
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: visible;  /* Don't clip 3D elements */
-  
-  /* Align 3D to right edge similarly */
-  padding-right: max(
-    var(--container-padding-responsive),
-    calc((100vw - var(--container-max)) / 2 + var(--container-padding-responsive))
-  );
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--z-canvas);
+  pointer-events: none; /* Clicks pass through to content/header behind */
+}
+
+/* When mosaic is settled, enable pointer events for tile hover/click */
+.col-visual--interactive {
+  pointer-events: auto;
 }
 
 
@@ -76,11 +75,6 @@
     padding-left: var(--space-xl);
     padding-right: var(--space-lg);
   }
-  
-  .col-visual {
-    width: 50%;
-    padding-right: var(--space-xl);
-  }
 }
 
 @media (max-width: 768px) {
@@ -88,29 +82,15 @@
     flex-direction: column;
     padding-top: var(--header-height-mobile);
     min-height: 100vh;
-    /* Allow normal page scroll, NOT overflow:hidden */
   }
 
-  .col-visual {
-    width: 100%;
-    height: var(--visual-height-mobile);
-    position: sticky;
-    top: var(--header-height-mobile);
-    z-index: var(--z-base);  /* Lower z-index so content can overlap */
-    order: 1;
-    padding-right: var(--space-lg);
-    flex-shrink: 0;
-    overflow: visible;  /* Don't clip 3D model */
-  }
-  
   .col-content {
     width: 100%;
     order: 2;
     padding-left: var(--space-lg);
     padding-right: var(--space-lg);
     position: relative;
-    z-index: var(--z-overlay);  /* Above 3D so text overlays model */
-    /* Negative margin to overlap with 3D area */
+    z-index: var(--z-content);
     margin-top: -15vh;
     padding-top: 5vh;
   }
@@ -121,9 +101,14 @@
     padding-left: var(--space-md);
     padding-right: var(--space-md);
   }
-  
-  .col-visual {
-    padding-right: var(--space-md);
-  }
 }
 
+
+/* =============================================================================
+   MOSAIC TRIGGER ZONE
+   ============================================================================= */
+
+.mosaic-trigger-zone {
+  width: 100%;
+  pointer-events: none;
+}

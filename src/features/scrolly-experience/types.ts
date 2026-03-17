@@ -107,6 +107,8 @@ export interface GradientShadowMaterialProps {
   isHovered?: boolean;
   isHeroState?: boolean;
   animatedColorReveal?: SpringValue<number> | null;
+  /** When true, skip useFrame computations for performance during mosaic transition */
+  isMosaicTransitioning?: boolean;
 }
 
 /** BlockLabel sub-component props */
@@ -137,6 +139,12 @@ export interface BlockProps {
   opacity?: number;
   staggerDelay?: number;
   isRevealed?: boolean;
+  /** Mosaic override: interpolated position from Stack orchestrator */
+  mosaicPosition?: [number, number, number];
+  /** Mosaic override: interpolated dimensions from Stack orchestrator */
+  mosaicDimensions?: [number, number, number];
+  /** Mosaic transition progress (0 = stack, >0 = transitioning) */
+  mosaicProgress?: number;
 }
 
 /** Layer component props */
@@ -150,11 +158,16 @@ export interface LayerProps {
   opacity?: number;
   staggerDelay?: number;
   isRevealed?: boolean;
+  /** Mosaic transition progress (0 = stack, >0 = transitioning) */
+  mosaicProgress?: number;
+  /** Pre-computed mosaic positions/dimensions per block id */
+  mosaicBlockData?: Map<number, { position: [number, number, number]; dimensions: [number, number, number] }>;
 }
 
 /** Stack component props */
 export interface StackProps {
   currentStep: number;
+  mosaicProgress: number;
   onBlockClick?: (blockId: number) => void;
   onBlockHover?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
 }
@@ -168,6 +181,7 @@ export interface HoverTooltipProps {
 /** Scene component props */
 export interface SceneProps {
   currentStep: number;
+  mosaicProgress: number;
   onBlockClick?: (blockId: number) => void;
 }
 
@@ -175,4 +189,5 @@ export interface SceneProps {
 export interface OverlayProps {
   currentStep: number;
   setStep: (step: number) => void;
+  mosaicTriggerRef: React.RefObject<HTMLDivElement | null>;
 }

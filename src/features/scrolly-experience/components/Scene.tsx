@@ -6,11 +6,14 @@
  *
  * PERFORMANCE: Mouse parallax uses useRef instead of useState
  * to avoid triggering full React re-renders on every mousemove.
+ *
+ * MOSAIC: When mosaicProgress > 0, PresentationControls are disabled
+ * to prevent user dragging during the transition.
  */
 
 import { Suspense, useState, useEffect, useCallback, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Environment, PresentationControls, ContactShadows } from '@react-three/drei';
+import { Environment, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 import Stack from './Stack';
 import HoverTooltip from './HoverTooltip';
@@ -27,8 +30,8 @@ import type { SceneProps, RawBlockData, MousePosition } from '../types';
 // MAIN SCENE COMPONENT
 // =============================================================================
 
-export default function Scene({ currentStep, onBlockClick }: SceneProps) {
-  const zoom = useResponsiveZoom(currentStep);
+export default function Scene({ currentStep, mosaicProgress, onBlockClick }: SceneProps) {
+  const zoom = useResponsiveZoom(currentStep, mosaicProgress);
   const isHero = isHeroStep(currentStep);
 
   // Hover state for tooltip (DOM overlay — needs state for re-render)
@@ -93,8 +96,8 @@ export default function Scene({ currentStep, onBlockClick }: SceneProps) {
         style={{ width: '100%', height: '100%', background: 'transparent' }}
         gl={{ antialias: true, alpha: true, toneMapping: THREE.AgXToneMapping }}
       >
-        <CameraRig isHero={isHero} />
-        <ZoomController targetZoom={zoom} />
+        <CameraRig isHero={isHero} mosaicProgress={mosaicProgress} />
+        <ZoomController targetZoom={zoom} mosaicProgress={mosaicProgress} />
 
         <Lights />
 
@@ -104,27 +107,21 @@ export default function Scene({ currentStep, onBlockClick }: SceneProps) {
         />
 
         <Suspense fallback={<SceneLoader />}>
-          <MouseParallaxGroup mouseRef={parallaxMouseRef}>
-            <PresentationControls
-              global={false}
-              cursor={true}
-              snap={true}
-              speed={1}
-              zoom={1}
-              rotation={[0, 0, 0]}
-              polar={[-Infinity, Infinity]}
-              azimuth={[-Infinity, Infinity]}
-            >
+          <MouseParallaxGroup
+            mouseRef={parallaxMouseRef}
+            isHero={isHero}
+            mosaicProgress={mosaicProgress}
+          >
               <Stack
                 currentStep={currentStep}
+                mosaicProgress={mosaicProgress}
                 onBlockClick={handleBlockClick}
                 onBlockHover={handleBlockHover}
               />
-            </PresentationControls>
           </MouseParallaxGroup>
         </Suspense>
 
-        {shadows.enabled && (
+        {shadows.enabled && mosaicProgress <= 0 && (
           <ContactShadows
             position={shadows.contact.position as [number, number, number]}
             opacity={shadows.contact.opacity}
@@ -136,7 +133,7 @@ export default function Scene({ currentStep, onBlockClick }: SceneProps) {
           />
         )}
 
-        <Effects />
+        <Effects mosaicProgress={mosaicProgress} />
       </Canvas>
 
       <HoverTooltip

@@ -4,24 +4,34 @@
  * Renders EffectComposer with Bloom and Vignette when enabled.
  * All values driven by `config.postProcessing` — no props required.
  *
- * Must render inside `<Canvas>` (uses EffectComposer context).
+ * Keeps the post stack mounted through the morph to avoid visible palette pops.
  */
 
 import type { ReactElement } from 'react';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
-import { postProcessing } from '../../config';
+import { mosaic as mosaicConfig, postProcessing } from '../../config';
+import { lerp, smoothProgress } from '../../utils/easings';
 
-export default function Effects() {
+interface EffectsProps {
+  mosaicProgress?: number;
+}
+
+export default function Effects({ mosaicProgress = 0 }: EffectsProps) {
   if (!postProcessing.enabled) return null;
 
-  // Collect enabled effects to avoid null children in EffectComposer
+  const transitionProgress = smoothProgress(
+    mosaicProgress,
+    mosaicConfig.motion.viewStart,
+    mosaicConfig.motion.viewEnd,
+  );
+
   const effects: ReactElement[] = [];
 
   if (postProcessing.bloom.enabled) {
     effects.push(
       <Bloom
         key="bloom"
-        intensity={postProcessing.bloom.intensity}
+        intensity={lerp(postProcessing.bloom.intensity, postProcessing.bloom.intensity * 0.92, transitionProgress)}
         luminanceThreshold={postProcessing.bloom.luminanceThreshold}
         luminanceSmoothing={postProcessing.bloom.luminanceSmoothing}
         mipmapBlur={postProcessing.bloom.mipmapBlur}

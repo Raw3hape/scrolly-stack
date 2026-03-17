@@ -9,6 +9,8 @@
 :root {
   --z-base:             1;
   --z-overlay:          10;     /* Content column over visual column            */
+  --z-canvas:           50;     /* Fullscreen 3D canvas (below everything interactive) */
+  --z-content:          100;    /* Content sections that sit above canvas       */
   --z-loading:          100;    /* Loading spinner overlays                     */
   --z-tooltip:          500;    /* HoverTooltip (3D hover popup)               */
   --z-header:           1000;   /* Fixed header                                */

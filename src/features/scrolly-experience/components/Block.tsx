@@ -3,9 +3,19 @@
  *
  * Individual 3D block with spring animations and premium glass material.
  * All parameters driven by config.
+ *
+ * Supports two modes:
+ * 1. STACK mode (default): position/dimensions from layout, spring-animated
+ * 2. MOSAIC mode: position/dimensions driven by mosaicProgress (direct, no spring)
+ *
+ * PERFORMANCE CRITICAL:
+ * - RoundedBox `args` are FIXED (never change during transition).
+ *   Visual size morph is done via `scale` transform — zero geometry rebuilds.
+ * - Position uses `immediate: true` during mosaic — zero spring computation.
+ * - Labels hidden during transition — zero troika-text layout recomputation.
  */
 
-import { useRef, useCallback, useState, useEffect } from 'react';
+import { useRef, useCallback, useState, useEffect, useMemo } from 'react';
 import { animated, useSpring } from '@react-spring/three';
 import { useThree } from '@react-three/fiber';
 import { RoundedBox, Text } from '@react-three/drei';
@@ -64,6 +74,10 @@ export default function Block({
   opacity = 1,
   staggerDelay = 0,
   isRevealed = true,
+  // Mosaic override props
+  mosaicPosition,
+  mosaicDimensions,
+  mosaicProgress = 0,
 }: BlockProps) {
   const meshRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -72,14 +86,22 @@ export default function Block({
   const [baseX, baseY, baseZ] = position;
   const [slideX, slideZ] = slideDirection;
 
+  // Determine effective position/dimensions based on mosaic state
+  const isMosaicActive = mosaicProgress > 0 && mosaicPosition && mosaicDimensions;
+  // Transitioning = mid-animation (no hover). Settled = fully assembled (hover OK)
+  const isMosaicTransitioning = isMosaicActive && mosaicProgress < 1;
+
   // Bootstrap: kick the first frame when spring targets change.
-  // In frameloop="demand", springs need at least one rendered frame to start
-  // ticking. onChange keeps the loop going until the spring settles.
   useEffect(() => {
     invalidate();
-  }, [isActive, isAboveActive, opacity, isRevealed, baseX, baseY, baseZ, invalidate]);
+  }, [isActive, isAboveActive, opacity, isRevealed, baseX, baseY, baseZ,
+      mosaicProgress, invalidate]);
 
   const getTargetPosition = (): [number, number, number] => {
+    if (isMosaicActive) {
+      return mosaicPosition;
+    }
+
     let targetX = baseX;
     let targetY = baseY;
     let targetZ = baseZ;
@@ -95,21 +117,47 @@ export default function Block({
     return [targetX, targetY, targetZ];
   };
 
+  const springConfig = {
+    tension: animation.spring.tension,
+    friction: animation.spring.friction,
+    mass: animation.spring.mass,
+  };
+
   const { springPosition } = useSpring({
     springPosition: getTargetPosition(),
-    config: {
-      tension: animation.spring.tension,
-      friction: animation.spring.friction,
-      mass: animation.spring.mass,
-    },
+    // During mosaic: set positions instantly from scroll (no spring lag = no FPS drop)
+    immediate: !!isMosaicActive,
+    config: springConfig,
     onChange: () => invalidate(),
   });
 
   const { springScale } = useSpring({
-    springScale: isHovered ? (animation.hover?.scale || 1.025) : 1,
+    springScale: isHovered && !isMosaicTransitioning ? (animation.hover?.scale || 1.025) : 1,
     config: { tension: 300, friction: 20, mass: 0.5 },
     onChange: () => invalidate(),
   });
+
+  // ========================================================================
+  // PERFORMANCE FIX #1: geometry args NEVER change during transition.
+  // Visual size morph uses `scale` transform instead.
+  //
+  // RoundedBox args = stack dimensions (constant per block).
+  // dimensionScale = mosaicDimensions / stackDimensions (smooth morph via scale).
+  //
+  // This eliminates 900 geometry rebuilds/sec → 0.
+  // ========================================================================
+  const geometryArgs = dimensions; // FIXED — never changes during transition
+
+  // Scale to achieve desired visual size during mosaic
+  // At progress=0: [1,1,1]. At progress=1: [mosaicW/stackW, mosaicH/stackH, mosaicD/stackD]
+  const dimensionScale = useMemo((): [number, number, number] => {
+    if (!isMosaicActive || !mosaicDimensions) return [1, 1, 1];
+    return [
+      mosaicDimensions[0] / dimensions[0],
+      mosaicDimensions[1] / dimensions[1],
+      mosaicDimensions[2] / dimensions[2],
+    ];
+  }, [isMosaicActive, mosaicDimensions, dimensions]);
 
   const currentColorA = isActive ? activeColor : color;
   const currentColorB = isActive
@@ -118,6 +166,7 @@ export default function Block({
 
   const handlePointerOver = useCallback((e: { stopPropagation: () => void; clientX?: number; clientY?: number; nativeEvent?: { clientX?: number; clientY?: number } }) => {
     e.stopPropagation();
+    if (isMosaicTransitioning) return;
     document.body.style.cursor = 'pointer';
     setIsHovered(true);
     if (onHoverChange && blockData) {
@@ -127,7 +176,7 @@ export default function Block({
       };
       onHoverChange(blockData, true, mousePos);
     }
-  }, [onHoverChange, blockData]);
+  }, [onHoverChange, blockData, isMosaicTransitioning]);
 
   const handlePointerOut = useCallback((e: { stopPropagation: () => void }) => {
     e.stopPropagation();
@@ -152,42 +201,58 @@ export default function Block({
       friction: isRevealed ? animation.spring.friction : animation.spring.friction * 1.4,
       mass: animation.spring.mass,
     },
-    delay: staggerDelay,
+    delay: isRevealed ? 0 : staggerDelay,
     onChange: () => invalidate(),
   });
+
+  // Keep labels readable through the morph; only the initial reveal is animated.
+  const revealFactor = Math.max(0, Math.min(1, (opacity - 0.3) / 0.5));
+  const labelOpacity = revealFactor;
+  const showLabel = !!label && labelOpacity > 0.01;
+
+  // Labels use VISUAL dimensions (not geometry args) for correct positioning
+  // This ensures uniform label placement regardless of block's original proportions
+  const visualDimensions: [number, number, number] = isMosaicActive && mosaicDimensions
+    ? mosaicDimensions
+    : dimensions;
 
   return (
     <AnimatedGroup
       position={springPosition}
       scale={springScale}
     >
-      <RoundedBox
-        ref={meshRef}
-        args={dimensions}
-        radius={geometry.stack.borderRadius}
-        smoothness={geometry.stack.smoothness}
-        castShadow={opacity > 0.5}
-        receiveShadow={opacity > 0.5}
-        onClick={handleClick}
-        onPointerOver={handlePointerOver}
-        onPointerOut={handlePointerOut}
-      >
-        <GradientShadowMaterial
-          colorA={currentColorA}
-          colorB={currentColorB}
-          isActive={isActive}
-          isHovered={isHovered}
-          isHeroState={!isRevealed}
-          animatedColorReveal={springColorReveal}
-        />
-      </RoundedBox>
+      {/* Dimension morph wrapper — scale instead of args change */}
+      <group scale={dimensionScale}>
+        <RoundedBox
+          ref={meshRef}
+          args={geometryArgs}
+          radius={geometry.stack.borderRadius}
+          smoothness={geometry.stack.smoothness}
+          castShadow={opacity > 0.5}
+          receiveShadow={opacity > 0.5}
+          onClick={handleClick}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
+        >
+          <GradientShadowMaterial
+            colorA={currentColorA}
+            colorB={currentColorB}
+            isActive={isActive}
+            isHovered={isHovered}
+            isHeroState={!isRevealed}
+            animatedColorReveal={springColorReveal}
+            isMosaicTransitioning={isMosaicTransitioning}
+          />
+        </RoundedBox>
+      </group>
 
-      {label && opacity > 0.5 && (
+      {/* Labels OUTSIDE scale group — use visual dimensions for uniform positioning */}
+      {showLabel && (
         <BlockLabel
           text={label}
-          dimensions={dimensions}
+          dimensions={visualDimensions}
           color={textColor}
-          opacity={opacity}
+          opacity={labelOpacity}
         />
       )}
     </AnimatedGroup>

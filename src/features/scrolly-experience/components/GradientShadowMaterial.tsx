@@ -21,6 +21,7 @@ export default function GradientShadowMaterial({
   isHovered = false,
   isHeroState = false,
   animatedColorReveal = null,
+  isMosaicTransitioning = false,
 }: GradientShadowMaterialProps) {
   // Shader type not exported by @types/three, define inline
   const shaderRef = useRef<{ uniforms: Record<string, { value: unknown }> } | null>(null);
@@ -168,7 +169,11 @@ export default function GradientShadowMaterial({
     }
   }, [colorA, colorB]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
+    // PERFORMANCE FIX #7: Skip all useFrame work during mosaic transition.
+    // Saves 15 × (lerp + invalidate) per frame = 900 skipped callbacks/sec.
+    if (isMosaicTransitioning) return;
+
     if (shaderRef.current) {
       shaderRef.current.uniforms.uTime.value = state.clock.elapsedTime;
 
@@ -184,9 +189,12 @@ export default function GradientShadowMaterial({
 
       shaderRef.current.uniforms.uIsHovered.value = currentHoverRef.current;
 
-      const targetSaturation = isHeroState ? 1.55 : 1.0;
-      const satLerpSpeed = 0.06;
-      currentSaturationRef.current += (targetSaturation - currentSaturationRef.current) * satLerpSpeed;
+      // Keep the hero look slightly richer without a visible palette jump on exit.
+      const targetSaturation = isHeroState ? 1.15 : 1.0;
+      const satLambda = 5; // Converges in ~0.4s (vs ~1.3s before)
+      const satDt = Math.max(delta, 1 / 120); // Guard against delta=0
+      const satDecay = 1 - Math.exp(-satLambda * satDt);
+      currentSaturationRef.current += (targetSaturation - currentSaturationRef.current) * satDecay;
 
       if (Math.abs(targetSaturation - currentSaturationRef.current) < 0.001) {
         currentSaturationRef.current = targetSaturation;

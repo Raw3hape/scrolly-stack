@@ -94,8 +94,10 @@ export const animation = {
   
   // Mouse parallax
   parallax: {
-    intensity: 0.04,           // radians of rotation
+    intensity: 0.02,           // radians of rotation
     lerpSpeed: 0.05,           // smoothing per frame
+    damping: 8,                // frame-rate-independent return speed
+    stackIntensityMultiplier: 0.12, // keep stack mode stable while scrolling
   },
   
   // Viewport / resize
@@ -270,6 +272,50 @@ export const render = {
 
 
 // =============================================================================
+// MOSAIC TRANSITION CONFIGURATION
+// =============================================================================
+
+export const mosaic = {
+  // Grid layout
+  cols: 5,                       // 5 × 3 = 15 blocks
+  cellSize: 3.0,                 // Uniform tile size — fills full-screen canvas
+  gap: 0.2,                      // Gap between tiles
+  blockHeight: 0.3,              // Thin tile height (viewed from above)
+
+  // Single-phase Bezier arc
+  arc: {
+    heightFactor: 0.5,           // Arc height = distance × factor (Y lift during flight)
+  },
+
+  motion: {
+    viewStart: 0.08,             // delay camera/zoom shift to avoid the initial jerk
+    viewEnd: 0.92,               // settle before the very end of the trigger zone
+    parallaxFadeEnd: 0.18,       // remove mouse drift early in the morph
+  },
+
+  sceneOffset: {
+    stackY: -0.35,               // raise the stack for better visual balance
+    mosaicY: 0.12,               // keep the final grid slightly above center
+    headerCompensationFactor: 0.35,
+  },
+
+  // Camera during mosaic — TOP-DOWN view
+  camera: {
+    position: [0, 100, 0] as [number, number, number],
+    upVector: [0, 0, -1] as [number, number, number],
+    pullbackZoom: 42,            // Zoom at start of transition (wide to fit flying blocks)
+    finalZoom: 75,               // Zoom when settled (fills full-screen viewport)
+  },
+
+  // Scroll trigger zone heights (CSS values)
+  // Total zone = assemblyHeight + holdHeight + exitHeight
+  assemblyHeight: '100vh',       // Scroll distance for 0→1 assembly animation
+  holdHeight: '30vh',            // Pause: assembled grid stays visible
+  exitHeight: '80vh',            // Scroll distance for grid to exit upward
+};
+
+
+// =============================================================================
 // HELPER: Get full config as single object
 // =============================================================================
 
@@ -282,6 +328,7 @@ export const config = {
   postProcessing,
   labels,
   render,
+  mosaic,
 };
 
 export default config;

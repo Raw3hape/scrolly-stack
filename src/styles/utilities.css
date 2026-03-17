@@ -21,6 +21,9 @@
 /* === Section === */
 .section {
   padding-block: var(--section-gap);
+  /* Stacking context above fullscreen canvas (--z-canvas: 50) */
+  position: relative;
+  z-index: var(--z-content);
 }
 
 .section--compact {

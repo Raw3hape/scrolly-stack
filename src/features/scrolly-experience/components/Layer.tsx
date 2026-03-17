@@ -3,12 +3,14 @@
  *
  * Renders a layer of blocks based on layout configuration.
  * Uses layout utilities for position calculations.
+ * Passes through mosaic data to blocks when transitioning.
  */
 
 import Block from './Block';
 import { calculateBlockPositions } from '../utils/layoutUtils';
 import { animation } from '../config';
 import type { LayerProps, ComputedBlock } from '../types';
+import type { MosaicBlockDataMap } from './Stack';
 
 export default function Layer({
   layer,
@@ -20,7 +22,9 @@ export default function Layer({
   opacity = 1,
   staggerDelay = 0,
   isRevealed = true,
-}: LayerProps) {
+  mosaicProgress = 0,
+  mosaicBlockData,
+}: Omit<LayerProps, 'mosaicBlockData'> & { mosaicBlockData?: MosaicBlockDataMap }) {
   const blocks: ComputedBlock[] = calculateBlockPositions(layer, baseY);
 
   return (
@@ -29,6 +33,9 @@ export default function Layer({
         const isActive = currentStep === block.id;
         const isAboveActive = allBlocksAboveActive.includes(block.id);
         const blockStagger = staggerDelay + (blockIndex * 30);
+
+        // Get mosaic data for this specific block (Record lookup, not Map.get)
+        const blockMosaic = mosaicBlockData?.[block.id];
 
         return (
           <Block
@@ -51,6 +58,9 @@ export default function Layer({
             opacity={opacity}
             staggerDelay={blockStagger}
             isRevealed={isRevealed}
+            mosaicProgress={mosaicProgress}
+            mosaicPosition={blockMosaic?.position}
+            mosaicDimensions={blockMosaic?.dimensions}
           />
         );
       })}

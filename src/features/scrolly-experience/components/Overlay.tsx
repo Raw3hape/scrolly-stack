@@ -2,7 +2,8 @@
  * Overlay Component
  *
  * Narrative layer: hero section + scrollytelling steps.
- * Uses IntersectionObserver to track current step by block .id.
+ * Tracks the active step by measuring which section is closest to the viewport focus line.
+ * Includes mosaic trigger zone for the grid transition.
  */
 
 import { useEffect, useRef, useState } from 'react';
@@ -10,10 +11,11 @@ import { steps } from '../data';
 import { heroContent, stepCta } from '@/config/content/home';
 import { BREAKPOINTS } from '@/config/breakpoints';
 import { HERO_STEP, getStepElementId } from '../utils/stepNavigation';
+import { mosaic as mosaicConfig } from '../config';
 import type { OverlayProps, StepData } from '../types';
 import './Overlay.css';
 
-export default function Overlay({ currentStep, setStep }: OverlayProps) {
+export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: OverlayProps) {
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const heroRef = useRef<HTMLElement>(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
@@ -45,28 +47,50 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const stepId = entry.target.getAttribute('data-step-id');
-            setStep(stepId === 'hero' ? HERO_STEP : Number(stepId));
-          }
-        });
-      },
-      {
-        rootMargin: '-40% 0px -50% 0px',
-        threshold: 0,
+    let rafId: number | null = null;
+
+    const scheduleUpdate = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        const targetY = window.innerHeight * 0.45;
+        const candidates = [heroRef.current, ...stepRefs.current]
+          .filter((element): element is HTMLElement => Boolean(element))
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            const centerY = rect.top + rect.height / 2;
+            const isVisible = rect.bottom > 0 && rect.top < window.innerHeight;
+
+            return {
+              element,
+              isVisible,
+              distance: Math.abs(centerY - targetY),
+            };
+          })
+          .filter((candidate) => candidate.isVisible);
+
+        if (candidates.length > 0) {
+          const best = candidates.reduce((closest, candidate) =>
+            candidate.distance < closest.distance ? candidate : closest,
+          );
+          const stepId = best.element.getAttribute('data-step-id');
+          setStep(stepId === 'hero' ? HERO_STEP : Number(stepId));
+        }
+
+        rafId = null;
+      });
+    };
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+    scheduleUpdate();
+
+    return () => {
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
       }
-    );
-
-    stepRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    if (heroRef.current) observer.observe(heroRef.current);
-
-    return () => observer.disconnect();
+    };
   }, [setStep]);
 
   return (
@@ -181,6 +205,19 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
           );
         })}
       </div>
+
+      {/* MOSAIC TRIGGER ZONE — invisible scroll driver for the mosaic transition */}
+      {/* Height covers 3 phases: assembly + hold + exit */}
+      {/* Negative marginBottom pulls next content up so it appears as the grid exits */}
+      <div
+        ref={mosaicTriggerRef}
+        className="mosaic-trigger-zone"
+        style={{
+          height: `calc(${mosaicConfig.assemblyHeight} + ${mosaicConfig.holdHeight} + ${mosaicConfig.exitHeight})`,
+          marginBottom: `calc(-1 * ${mosaicConfig.exitHeight})`,
+        }}
+        aria-hidden="true"
+      />
     </div>
   );
 }

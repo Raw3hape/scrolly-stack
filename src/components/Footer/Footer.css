@@ -6,6 +6,9 @@
   border-top: var(--line-thin) solid var(--border-default);
   background: var(--surface-base);
   padding-block: var(--space-2xl);
+  /* Stacking context above fullscreen canvas (--z-canvas: 50) */
+  position: relative;
+  z-index: var(--z-content);
 }
 
 
