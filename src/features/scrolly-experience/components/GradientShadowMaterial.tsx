@@ -170,29 +170,33 @@ export default function GradientShadowMaterial({
   }, [colorA, colorB]);
 
   useFrame((state, delta) => {
-    // PERFORMANCE FIX #7: Skip all useFrame work during mosaic transition.
-    // Saves 15 × (lerp + invalidate) per frame = 900 skipped callbacks/sec.
-    if (isMosaicTransitioning) return;
+    // STABILITY FIX: Don't freeze ALL useFrame work during mosaic.
+    // uTime and saturation always update — prevents color pop.
+    // Only hover-lerp is skipped (15 blocks × lerp/frame = performance saving).
 
     if (shaderRef.current) {
+      // uTime — ALWAYS update (prevents shimmer jump)
       shaderRef.current.uniforms.uTime.value = state.clock.elapsedTime;
 
-      targetHoverRef.current = isHovered ? 1.0 : 0.0;
-      const lerpSpeed = animation.hover?.lerpSpeed || 0.12;
-      currentHoverRef.current += (targetHoverRef.current - currentHoverRef.current) * lerpSpeed;
+      // Hover lerp — skip during mosaic transition only
+      if (!isMosaicTransitioning) {
+        targetHoverRef.current = isHovered ? 1.0 : 0.0;
+        const lerpSpeed = animation.hover?.lerpSpeed || 0.12;
+        currentHoverRef.current += (targetHoverRef.current - currentHoverRef.current) * lerpSpeed;
 
-      if (Math.abs(targetHoverRef.current - currentHoverRef.current) < 0.001) {
-        currentHoverRef.current = targetHoverRef.current;
-      } else {
-        state.invalidate();
+        if (Math.abs(targetHoverRef.current - currentHoverRef.current) < 0.001) {
+          currentHoverRef.current = targetHoverRef.current;
+        } else {
+          state.invalidate();
+        }
+
+        shaderRef.current.uniforms.uIsHovered.value = currentHoverRef.current;
       }
 
-      shaderRef.current.uniforms.uIsHovered.value = currentHoverRef.current;
-
-      // Keep the hero look slightly richer without a visible palette jump on exit.
+      // Saturation — ALWAYS update (prevents saturation jump)
       const targetSaturation = isHeroState ? 1.15 : 1.0;
-      const satLambda = 5; // Converges in ~0.4s (vs ~1.3s before)
-      const satDt = Math.max(delta, 1 / 120); // Guard against delta=0
+      const satLambda = 5;
+      const satDt = Math.max(delta, 1 / 120);
       const satDecay = 1 - Math.exp(-satLambda * satDt);
       currentSaturationRef.current += (targetSaturation - currentSaturationRef.current) * satDecay;
 

@@ -20,6 +20,7 @@ import { animated, useSpring } from '@react-spring/three';
 import { useThree } from '@react-three/fiber';
 import { RoundedBox, Text } from '@react-three/drei';
 import { geometry, animation, labels } from '../config';
+import { easeOutQuart } from '../utils/easings';
 import GradientShadowMaterial from './GradientShadowMaterial';
 import type { BlockProps, BlockLabelProps, MousePosition } from '../types';
 
@@ -149,15 +150,22 @@ export default function Block({
   const geometryArgs = dimensions; // FIXED — never changes during transition
 
   // Scale to achieve desired visual size during mosaic
-  // At progress=0: [1,1,1]. At progress=1: [mosaicW/stackW, mosaicH/stackH, mosaicD/stackD]
+  // STABILITY FIX: interpolate by mosaicProgress (was binary jump [1,1,1] → target)
+  // easeOutQuart: fast start (no deadzone) → smooth deceleration = physically natural
   const dimensionScale = useMemo((): [number, number, number] => {
-    if (!isMosaicActive || !mosaicDimensions) return [1, 1, 1];
-    return [
+    if (!mosaicDimensions || mosaicProgress <= 0) return [1, 1, 1];
+    const target: [number, number, number] = [
       mosaicDimensions[0] / dimensions[0],
       mosaicDimensions[1] / dimensions[1],
       mosaicDimensions[2] / dimensions[2],
     ];
-  }, [isMosaicActive, mosaicDimensions, dimensions]);
+    const t = easeOutQuart(mosaicProgress);
+    return [
+      1 + (target[0] - 1) * t,
+      1 + (target[1] - 1) * t,
+      1 + (target[2] - 1) * t,
+    ];
+  }, [mosaicDimensions, mosaicProgress, dimensions]);
 
   const currentColorA = isActive ? activeColor : color;
   const currentColorB = isActive
@@ -207,7 +215,12 @@ export default function Block({
 
   // Keep labels readable through the morph; only the initial reveal is animated.
   const revealFactor = Math.max(0, Math.min(1, (opacity - 0.3) / 0.5));
-  const labelOpacity = revealFactor;
+  // During mosaic flight (0 < progress < 0.9): hide labels (they're useless mid-flight).
+  // When mosaic settles (0.9 → 1.0): smooth fadeIn return.
+  const mosaicLabelFade = mosaicProgress <= 0 ? 1
+    : mosaicProgress >= 1 ? 1
+    : Math.max(0, (mosaicProgress - 0.9) / 0.1);
+  const labelOpacity = revealFactor * mosaicLabelFade;
   const showLabel = !!label && labelOpacity > 0.01;
 
   // Labels use VISUAL dimensions (not geometry args) for correct positioning

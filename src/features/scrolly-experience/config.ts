@@ -56,7 +56,7 @@ export const animation = {
   
   // Camera animation
   camera: {
-    lerpSpeed: 2,            // Speed of camera transition
+    lerpSpeed: 4,            // Synced with UNIFIED_LAMBDA in CameraRig/ZoomController
     positions: {
       hero: [0, 100, 0],     // Top-down view
       isometric: [100, 100, 100],
@@ -92,12 +92,11 @@ export const animation = {
     },
   },
   
-  // Mouse parallax
   parallax: {
-    intensity: 0.02,           // radians of rotation
+    intensity: 0.012,          // Reduced: less floating feel
     lerpSpeed: 0.05,           // smoothing per frame
-    damping: 8,                // frame-rate-independent return speed
-    stackIntensityMultiplier: 0.12, // keep stack mode stable while scrolling
+    damping: 14,               // Increased: faster return to neutral
+    stackIntensityMultiplier: 0.05, // Minimal parallax in stack mode for stability
   },
   
   // Viewport / resize
@@ -198,7 +197,7 @@ export const lighting = {
 
 // Contact shadows disabled — model floats in clean space
 export const shadows = {
-  enabled: false,
+  enabled: true,               // Enabled: provides visual anchoring
   contact: {
     position: [0, -4.8, 0],
     opacity: 0.35,
@@ -294,7 +293,7 @@ export const mosaic = {
   },
 
   sceneOffset: {
-    stackY: -0.35,               // raise the stack for better visual balance
+    stackY: -0.10,               // raised for better visual centering
     mosaicY: 0.12,               // keep the final grid slightly above center
     headerCompensationFactor: 0.35,
   },
@@ -303,7 +302,7 @@ export const mosaic = {
   camera: {
     position: [0, 100, 0] as [number, number, number],
     upVector: [0, 0, -1] as [number, number, number],
-    pullbackZoom: 42,            // Zoom at start of transition (wide to fit flying blocks)
+    pullbackZoom: 42,            // DEPRECATED — monotonic zoom, kept for type compat
     finalZoom: 75,               // Zoom when settled (fills full-screen viewport)
   },
 

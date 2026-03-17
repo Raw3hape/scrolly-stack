@@ -52,7 +52,8 @@ export default function useResponsiveZoom(currentStep: number, mosaicProgress: n
     return isMobile ? animation.zoom.heroMobile : animation.zoom.heroDesktop;
   }
 
-  // Mosaic transition zoom: pullback during explode, then settle to final
+  // Mosaic transition zoom: monotonic baseZoom → finalZoom
+  // No V-shape (no pullback) — eliminates visual bounce
   if (mosaicProgress > 0) {
     const transitionProgress = smoothProgress(
       mosaicProgress,
@@ -64,18 +65,7 @@ export default function useResponsiveZoom(currentStep: number, mosaicProgress: n
       return baseZoom;
     }
 
-    const { pullbackZoom, finalZoom } = mosaicConfig.camera;
-    // First half: pull back (zoom out)
-    // Second half: zoom to final
-    if (transitionProgress < 0.5) {
-      // 0→0.5 maps to baseZoom→pullbackZoom
-      const t = transitionProgress / 0.5;
-      return lerp(baseZoom, pullbackZoom, t);
-    } else {
-      // 0.5→1.0 maps to pullbackZoom→finalZoom
-      const t = (transitionProgress - 0.5) / 0.5;
-      return lerp(pullbackZoom, finalZoom, t);
-    }
+    return lerp(baseZoom, mosaicConfig.camera.finalZoom, transitionProgress);
   }
 
   return baseZoom;

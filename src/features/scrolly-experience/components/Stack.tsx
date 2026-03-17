@@ -29,7 +29,7 @@ import {
   quadraticBezierV3,
   smoothProgress,
 } from '../utils/easings';
-import { mosaic as mosaicConfig } from '../config';
+import { animation, mosaic as mosaicConfig } from '../config';
 import type { StackProps, LayerData, StepData, ComputedBlock } from '../types';
 
 // =============================================================================
@@ -216,7 +216,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   // ARCHITECTURE: Offset stays a pure function of viewport + scroll progress,
   // so reversing scroll always returns to the exact same coordinates.
   // ========================================================================
-  const { viewport, size } = useThree();
+  const { size } = useThree();
   const groupRef = useRef<THREE.Group>(null);
   const headerPxRef = useRef(0);
   const contentRatioRef = useRef(0.45);
@@ -240,6 +240,10 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   }, []);
 
   // Keep the group position as a pure function of scroll/viewport so it never drifts.
+  // STABILITY FIX: Use fixed REF_ZOOM instead of live viewport (which depends on
+  // animated zoom). This makes offset deterministic — same scroll = same position.
+  const REF_ZOOM = animation.zoom.desktop; // Fixed reference — not affected by zoom animation
+
   useFrame(() => {
     if (!groupRef.current) return;
 
@@ -248,12 +252,15 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
       mosaicConfig.motion.viewStart,
       mosaicConfig.motion.viewEnd,
     );
-    const worldPerPxX = viewport.width / size.width;
-    const worldPerPx = viewport.height / size.height;
+
+    // For orthographic camera: worldPerPx = 1 / zoom
+    // Using REF_ZOOM (constant) instead of live zoom eliminates drift
+    const stableWorldPerPx = 1 / REF_ZOOM;
+
     const headerCompensation = headerPxRef.current
-      * worldPerPx
+      * stableWorldPerPx
       * mosaicConfig.sceneOffset.headerCompensationFactor;
-    const stackOffsetX = size.width * contentRatioRef.current * 0.5 * worldPerPxX;
+    const stackOffsetX = size.width * contentRatioRef.current * 0.5 * stableWorldPerPx;
     const stackOffsetY = mosaicConfig.sceneOffset.stackY + headerCompensation;
 
     const finalX = lerp(stackOffsetX, 0, transitionProgress);
