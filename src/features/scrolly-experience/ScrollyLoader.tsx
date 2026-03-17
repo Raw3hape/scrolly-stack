@@ -1,22 +1,24 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Spinner from '@/components/Spinner/Spinner';
 
 /**
  * ScrollyLoader — Client wrapper for the 3D scrolly experience.
  *
- * This wrapper exists because `dynamic({ ssr: false })` is only allowed
- * in Client Components. The parent page.tsx stays a Server Component.
+ * Loading placeholder matches the final layout dimensions to eliminate
+ * the flash/jump when the experience loads.
  */
 const ScrollyExperience = dynamic(
   () => import('@/features/scrolly-experience'),
   {
     ssr: false,
     loading: () => (
-      <div style={{ minHeight: '100vh' }}>
-        <Spinner size={40} label="Loading experience..." />
-      </div>
+      <div
+        className="layout-container"
+        style={{ opacity: 0.5 }}
+        aria-busy="true"
+        aria-label="Loading 3D experience"
+      />
     ),
   }
 );
@@ -24,3 +26,4 @@ const ScrollyExperience = dynamic(
 export default function ScrollyLoader() {
   return <ScrollyExperience />;
 }
+

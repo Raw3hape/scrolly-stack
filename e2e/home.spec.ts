@@ -2,10 +2,12 @@
  * E2E Tests — Home Page: 3D Experience, Layout, CTA
  *
  * Tests the interactive homepage across all viewports.
+ * Content assertions import from content config — no hardcoded strings.
  */
 
 import { test, expect } from '@playwright/test';
 import { ctaConfig } from '../src/config/nav';
+import { heroContent } from '../src/config/content/home';
 
 test.describe('Home Page', () => {
   test.beforeEach(async ({ page }) => {
@@ -34,13 +36,14 @@ test.describe('Home Page', () => {
     const headline = page.locator('.hero__headline');
     // On mobile, hero may be behind the 3D canvas, so check attachment rather than visibility
     await expect(headline).toBeAttached();
-    await expect(headline).toContainText('premium');
+    await expect(headline).toContainText(heroContent.headlineAccent);
   });
 
   test('hero subheadline exists with correct text', async ({ page }) => {
     const sub = page.locator('.hero__subheadline');
     await expect(sub).toBeAttached();
-    await expect(sub).toContainText('CRM');
+    // Check a key phrase from the subheadline content
+    await expect(sub).toContainText('broker');
   });
 
   test('hero is visible on desktop', async ({ page }) => {
@@ -61,7 +64,7 @@ test.describe('Home Page', () => {
     const cta = page.locator('.hero__cta-button');
     await expect(cta).toBeAttached();
     await expect(cta).toHaveAttribute('href', ctaConfig.href);
-    await expect(cta).toContainText('qualify');
+    await expect(cta).toContainText(heroContent.ctaLabel);
   });
 
   test('step CTA links exist', async ({ page }) => {

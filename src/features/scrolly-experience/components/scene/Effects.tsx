@@ -42,7 +42,7 @@ export default function Effects() {
   if (effects.length === 0) return null;
 
   return (
-    <EffectComposer>
+    <EffectComposer multisampling={4}>
       {effects}
     </EffectComposer>
   );

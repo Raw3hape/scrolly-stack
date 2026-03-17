@@ -85,7 +85,11 @@ export default function Stack({ currentStep, onBlockClick, onBlockHover }: Stack
     <group position={[0, -1, 0]}>
       {layerPositions.map(({ layer, baseY }, index) => {
         const opacity = calculateLayerOpacity(layer, currentStep);
-        const staggerDelay = index * 100;
+        const totalLayers = layerPositions.length;
+        // Forward (reveal): top → bottom. Reverse (de-reveal): bottom → top.
+        const staggerDelay = isRevealed
+          ? index * 100
+          : (totalLayers - 1 - index) * 100;
 
         return (
           <Layer

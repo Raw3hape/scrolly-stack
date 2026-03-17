@@ -1,7 +1,7 @@
 {
   "name": "scrolly-stack",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint src/ e2e/ --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test:e2e": "npx playwright test"
+    "test:e2e": "npx playwright test",
+    "check:palette": "npx tsx scripts/check-palette-sync.ts"
   },
   "dependencies": {
     "@react-spring/three": "^10.0.3",

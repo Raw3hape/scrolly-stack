@@ -1,0 +1,60 @@
+/* ============================================================================
+ * ValuePropsStrip Styles — Foundation Projects
+ *
+ * Horizontal 3-column strip with dividers. Stacks on mobile.
+ * ========================================================================== */
+
+.value-props {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--gradient-subtle);
+  border-radius: var(--radius-xl);
+  border: var(--line-thin) solid var(--border-default);
+}
+
+.value-props__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+.value-props__label {
+  font: var(--font-h4);
+  color: var(--text-primary);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.value-props__divider {
+  width: var(--line-thin);
+  height: var(--space-xl);
+  background: var(--border-default);
+  flex-shrink: 0;
+}
+
+/* === Mobile: stack vertically === */
+@media (max-width: 768px) {
+  .value-props {
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+  }
+
+  .value-props__item {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .value-props__label {
+    white-space: normal;
+    font-size: var(--font-size-lg);
+  }
+
+  .value-props__divider {
+    width: var(--space-2xl);
+    height: var(--line-thin);
+  }
+}

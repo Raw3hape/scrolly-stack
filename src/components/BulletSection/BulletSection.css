@@ -1,0 +1,56 @@
+/* ============================================================================
+ * BulletSection Styles — Foundation Projects
+ *
+ * Checkmark bullet list with optional CTA.
+ * ========================================================================== */
+
+.bullet-section {
+  padding: var(--space-2xl) 0;
+}
+
+/* === Heading === */
+.bullet-section__heading {
+  font: var(--font-h3);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+/* === List === */
+.bullet-section__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* === Item === */
+.bullet-section__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  font: var(--font-body-lg);
+  color: var(--text-primary);
+  line-height: var(--leading-relaxed);
+}
+
+/* === Checkmark icon === */
+.bullet-section__icon {
+  flex-shrink: 0;
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-bold);
+}
+
+/* === CTA === */
+.bullet-section__cta {
+  margin-top: var(--space-xl);
+}

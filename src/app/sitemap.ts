@@ -11,7 +11,7 @@ import { routes } from '@/config/nav';
  */
 
 /** Routes excluded from sitemap (internal/utility pages) */
-const excludedRoutes: Set<string> = new Set([routes.optIn, routes.shadowLocal]);
+const excludedRoutes: Set<string> = new Set([routes.shadowLocal]);
 
 /** Priority overrides for specific routes */
 const priorityMap: Record<string, number> = {

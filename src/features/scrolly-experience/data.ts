@@ -1,18 +1,25 @@
 /**
  * Data Configuration for Scrolly-Stack
  *
- * COLOR PALETTE: Soft pastels with cohesive flow
- * Inspired by frosted glass reference - muted but not washed out
- * Flow: Blue/Cyan → Lavender/Violet → Pink → Coral/Peach
- * NO greens!
+ * BRAND IDENTITY SYSTEM — 5 Color Narrative:
+ *   Anchor  #103740 — Trust, Authority, 'The Rock'
+ *   Systems #297373 — Process, Engineering, 'The Machine'
+ *   Growth  #3E8C59 — Results, Dividends, 'The Yield'
+ *   Foundation #F2EDE4 — Clarity, Canvas, 'No Fluff'
+ *   Value   #D79344 — Craft, Spark, 'The Second Mile'
+ *
+ * Layer A (Outcomes): Anchor + Value tones — trust and warmth
+ * Layer B (One Approach): Systems teal gradient — process and precision
+ * Layer C (Engine): Full brand spectrum — Anchor → Systems → Growth → Value
  */
 
 import type { LayerData, StepData } from './types';
 import { icons } from './icons';
+import { palette } from '@/config/palette';
 
 export const layers: LayerData[] = [
   // ─────────────────────────────────────────────────────────────────────────────
-  // LEVEL A: TOP QUADRANTS - Cool blues with one warm accent (orange)
+  // LEVEL A: TOP QUADRANTS — Anchor + Value tones
   // ─────────────────────────────────────────────────────────────────────────────
   {
     id: 'layer-a',
@@ -21,250 +28,280 @@ export const layers: LayerData[] = [
     cols: 2,
     rows: 2,
     blocks: [
-      // BLUE (top-left) - true blue, not cyan
+      // Anchor light (top-left) — trust, authority
       {
         id: 0,
+        slug: 'sales',
         gridPosition: [0, 0],
         label: 'Sales',
-        color: '#93c5fd',           // Blue 300 - true blue
-        gradientColorB: '#bfdbfe',  // Blue 200
-        activeColor: '#60a5fa',
-        activeGradientColorB: '#93c5fd',
-        textColor: '#1e3a5f',
+        color: palette.anchor300,
+        gradientColorB: palette.anchor200,
+        activeColor: palette.teal500,
+        activeGradientColorB: palette.anchor300,
+        textColor: palette.sand100,
         slideDirection: [0, 0],
         tooltipTitle: 'Sales',
         tooltipSubhead: 'Win more jobs',
         bullets: ['Lead handling', 'Follow-up system', 'Conversion tracking'],
+        description: 'Stop relying purely on word-of-mouth. We build a predictable lead-handling and follow-up system that tracks conversions and wins more jobs.',
         icon: icons.sales,
       },
-      // ORANGE/PEACH (top-right) - warm accent
+      // Value / Gold (top-right) — warmth, craft
       {
         id: 1,
+        slug: 'operations',
         gridPosition: [0, 1],
         label: 'Ops',
-        color: '#fdba74',           // Orange 300
-        gradientColorB: '#fed7aa',  // Orange 200
-        activeColor: '#fb923c',
-        activeGradientColorB: '#fdba74',
-        textColor: '#7c2d12',
+        color: palette.gold500,
+        gradientColorB: palette.gold300,
+        activeColor: palette.gold700,
+        activeGradientColorB: palette.gold500,
+        textColor: palette.anchor900,
         slideDirection: [0, 0],
         tooltipTitle: 'Operations',
         tooltipSubhead: 'Run jobs clean',
         bullets: ['Schedule crews', 'Track production', 'Quality control'],
+        description: 'Smooth out your production pipeline. From scheduling crews to strict quality control, we help you run jobs clean and on time.',
         icon: icons.ops,
       },
-      // VIOLET (bottom-left) - purple-ish, distinct from cyan
+      // Systems teal (bottom-left) — process, precision
       {
         id: 2,
+        slug: 'finance',
         gridPosition: [1, 0],
         label: 'Finance',
-        color: '#a78bfa',           // Violet 400 - more saturated
-        gradientColorB: '#c4b5fd',  // Violet 300
-        activeColor: '#8b5cf6',
-        activeGradientColorB: '#a78bfa',
-        textColor: '#4c1d95',
+        color: palette.teal500,
+        gradientColorB: palette.teal300,
+        activeColor: palette.teal700,
+        activeGradientColorB: palette.teal500,
+        textColor: palette.sand100,
         slideDirection: [0, 0],
         tooltipTitle: 'Finance',
         tooltipSubhead: 'Know your numbers',
         bullets: ['Job costing', 'Cash visibility', 'Profit analysis'],
+        description: 'Gain total financial clarity. We implement precise job costing and profit analysis so you always have real-time cash visibility.',
         icon: icons.finance,
       },
-      // PINK (bottom-right) - warm pink, distinct from violet
+      // Growth green (bottom-right) — results, yield
       {
         id: 3,
+        slug: 'exit',
         gridPosition: [1, 1],
         label: 'Exit',
-        color: '#f9a8d4',           // Pink 300 - distinct pink
-        gradientColorB: '#fbcfe8',  // Pink 200
-        activeColor: '#f472b6',
-        activeGradientColorB: '#f9a8d4',
-        textColor: '#831843',
+        color: palette.green500,
+        gradientColorB: palette.green300,
+        activeColor: palette.green700,
+        activeGradientColorB: palette.green500,
+        textColor: palette.sand100,
         slideDirection: [0, 0],
         tooltipTitle: 'Exit',
         tooltipSubhead: 'Exit on your terms',
         bullets: ['Clean financials', 'Diligence-ready', 'Valuation support'],
+        description: 'Get diligence-ready. We clean up your financials and provide valuation support so you exit on your terms, for maximum value.',
         icon: icons.exit,
       },
     ],
   },
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // LEVEL B: MIDDLE STRIPS - Transition from blue to purple
+  // LEVEL B: MIDDLE STRIPS — Systems teal gradient (light → dark)
   // ─────────────────────────────────────────────────────────────────────────────
   {
     id: 'layer-b',
     level: 'B',
     layout: 'row',
     cols: 3,
-    depth: 5.5,  // Reduced to match stack dimensions
+    depth: 5.5,
     align: 'center',
     blocks: [
-      // Soft indigo (left)
+      // Systems dark (left)
       {
         id: 4,
+        slug: 'one-os',
         label: 'OS',
-        color: '#a5b4fc',           // Indigo 300
-        gradientColorB: '#c7d2fe',  // Indigo 200
-        activeColor: '#818cf8',
-        activeGradientColorB: '#a5b4fc',
-        textColor: '#312e81',
+        color: palette.teal700,
+        gradientColorB: palette.teal500,
+        activeColor: palette.anchor900,
+        activeGradientColorB: palette.teal700,
+        textColor: palette.sand100,
         slideDirection: [0, 0],
         tooltipTitle: 'One Operating System',
         tooltipSubhead: 'Everything connects',
         bullets: ['Lead → Review flow', 'Unified data', 'Single source of truth'],
+        description: 'No more disconnected tools. We unify your data into a single source of truth, connecting your entire flow from lead to review.',
         icon: icons.system,
       },
-      // Soft violet (center)
+      // Systems mid (center)
       {
         id: 5,
+        slug: 'one-team',
         label: 'Team',
-        color: '#c4b5fd',           // Violet 300
-        gradientColorB: '#ddd6fe',  // Violet 200
-        activeColor: '#a78bfa',
-        activeGradientColorB: '#c4b5fd',
-        textColor: '#4c1d95',
+        color: palette.teal500,
+        gradientColorB: palette.teal300,
+        activeColor: palette.teal700,
+        activeGradientColorB: palette.teal500,
+        textColor: palette.sand100,
         slideDirection: [0, 0],
         tooltipTitle: 'One Accountable Team',
         tooltipSubhead: 'Done-for-you execution',
         bullets: ['Not just advice', 'Implementation partner', 'Ongoing support'],
+        description: 'We aren\'t just consultants offering advice. We are your implementation partner providing ongoing, done-for-you execution.',
         icon: icons.team,
       },
-      // Soft purple (right)
+      // Systems light (right)
       {
         id: 6,
+        slug: 'one-plan',
         label: 'Plan',
-        color: '#d8b4fe',           // Purple 300
-        gradientColorB: '#e9d5ff',  // Purple 200
-        activeColor: '#c084fc',
-        activeGradientColorB: '#d8b4fe',
-        textColor: '#581c87',
+        color: palette.teal300,
+        gradientColorB: palette.tealExLight,
+        activeColor: palette.teal500,
+        activeGradientColorB: palette.teal300,
+        textColor: palette.anchor900,
         slideDirection: [0, 0],
         tooltipTitle: 'One Clear Plan',
         tooltipSubhead: 'Partner → Exit',
         bullets: ['Align', 'Transform', 'Scale'],
+        description: 'A clear roadmap from partnership to IPO. We align our goals, transform your operations, and scale together.',
         icon: icons.plan,
       },
     ],
   },
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // LEVEL C: BOTTOM TILES - Warm gradient: purple → pink → coral
+  // LEVEL C: BOTTOM TILES — Full brand spectrum: Anchor → Systems → Growth → Value
   // ─────────────────────────────────────────────────────────────────────────────
   {
     id: 'layer-c',
     level: 'C',
     layout: 'full',
     blocks: [
-      // Fuchsia/pink (balanced saturation)
+      // Anchor deep
       {
         id: 7,
+        slug: 'lead-to-review',
         label: 'Lead OS',
-        color: '#f0abfc',           // Fuchsia 300
-        gradientColorB: '#f5d0fe',  // Fuchsia 200
-        activeColor: '#e879f9',
-        activeGradientColorB: '#f0abfc',
-        textColor: '#701a75',
+        color: palette.anchor900,
+        gradientColorB: palette.anchor700,
+        activeColor: palette.anchorDeep,
+        activeGradientColorB: palette.anchor900,
+        textColor: palette.sand100,
         tooltipTitle: 'Lead-to-Review OS',
         tooltipSubhead: 'End-to-end workflow',
         bullets: ['Demand', 'Sales', 'Production', 'Review'],
+        description: 'An end-to-end workflow managing demand, sales, production, and reviews seamlessly.',
         icon: icons.flow,
       },
-      // Pink (balanced saturation)
+      // Anchor light
       {
         id: 8,
+        slug: 'crm-marketing',
         label: 'CRM',
-        color: '#f9a8d4',           // Pink 300
-        gradientColorB: '#fbcfe8',  // Pink 200
-        activeColor: '#f472b6',
-        activeGradientColorB: '#f9a8d4',
-        textColor: '#831843',
+        color: palette.anchor700,
+        gradientColorB: palette.anchor500,
+        activeColor: palette.anchor900,
+        activeGradientColorB: palette.anchor700,
+        textColor: palette.sand100,
         tooltipTitle: 'CRM + Marketing Engine',
         tooltipSubhead: 'Trackable & repeatable',
         bullets: ['CRM installation', 'Pipeline management', 'Marketing auto'],
+        description: 'Pipeline management and marketing automation that make your revenue trackable & repeatable.',
         icon: icons.contact,
       },
-      // Rose (balanced saturation)
+      // Systems dark
       {
         id: 9,
+        slug: 'accounting',
         label: 'Acct',
-        color: '#fda4af',           // Rose 300
-        gradientColorB: '#fecdd3',  // Rose 200
-        activeColor: '#fb7185',
-        activeGradientColorB: '#fda4af',
-        textColor: '#881337',
+        color: palette.teal700,
+        gradientColorB: palette.teal500,
+        activeColor: palette.tealDark,
+        activeGradientColorB: palette.teal700,
+        textColor: palette.sand100,
         tooltipTitle: 'Unified Accounting',
         tooltipSubhead: 'Financial clarity',
         bullets: ['Job costing', 'Reporting', 'Operating system link'],
+        description: 'Connect your job costing directly to your operating system for complete reporting clarity.',
         icon: icons.ledger,
       },
-      // Orange/peach (balanced saturation)
+      // Systems mid
       {
         id: 10,
+        slug: 'revops',
         label: 'RevOps',
-        color: '#fdba74',           // Orange 300
-        gradientColorB: '#fed7aa',  // Orange 200
-        activeColor: '#fb923c',
-        activeGradientColorB: '#fdba74',
-        textColor: '#7c2d12',
+        color: palette.teal500,
+        gradientColorB: palette.teal300,
+        activeColor: palette.teal700,
+        activeGradientColorB: palette.teal500,
+        textColor: palette.sand100,
         tooltipTitle: 'RevOps Controls',
         tooltipSubhead: 'System becomes behavior',
         bullets: ['Governance', 'Playbooks', 'Adoption tracking'],
+        description: 'Playbooks, governance, and adoption tracking to ensure your team actually uses the tools.',
         icon: icons.control,
       },
-      // Amber (balanced saturation)
+      // Growth dark
       {
         id: 11,
+        slug: 'efficiency',
         label: 'Savings',
-        color: '#fcd34d',           // Amber 300
-        gradientColorB: '#fde68a',  // Amber 200
-        activeColor: '#fbbf24',
-        activeGradientColorB: '#fcd34d',
-        textColor: '#78350f',
+        color: palette.green700,
+        gradientColorB: palette.green500,
+        activeColor: palette.greenDark,
+        activeGradientColorB: palette.green700,
+        textColor: palette.sand100,
         tooltipTitle: 'Efficiency Savings',
         tooltipSubhead: 'Cut leaks',
         bullets: ['Reduce overhead', 'Smoother handoffs', 'Standardization'],
+        description: 'Standardize handoffs, cut leaks, and reduce overhead to instantly boost your margins.',
         icon: icons.savings,
       },
-      // Rose/pink (balanced, no green)
+      // Growth mid
       {
         id: 12,
+        slug: 'shared-services',
         label: 'Services',
-        color: '#fda4af',           // Rose 300
-        gradientColorB: '#fecdd3',  // Rose 200
-        activeColor: '#fb7185',
-        activeGradientColorB: '#fda4af',
-        textColor: '#881337',
+        color: palette.green500,
+        gradientColorB: palette.green300,
+        activeColor: palette.green700,
+        activeGradientColorB: palette.green500,
+        textColor: palette.sand100,
         tooltipTitle: 'Shared Services',
         tooltipSubhead: 'Dedicated bench',
         bullets: ['Build support', 'Maintenance', 'Keep stack running'],
+        description: 'Access our dedicated support bench to maintain and optimize your tech stack.',
         icon: icons.services,
       },
-      // Purple/violet (balanced)
+      // Value dark
       {
         id: 13,
+        slug: 'scale',
         label: 'Scale',
-        color: '#d8b4fe',           // Purple 300
-        gradientColorB: '#e9d5ff',  // Purple 200
-        activeColor: '#c084fc',
-        activeGradientColorB: '#d8b4fe',
-        textColor: '#581c87',
+        color: palette.gold700,
+        gradientColorB: palette.gold500,
+        activeColor: palette.goldDark,
+        activeGradientColorB: palette.gold700,
+        textColor: palette.anchor900,
         tooltipTitle: 'Scale + Leverage',
         tooltipSubhead: 'Group power',
         bullets: ['8-12 businesses', 'Leverage economies', 'Unified growth'],
+        description: 'Combine the power of 8–12 businesses for unified growth and massive economies of scale.',
         icon: icons.growth,
       },
-      // Deep violet (back to cool, completing the arc)
+      // Value bright
       {
         id: 14,
+        slug: 'exit-options',
         label: 'Exit',
-        color: '#c4b5fd',           // Violet 300 - soft lavender
-        gradientColorB: '#ddd6fe',  // Violet 200
-        activeColor: '#a78bfa',
-        activeGradientColorB: '#c4b5fd',
-        textColor: '#4c1d95',
+        color: palette.gold500,
+        gradientColorB: palette.gold300,
+        activeColor: palette.gold700,
+        activeGradientColorB: palette.gold500,
+        textColor: palette.anchor900,
         tooltipTitle: 'Institutional Exit Options',
         tooltipSubhead: 'Premium exit positioning',
         bullets: ['Audit logs', 'Data room', 'Transferability'],
+        description: 'Audit logs and clean data rooms that position your business for a premium public exit.',
         icon: icons.exitReady,
       },
     ],

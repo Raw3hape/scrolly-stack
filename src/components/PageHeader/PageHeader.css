@@ -20,7 +20,7 @@
   font: var(--font-body-lg);
   color: var(--text-secondary);
   line-height: var(--leading-relaxed);
-  max-width: 640px;
+  max-width: var(--content-narrow-max);
 }
 
 .page-header--center .page-header__description {

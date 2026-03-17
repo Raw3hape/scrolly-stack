@@ -20,10 +20,14 @@ export type Level = 'A' | 'B' | 'C';
 /** Individual block as stored in data.ts (no level — that lives on the layer) */
 export interface RawBlockData {
   id: number;
+  /** URL-safe identifier matching CONTENT.md block IDs (e.g. 'sales', 'operations') */
+  slug?: string;
   label: string;
   tooltipTitle: string;
   tooltipSubhead: string;
   bullets: string[];
+  /** Full description from CONTENT.md — used for SEO, noscript, future detail views */
+  description?: string;
   color: string;
   gradientColorB: string;
   activeColor: string;

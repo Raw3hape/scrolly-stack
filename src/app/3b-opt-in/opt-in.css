@@ -1,0 +1,121 @@
+/* ============================================================================
+ * Opt-In Page Styles — Foundation Projects
+ *
+ * Lead magnet form with premium visual treatment.
+ * ========================================================================== */
+
+.opt-in {
+  max-width: var(--content-form-max);
+  margin: 0 auto;
+  padding: var(--space-2xl) 0;
+  text-align: center;
+}
+
+/* === Badge === */
+.opt-in__badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-md);
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-xl);
+}
+
+/* === Mockup Image === */
+.opt-in__mockup {
+  margin-bottom: var(--space-xl);
+}
+
+.opt-in__mockup-image {
+  width: auto;
+  max-height: 320px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  margin: 0 auto;
+}
+
+/* === Form === */
+.opt-in__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+/* === Field === */
+.opt-in__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  text-align: left;
+}
+
+/* === Label === */
+.opt-in__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+/* === Input === */
+.opt-in__input {
+  padding: var(--space-md) var(--space-lg);
+  border: var(--line-thin) solid var(--border-default);
+  border-radius: var(--radius-lg);
+  font: var(--font-body);
+  color: var(--text-primary);
+  background: var(--surface-base);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.opt-in__input::placeholder {
+  color: var(--text-muted);
+}
+
+.opt-in__input:focus {
+  outline: none;
+  border-color: var(--accent-brand);
+  box-shadow: var(--focus-ring);
+}
+
+/* === Submit button === */
+.opt-in__submit {
+  padding: var(--btn-padding);
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--btn-radius);
+  font-size: var(--font-size-base);
+  font-weight: var(--btn-font-weight);
+  cursor: pointer;
+  box-shadow:
+    var(--shadow-md),
+    var(--btn-shadow-primary);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.opt-in__submit:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    var(--shadow-lg),
+    var(--glow-primary);
+}
+
+.opt-in__submit:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.opt-in__submit:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
+}

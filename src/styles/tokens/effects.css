@@ -1,6 +1,7 @@
 /* ============================================================================
  * EFFECTS TOKENS — Foundation Projects
  * 
+ * Brand Identity: warm glass, subtle shadows, no neon glow.
  * RESKIN: Change radii for sharp/rounded look, shadows for depth feel.
  * ========================================================================== */
 
@@ -13,29 +14,74 @@
   --radius-xl:   16px;
   --radius-2xl:  24px;
   --radius-full: 9999px;
-  --btn-radius:  10px;
+  --btn-radius:  10px;   /* Between md(8) and lg(12) — intentional design choice for buttons */
 
   /* === Shadows === */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  /* RESKIN: base = #103740 (anchor-900) — recalculate rgba when anchor changes */
+  --shadow-sm: 0 1px 2px 0 rgba(16, 55, 64, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(16, 55, 64, 0.07), 0 2px 4px -1px rgba(16, 55, 64, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(16, 55, 64, 0.07), 0 4px 6px -2px rgba(16, 55, 64, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(16, 55, 64, 0.07), 0 10px 10px -5px rgba(16, 55, 64, 0.03);
 
-  /* === Glass effect === */
-  --glass-blur:           blur(20px);
-  --glass-saturation:     saturate(180%);
-  --glass-border:         1px solid rgba(255, 255, 255, 0.3);
-  --glass-bg:             rgba(255, 255, 255, 0.6);
-  --glass-bg-scrolled:    rgba(255, 255, 255, 0.75);
-  --glass-bg-sticky:      rgba(255, 255, 255, 0.85);
-  --glass-shadow:         0 4px 40px rgba(0, 0, 0, 0.04), 0 12px 60px rgba(0, 0, 0, 0.03);
-  --glass-shadow-scrolled: 0 8px 50px rgba(0, 0, 0, 0.06), 0 20px 80px rgba(0, 0, 0, 0.04);
+  /* === Glass effect (warm cream base) === */
+  /* RESKIN: base = #F2EDE4 (sand-100) — recalculate rgba when sand changes */
+  --glass-blur:            blur(20px);
+  --glass-saturation:      saturate(180%);
+  --glass-border:          1px solid rgba(242, 237, 228, 0.5);
+  --glass-bg:              rgba(242, 237, 228, 0.7);
+  --glass-bg-scrolled:     rgba(242, 237, 228, 0.85);
+  --glass-bg-sticky:       rgba(242, 237, 228, 0.92);
+  --glass-card-bg:         rgba(242, 237, 228, 0.65);
+  /* RESKIN: shadow base = #103740 (anchor-900) */
+  --glass-shadow:          0 4px 40px rgba(16, 55, 64, 0.03), 0 12px 60px rgba(16, 55, 64, 0.02);
+  --glass-shadow-scrolled: 0 8px 50px rgba(16, 55, 64, 0.05), 0 20px 80px rgba(16, 55, 64, 0.03);
 
-  /* === Glow / accent effects === */
-  --glow-primary:         0 0 20px rgba(139, 92, 246, 0.4);
-  --btn-shadow-primary:   0 1px 3px rgba(0, 0, 0, 0.1), 0 4px 15px rgba(139, 92, 246, 0.2);
+  /* === Glow / accent effects (subtle, not neon) === */
+  /* RESKIN: base = #297373 (teal-500) + #103740 (anchor-900) */
+  --glow-primary:         0 0 15px rgba(41, 115, 115, 0.2), 0 0 30px rgba(41, 115, 115, 0.1);
+  --glow-primary-intense: 0 0 20px rgba(41, 115, 115, 0.3), 0 0 40px rgba(41, 115, 115, 0.15);
+  --btn-shadow-primary:   0 1px 3px rgba(16, 55, 64, 0.08), 0 4px 15px rgba(41, 115, 115, 0.12);
+
+  /* === Neutral decorative effects (brand-agnostic but tokenized) === */
+
+  /* Overlay / scrim */
+  --overlay-scrim:        rgba(0, 0, 0, 0.4);
+
+  /* Inset highlights (white glints on glass) */
+  --inset-highlight:      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --inset-highlight-strong: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --inset-highlight-subtle: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+
+  /* Shimmer (button hover sweep) */
+  --shimmer-color:        rgba(255, 255, 255, 0.2);
+
+  /* Timeline dot & icon decorative effects */
+  --dot-border:           2px solid rgba(255, 255, 255, 0.6);
+  --dot-border-active:    rgba(255, 255, 255, 0.9);
+  --dot-ring-active:      0 0 0 3px rgba(255, 255, 255, 0.4);
+  --dot-shadow:           0 2px 8px rgba(0, 0, 0, 0.1);
+  --dot-shadow-active:    0 4px 15px rgba(0, 0, 0, 0.15);
+  --dot-icon-shadow:      drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+  --dot-icon-shadow-active: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+
+  /* Glass card border (mobile step cards, tooltip) */
+  --glass-card-border:    1px solid rgba(255, 255, 255, 0.5);
+
+  /* Mobile step card shadows */
+  --glass-card-shadow:    0 12px 50px rgba(0, 0, 0, 0.08),
+                          0 30px 80px rgba(0, 0, 0, 0.05);
+
+  /* Tooltip shadows */
+  --tooltip-shadow:       0 8px 32px rgba(0, 0, 0, 0.12),
+                          0 2px 8px rgba(0, 0, 0, 0.06);
 
   /* === Button tokens === */
   --btn-padding: 0.75rem 1.5rem;
   --btn-font-weight: 600;
+
+  /* === Focus ring & outline === */
+  /* RESKIN: base = #297373 (teal-500) */
+  --focus-ring: 0 0 0 3px rgba(41, 115, 115, 0.15);
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 3px;
 }

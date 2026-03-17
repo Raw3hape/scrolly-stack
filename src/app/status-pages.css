@@ -1,0 +1,115 @@
+/* ============================================================================
+ * STATUS PAGES — Foundation Projects
+ *
+ * Shared styles for error, not-found, placeholder, and coming-soon pages.
+ * Eliminates inline styles on status/utility pages.
+ * ========================================================================== */
+
+/* === Titles === */
+.status-page__title {
+  font: var(--font-h2);
+  margin-bottom: var(--space-md);
+}
+
+.status-page__title--display {
+  font: var(--font-display);
+  margin-bottom: var(--space-md);
+}
+
+.status-page__title--h1 {
+  font: var(--font-h1);
+  margin-bottom: var(--space-lg);
+}
+
+/* === Body text === */
+.status-page__body {
+  font: var(--font-body);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.status-page__body--lg {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.status-page__body--lg-no-mb {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+}
+
+/* === Placeholder box (for coming-soon / embed widgets) === */
+.placeholder-box {
+  padding: var(--space-2xl);
+  border: 2px dashed var(--border-default);
+  border-radius: var(--radius-xl);
+  color: var(--text-muted);
+  font: var(--font-body);
+}
+
+/* === Team accent stat === */
+.team-accent-stat {
+  font: var(--font-h3);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: var(--space-lg);
+}
+
+/* === Centered wrapper === */
+.team-section {
+  text-align: center;
+  padding: var(--space-2xl) 0;
+}
+
+/* === Section body with constrained width === */
+.section-body {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: var(--content-narrow-max);
+}
+
+/* === Section heading (used for "Here's How It Works" across pages) === */
+.section-heading {
+  font: var(--font-h2);
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+/* === Content block (heading + body for problem/opportunity sections) === */
+.status-page__block {
+  text-align: center;
+  padding: var(--space-xl) 0;
+}
+
+.status-page__heading {
+  font: var(--font-h2);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+/* === Stakes / Urgency section (reused on Home and Investors) === */
+.stakes-section {
+  text-align: center;
+  padding: var(--space-2xl) 0;
+}
+
+.stakes-section__lead {
+  font: var(--font-h3);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+  max-width: var(--content-text-max);
+  margin-inline: auto;
+}
+
+.stakes-section__detail {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: var(--content-narrow-max);
+  margin-inline: auto;
+}

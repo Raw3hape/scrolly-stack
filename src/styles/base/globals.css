@@ -4,7 +4,7 @@
 
 body {
   font-family: var(--font-family);
-  font-weight: 400;
+  font-weight: var(--weight-normal);
   line-height: var(--leading-relaxed);
   color: var(--text-primary);
   background: var(--surface-base);
@@ -16,7 +16,7 @@ body {
   position: absolute;
   top: -100%;
   left: var(--space-md);
-  z-index: 10000;
+  z-index: var(--z-skip-link);
   padding: var(--space-sm) var(--space-md);
   background: var(--accent-brand);
   color: var(--text-inverse);
@@ -31,13 +31,13 @@ body {
 
 /* === Selection === */
 ::selection {
-  background: rgba(139, 92, 246, 0.2);
+  background: var(--selection-bg);
   color: var(--text-primary);
 }
 
 /* === Scrollbar (webkit) === */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: var(--scrollbar-width);
 }
 
 ::-webkit-scrollbar-track {

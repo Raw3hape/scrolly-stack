@@ -1,29 +1,28 @@
 import type { Metadata } from 'next';
 import Section from '@/components/Section/Section';
 import PageHeader from '@/components/PageHeader/PageHeader';
+import { pageMetadata } from '@/config/content/metadata';
+import { scheduleContent } from '@/config/content/schedule';
+import '../status-pages.css';
 
-export const metadata: Metadata = {
-  title: 'Schedule A Call',
-  description: 'Book a free 15-minute consultation with Foundation Projects to see if you qualify.',
-};
+export const metadata: Metadata = pageMetadata.schedule;
 
+/**
+ * Schedule A Call Page — Foundation Projects
+ *
+ * Section 1: Heading + body + Calendly widget placeholder.
+ */
 export default function SchedulePage() {
   return (
     <Section width="narrow" centered>
       <PageHeader
-        title="Schedule A Call"
-        description="Schedule a call below or text ROOF to XXX-XXX-XXXX ANYTIME."
+        title={scheduleContent.heading}
+        description={scheduleContent.body}
         align="center"
       />
       {/* Calendly embed will go here */}
-      <div style={{
-        padding: 'var(--space-2xl)',
-        border: '2px dashed var(--border-default)',
-        borderRadius: 'var(--radius-xl)',
-        color: 'var(--text-muted)',
-        font: 'var(--font-body)',
-      }}>
-        [Calendly Widget — Coming Soon]
+      <div className="placeholder-box">
+        [{scheduleContent.widgetPlaceholder}]
       </div>
     </Section>
   );

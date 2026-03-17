@@ -1,0 +1,63 @@
+/* ============================================================================
+ * ComparisonColumns Styles — Foundation Projects
+ *
+ * Two-column comparison with negative/positive visual treatment.
+ * ========================================================================== */
+
+.comparison {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+@media (min-width: 640px) {
+  .comparison {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* === Column base === */
+.comparison__column {
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-default);
+}
+
+/* === Negative (left) — muted, desaturated feel === */
+.comparison__column--negative {
+  background: var(--surface-raised);
+  border-color: var(--border-subtle);
+}
+
+.comparison__column--negative .comparison__title {
+  color: var(--text-muted);
+}
+
+/* === Positive (right) — vibrant, emphasized === */
+.comparison__column--positive {
+  background: var(--glass-card-bg);
+  border-color: var(--accent-brand);
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 1px var(--accent-brand);
+}
+
+.comparison__column--positive .comparison__title {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* === Title === */
+.comparison__title {
+  font: var(--font-h3);
+  margin-bottom: var(--space-md);
+}
+
+/* === Body text === */
+.comparison__body {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}

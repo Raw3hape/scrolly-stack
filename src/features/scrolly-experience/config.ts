@@ -5,6 +5,8 @@
  * Change values here to adjust the entire visualization without touching components.
  */
 
+import { palette } from '@/config/palette';
+
 // =============================================================================
 // GEOMETRY CONFIGURATION
 // =============================================================================
@@ -110,16 +112,30 @@ export const animation = {
 export const materials = {
   // Block material — clean pastel look
   block: {
-    roughness: 0.35,
+    roughness: 0.25,
     metalness: 0.0,
-    envMapIntensity: 0.3,
+    envMapIntensity: 0.2,
   },
   
   // Active state — slightly shinier
   active: {
-    roughness: 0.25,
+    roughness: 0.2,
     metalness: 0.0,
     envMapIntensity: 0.3,
+  },
+
+  // MeshPhysicalMaterial properties (glass effects)
+  physical: {
+    transmission: 0,             // Disabled: requires double-render per block
+    ior: 1.5,                  // Index of refraction (glass = 1.5)
+    thickness: 0.5,            // Refraction depth
+    iridescence: 0.3,          // Rainbow color shift
+    iridescenceIOR: 1.3,       // Iridescence strength
+    clearcoat: 0.4,            // Glossy top layer
+    clearcoatRoughness: 0.1,   // Smooth clearcoat
+    sheen: 0.3,                // Soft velvet-like highlight
+    sheenRoughness: 0.4,       // Sheen spread
+    sheenColor: '#e8ddd0',     // Warm tint (matches palette)
   },
   
   // Color transition
@@ -144,8 +160,8 @@ export const lighting = {
     castShadow: true,
     shadowMapSize: 2048,      // Balanced resolution for performance
     shadowBias: -0.0002,      // Fine-tuned bias
-    shadowRadius: 20,         // Higher = softer, more blurred edges
-    blurSamples: 25,
+    shadowRadius: 20,         // Higher = softer blurred edges
+    blurSamples: 25,          // Number of VSM blur samples
     shadowCamera: {
       far: 60,
       left: -15,
@@ -158,18 +174,18 @@ export const lighting = {
   fill: {
     position: [-6, 12, -6],
     intensity: 0.1,           // Lower fill = deeper shadows remain visible
-    color: '#e8e8ff',
+    color: palette.ambientLight,
   },
   
   bottom: {
     position: [0, -6, 0],
     intensity: 0.05,          // Very low bottom light
-    color: '#ffffff',
+    color: palette.white,
   },
   
   environment: {
-    preset: 'studio',
-    intensity: 0.25,          // Reduced env intensity
+    preset: 'sunset',           // Warm cinematic lighting
+    intensity: 0.35,            // Warm reflections on blocks
   },
 };
 
@@ -178,17 +194,17 @@ export const lighting = {
 // SHADOWS CONFIGURATION
 // =============================================================================
 
-// Contact shadows disabled - only using directional light shadows between layers
+// Contact shadows disabled — model floats in clean space
 export const shadows = {
-  enabled: false,  // Disabled - the bottom shadow looks unnatural
+  enabled: false,
   contact: {
     position: [0, -4.8, 0],
-    opacity: 0.5,
-    scale: 30,
-    blur: 2,
-    far: 15,
-    resolution: 1024,
-    color: '#0f172a',
+    opacity: 0.35,
+    scale: 25,
+    blur: 3.5,
+    far: 12,
+    resolution: 512,
+    color: '#1a1520',
   },
 };
 
@@ -198,13 +214,13 @@ export const shadows = {
 // =============================================================================
 
 export const postProcessing = {
-  enabled: false,  // Disabled for better performance
+  enabled: true,
   
   bloom: {
-    enabled: false,
-    intensity: 0.2,
-    luminanceThreshold: 0.9,
-    luminanceSmoothing: 0.5,
+    enabled: true,
+    intensity: 0.08,           // Very subtle glow
+    luminanceThreshold: 0.85,  // Only bright surfaces glow
+    luminanceSmoothing: 0.4,
     mipmapBlur: true,
   },
   
@@ -216,9 +232,9 @@ export const postProcessing = {
   },
   
   vignette: {
-    enabled: false,
+    enabled: false,            // Disabled: creates visible dark frame
     offset: 0.3,
-    darkness: 0.2,
+    darkness: 0.15,
   },
 };
 
@@ -247,9 +263,9 @@ export const labels = {
 // =============================================================================
 
 export const render = {
-  dpr: [1, 2],           // Device pixel ratio range
+  dpr: [1, 2],           // Restored full Retina resolution
   shadows: true,
-  shadowMapType: 'VSMShadowMap',  // 'BasicShadowMap' | 'PCFShadowMap' | 'PCFSoftShadowMap' | 'VSMShadowMap'
+  shadowMapType: 'VSMShadowMap',  // Restored premium butter-soft shadows
 };
 
 

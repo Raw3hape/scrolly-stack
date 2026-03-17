@@ -1,14 +1,16 @@
 import Section from '@/components/Section/Section';
 import LinkButton from '@/components/LinkButton/LinkButton';
+import { routes } from '@/config/nav';
+import './status-pages.css';
 
 export default function NotFound() {
   return (
     <Section centered minHeight="60vh">
-      <h1 style={{ font: 'var(--font-display)', marginBottom: 'var(--space-md)' }}>404</h1>
-      <p style={{ font: 'var(--font-body-lg)', color: 'var(--text-secondary)', marginBottom: 'var(--space-xl)' }}>
+      <h1 className="status-page__title--display">404</h1>
+      <p className="status-page__body--lg">
         Page not found
       </p>
-      <LinkButton href="/">Back to Home</LinkButton>
+      <LinkButton href={routes.home}>Back to Home</LinkButton>
     </Section>
   );
 }

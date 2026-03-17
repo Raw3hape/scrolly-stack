@@ -13,10 +13,12 @@
 import { useState } from 'react';
 import Scene from './components/Scene';
 import Overlay from './components/Overlay';
+import FpsCounter from '@/components/FpsCounter/FpsCounter';
+import { HERO_STEP } from './utils/stepNavigation';
 import './ScrollyExperience.css';
 
 export default function ScrollyExperience() {
-  const [currentStep, setStep] = useState(-1);
+  const [currentStep, setStep] = useState(HERO_STEP);
 
   return (
     <div className="layout-container">
@@ -26,6 +28,8 @@ export default function ScrollyExperience() {
       <div className="col-visual">
         <Scene currentStep={currentStep} onBlockClick={() => {}} />
       </div>
+      {process.env.NODE_ENV === 'development' && <FpsCounter />}
     </div>
   );
 }
+

@@ -3,26 +3,24 @@
  * ========================================================================== */
 
 .footer {
-  border-top: 1px solid var(--border-default);
+  border-top: var(--line-thin) solid var(--border-default);
   background: var(--surface-base);
   padding-block: var(--space-2xl);
 }
 
-.footer-container {
-  /* Inherits .container from utilities.css */
-}
+
 
 .footer-content {
   display: flex;
   justify-content: space-between;
   gap: var(--space-2xl);
   padding-bottom: var(--space-xl);
-  border-bottom: 1px solid var(--border-default);
+  border-bottom: var(--line-thin) solid var(--border-default);
 }
 
 /* Brand */
 .footer-brand {
-  max-width: 400px;
+  max-width: var(--content-form-max);
 }
 
 .footer-wordmark {

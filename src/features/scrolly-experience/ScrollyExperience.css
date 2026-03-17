@@ -28,7 +28,7 @@
 .col-content {
   width: var(--content-width);
   position: relative;
-  z-index: 10;
+  z-index: var(--z-overlay);
   display: flex;
   flex-direction: column;
   
@@ -96,7 +96,7 @@
     height: var(--visual-height-mobile);
     position: sticky;
     top: var(--header-height-mobile);
-    z-index: 5;  /* Lower z-index so content can overlap */
+    z-index: var(--z-base);  /* Lower z-index so content can overlap */
     order: 1;
     padding-right: var(--space-lg);
     flex-shrink: 0;
@@ -109,7 +109,7 @@
     padding-left: var(--space-lg);
     padding-right: var(--space-lg);
     position: relative;
-    z-index: 10;  /* Above 3D so text overlays model */
+    z-index: var(--z-overlay);  /* Above 3D so text overlays model */
     /* Negative margin to overlap with 3D area */
     margin-top: -15vh;
     padding-top: 5vh;

@@ -1,15 +1,19 @@
 /* ============================================================================
  * TYPOGRAPHY TOKENS — Foundation Projects
  * 
- * RESKIN: Change --font-family and scale values to rebrand typography.
- * Uses fluid clamp() — auto-adapts from 320px to 1400px viewport.
+ * RESKIN: Headlines use --font-family-serif (DM Serif Display).
+ *         Body uses --font-family (Satoshi).
+ *         All sizes fluid via clamp() — auto-adapts 320px→1400px viewport.
  * ========================================================================== */
 
 :root {
   /* === Font Family === */
-  /* Set by next/font/local in layout.tsx via CSS variable --font-family */
+  /* Set by next/font in layout.tsx via CSS variables:
+     --font-family        → Satoshi (sans-serif body)
+     --font-family-serif  → DM Serif Display (headlines) */
   
   /* === Fluid Type Scale === */
+  --font-size-2xs:  0.55rem;                                      /* 8.8px — micro labels */
   --font-size-xs:   clamp(0.7rem,  0.66rem + 0.2vw,  0.75rem);   /* 11.2→12px */
   --font-size-sm:   clamp(0.8rem,  0.74rem + 0.3vw,  0.875rem);  /* 12.8→14px */
   --font-size-base: clamp(0.938rem, 0.875rem + 0.3vw, 1rem);     /* 15→16px   */
@@ -18,14 +22,18 @@
   --font-size-2xl:  clamp(1.5rem,  1.25rem + 1.25vw,  2rem);     /* 24→32px   */
   --font-size-3xl:  clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);   /* 30→40px   */
   --font-size-4xl:  clamp(2.25rem, 1.75rem + 2.5vw,   3.25rem);  /* 36→52px   */
-  --font-size-hero: clamp(2.75rem, 2rem + 3.75vw,     4.5rem);   /* 44→72px   */
+  --font-size-hero: clamp(1.5rem,  1.125rem + 1.875vw, 2.25rem);  /* 24→36px   */
+
+  /* Component-specific sizes → defined as component-level CSS vars in
+     Header.css, Overlay.css, HoverTooltip.css (NOT here) */
 
   /* === Typography Roles (composed tokens) === */
-  /* Usage: font: var(--font-display); */
-  --font-display:  600 var(--font-size-hero)/1.05 var(--font-family);
-  --font-h1:       700 var(--font-size-4xl)/1.1  var(--font-family);
-  --font-h2:       700 var(--font-size-3xl)/1.15 var(--font-family);
-  --font-h3:       700 var(--font-size-2xl)/1.2  var(--font-family);
+  /* Headlines → serif */
+  --font-display:  400 var(--font-size-hero)/1.05 var(--font-family-serif);
+  --font-h1:       400 var(--font-size-4xl)/1.1  var(--font-family-serif);
+  --font-h2:       400 var(--font-size-3xl)/1.15 var(--font-family-serif);
+  --font-h3:       400 var(--font-size-2xl)/1.2  var(--font-family-serif);
+  /* Body + UI → sans */
   --font-h4:       600 var(--font-size-xl)/1.3   var(--font-family);
   --font-body-lg:  400 var(--font-size-lg)/1.6   var(--font-family);
   --font-body:     400 var(--font-size-base)/1.6  var(--font-family);
@@ -47,4 +55,11 @@
   --tracking-wide:   0.05em;
   --tracking-wider:  0.1em;
   --tracking-widest: 0.15em;
+
+  /* === Font Weight === */
+  --weight-normal:    400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+  --weight-bold:      700;
+  --weight-extrabold: 800;
 }

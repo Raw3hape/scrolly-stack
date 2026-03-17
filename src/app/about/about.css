@@ -1,0 +1,154 @@
+/* ============================================================================
+ * About Page Styles — Foundation Projects
+ *
+ * Expanded problem, team grid, and proof section styles.
+ * ========================================================================== */
+
+/* === Expanded Problem === */
+.about-problem {
+  text-align: center;
+  padding: var(--space-xl) 0;
+}
+
+.about-problem__heading {
+  font: var(--font-h2);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.about-problem__body {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: var(--content-narrow-max);
+  margin-inline: auto;
+  margin-bottom: var(--space-lg);
+}
+
+.about-problem__punchline {
+  font: var(--font-h3);
+  color: var(--accent-brand);
+  font-style: italic;
+}
+
+/* === Team Section === */
+.team-section {
+  text-align: center;
+}
+
+.team-section__heading {
+  font: var(--font-h2);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.team-section__subheading {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
+  max-width: var(--content-narrow-max);
+  margin-inline: auto;
+}
+
+/* === Team Grid === */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin-top: var(--space-2xl);
+}
+
+@media (max-width: 768px) {
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === Team Card === */
+.team-card {
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  background: var(--glass-card-bg);
+  border: var(--line-thin) solid var(--border-default);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.team-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.team-card__photo-wrapper {
+  margin-bottom: var(--space-lg);
+}
+
+.team-card__photo-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  font-size: var(--font-size-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+}
+
+.team-card__name {
+  font: var(--font-h4);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.team-card__role {
+  font: var(--font-body-sm);
+  color: var(--accent-brand);
+  font-weight: var(--weight-semibold);
+  margin-bottom: var(--space-sm);
+}
+
+.team-card__bio {
+  font: var(--font-body-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* === Proof Section === */
+.about-proof {
+  text-align: center;
+  padding: var(--space-xl) 0;
+}
+
+.about-proof__heading {
+  font: var(--font-h2);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
+.about-proof__body {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: var(--content-narrow-max);
+  margin-inline: auto;
+  margin-bottom: var(--space-lg);
+}
+
+.about-proof__detail {
+  font: var(--font-body);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+  max-width: var(--content-narrow-max);
+  margin-inline: auto;
+}

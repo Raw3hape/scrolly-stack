@@ -25,17 +25,24 @@ export default function MouseParallaxGroup({ children, mouseRef }: MouseParallax
   const groupRef = useRef<THREE.Group>(null);
   const currentRotation = useRef({ x: 0, y: 0 });
 
-  useFrame(() => {
+  useFrame((state) => {
     if (!groupRef.current || !mouseRef.current) return;
 
     const targetX = -mouseRef.current.y * animation.parallax.intensity;
     const targetY = mouseRef.current.x * animation.parallax.intensity;
 
-    currentRotation.current.x += (targetX - currentRotation.current.x) * animation.parallax.lerpSpeed;
-    currentRotation.current.y += (targetY - currentRotation.current.y) * animation.parallax.lerpSpeed;
+    const dx = targetX - currentRotation.current.x;
+    const dy = targetY - currentRotation.current.y;
 
-    groupRef.current.rotation.x = currentRotation.current.x;
-    groupRef.current.rotation.y = currentRotation.current.y;
+    if (Math.abs(dx) > 0.0001 || Math.abs(dy) > 0.0001) {
+      currentRotation.current.x += dx * animation.parallax.lerpSpeed;
+      currentRotation.current.y += dy * animation.parallax.lerpSpeed;
+
+      groupRef.current.rotation.x = currentRotation.current.x;
+      groupRef.current.rotation.y = currentRotation.current.y;
+
+      state.invalidate();
+    }
   });
 
   return (

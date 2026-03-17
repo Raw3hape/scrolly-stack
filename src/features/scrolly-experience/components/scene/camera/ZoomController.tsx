@@ -23,6 +23,7 @@ export default function ZoomController({ targetZoom }: { targetZoom: number }) {
         delta * animation.zoom.lerpSpeed
       );
       state.camera.updateProjectionMatrix();
+      state.invalidate();
     }
   });
 

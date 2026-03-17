@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import '../status-pages.css';
 
 export const metadata: Metadata = {
   title: 'Shadow Local',
@@ -9,8 +10,8 @@ export default function ShadowLocalPage() {
   return (
     <section className="section">
       <div className="container container--narrow">
-        <h1 style={{ font: 'var(--font-h1)', marginBottom: 'var(--space-lg)' }}>Shadow Local</h1>
-        <p style={{ font: 'var(--font-body-lg)', color: 'var(--text-secondary)' }}>
+        <h1 className="status-page__title--h1">Shadow Local</h1>
+        <p className="status-page__body--lg-no-mb">
           Content coming soon.
         </p>
       </div>

@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { DM_Serif_Display } from 'next/font/google';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import VersionBadge from '@/components/VersionBadge/VersionBadge';
 import '@/styles/index.css';
 
 /**
- * Satoshi font — self-hosted via next/font/local
- * Sets CSS variable --font-family used throughout the design system.
- * RESKIN: Replace font files in src/fonts/ and update paths here.
+ * Satoshi — sans-serif body font (self-hosted)
+ * Sets CSS variable --font-family used for body text, UI, buttons.
  */
 const satoshi = localFont({
   src: [
@@ -20,16 +21,28 @@ const satoshi = localFont({
 });
 
 /**
+ * DM Serif Display — editorial serif for headlines
+ * Sets CSS variable --font-family-serif used for h1-h3, hero display.
+ * Brand adjacencies: Kinfolk, Architectural Digest, Four Seasons.
+ */
+const dmSerif = DM_Serif_Display({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-family-serif',
+  display: 'swap',
+});
+
+/**
  * Default metadata for the entire site.
  * Individual pages can override via their own `metadata` export.
  */
 export const metadata: Metadata = {
   metadataBase: new URL('https://foundationprojects.com'),
   title: {
-    default: 'Foundation Projects — Build a Roofing Business That Sells at a Premium',
+    default: 'Foundation Projects — We Take Roofing Companies Public',
     template: '%s | Foundation Projects',
   },
-  description: 'We install CRM, marketing, and ops systems that transform roofing companies into premium sellable businesses.',
+  description: 'We\'re building a roofing company that goes public. Best-in-class operators get 7–10× what PE would pay.',
   openGraph: {
     type: 'website',
     siteName: 'Foundation Projects',
@@ -50,7 +63,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={satoshi.variable}>
+    <html lang="en" className={`${satoshi.variable} ${dmSerif.variable}`}>
       <body>
         <a href="#main" className="skip-link">
           Skip to content
@@ -58,6 +71,7 @@ export default function RootLayout({
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <VersionBadge />
       </body>
     </html>
   );

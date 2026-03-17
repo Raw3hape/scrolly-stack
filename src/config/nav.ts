@@ -35,9 +35,9 @@ export const ctaConfig = {
 /** Brand configuration */
 export const brandConfig = {
   wordmark: 'Foundation Projects',
-  tagline: 'Roofing Consulting',
-  /** Logo path relative to public/ */
-  logo: '/FoundationProjects_Logo_Main.png',
+  tagline: 'We Take Roofing Companies Public',
+  /** Logo SVG path relative to public/ — vector for crisp rendering at any size */
+  logo: '/FoundationProjects_Logo_Main.svg',
   scrollToTopOnLogoClick: true,
 } as const;
 

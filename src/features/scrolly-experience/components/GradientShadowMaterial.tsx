@@ -9,13 +9,14 @@ import { useMemo, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { animation, materials } from '../config';
+import { palette } from '@/config/palette';
 import type { GradientShadowMaterialProps } from '../types';
 
 let materialVersion = 0;
 
 export default function GradientShadowMaterial({
-  colorA = '#f9a8d4',
-  colorB = '#fce7f3',
+  colorA = palette.sand200,
+  colorB = palette.sand100,
   isActive = false,
   isHovered = false,
   isHeroState = false,
@@ -23,7 +24,7 @@ export default function GradientShadowMaterial({
 }: GradientShadowMaterialProps) {
   // Shader type not exported by @types/three, define inline
   const shaderRef = useRef<{ uniforms: Record<string, { value: unknown }> } | null>(null);
-  const materialRef = useRef<THREE.MeshStandardMaterial | null>(null);
+  const materialRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
   const currentHoverRef = useRef(0);
   const targetHoverRef = useRef(0);
   const currentSaturationRef = useRef(1.0);
@@ -37,11 +38,23 @@ export default function GradientShadowMaterial({
     const colA = new THREE.Color(colorA);
     const colB = new THREE.Color(colorB);
 
-    const mat = new THREE.MeshStandardMaterial({
-      color: '#ffffff',
+    const mat = new THREE.MeshPhysicalMaterial({
+      color: palette.white,
       roughness: isActive ? materials.active.roughness : materials.block.roughness,
       metalness: isActive ? materials.active.metalness : materials.block.metalness,
       envMapIntensity: isActive ? materials.active.envMapIntensity : materials.block.envMapIntensity,
+      // Physical glass effects
+      transmission: materials.physical.transmission,
+      ior: materials.physical.ior,
+      thickness: materials.physical.thickness,
+      iridescence: materials.physical.iridescence,
+      iridescenceIOR: materials.physical.iridescenceIOR,
+      clearcoat: materials.physical.clearcoat,
+      clearcoatRoughness: materials.physical.clearcoatRoughness,
+      // Sheen (velvet highlight)
+      sheen: materials.physical.sheen,
+      sheenRoughness: materials.physical.sheenRoughness,
+      sheenColor: new THREE.Color(materials.physical.sheenColor),
     });
 
     mat.customProgramCacheKey = () => materialKey;
@@ -55,15 +68,21 @@ export default function GradientShadowMaterial({
       shader.uniforms.uIsHovered = { value: 0.0 };
       shader.uniforms.uColorReveal = { value: 1.0 };
       shader.uniforms.uSaturationBoost = { value: 1.0 };
+      shader.uniforms.uFresnelPower = { value: 2.5 };  // Rim light falloff
 
       shader.vertexShader = shader.vertexShader.replace(
         'void main() {',
         `
         varying vec3 vLocalPos;
         varying vec3 vLocalNorm;
+        varying vec3 vWorldNormal;
+        varying vec3 vViewDir;
         void main() {
           vLocalPos = position;
           vLocalNorm = normal;
+          vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
+          vec4 worldPos = modelMatrix * vec4(position, 1.0);
+          vViewDir = normalize(cameraPosition - worldPos.xyz);
         `
       );
 
@@ -76,8 +95,11 @@ export default function GradientShadowMaterial({
         uniform float uColorReveal;
         uniform float uIsHovered;
         uniform float uSaturationBoost;
+        uniform float uFresnelPower;
         varying vec3 vLocalPos;
         varying vec3 vLocalNorm;
+        varying vec3 vWorldNormal;
+        varying vec3 vViewDir;
 
         vec3 adjustSaturation(vec3 color, float saturation) {
           float grey = dot(color, vec3(0.2126, 0.7152, 0.0722));
@@ -99,7 +121,7 @@ export default function GradientShadowMaterial({
 
         gradientMix = clamp(gradientMix - depthMix * 0.3, 0.0, 1.0);
 
-        float shimmer = sin(uTime * 0.3 + vLocalPos.x * 0.6) * 0.03;
+        float shimmer = sin(uTime * 0.3 + vLocalPos.x * 0.6) * 0.03 * uColorReveal;
         gradientMix = clamp(gradientMix + shimmer, 0.0, 1.0);
 
         gradientMix = smoothstep(0.0, 1.0, gradientMix);
@@ -108,22 +130,26 @@ export default function GradientShadowMaterial({
 
         float isTop = smoothstep(0.7, 1.0, vLocalNorm.y);
 
-        float sideFactor = 1.0 - isTop;
+        float sideFactor = (1.0 - isTop) * uColorReveal;
         baseColor = mix(baseColor, uColorB, sideFactor * 0.15);
         baseColor *= (1.0 - sideFactor * 0.08);
 
-        float normalShade = 1.0 - abs(vLocalNorm.x) * 0.05 - abs(vLocalNorm.z) * 0.03;
+        float normalShade = 1.0 - (abs(vLocalNorm.x) * 0.05 + abs(vLocalNorm.z) * 0.03) * uColorReveal;
         baseColor *= normalShade;
 
-        baseColor *= (1.0 + isTop * 0.05);
+        baseColor *= (1.0 + isTop * 0.05 * uColorReveal);
 
         baseColor = mix(baseColor, uColorA, uIsHovered * 0.25);
         baseColor *= (1.0 + uIsHovered * 0.1);
 
-        vec3 hiddenColor = vec3(0.973, 0.980, 0.988);
+        vec3 hiddenColor = vec3(0.949, 0.929, 0.894);
         baseColor = mix(hiddenColor, baseColor, uColorReveal);
 
         baseColor = adjustSaturation(baseColor, uSaturationBoost);
+
+        // Fresnel rim light — subtle glow at edges
+        float fresnel = pow(1.0 - max(dot(vViewDir, vWorldNormal), 0.0), uFresnelPower);
+        baseColor += fresnel * 0.12 * uColorReveal;
 
         baseColor = min(baseColor, vec3(1.0));
 
@@ -152,6 +178,8 @@ export default function GradientShadowMaterial({
 
       if (Math.abs(targetHoverRef.current - currentHoverRef.current) < 0.001) {
         currentHoverRef.current = targetHoverRef.current;
+      } else {
+        state.invalidate();
       }
 
       shaderRef.current.uniforms.uIsHovered.value = currentHoverRef.current;
@@ -162,12 +190,19 @@ export default function GradientShadowMaterial({
 
       if (Math.abs(targetSaturation - currentSaturationRef.current) < 0.001) {
         currentSaturationRef.current = targetSaturation;
+      } else {
+        state.invalidate();
       }
 
       shaderRef.current.uniforms.uSaturationBoost.value = currentSaturationRef.current;
 
       if (animatedColorReveal) {
-        shaderRef.current.uniforms.uColorReveal.value = animatedColorReveal.get();
+        const val = animatedColorReveal.get();
+        const prev = shaderRef.current.uniforms.uColorReveal.value as number;
+        if (Math.abs(val - prev) > 0.001) {
+          shaderRef.current.uniforms.uColorReveal.value = val;
+          state.invalidate();
+        }
       }
     }
   });

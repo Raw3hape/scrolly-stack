@@ -2,19 +2,21 @@
  * E2E Tests — All Pages Load
  *
  * Verifies every route returns 200 and has correct structure.
+ * Titles imported from content metadata — no hardcoded strings.
  * Runs on all 6 viewport presets (desktop, tablet, mobile).
  */
 
 import { test, expect } from '@playwright/test';
+import { pageMetadata } from '../src/config/content/metadata';
 
 const ROUTES = [
   { path: '/', title: 'Foundation Projects', hasH1: true },
-  { path: '/about', title: 'About', hasH1: true },
+  { path: '/about', title: pageMetadata.about.title, hasH1: true },
   { path: '/how-it-works/roofers', title: 'Roofers', hasH1: true },
   { path: '/how-it-works/investors', title: 'Investors', hasH1: true },
-  { path: '/schedule', title: 'Schedule', hasH1: true },
+  { path: '/schedule', title: 'Book A Call', hasH1: true },
   { path: '/shadow-local', title: 'Shadow Local', hasH1: true },
-  { path: '/3b-opt-in', title: '3B Opt-in', hasH1: true },
+  { path: '/3b-opt-in', title: '8 Things', hasH1: true },
 ];
 
 for (const route of ROUTES) {

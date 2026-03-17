@@ -14,8 +14,8 @@
   padding-right: var(--container-padding);
 }
 
-.container--narrow { max-width: 800px; }
-.container--wide   { max-width: 1600px; }
+.container--narrow { max-width: var(--container-narrow); }
+.container--wide   { max-width: var(--container-wide); }
 .container--full   { max-width: none; }
 
 /* === Section === */

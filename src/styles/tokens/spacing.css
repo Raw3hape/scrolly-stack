@@ -24,6 +24,9 @@
   --container-padding: clamp(1rem, 3vw, 3rem);
   --header-height: 72px;
   --header-height-mobile: 64px;
+  --header-logo-height: 30px;
+  --header-logo-height-mobile: 24px;
+  --header-logo-height-sm: 21px;
   --content-width: 45%;
   --visual-width: 55%;
   --container-padding-responsive: clamp(1rem, 3vw, 3rem);
@@ -31,4 +34,29 @@
   --card-max-width: 460px;
   --visual-height-mobile: 55vh;
   --content-height-mobile: calc(100vh - var(--visual-height-mobile) - var(--header-height-mobile));
+
+  /* === Layout Max-Widths === */
+  --content-narrow-max: 640px;   /* PageHeader description, text columns        */
+  --content-form-max:   480px;   /* Opt-in form, narrow forms                   */
+  --content-text-max:   720px;   /* Problem/stakes heading, text blocks         */
+  --container-narrow:   800px;   /* .container--narrow                          */
+  --container-wide:     1600px;  /* .container--wide                            */
+
+  /* === Icon Sizes === */
+  --icon-xs:  14px;   /* Small arrows, indicators                     */
+  --icon-sm:  16px;   /* Inline icons, color indicators               */
+  --icon-md:  20px;   /* Default icon size in controls                */
+  --icon-lg:  24px;   /* Active/prominent icons                       */
+  --icon-xl:  48px;   /* Feature icons, large indicators              */
+
+  /* === Decorative element sizes === */
+  --line-thin:  1px;  /* Separators, timeline lines                   */
+  --line-thick: 2px;  /* Nav underlines, burger lines                 */
+  --dot-status: 8px;  /* Status indicator dots                        */
+  --scrollbar-width: 8px;
+
+  /* === Breakpoints (reference only — NOT usable in @media queries) === */
+  /* --bp-sm:      480px   — Small mobile                               */
+  /* --bp-md:      768px   — Tablet / mobile-desktop threshold          */
+  /* --bp-lg:      1024px  — Desktop / tablet-desktop threshold         */
 }

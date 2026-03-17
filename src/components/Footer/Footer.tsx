@@ -31,6 +31,7 @@ export default function Footer() {
                 </li>
               ))}
               <li><Link href={routes.schedule}>Schedule A Call</Link></li>
+              <li><Link href={routes.optIn}>Free Report</Link></li>
             </ul>
           </nav>
         </div>

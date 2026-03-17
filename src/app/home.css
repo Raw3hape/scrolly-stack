@@ -1,0 +1,119 @@
+/* ============================================================================
+ * Home Page Styles — Problem & Stakes Section
+ * ========================================================================== */
+
+.problem-stakes {
+  padding: var(--space-3xl) 0;
+  text-align: center;
+}
+
+/* === Heading === */
+.problem-stakes__heading {
+  font: var(--font-h1);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2xl);
+  max-width: var(--content-text-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* === Two-column layout === */
+.problem-stakes__columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  text-align: left;
+}
+
+@media (min-width: 640px) {
+  .problem-stakes__columns {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* === Column cards === */
+.problem-stakes__problem,
+.problem-stakes__solution {
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  border: var(--line-thin) solid var(--border-default);
+}
+
+.problem-stakes__problem {
+  background: var(--surface-raised);
+}
+
+.problem-stakes__solution {
+  background: var(--glass-card-bg);
+  border-color: var(--accent-brand);
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 var(--line-thin) var(--accent-brand);
+}
+
+/* === Labels === */
+.problem-stakes__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  margin-bottom: var(--space-md);
+  color: var(--text-muted);
+}
+
+.problem-stakes__solution .problem-stakes__label {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* === Body text === */
+.problem-stakes__text {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* === CTA === */
+.problem-stakes__cta {
+  display: flex;
+  justify-content: center;
+}
+
+/* === Noscript fallback hero (replaces inline styles in page.tsx) === */
+.noscript-hero {
+  padding: var(--section-gap-sm) var(--container-padding);
+  max-width: var(--content-narrow-max);
+}
+
+/* === Section heading (used for "Here's How It Works") === */
+.section-heading {
+  font: var(--font-h2);
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+/* === Stakes / Urgency section === */
+.stakes-section {
+  text-align: center;
+  padding: var(--space-2xl) 0;
+}
+
+.stakes-section__lead {
+  font: var(--font-h3);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+  max-width: var(--content-text-max);
+  margin-inline: auto;
+}
+
+.stakes-section__detail {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: var(--content-narrow-max);
+  margin-inline: auto;
+}

@@ -5,6 +5,20 @@
 
 /* === Container === */
 .overlay {
+  /* === Component-level tokens (timeline system) === */
+  --timeline-gutter: 72px;         /* Left padding for timeline area            */
+  --timeline-line-offset: 24px;    /* Center of dots from left edge             */
+  --timeline-dot-size: 44px;       /* Default dot dimensions                    */
+  --timeline-dot-size-active: 52px;/* Active dot dimensions                     */
+  --timeline-icon-size: var(--icon-md); /* Default icon inside dot              */
+  --timeline-icon-size-active: var(--icon-lg); /* Active icon size              */
+
+  /* === Component-level font sizes (scoped — not in global typography.css) === */
+  --step-font-title:          2.5rem;   /* 40px  — desktop step title           */
+  --step-font-title-tablet:   2rem;     /* 32px  — tablet step title            */
+  --step-font-title-mobile:   1.5rem;   /* 24px  — mobile step title            */
+  --step-font-cta:            0.9rem;   /* 14.4px — step CTA label              */
+
   padding: 0; /* Padding handled by parent container */
   padding-bottom: 50vh;
   font-family: var(--font-family);
@@ -23,21 +37,19 @@
 /* Eyebrow (Small label above headline) */
 .hero__eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: var(--tracking-widest);
   font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin-bottom: var(--space-lg);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
 }
 
 /* Headline */
 .hero__headline {
-  font-size: clamp(2.75rem, 5.5vw, 3.75rem);
-  line-height: 1.1;
+  font: var(--font-display);
   margin-bottom: var(--space-lg);
-  letter-spacing: -0.025em;
+  letter-spacing: var(--tracking-tight);
   color: var(--text-primary);
-  font-weight: 600; /* Thinner */
 }
 
 /* Highlighted words in headline */
@@ -46,7 +58,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 600;
+  font-weight: inherit;
 }
 
 /* Subheadline */
@@ -54,8 +66,8 @@
   font-size: var(--font-size-xl);
   color: var(--text-secondary);
   margin-bottom: var(--space-2xl);
-  line-height: 1.6;
-  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  font-weight: var(--weight-normal);
 }
 
 /* CTA container */
@@ -70,7 +82,7 @@
 .hero__cta-button {
   padding: var(--btn-padding, 0.75rem 1.5rem);
   background: var(--gradient-primary);
-  color: #fff;
+  color: var(--text-inverse);
   border: none;
   border-radius: var(--btn-radius, 10px);
   font-size: var(--font-size-base);
@@ -78,11 +90,11 @@
   cursor: pointer;
   box-shadow: 
     var(--shadow-md),
-    0 4px 20px rgba(139, 92, 246, 0.25);
+    var(--btn-shadow-primary);
   transition: 
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.3s ease;
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-base);
   position: relative;
   overflow: hidden;
 }
@@ -98,10 +110,10 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.2),
+    var(--shimmer-color),
     transparent
   );
-  transition: left 0.5s ease;
+  transition: left var(--transition-shimmer);
 }
 
 .hero__cta-button:hover::before {
@@ -109,7 +121,7 @@
 }
 
 .hero__cta-button:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(calc(-1 * var(--line-thick))) scale(1.02);
   box-shadow: 
     var(--shadow-lg),
     var(--glow-primary);
@@ -120,8 +132,8 @@
 }
 
 .hero__cta-button:focus-visible {
-  outline: 2px solid var(--color-violet-500);
-  outline-offset: 3px;
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
 }
 
 /* Fear reducer / Status line */
@@ -131,15 +143,15 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .hero__status-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--color-emerald-500);
-  border-radius: 50%;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  width: var(--dot-status);
+  height: var(--dot-status);
+  background-color: var(--status-success);
+  border-radius: var(--radius-full);
+  box-shadow: var(--status-success-glow);
 }
 
 
@@ -147,21 +159,21 @@
 /* === Steps Section - Timeline Style === */
 .steps-container {
   position: relative;
-  padding-left: 72px; /* Space for larger timeline dots */
+  padding-left: var(--timeline-gutter);
 }
 
 /* Timeline vertical line - positioned to align with center of larger dots */
 .timeline-line {
   position: absolute;
-  left: 24px; /* Center of 48px offset from edge to dot center */
-  top: 0;  /* Start from top of steps-container, not above */
+  left: var(--timeline-line-offset);
+  top: 0;
   bottom: 0;
-  width: 1px;
+  width: var(--line-thin);
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    var(--color-slate-400) 5%,
-    var(--color-slate-400) 95%,
+    var(--text-subtle) 5%,
+    var(--text-subtle) 95%,
     transparent 100%
   );
   opacity: 0.3;
@@ -200,99 +212,116 @@
   filter: blur(0.25px);  /* Very subtle blur */
 }
 
-/* Title row - contains dot and title inline - NO TRANSFORM on this row */
+/* Title row — grid with fixed dot column so title text always aligns
+   with subhead / description / CTA below it. */
 .step-content__title-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: var(--timeline-gutter) 1fr;
   align-items: center;
-  gap: var(--space-lg);
-  margin-left: -72px; /* Pull back to include the timeline area (matches container padding) */
-  padding-left: 0;
+  margin-left: calc(-1 * var(--timeline-gutter));
 }
 
-/* Timeline square with icon inside - matches 3D blocks */
+/* Timeline square with icon inside — centered on the timeline line
+   via place-self + left offset. Size changes (active/inactive)
+   don't shift the title text because the grid column is fixed-width. */
 .timeline-dot {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 8px; /* Square with rounded corners */
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.1),
-    inset 0 1px 2px rgba(255, 255, 255, 0.3);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: var(--timeline-dot-size);
+  height: var(--timeline-dot-size);
+  border-radius: var(--radius-md);
+  border: var(--dot-border);
+  box-shadow:
+    var(--dot-shadow),
+    var(--inset-highlight-subtle);
+  transition: all var(--transition-base);
   position: relative;
-  z-index: 2;
+  z-index: var(--z-base);
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Center dot on the timeline line, not in the grid cell center */
+  place-self: center;
+  left: calc(var(--timeline-line-offset) - var(--timeline-gutter) / 2);
 }
 
 /* Icon inside the square */
 .timeline-dot__icon {
-  width: 20px;
-  height: 20px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+  width: var(--timeline-icon-size);
+  height: var(--timeline-icon-size);
+  transition: all var(--transition-base);
+  filter: var(--dot-icon-shadow);
 }
 
 .timeline-dot--active {
-  width: 52px;
-  height: 52px;
-  border-radius: 10px;
-  border-color: rgba(255, 255, 255, 0.9);
+  width: var(--timeline-dot-size-active);
+  height: var(--timeline-dot-size-active);
+  border-radius: var(--btn-radius);
+  border-color: var(--dot-border-active);
   box-shadow: 
-    0 0 0 3px rgba(255, 255, 255, 0.4), 
+    var(--dot-ring-active), 
     0 0 25px var(--step-color),
-    0 4px 15px rgba(0, 0, 0, 0.15);
+    var(--dot-shadow-active);
 }
 
 .timeline-dot--active .timeline-dot__icon {
-  width: 24px;
-  height: 24px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  width: var(--timeline-icon-size-active);
+  height: var(--timeline-icon-size-active);
+  filter: var(--dot-icon-shadow-active);
 }
 
 /* Title - Large and prominent */
 .step-content__title {
   margin: 0;
-  font-size: 2.5rem;
+  font-size: var(--step-font-title);
   color: var(--text-primary);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  font-weight: var(--weight-extrabold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
 }
 
 /* Subhead */
 .step-content__subhead {
   margin: var(--space-sm) 0 var(--space-lg) 0;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   font-size: var(--font-size-lg);
   filter: saturate(1.2) brightness(0.85);
 }
 
-/* Bullets list */
-.step-content__bullets {
+/* Description reveal — uses grid rows for smooth height animation */
+.step-content__description-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--duration-slow) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out);
+}
+
+.step-content__description-wrapper--open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--duration-slow) var(--ease-out),
+    opacity var(--duration-slow) var(--ease-out) var(--duration-instant);
+}
+
+.step-content__description-inner {
+  overflow: hidden;
+}
+
+.step-content__description {
   margin: 0;
-  padding-left: 1.2rem;
+  padding-top: var(--space-sm);
   color: var(--text-secondary);
   font-size: var(--font-size-base);
-  line-height: 1.7;
-  font-weight: 500;
-}
-
-.step-content__bullets li {
-  margin-bottom: var(--space-xs);
-}
-
-.step-content__bullets li::marker {
-  color: var(--step-color);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--weight-normal);
 }
 
 /* Mini CTA */
 .step-content__cta {
   margin-top: var(--space-lg);
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: var(--step-font-cta);
+  font-weight: var(--weight-bold);
   color: var(--text-primary);
   cursor: pointer;
   display: flex;
@@ -310,7 +339,7 @@
 }
 
 .step-content__cta-arrow {
-  transition: transform 0.2s;
+  transition: transform var(--transition-fast);
 }
 
 .step-content__cta:hover .step-content__cta-arrow {
@@ -326,15 +355,15 @@
   align-items: center;
   justify-content: center;
   background: var(--surface-base);
-  z-index: 100;
+  z-index: var(--z-loading);
 }
 
 .loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 3px solid var(--color-slate-100);
-  border-top-color: var(--color-violet-500);
-  border-radius: 50%;
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+  border: 3px solid var(--border-default);
+  border-top-color: var(--accent-brand);
+  border-radius: var(--radius-full);
   animation: spin 1s linear infinite;
 }
 
@@ -342,7 +371,7 @@
   margin-top: var(--space-md);
   font-size: var(--font-size-sm);
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 @keyframes spin {
@@ -366,11 +395,11 @@
     flex-direction: column;
     justify-content: flex-start;  /* Content starts at top of hero area */
     /* Opacity controlled by JS based on scroll */
-    transition: opacity 0.15s ease-out;
+    transition: opacity var(--transition-micro);
   }
 
   .hero__headline {
-    font-size: 2rem;
+    font: var(--font-h1);
   }
 
   .hero__subheadline {
@@ -378,11 +407,8 @@
   }
 
   .steps-container {
-    padding-left: 56px;
-  }
-
-  .timeline-line {
-    left: 18px;
+    --timeline-gutter: 56px;
+    --timeline-line-offset: 18px;
   }
 
   .step {
@@ -401,50 +427,42 @@
   /* Frosted glass background for step content on mobile */
   .step-content {
     max-width: 100%;
-    background: rgba(255, 255, 255, 0.55);
+    background: var(--glass-card-bg);
     backdrop-filter: saturate(150%) blur(16px);
     -webkit-backdrop-filter: saturate(150%) blur(16px);
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
     /* Stronger, very soft diffused shadows */
     box-shadow: 
-      0 12px 50px rgba(0, 0, 0, 0.08),
-      0 30px 80px rgba(0, 0, 0, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+      var(--glass-card-shadow),
+      var(--inset-highlight-strong);
+    border: var(--glass-card-border);
   }
 
   .step-content__title-row {
-    margin-left: calc(-56px + var(--space-lg));  /* Account for card padding */
-    gap: var(--space-md);
-    /* Bring dot back to timeline position */
+    margin-left: calc(-1 * var(--timeline-gutter));
     position: relative;
     left: calc(-1 * var(--space-lg));
-  }
-  
-  .timeline-dot {
-    /* Position on the timeline line */
-    margin-left: calc(18px - 16px);  /* line position minus half dot width */
+    /* Expand first column to cover card padding so dot stays on timeline */
+    grid-template-columns: calc(var(--timeline-gutter) + var(--space-lg)) 1fr;
   }
 
   .timeline-dot {
-    width: 32px;
-    height: 32px;
+    --timeline-dot-size: 32px;
+    /* Recalculate center offset with the wider column */
+    left: calc(var(--timeline-line-offset) - (var(--timeline-gutter) + var(--space-lg)) / 2);
   }
 
   .timeline-dot--active {
-    width: 38px;
-    height: 38px;
+    --timeline-dot-size-active: 38px;
   }
 
   .timeline-dot__icon {
-    width: 14px;
-    height: 14px;
+    --timeline-icon-size: var(--icon-xs);
   }
 
   .timeline-dot--active .timeline-dot__icon {
-    width: 18px;
-    height: 18px;
+    --timeline-icon-size-active: 18px;
   }
 
   .step-content {
@@ -452,6 +470,12 @@
   }
 
   .step-content__title {
-    font-size: 1.5rem;
+    font-size: var(--step-font-title-mobile);
+  }
+
+  /* On mobile all steps are visible as cards — description always open */
+  .step-content__description-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
   }
 }

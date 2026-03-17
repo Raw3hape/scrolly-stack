@@ -1,73 +1,96 @@
 /* ============================================================================
  * COLOR TOKENS — Foundation Projects
  * 
- * RESKIN: Change these values to rebrand the entire site.
- * All components use semantic tokens, not raw palette values.
+ * Brand Identity System: Anchor · Systems · Growth · Foundation · Value
+ * RESKIN: Change palette values to rebrand. All components use semantic tokens.
  * ========================================================================== */
 
 :root {
-  /* === Palette (raw values — don't use directly in components) === */
-  --color-slate-50:  #f8fafc;
-  --color-slate-100: #f1f5f9;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-600: #475569;
-  --color-slate-700: #334155;
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
+  /* === Brand Palette (raw values — don't use directly in components) === */
 
-  /* Brand */
-  --color-fuchsia-500: #d946ef;
-  --color-fuchsia-700: #a21caf;
-  --color-violet-500:  #8b5cf6;
-  --color-violet-700:  #6d28d9;
-  --color-purple-500:  #a855f7;
-  --color-purple-700:  #7e22ce;
-  --color-indigo-500:  #6366f1;
-  --color-indigo-700:  #4338ca;
-  --color-blue-500:    #3b82f6;
-  --color-blue-700:    #1d4ed8;
-  --color-emerald-500: #10b981;
+  /* Anchor — #103740 — Trust, Authority, 'The Rock' */
+  --color-anchor-900: #103740;
+  --color-anchor-700: #1A4E58;
+  --color-anchor-500: #2A6470;
+  --color-anchor-300: #3E7A88;
+
+  /* Systems — #297373 — Process, Engineering, 'The Machine' */
+  --color-teal-700:   #1E5757;
+  --color-teal-500:   #297373;
+  --color-teal-300:   #3A8C8C;
+  --color-teal-100:   #D0E8E8;
+
+  /* Growth — #3E8C59 — Results, Dividends, 'The Yield' */
+  --color-green-700:  #2E6B42;
+  --color-green-500:  #3E8C59;
+  --color-green-300:  #5BA374;
+
+  /* Foundation — #F2EDE4 — Clarity, Canvas, 'No Fluff' */
+  --color-sand-300:   #DDD5C8;
+  --color-sand-200:   #E8E1D6;
+  --color-sand-100:   #F2EDE4;
+  --color-sand-50:    #F7F4EF;
+  --color-sand-25:    #FDFCFA;
+
+  /* Value — #D79344 — Craft, Spark, 'The Second Mile' */
+  --color-gold-700:   #B87A2E;
+  --color-gold-500:   #D79344;
+  --color-gold-300:   #E5AD6B;
+
+  /* Neutral (for shadows, overlays — brand-neutral) */
+  --color-neutral-900: #1A1A1A;
+  --color-neutral-600: #4A4A4A;
+  --color-neutral-400: #8A8A8A;
 
   /* === Semantic tokens (USE THESE in components) === */
 
   /* Surfaces */
-  --surface-base:       var(--color-slate-50);
-  --surface-card:       #ffffff;
-  --surface-card-hover: var(--color-slate-100);
-  --surface-overlay:    rgba(255, 255, 255, 0.8);
-  --surface-glass:      rgba(255, 255, 255, 0.6);
+  --surface-base:       var(--color-sand-100);
+  --surface-card:       var(--color-sand-25);
+  --surface-card-hover: var(--color-sand-50);
+  --surface-raised:     var(--color-sand-50);  /* Slightly elevated cards/panels */
+  --surface-overlay:    rgba(242, 237, 228, 0.85);
+  --surface-glass:      rgba(242, 237, 228, 0.6);
 
   /* Text */
-  --text-primary:   var(--color-slate-900);
-  --text-secondary: var(--color-slate-600);
-  --text-muted:     var(--color-slate-500);
-  --text-subtle:    var(--color-slate-400);
-  --text-inverse:   #ffffff;
+  --text-primary:   var(--color-anchor-900);
+  --text-secondary: var(--color-anchor-700);
+  --text-tertiary:  var(--color-anchor-300);  /* Tertiary labels, loading states */
+  --text-muted:     var(--color-neutral-600);
+  --text-subtle:    var(--color-neutral-400);
+  --text-inverse:   var(--color-sand-25);
 
   /* Brand */
-  --accent-brand:       var(--color-violet-500);
-  --accent-brand-hover: var(--color-violet-700);
+  --accent-brand:       var(--color-teal-500);
+  --accent-brand-hover: var(--color-teal-700);
+  --accent-warm:        var(--color-gold-500);
+  --accent-warm-hover:  var(--color-gold-700);
 
   /* Borders */
-  --border-default: var(--color-slate-200);
-  --border-hover:   var(--color-slate-300);
-  --border-focus:   var(--color-violet-500);
+  --border-default: var(--color-sand-300);
+  --border-subtle:  var(--color-sand-200);  /* Softer borders for comparison cards */
+  --border-hover:   var(--color-sand-200);
+  --border-focus:   var(--color-teal-500);
 
   /* Status */
-  --status-success: #10b981;
-  --status-warning: #f59e0b;
-  --status-error:   #ef4444;
-  --status-info:    #3b82f6;
+  --status-success: var(--color-green-500);
+  --status-warning: var(--color-gold-500);
+  --status-error:   #C25450;
+  --status-info:    var(--color-teal-500);
 
   /* Gradients */
-  --gradient-primary:       linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-  --gradient-primary-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%);
-  --gradient-subtle:        linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  --gradient-primary:       linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-green-500) 100%);
+  --gradient-primary-hover: linear-gradient(135deg, var(--color-teal-700) 0%, var(--color-green-700) 100%);
+  --gradient-warm:          linear-gradient(135deg, var(--color-gold-500) 0%, var(--color-gold-300) 100%);
+  /* RESKIN: base = #297373 (teal-500) + #3E8C59 (green-500) */
+  --gradient-subtle:        linear-gradient(135deg, rgba(41, 115, 115, 0.08) 0%, rgba(62, 140, 89, 0.08) 100%);
 
-  /* Glows */
-  --glow-primary:         0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2);
-  --glow-primary-intense: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+  /* --glow-primary → defined in effects.css (single source of truth) */
+  /* --glow-primary-intense → defined in effects.css */
+
+  /* Utility tokens (kill hardcode in components) */
+  /* RESKIN: base = #297373 (teal-500), #3E8C59 (green-500) */
+  --selection-bg:        rgba(41, 115, 115, 0.12);
+  --status-success-glow: 0 0 0 2px rgba(62, 140, 89, 0.2);
+  --hover-opacity:       0.85;  /* Brand hover opacity for interactive elements */
 }

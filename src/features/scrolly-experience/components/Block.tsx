@@ -5,8 +5,9 @@
  * All parameters driven by config.
  */
 
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback, useState, useEffect } from 'react';
 import { animated, useSpring } from '@react-spring/three';
+import { useThree } from '@react-three/fiber';
 import { RoundedBox, Text } from '@react-three/drei';
 import { geometry, animation, labels } from '../config';
 import GradientShadowMaterial from './GradientShadowMaterial';
@@ -66,9 +67,17 @@ export default function Block({
 }: BlockProps) {
   const meshRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+  const invalidate = useThree((s) => s.invalidate);
 
   const [baseX, baseY, baseZ] = position;
   const [slideX, slideZ] = slideDirection;
+
+  // Bootstrap: kick the first frame when spring targets change.
+  // In frameloop="demand", springs need at least one rendered frame to start
+  // ticking. onChange keeps the loop going until the spring settles.
+  useEffect(() => {
+    invalidate();
+  }, [isActive, isAboveActive, opacity, isRevealed, baseX, baseY, baseZ, invalidate]);
 
   const getTargetPosition = (): [number, number, number] => {
     let targetX = baseX;
@@ -93,11 +102,13 @@ export default function Block({
       friction: animation.spring.friction,
       mass: animation.spring.mass,
     },
+    onChange: () => invalidate(),
   });
 
   const { springScale } = useSpring({
     springScale: isHovered ? (animation.hover?.scale || 1.025) : 1,
     config: { tension: 300, friction: 20, mass: 0.5 },
+    onChange: () => invalidate(),
   });
 
   const currentColorA = isActive ? activeColor : color;
@@ -137,11 +148,12 @@ export default function Block({
   const { springColorReveal } = useSpring({
     springColorReveal: opacity,
     config: {
-      tension: isRevealed ? animation.spring.tension : animation.spring.tension * 0.8,
-      friction: animation.spring.friction,
+      tension: isRevealed ? animation.spring.tension : animation.spring.tension * 0.6,
+      friction: isRevealed ? animation.spring.friction : animation.spring.friction * 1.4,
       mass: animation.spring.mass,
     },
-    delay: isRevealed ? staggerDelay : staggerDelay * 0.3,
+    delay: staggerDelay,
+    onChange: () => invalidate(),
   });
 
   return (

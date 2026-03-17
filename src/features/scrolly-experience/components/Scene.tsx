@@ -91,7 +91,7 @@ export default function Scene({ currentStep, onBlockClick }: SceneProps) {
           fov: 25,
         }}
         style={{ width: '100%', height: '100%', background: 'transparent' }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, toneMapping: THREE.AgXToneMapping }}
       >
         <CameraRig isHero={isHero} />
         <ZoomController targetZoom={zoom} />

@@ -4,32 +4,41 @@
    =================================== */
 
 .hover-tooltip {
+  /* Component-level tokens */
+  --tooltip-max-width: 280px;
+  --tooltip-min-width: 180px;
+  --tooltip-accent-width: 3px;
+  --tooltip-accent-height: var(--icon-sm);
+
+  /* Component-level font sizes (scoped — not in global typography.css) */
+  --tooltip-font-title:   1rem;     /* 16px   */
+  --tooltip-font-subhead: 0.85rem;  /* 13.6px */
+  --tooltip-font-bullet:  0.8rem;   /* 12.8px */
   position: fixed;
-  z-index: 1000;
+  z-index: var(--z-tooltip);
   pointer-events: none;
   
   /* Frosted glass effect */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: var(--glass-card-bg);
+  border: var(--glass-card-border);
   box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    var(--tooltip-shadow),
+    var(--inset-highlight);
   
   /* Shape */
-  border-radius: 14px;
-  padding: 14px 18px;
-  max-width: 280px;
-  min-width: 180px;
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  max-width: var(--tooltip-max-width);
+  min-width: var(--tooltip-min-width);
   
   /* Smooth transitions */
   opacity: 0;
   transform: translateY(8px) scale(0.96);
   transition: 
-    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .hover-tooltip--visible {
@@ -41,34 +50,34 @@
   opacity: 0;
   transform: translateY(-4px) scale(0.98);
   transition: 
-    opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity var(--transition-micro),
+    transform var(--transition-micro);
 }
 
 /* Title with accent bar */
 .hover-tooltip__title {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: var(--tooltip-font-title);
+  font-weight: var(--weight-bold);
   color: var(--text-primary);
-  margin: 0 0 4px 0;
+  margin: 0 0 var(--space-xs) 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  letter-spacing: -0.01em;
+  gap: var(--space-sm);
+  letter-spacing: var(--tracking-tight);
 }
 
 .hover-tooltip__accent-bar {
-  width: 3px;
-  height: 16px;
-  border-radius: 2px;
+  width: var(--tooltip-accent-width);
+  height: var(--tooltip-accent-height);
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
 }
 
 /* Subhead */
 .hover-tooltip__subhead {
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin: 0 0 10px 0;
+  font-size: var(--tooltip-font-subhead);
+  font-weight: var(--weight-semibold);
+  margin: 0 0 var(--space-sm) 0;
   opacity: 0.9;
 }
 
@@ -76,13 +85,13 @@
 .hover-tooltip__bullets {
   margin: 0;
   padding-left: 1rem;
-  font-size: 0.8rem;
+  font-size: var(--tooltip-font-bullet);
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--leading-normal);
 }
 
 .hover-tooltip__bullets li {
-  margin-bottom: 2px;
+  margin-bottom: var(--space-xs);
 }
 
 .hover-tooltip__bullets li::marker {

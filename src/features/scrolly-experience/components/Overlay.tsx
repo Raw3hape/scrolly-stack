@@ -7,7 +7,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { steps } from '../data';
-import { heroContent, stepCta } from '@/config/content';
+import { heroContent, stepCta } from '@/config/content/home';
+import { BREAKPOINTS } from '@/config/breakpoints';
 import { HERO_STEP, getStepElementId } from '../utils/stepNavigation';
 import type { OverlayProps, StepData } from '../types';
 import './Overlay.css';
@@ -19,7 +20,7 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
 
   // Scroll-based hero fade for mobile
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
+    const isMobile = window.innerWidth < BREAKPOINTS.md;
     if (!isMobile) return;
 
     const handleScroll = () => {
@@ -158,11 +159,13 @@ export default function Overlay({ currentStep, setStep }: OverlayProps) {
                   {step.tooltipSubhead}
                 </p>
 
-                <ul className="step-content__bullets">
-                  {step.bullets.map((bullet, i) => (
-                    <li key={i}>{bullet}</li>
-                  ))}
-                </ul>
+                <div className={`step-content__description-wrapper ${isActive ? 'step-content__description-wrapper--open' : ''}`}>
+                  <div className="step-content__description-inner">
+                    <p className="step-content__description">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
 
                 <a
                   href={heroContent.ctaHref}

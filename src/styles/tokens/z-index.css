@@ -1,0 +1,19 @@
+/* ============================================================================
+ * Z-INDEX TOKENS — Foundation Projects
+ * 
+ * Semantic stacking context scale.
+ * RESKIN: Adjust values to change layering hierarchy.
+ * AI AGENTS: Always use these tokens instead of raw z-index numbers.
+ * ========================================================================== */
+
+:root {
+  --z-base:             1;
+  --z-overlay:          10;     /* Content column over visual column            */
+  --z-loading:          100;    /* Loading spinner overlays                     */
+  --z-tooltip:          500;    /* HoverTooltip (3D hover popup)               */
+  --z-header:           1000;   /* Fixed header                                */
+  --z-drawer-backdrop:  1100;   /* Mobile drawer scrim overlay                 */
+  --z-drawer:           1200;   /* Mobile navigation drawer                    */
+  --z-fps-counter:      9500;   /* Dev-only FPS counter overlay                */
+  --z-skip-link:        10000;  /* Accessibility skip-to-content link          */
+}

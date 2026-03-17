@@ -24,9 +24,15 @@ export default function CameraRig({ isHero }: { isHero: boolean }) {
       ? new THREE.Vector3(...(animation.camera.upVectors.hero as [number, number, number]))
       : new THREE.Vector3(...(animation.camera.upVectors.isometric as [number, number, number]));
 
-    state.camera.position.lerp(targetPos, delta * animation.camera.lerpSpeed);
-    state.camera.up.lerp(targetUp, delta * animation.camera.lerpSpeed);
-    state.camera.lookAt(0, 0, 0);
+    const posDelta = state.camera.position.distanceTo(targetPos);
+    const upDelta = state.camera.up.distanceTo(targetUp);
+
+    if (posDelta > 0.01 || upDelta > 0.01) {
+      state.camera.position.lerp(targetPos, delta * animation.camera.lerpSpeed);
+      state.camera.up.lerp(targetUp, delta * animation.camera.lerpSpeed);
+      state.camera.lookAt(0, 0, 0);
+      state.invalidate();
+    }
   });
 
   return null;

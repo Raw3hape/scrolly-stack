@@ -1,0 +1,53 @@
+/* ============================================================================
+ * CtaBlock Styles — Foundation Projects
+ *
+ * Full-width closing CTA section with gradient background.
+ * ========================================================================== */
+
+.cta-block {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-xl);
+  background: var(--gradient-subtle);
+  border-radius: var(--radius-2xl);
+  border: var(--line-thin) solid var(--border-default);
+}
+
+.cta-block__heading {
+  font: var(--font-h2);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  max-width: var(--content-text-max);
+  margin-inline: auto;
+}
+
+.cta-block__subheading {
+  font: var(--font-h4);
+  color: var(--accent-brand);
+  margin-bottom: var(--space-lg);
+}
+
+.cta-block__body {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  max-width: var(--content-narrow-max);
+  margin-inline: auto;
+  margin-bottom: var(--space-xl);
+}
+
+.cta-block__action {
+  margin-bottom: var(--space-md);
+}
+
+.cta-block__footnote {
+  font: var(--font-body-sm);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* === Mobile === */
+@media (max-width: 768px) {
+  .cta-block {
+    padding: var(--space-2xl) var(--space-lg);
+  }
+}

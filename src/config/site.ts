@@ -6,8 +6,8 @@
  */
 export const siteConfig = {
   name: 'Foundation Projects',
-  tagline: 'Roofing Consulting',
+  tagline: 'We Take Roofing Companies Public',
   url: 'https://foundationprojects.com',
-  description: 'We install CRM, marketing, and ops systems that transform roofing companies into premium sellable businesses.',
+  description: 'We\'re building a roofing company that goes public. Best-in-class operators get 7–10× what PE would pay.',
   copyright: `© ${new Date().getFullYear()} Foundation Projects. All rights reserved.`,
 } as const;

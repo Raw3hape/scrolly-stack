@@ -1,0 +1,33 @@
+/* ============================================================================
+ * FPS Counter — Subtle performance monitor
+ * ========================================================================== */
+
+.fps-counter {
+  position: fixed;
+  bottom: var(--space-md, 12px);
+  right: var(--space-md, 12px);
+  z-index: var(--z-fps-counter);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  font-family: var(--font-body, sans-serif);
+  pointer-events: none;
+  user-select: none;
+  color: var(--text-primary);
+}
+
+.fps-counter__value {
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.fps-counter__label {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  line-height: 1;
+}

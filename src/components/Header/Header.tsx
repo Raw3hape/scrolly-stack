@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { navLinks, ctaConfig, brandConfig, headerBehavior } from '@/config/nav';
+import { navLinks, ctaConfig, brandConfig, headerBehavior, routes } from '@/config/nav';
 import './Header.css';
 
 /**
@@ -70,9 +71,15 @@ export default function Header() {
       <header className={headerClasses}>
         <div className="header-container">
           {/* Brand */}
-          <Link href="/" className="header-brand">
-            <span className="header-wordmark">{brandConfig.wordmark}</span>
-            <span className="header-tagline">{brandConfig.tagline}</span>
+          <Link href={routes.home} className="header-brand">
+            <Image
+              src={brandConfig.logo}
+              alt={brandConfig.wordmark}
+              width={135}
+              height={31}
+              className="header-logo"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

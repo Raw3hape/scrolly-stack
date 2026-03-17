@@ -11,8 +11,8 @@ Foundation Projects is a marketing website for a roofing business consulting com
 - **Framework:** Next.js 16 (App Router)
 - **Language:** TypeScript (strict mode, `allowJs: false`)
 - **3D:** React Three Fiber 9 + drei + postprocessing (client-only)
-- **Styling:** CSS Custom Properties (design tokens) + co-located component CSS
-- **Fonts:** Satoshi (self-hosted via next/font/local)
+- **Styling:** CSS Custom Properties (design tokens) + co-located component CSS — see `DESIGN_SYSTEM.md`
+- **Fonts:** DM Serif Display (headlines, via `next/font/google`) + Satoshi (body, self-hosted via `next/font/local`)
 - **Deploy:** Vercel
 - **Lint:** ESLint 9 (flat config) + `--max-warnings=0`
 - **Types:** `tsc --noEmit` via `npm run typecheck`
@@ -32,11 +32,14 @@ Foundation Projects is a marketing website for a roofing business consulting com
 - CTA text labels can differ per surface (header vs hero vs steps)
 
 ### Styling
-- **Always use design tokens** — never hardcode colors, sizes, radii, or spacing
-- Tokens are in `src/styles/tokens/` — this is the single source of truth for visual design
-- Use semantic tokens: `var(--text-primary)` not `var(--color-slate-900)`
+- **Always use design tokens** — never hardcode colors, sizes, radii, spacing, or transitions
+- **Zero hardcode policy:** component CSS must contain 0 `rgba(...)`, 0 `#hex`, 0 hardcoded `font-size`, 0 hardcoded `transition` values
+- Tokens are in `src/styles/tokens/` — single source of truth for visual design
+- Use semantic tokens: `var(--text-primary)` not `var(--color-anchor-900)`
+- If you need a new size/effect — **add a token first**, then use `var(--token)` in the component
 - Component CSS files are co-located: `Header/Header.tsx` + `Header/Header.css`
 - BEM-like naming: `.component__element--modifier`
+- Full token reference: **`DESIGN_SYSTEM.md`** in project root
 
 ### File Structure
 - Pages: `src/app/[route]/page.tsx`
@@ -63,10 +66,11 @@ Foundation Projects is a marketing website for a roofing business consulting com
 5. Run `npm run build` to verify
 
 ### Changing brand colors/fonts
-1. Edit `src/styles/tokens/colors.css` (semantic tokens)
-2. Edit `src/styles/tokens/effects.css` (radii, shadows)
-3. Replace font files in `src/fonts/` and update `src/app/layout.tsx`
-4. 3D block colors: edit `src/features/scrolly-experience/data.ts`
+1. Edit `src/styles/tokens/colors.css` — palette hex values + semantic tokens
+2. Edit `src/styles/tokens/effects.css` — shadows, glass, glow (rgba values)
+3. For fonts: update `next/font` imports in `src/app/layout.tsx`
+4. 3D block colors: edit `src/features/scrolly-experience/data.ts` (15 blocks × 4 colors)
+5. **See `DESIGN_SYSTEM.md`** for full rebrand checklist and token reference
 
 ### Modifying the 3D experience
 1. All 3D code lives in `src/features/scrolly-experience/`
