@@ -79,13 +79,16 @@ export default function useScrollProgress(
 
     // Phase 1: Assembly (0 → assemblyPx)
     const rawMosaic = s / assemblyPx;
-    const mosaic = clamp(rawMosaic, 0, 1);
+    // Snap to boundaries when very close — prevents hover being blocked by
+    // floating-point near-misses (e.g. 0.999 never reaching 1.0).
+    const SNAP = 0.005;
+    const mosaic = rawMosaic <= SNAP ? 0 : rawMosaic >= 1 - SNAP ? 1 : clamp(rawMosaic, 0, 1);
 
     // Phase 2: Hold (assemblyPx → assemblyPx + holdPx) — nothing changes
     // Phase 3: Exit (assemblyPx + holdPx → assemblyPx + holdPx + exitPx)
     const exitStart = assemblyPx + holdPx;
     const rawExit = (s - exitStart) / exitPx;
-    const exit = clamp(rawExit, 0, 1);
+    const exit = rawExit <= SNAP ? 0 : rawExit >= 1 - SNAP ? 1 : clamp(rawExit, 0, 1);
 
     // Keep progress precise enough for smooth motion without spamming state updates.
     const STEP = 0.001;

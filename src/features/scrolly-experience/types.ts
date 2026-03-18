@@ -131,6 +131,10 @@ export interface BlockProps {
   label: string;
   isActive: boolean;
   isAboveActive: boolean;
+  /** Direction multiplier for already-seen block lift: 1 = up (forward), -1 = down (reverse) */
+  aboveLiftSign?: number;
+  /** True when the block is in a not-yet-seen layer above active (reverse only) — lifts UP to make room */
+  isNotYetSeenAbove?: boolean;
   slideDirection?: [number, number];
   onClick?: (blockId: number) => void;
   onHoverChange?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
@@ -153,6 +157,10 @@ export interface LayerProps {
   baseY: number;
   currentStep: number;
   allBlocksAboveActive: number[];
+  /** Direction multiplier for already-seen block lift: 1 = up (forward), -1 = down (reverse) */
+  aboveLiftSign?: number;
+  /** Block IDs of not-yet-seen layers above active (reverse only) — these lift UP */
+  allBlocksNotYetSeenAbove?: number[];
   onBlockClick?: (blockId: number) => void;
   onBlockHover?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
   opacity?: number;

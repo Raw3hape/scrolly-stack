@@ -2,17 +2,21 @@
  * Layer Utilities
  *
  * Shared functions for layer position calculations.
+ *
+ * VARIANT SYSTEM: All functions accept geometry config as a parameter
+ * (dependency injection) instead of importing from ../config directly.
+ * This allows different variants to use different geometry settings.
  */
 
-import { geometry } from '../config';
 import type { LayerData, GridLayer, RowLayer, FullLayer, ComputedBlock, RawBlockData } from '../types';
+import type { ResolvedGeometry } from '../VariantContext';
 
 /**
  * Get the total height consumed by a layer
  */
-export function getLayerHeight(layer: LayerData): number {
-  const { layerHeight } = geometry.stack;
-  const gapV = layer.gap ?? geometry.gaps.vertical;
+export function getLayerHeight(layer: LayerData, geo: ResolvedGeometry): number {
+  const { layerHeight } = geo.stack;
+  const gapV = layer.gap ?? geo.gaps.vertical;
 
   if (layer.layout === 'full') {
     // Full layout has stacked blocks
@@ -26,10 +30,10 @@ export function getLayerHeight(layer: LayerData): number {
 /**
  * Calculate block positions for a GRID layout (e.g., 2x2 quadrants)
  */
-export function calculateGridPositions(layer: GridLayer, baseY: number): ComputedBlock[] {
+export function calculateGridPositions(layer: GridLayer, baseY: number, geo: ResolvedGeometry): ComputedBlock[] {
   const { cols, rows, blocks, gap } = layer;
-  const { totalWidth, totalDepth, layerHeight } = geometry.stack;
-  const gapH = gap ?? geometry.gaps.horizontal;
+  const { totalWidth, totalDepth, layerHeight } = geo.stack;
+  const gapH = gap ?? geo.gaps.horizontal;
 
   // Calculate individual cell size
   const cellWidth = (totalWidth - gapH * (cols - 1)) / cols;
@@ -57,10 +61,10 @@ export function calculateGridPositions(layer: GridLayer, baseY: number): Compute
 /**
  * Calculate block positions for a ROW layout (e.g., 3 buttons in a row)
  */
-export function calculateRowPositions(layer: RowLayer, baseY: number): ComputedBlock[] {
+export function calculateRowPositions(layer: RowLayer, baseY: number, geo: ResolvedGeometry): ComputedBlock[] {
   const { cols, blocks, depth, align = 'front', gap } = layer;
-  const { totalWidth, totalDepth, layerHeight } = geometry.stack;
-  const gapH = gap ?? geometry.gaps.horizontal;
+  const { totalWidth, totalDepth, layerHeight } = geo.stack;
+  const gapH = gap ?? geo.gaps.horizontal;
 
   // Calculate individual block width
   const blockWidth = (totalWidth - gapH * (cols - 1)) / cols;
@@ -91,10 +95,10 @@ export function calculateRowPositions(layer: RowLayer, baseY: number): ComputedB
 /**
  * Calculate block positions for a FULL layout (full-width tiles)
  */
-export function calculateFullPositions(layer: FullLayer, baseY: number): ComputedBlock[] {
+export function calculateFullPositions(layer: FullLayer, baseY: number, geo: ResolvedGeometry): ComputedBlock[] {
   const { blocks, gap } = layer;
-  const { totalWidth, totalDepth, layerHeight } = geometry.stack;
-  const gapV = gap ?? geometry.gaps.vertical;
+  const { totalWidth, totalDepth, layerHeight } = geo.stack;
+  const gapV = gap ?? geo.gaps.vertical;
 
   return blocks.map((block: RawBlockData, index: number) => {
     // Each block is on its own sub-layer
@@ -111,14 +115,14 @@ export function calculateFullPositions(layer: FullLayer, baseY: number): Compute
 /**
  * Calculate positions based on layout type
  */
-export function calculateBlockPositions(layer: LayerData, baseY: number): ComputedBlock[] {
+export function calculateBlockPositions(layer: LayerData, baseY: number, geo: ResolvedGeometry): ComputedBlock[] {
   switch (layer.layout) {
     case 'grid':
-      return calculateGridPositions(layer, baseY);
+      return calculateGridPositions(layer, baseY, geo);
     case 'row':
-      return calculateRowPositions(layer, baseY);
+      return calculateRowPositions(layer, baseY, geo);
     case 'full':
-      return calculateFullPositions(layer, baseY);
+      return calculateFullPositions(layer, baseY, geo);
     default:
       console.warn(`Unknown layout type: ${(layer as LayerData).layout}`);
       return [];

@@ -12,7 +12,6 @@ import { animation, materials } from '../config';
 import { palette } from '@/config/palette';
 import type { GradientShadowMaterialProps } from '../types';
 
-let materialVersion = 0;
 
 export default function GradientShadowMaterial({
   colorA = palette.sand200,
@@ -30,10 +29,10 @@ export default function GradientShadowMaterial({
   const targetHoverRef = useRef(0);
   const currentSaturationRef = useRef(1.0);
 
-  const materialKey = useMemo(() => {
-    materialVersion++;
-    return `mat-${colorA}-${colorB}-${materialVersion}`;
-  }, [colorA, colorB]);
+  // Stable cache key: shader code is identical for all blocks.
+  // Only isActive changes material props (roughness, envMapIntensity).
+  // Colors differ per block but are passed through uniforms, not compiled into the shader.
+  const materialKey = isActive ? 'gradient-active' : 'gradient-normal';
 
   const material = useMemo(() => {
     const colA = new THREE.Color(colorA);
@@ -163,11 +162,16 @@ export default function GradientShadowMaterial({
     return mat;
   }, [colorA, colorB, isActive, materialKey]);
 
+  // Update uniform colors when props change (no shader recompilation needed)
   useEffect(() => {
-    if (materialRef.current) {
-      materialRef.current.needsUpdate = true;
+    if (shaderRef.current) {
+      (shaderRef.current.uniforms.uColorA.value as THREE.Color).set(colorA);
+      (shaderRef.current.uniforms.uColorB.value as THREE.Color).set(colorB);
     }
   }, [colorA, colorB]);
+
+  // REMOVED: needsUpdate = true was triggering full shader recompilation
+  // on every color change. Uniforms are updated directly above — no recompile needed.
 
   useFrame((state, delta) => {
     // STABILITY FIX: Don't freeze ALL useFrame work during mosaic.

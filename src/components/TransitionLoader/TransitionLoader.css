@@ -1,0 +1,94 @@
+/* ═══════════════════════════════════════════════════════════
+   TransitionLoader — Fullscreen elegant loading overlay
+   
+   Covers the entire viewport (including Header/Footer) while
+   the 3D scene initializes behind it. Fades out smoothly
+   when the scene signals readiness.
+   
+   DESIGN: Minimal, warm, brand-consistent. Matches the
+   sand-toned Foundation Projects aesthetic.
+   ═══════════════════════════════════════════════════════════ */
+
+.transition-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  background: var(--color-sand-100, #F2EDE4);
+  opacity: 1;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+.transition-loader--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* ─── Brand Mark ──────────────────────────────────────── */
+
+.transition-loader__brand {
+  font-family: var(--font-headline, 'DM Serif Display', serif);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 400;
+  color: var(--color-anchor-900, #103740);
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: loaderFadeIn 0.5s ease-out 0.1s forwards;
+}
+
+
+/* ─── Animated Dots ───────────────────────────────────── */
+
+.transition-loader__dots {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  animation: loaderFadeIn 0.4s ease-out 0.3s forwards;
+}
+
+.transition-loader__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-anchor-300, #3E7A88);
+  animation: loaderPulse 1.4s ease-in-out infinite;
+}
+
+.transition-loader__dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.transition-loader__dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+
+/* ─── Keyframes ───────────────────────────────────────── */
+
+@keyframes loaderFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loaderPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}

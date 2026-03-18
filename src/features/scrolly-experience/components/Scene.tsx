@@ -12,8 +12,8 @@
  */
 
 import { Suspense, useState, useEffect, useCallback, useRef } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Environment, ContactShadows } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import Stack from './Stack';
 import HoverTooltip from './HoverTooltip';
@@ -22,7 +22,7 @@ import Lights from './scene/Lights';
 import Effects from './scene/Effects';
 import MouseParallaxGroup from './scene/MouseParallaxGroup';
 import { CameraRig, ZoomController, useResponsiveZoom } from './scene/camera';
-import { animation, shadows, lighting, render } from '../config';
+import { animation, lighting, render } from '../config';
 import { isHeroStep, getStepElementId } from '../utils/stepNavigation';
 import type { SceneProps, RawBlockData, MousePosition } from '../types';
 
@@ -30,7 +30,26 @@ import type { SceneProps, RawBlockData, MousePosition } from '../types';
 // MAIN SCENE COMPONENT
 // =============================================================================
 
-export default function Scene({ currentStep, mosaicProgress, onBlockClick }: SceneProps) {
+/** Fires onReady after the first fully-rendered frame (shaders compiled, env loaded) */
+function ReadySignal({ onReady }: { onReady?: () => void }) {
+  const firedRef = useRef(false);
+  // Wait 2 frames to ensure shaders are compiled and first render is complete
+  const frameCountRef = useRef(0);
+
+  useFrame(() => {
+    if (firedRef.current || !onReady) return;
+    frameCountRef.current += 1;
+    // Wait 3 frames: frame 1 = geometry, frame 2 = shaders compiled, frame 3 = stable
+    if (frameCountRef.current >= 3) {
+      firedRef.current = true;
+      onReady();
+    }
+  });
+
+  return null;
+}
+
+export default function Scene({ currentStep, mosaicProgress, onBlockClick, onReady }: SceneProps & { onReady?: () => void }) {
   const zoom = useResponsiveZoom(currentStep, mosaicProgress);
   const isHero = isHeroStep(currentStep);
 
@@ -121,19 +140,10 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick }: Sce
           </MouseParallaxGroup>
         </Suspense>
 
-        {shadows.enabled && mosaicProgress <= 0 && (
-          <ContactShadows
-            position={shadows.contact.position as [number, number, number]}
-            opacity={shadows.contact.opacity}
-            scale={shadows.contact.scale}
-            blur={shadows.contact.blur}
-            far={shadows.contact.far}
-            resolution={shadows.contact.resolution}
-            color={shadows.contact.color}
-          />
-        )}
+
 
         <Effects mosaicProgress={mosaicProgress} />
+        <ReadySignal onReady={onReady} />
       </Canvas>
 
       <HoverTooltip

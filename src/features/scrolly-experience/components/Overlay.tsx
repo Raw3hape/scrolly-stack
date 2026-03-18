@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { steps } from '../data';
+import { useVariant } from '../VariantContext';
 import { heroContent, stepCta } from '@/config/content/home';
 import { BREAKPOINTS } from '@/config/breakpoints';
 import { HERO_STEP, getStepElementId } from '../utils/stepNavigation';
@@ -16,6 +16,12 @@ import type { OverlayProps, StepData } from '../types';
 import './Overlay.css';
 
 export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: OverlayProps) {
+  const { steps, scrollDirection } = useVariant();
+
+  // For 'up' scroll, reverse the DOM order so bottom layers appear first
+  const orderedSteps = scrollDirection === 'up'
+    ? (steps as StepData[]).slice().reverse()
+    : (steps as StepData[]);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const heroRef = useRef<HTMLElement>(null);
   const [heroOpacity, setHeroOpacity] = useState(1);
@@ -132,9 +138,9 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
       <div className="steps-container" role="region" aria-label="Business transformation steps">
         <div className="timeline-line" aria-hidden="true" />
 
-        {(steps as StepData[]).map((step, index) => {
+        {orderedSteps.map((step, index) => {
           const isActive = currentStep === step.id;
-          const currentIndex = (steps as StepData[]).findIndex(s => s.id === currentStep);
+          const currentIndex = orderedSteps.findIndex(s => s.id === currentStep);
           const isPrev = currentIndex >= 0 && currentIndex > index;
           const isNext = currentIndex >= 0 && currentIndex < index;
           const distance = currentIndex >= 0 ? Math.abs(currentIndex - index) : index;

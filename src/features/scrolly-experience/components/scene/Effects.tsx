@@ -52,7 +52,7 @@ export default function Effects({ mosaicProgress = 0 }: EffectsProps) {
   if (effects.length === 0) return null;
 
   return (
-    <EffectComposer multisampling={4}>
+    <EffectComposer multisampling={2}>
       {effects}
     </EffectComposer>
   );

@@ -19,11 +19,17 @@ import { useState, useRef, useMemo } from 'react';
 import Scene from './components/Scene';
 import Overlay from './components/Overlay';
 import FpsCounter from '@/components/FpsCounter/FpsCounter';
+import { VariantProvider } from './VariantContext';
 import { HERO_STEP } from './utils/stepNavigation';
 import useScrollProgress from './utils/useScrollProgress';
 import './ScrollyExperience.css';
 
-export default function ScrollyExperience() {
+interface ScrollyExperienceProps {
+  variantId?: string;
+  onReady?: () => void;
+}
+
+export default function ScrollyExperience({ variantId, onReady }: ScrollyExperienceProps) {
   const [currentStep, setStep] = useState(HERO_STEP);
   const mosaicTriggerRef = useRef<HTMLDivElement>(null);
   const { mosaic: mosaicProgress, exit: exitProgress } = useScrollProgress(mosaicTriggerRef);
@@ -41,8 +47,12 @@ export default function ScrollyExperience() {
   }, [exitProgress]);
 
   return (
+    <VariantProvider variantId={variantId}>
     <div className="layout-container">
-      <div className="col-content">
+      <div
+        className="col-content"
+        style={isInteractive ? { pointerEvents: 'none' } : undefined}
+      >
         <Overlay
           currentStep={currentStep}
           setStep={setStep}
@@ -57,6 +67,7 @@ export default function ScrollyExperience() {
           currentStep={currentStep}
           mosaicProgress={mosaicProgress}
           onBlockClick={() => {}}
+          onReady={onReady}
         />
       </div>
       {process.env.NODE_ENV === 'development' && <FpsCounter />}
@@ -70,5 +81,6 @@ export default function ScrollyExperience() {
         data-exit-progress={exitProgress}
       />
     </div>
+    </VariantProvider>
   );
 }

@@ -6,9 +6,11 @@
  *
  * Single-phase: blocks fly directly from stack → grid along Bezier arcs.
  * No scatter/explode phases — clean and simple.
+ *
+ * VARIANT SYSTEM: accepts mosaic config as parameter (dependency injection).
  */
 
-import { mosaic } from '../config';
+import type { ResolvedMosaic } from '../VariantContext';
 import type { ComputedBlock } from '../types';
 
 // =============================================================================
@@ -16,47 +18,82 @@ import type { ComputedBlock } from '../types';
 // =============================================================================
 
 /**
+ * Mosaic position result with per-block dimensions (to support column spans).
+ */
+export interface MosaicBlockPosition {
+  position: [number, number, number];
+  dimensions: [number, number, number];
+}
+
+/**
  * Calculate flat grid positions for all blocks in the mosaic.
- * Returns centered [x, y, z] for each block index.
+ * Supports spanBlocks — blocks that occupy multiple columns.
  *
  * Grid is on the XZ plane (horizontal) — viewed from top-down camera.
  * All blocks at y=0, spread on x (columns) and z (rows).
  */
 export function calculateMosaicPositions(
-  totalBlocks: number,
-  cols?: number,
-): [number, number, number][] {
-  const c = cols ?? mosaic.cols;
-  const rows = Math.ceil(totalBlocks / c);
-  const { cellSize, gap } = mosaic;
+  blocks: ComputedBlock[],
+  mosaicCfg: ResolvedMosaic,
+): MosaicBlockPosition[] {
+  const c = mosaicCfg.cols;
+  const { cellSize, gap, blockHeight } = mosaicCfg;
+  const spanMap = mosaicCfg.spanBlocks ?? {};
+
+  // First pass: figure out total rows needed
+  let totalCols = 0;
+  for (const block of blocks) {
+    const span = spanMap[block.id] ?? 1;
+    // If adding this block would exceed the row, move to next row
+    if (totalCols % c !== 0 && (totalCols % c) + span > c) {
+      totalCols = Math.ceil(totalCols / c) * c; // jump to next row start
+    }
+    totalCols += span;
+  }
+  const rows = Math.ceil(totalCols / c);
 
   // Total grid dimensions
   const gridWidth = c * cellSize + (c - 1) * gap;
   const gridDepth = rows * cellSize + (rows - 1) * gap;
 
-  const positions: [number, number, number][] = [];
+  const result: MosaicBlockPosition[] = [];
+  let col = 0;
+  let row = 0;
 
-  for (let i = 0; i < totalBlocks; i++) {
-    const col = i % c;
-    const row = Math.floor(i / c);
+  for (const block of blocks) {
+    const span = spanMap[block.id] ?? 1;
 
-    // Center the grid: origin at center, spread on X and Z
-    const x = -gridWidth / 2 + cellSize / 2 + col * (cellSize + gap);
-    const y = 0; // flat on the horizontal plane
+    // If this block won't fit in the current row, wrap
+    if (col + span > c) {
+      col = 0;
+      row++;
+    }
+
+    // Block width accounts for span: span cells + (span-1) gaps
+    const blockWidth = span * cellSize + (span - 1) * gap;
+
+    // X position: center of the spanned area
+    const startX = -gridWidth / 2 + cellSize / 2;
+    const x = startX + col * (cellSize + gap) + (blockWidth - cellSize) / 2;
+    const y = 0;
     const z = -gridDepth / 2 + cellSize / 2 + row * (cellSize + gap);
 
-    positions.push([x, y, z]);
+    result.push({
+      position: [x, y, z],
+      dimensions: [blockWidth, blockHeight, cellSize],
+    });
+
+    col += span;
+    if (col >= c) {
+      col = 0;
+      row++;
+    }
   }
 
-  return positions;
+  return result;
 }
 
-/**
- * Get uniform mosaic block dimensions (square tiles on XZ plane, thin Y).
- */
-export function getMosaicDimensions(): [number, number, number] {
-  return [mosaic.cellSize, mosaic.blockHeight, mosaic.cellSize];
-}
+
 
 // =============================================================================
 // ARC CONTROL POINT (simple midpoint lift)
@@ -69,6 +106,7 @@ export function getMosaicDimensions(): [number, number, number] {
 export function calculateArcControlPoint(
   stackPos: [number, number, number],
   mosaicPos: [number, number, number],
+  mosaicCfg: ResolvedMosaic,
 ): [number, number, number] {
   const midX = (stackPos[0] + mosaicPos[0]) / 2;
   const midY = (stackPos[1] + mosaicPos[1]) / 2;
@@ -80,7 +118,7 @@ export function calculateArcControlPoint(
   const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
   // Lift proportional to distance — longer flights = higher arcs
-  const lift = 1.5 + distance * mosaic.arc.heightFactor;
+  const lift = 1.5 + distance * mosaicCfg.arc.heightFactor;
 
   return [midX, midY + lift, midZ];
 }
@@ -103,23 +141,24 @@ export interface BlockTrajectory {
  */
 export function precomputeTrajectories(
   blocks: ComputedBlock[],
+  mosaicCfg: ResolvedMosaic,
 ): BlockTrajectory[] {
-  const totalBlocks = blocks.length;
-  const mosaicPositions = calculateMosaicPositions(totalBlocks);
-  const mosaicDims = getMosaicDimensions();
+  const mosaicBlocks = calculateMosaicPositions(blocks, mosaicCfg);
 
   return blocks.map((block, index) => {
+    const mosaic = mosaicBlocks[index];
     const arcControl = calculateArcControlPoint(
       block.position,
-      mosaicPositions[index],
+      mosaic.position,
+      mosaicCfg,
     );
 
     return {
       stackPosition: block.position,
       stackDimensions: block.dimensions,
       arcControlPoint: arcControl,
-      mosaicPosition: mosaicPositions[index],
-      mosaicDimensions: mosaicDims,
+      mosaicPosition: mosaic.position,
+      mosaicDimensions: mosaic.dimensions,
     };
   });
 }

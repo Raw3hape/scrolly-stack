@@ -74,13 +74,15 @@ export default function HoverTooltip({ hoveredBlock, mousePosition }: HoverToolt
         </p>
       )}
 
-      {bullets && bullets.length > 0 && (
+      {bullets && bullets.length > 0 ? (
         <ul className="hover-tooltip__bullets">
           {bullets.map((bullet, index) => (
             <li key={index}>{bullet}</li>
           ))}
         </ul>
-      )}
+      ) : hoveredBlock.description ? (
+        <p className="hover-tooltip__description">{hoveredBlock.description}</p>
+      ) : null}
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import ScrollyLoader from '@/features/scrolly-experience/ScrollyLoader';
 import Section from '@/components/Section/Section';
 import LinkButton from '@/components/LinkButton/LinkButton';
 import ValuePropsStrip from '@/components/ValuePropsStrip/ValuePropsStrip';
 import StepCards from '@/components/StepCards/StepCards';
 import CtaBlock from '@/components/CtaBlock/CtaBlock';
+import HomeClient from './HomeClient';
 import {
   noscriptContent,
   homeValueProps,
@@ -23,13 +23,21 @@ import './home.css';
  * Section 4: How It Works (3 steps)
  * Section 5: Stakes / Urgency
  * Section 6: Final CTA
+ *
+ * VARIANT SYSTEM:
+ * - With ?variant=<id> → skips splash, loads that variant directly
+ * - Without ?variant= → shows splash screen to choose cube variant
  */
-export default function HomePage() {
-  return (
-    <>
-      {/* Section 1: Interactive 3D scrollytelling experience */}
-      <ScrollyLoader />
 
+interface HomePageProps {
+  searchParams: Promise<{ variant?: string }>;
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
+  const { variant: variantId } = await searchParams;
+
+  return (
+    <HomeClient initialVariantId={variantId}>
       {/* Fallback hero for no-JS / search engine crawlers */}
       <noscript>
         <section className="noscript-hero">
@@ -92,6 +100,6 @@ export default function HomePage() {
           ctaHref={homeFinalCta.ctaHref}
         />
       </Section>
-    </>
+    </HomeClient>
   );
 }

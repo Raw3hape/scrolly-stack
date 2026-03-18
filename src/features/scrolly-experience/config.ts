@@ -18,7 +18,7 @@ export const geometry = {
     totalDepth: 5.5,       // Reduced from 6.5
     layerHeight: 0.42,     // Reduced from 0.5
     borderRadius: 0.05,      // Subtle rounding
-    smoothness: 8,
+    smoothness: 4,
   },
   
   // Gaps between elements - proportionally reduced
@@ -89,6 +89,14 @@ export const animation = {
       offsetY: 16,             // Cursor offset Y
       fadeInDuration: 200,     // ms
       fadeOutDuration: 150,    // ms
+    },
+    tilt: {
+      maxAngle: 0.35,          // ~20° max rotation (hovered block)
+      proximityFalloff: 0.25,  // Distance falloff factor — lower = wider influence radius
+      proximityMax: 0.7,       // Proximity blocks max intensity (0→1, relative to hovered block)
+      lerpSpeed: 0.12,         // Smooth convergence per frame
+      resetLerpSpeed: 0.08,    // Slower return to neutral for premium feel
+      mobileBreakpoint: 768,   // Disable tilt on narrow viewports (touch conflict)
     },
   },
   
@@ -195,9 +203,9 @@ export const lighting = {
 // SHADOWS CONFIGURATION
 // =============================================================================
 
-// Contact shadows disabled — model floats in clean space
+// Contact shadows disabled — model floats in infinite space
 export const shadows = {
-  enabled: true,               // Enabled: provides visual anchoring
+  enabled: false,              // Disabled: model floats without visible floor/shadow
   contact: {
     position: [0, -4.8, 0],
     opacity: 0.35,
@@ -293,9 +301,8 @@ export const mosaic = {
   },
 
   sceneOffset: {
-    stackY: -0.10,               // raised for better visual centering
+    stackY: 0,                   // additional vertical tweak (0 = auto-centered via header compensation)
     mosaicY: 0.12,               // keep the final grid slightly above center
-    headerCompensationFactor: 0.35,
   },
 
   // Camera during mosaic — TOP-DOWN view

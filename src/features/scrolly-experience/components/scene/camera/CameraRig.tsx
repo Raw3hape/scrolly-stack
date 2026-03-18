@@ -13,6 +13,10 @@
  * - At mosaicProgress=1 → 100% scroll-driven = precise, no drift
  * - Transition is smooth — no threshold-based jump
  *
+ * HEADER CENTERING: camera.lookAt targets the effective viewport center
+ * below the header, not the origin. This shifts the entire view so the
+ * stack appears vertically centered in the visible area.
+ *
  * SYNC: Uses UNIFIED_LAMBDA (shared with ZoomController) so camera
  * and zoom move at exactly the same speed — no desync.
  *
@@ -47,6 +51,7 @@ export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps
   const isoUpRef = useRef(new THREE.Vector3());
   const mosaicPosRef = useRef(new THREE.Vector3());
   const mosaicUpRef = useRef(new THREE.Vector3());
+
 
   useFrame((state, delta) => {
     const d = THREE.MathUtils.damp;
@@ -87,6 +92,8 @@ export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps
     // transitionProgress=1 → 100% instant (scroll-driven)
     state.camera.position.lerpVectors(dampedPosRef.current, instantPosRef.current, transitionProgress);
     state.camera.up.lerpVectors(dampedUpRef.current, instantUpRef.current, transitionProgress);
+
+    // --- 4. LOOK AT ORIGIN ---
     state.camera.lookAt(0, 0, 0);
 
     // Always invalidate — crossfade runs every frame
