@@ -1,17 +1,24 @@
 /* ============================================================================
- * STITCH OVERRIDES — Design Token Delta for /v2/ pages
+ * STITCH OVERRIDES — Design Token Delta
  *
- * Applied via .stitch-theme class on the /v2/ layout wrapper.
+ * Applied via .stitch-theme class on <body>.
  * Overrides ONLY the tokens that differ from the main design system.
  *
- * Source: Google Stitch project "Foundation Projects - Site Map & Content PRD"
- * Design theme: "Architectural Editorial"
+ * IMPORTANT: --font-family-serif and --font-family are also set at :root
+ * so composed tokens (--font-h1 etc.) resolve correctly in font: shorthand.
  * ========================================================================== */
 
+/* Must be in :root so --font-h1 (= "400 size/lh var(--font-family-serif)")
+   resolves the font-family portion at the same scope where it's defined. */
+:root {
+  --font-family-serif: var(--font-newsreader, serif);
+  --font-family: var(--font-inter, sans-serif);
+}
+
 .stitch-theme {
-  /* === Font overrides (Newsreader + Inter replace DM Serif + Satoshi) === */
-  --font-family-serif: var(--font-newsreader);
-  --font-family: var(--font-inter);
+  /* === Font overrides (also here for specificity in edge cases) === */
+  --font-family-serif: var(--font-newsreader, serif);
+  --font-family: var(--font-inter, sans-serif);
 
   /* === Surface adjustments (warmer cream) === */
   --surface-base:       #fef9f0;
