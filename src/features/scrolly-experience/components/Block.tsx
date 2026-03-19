@@ -44,7 +44,7 @@ const TILT_PLANE = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.15);
 const _planeIntersect = new THREE.Vector3();
 
 /** Label Component for block text */
-function BlockLabel({ text, dimensions, color = labels.color, opacity = 1 }: BlockLabelProps) {
+function BlockLabel({ text, dimensions, color = labels.color, opacity = 1, labelFontSize, labelMaxWidth }: BlockLabelProps) {
   const [w, h, d] = dimensions;
 
   if (opacity <= 0) return null;
@@ -57,13 +57,13 @@ function BlockLabel({ text, dimensions, color = labels.color, opacity = 1 }: Blo
         d / 2 - labels.padding.z,
       ]}
       rotation={[-Math.PI / 2, 0, 0]}
-      fontSize={labels.fontSize}
+      fontSize={labelFontSize ?? labels.fontSize}
       font={labels.font}
       anchorX="left"
       anchorY="bottom"
       color={color}
       fillOpacity={opacity}
-      maxWidth={labels.maxWidth}
+      maxWidth={labelMaxWidth ?? labels.maxWidth}
       lineHeight={labels.lineHeight}
       characters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
     >
@@ -98,6 +98,8 @@ export default function Block({
   mosaicProgress = 0,
   aboveLiftSign = 1,
   isNotYetSeenAbove = false,
+  labelFontSize,
+  labelMaxWidth,
 }: BlockProps) {
   const meshRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -395,6 +397,8 @@ export default function Block({
             dimensions={visualDimensions}
             color={textColor}
             opacity={labelOpacity}
+            labelFontSize={labelFontSize}
+            labelMaxWidth={labelMaxWidth}
           />
         )}
       </group>

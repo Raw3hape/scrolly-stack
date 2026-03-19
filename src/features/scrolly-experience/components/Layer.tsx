@@ -27,6 +27,8 @@ export default function Layer({
   mosaicBlockData,
   aboveLiftSign,
   allBlocksNotYetSeenAbove = [],
+  labelFontSize,
+  labelMaxWidth,
 }: Omit<LayerProps, 'mosaicBlockData'> & { mosaicBlockData?: MosaicBlockDataMap; aboveLiftSign?: number }) {
   const { geometry } = useVariant();
   const blocks: ComputedBlock[] = calculateBlockPositions(layer, baseY, geometry);
@@ -68,6 +70,8 @@ export default function Layer({
             mosaicProgress={mosaicProgress}
             mosaicPosition={blockMosaic?.position}
             mosaicDimensions={blockMosaic?.dimensions}
+            labelFontSize={labelFontSize}
+            labelMaxWidth={labelMaxWidth}
           />
         );
       })}

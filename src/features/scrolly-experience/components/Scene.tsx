@@ -23,6 +23,7 @@ import Effects from './scene/Effects';
 import MouseParallaxGroup from './scene/MouseParallaxGroup';
 import { CameraRig, ZoomController, useResponsiveZoom } from './scene/camera';
 import { animation, lighting, render } from '../config';
+import { useVariant } from '../VariantContext';
 import { isHeroStep, getStepElementId } from '../utils/stepNavigation';
 import type { SceneProps, RawBlockData, MousePosition } from '../types';
 
@@ -50,7 +51,8 @@ function ReadySignal({ onReady }: { onReady?: () => void }) {
 }
 
 export default function Scene({ currentStep, mosaicProgress, onBlockClick, onReady }: SceneProps & { onReady?: () => void }) {
-  const zoom = useResponsiveZoom(currentStep, mosaicProgress);
+  const { mosaicConfig } = useVariant();
+  const zoom = useResponsiveZoom(currentStep, mosaicProgress, mosaicConfig.camera.finalZoom);
   const isHero = isHeroStep(currentStep);
 
   // Hover state for tooltip (DOM overlay — needs state for re-render)

@@ -1,0 +1,172 @@
+{
+  "_instructions": {
+    "stack_order": "This array is ordered bottom to top. Index 0 is the BOTTOM of the visual stack. The last entry (crown) is the TOP.",
+    "layout_types": {
+      "single": "One tile occupying its own row.",
+      "triple": "Three tiles sharing one row. The 'blocks' array contains all three tile objects.",
+      "crown": "Four tiles sharing the top row. The 'blocks' array contains all four tile objects."
+    },
+    "tile_fields": {
+      "tile_label": "1–2 word label displayed on the face of the cube tile.",
+      "id": "2–3 word expanded name that appears on the left panel when the tile is active.",
+      "heading": "Subheadline displayed in the expanded content panel.",
+      "copy": "Body copy displayed in the expanded content panel."
+    }
+  },
+  "stack": [
+    {
+      "position": 1,
+      "stack_location": "bottom",
+      "layout": "single",
+      "tile_label": "Partnership",
+      "id": "Partnership Alignment",
+      "heading": "Roofer-Centric from the Start",
+      "copy": "We partner with owners who want an aligned operator, durable wealth building, and a roofer-led public path."
+    },
+    {
+      "position": 2,
+      "layout": "single",
+      "tile_label": "People",
+      "id": "People & Culture",
+      "heading": "Culture Beats Talent",
+      "copy": "Map your culture scientifically, reinforce what works, and build a succession bench without blowing up your crew."
+    },
+    {
+      "position": 3,
+      "layout": "single",
+      "tile_label": "Data",
+      "id": "Unified Data Model",
+      "heading": "One Language to Rule",
+      "copy": "Cleansing old data and creating a unified standard for leads, margin, and lifecycle stages so every scoreboard reads the same across the platform."
+    },
+    {
+      "position": 4,
+      "layout": "triple",
+      "_note": "Three tiles share this row. Render as a single stacked layer with three side-by-side blocks.",
+      "blocks": [
+        {
+          "tile_label": "Systems",
+          "id": "Systems Implementation",
+          "heading": "Lead-to-Review Operating System",
+          "copy": "Wire the CRM, job management, and accounting into one operating backbone so work completes and records itself once. A single source of truth to operate from with a modern home owner experience!"
+        },
+        {
+          "tile_label": "Playbooks",
+          "id": "Process Playbooks",
+          "heading": "Proven Frameworks",
+          "copy": "Proven operating frameworks, SOPs, and accountability cadences distilled from 500+ roofing engagements, ready to deploy."
+        },
+        {
+          "tile_label": "Training",
+          "id": "Training Engine",
+          "heading": "Adoption That Sticks",
+          "copy": "Role-based training, certification tracks, and coaching loops so every crew works to the same standard. A battle tested team with years of experience to support you."
+        }
+      ]
+    },
+    {
+      "position": 5,
+      "layout": "single",
+      "tile_label": "Sales",
+      "id": "Pod Sales",
+      "heading": "Close More Roofs",
+      "copy": "Build hunter-closer pods with SLAs, objection scripts, and pipeline reviews that turn leads into booked revenue."
+    },
+    {
+      "position": 6,
+      "layout": "single",
+      "tile_label": "Production",
+      "id": "Production Frameworks",
+      "heading": "Flawless Installs drive Customer Acquisition",
+      "copy": "Site supervisors, referral scripts, crew pay plans, and coordination hubs that deliver clean installs and spark new connections."
+    },
+    {
+      "position": 7,
+      "layout": "single",
+      "tile_label": "Marketing",
+      "id": "Marketing Accountability",
+      "heading": "Fuel Demand",
+      "copy": "See every dollar's impact, police agency performance, and scale reviews, referrals, and media as one demand engine."
+    },
+    {
+      "position": 8,
+      "layout": "single",
+      "tile_label": "Automation",
+      "id": "Workflow Automation",
+      "heading": "Zero Toggle Tax",
+      "copy": "Kill duplicate entry, rogue spreadsheets, and \"do the thing, then tell the system you did the thing\" busywork."
+    },
+    {
+      "position": 9,
+      "layout": "single",
+      "tile_label": "Finance",
+      "id": "Finance Ops",
+      "heading": "Never Outgrow Quality or Cashflow",
+      "copy": "Enterprise-grade controllers, tax strategy, and reporting teams professionalize your books and hand you real-time cash clarity. We bring you a team of professionals."
+    },
+    {
+      "position": 10,
+      "layout": "single",
+      "tile_label": "Intelligence",
+      "id": "Data Intelligence",
+      "heading": "Better Data, Better Decisions",
+      "copy": "Executive-grade dashboards surface opportunities, unlock shareholder value, and show exactly where to push next. Move from hindsight, to insight, to foresight."
+    },
+    {
+      "position": 11,
+      "layout": "single",
+      "tile_label": "AI Agents",
+      "id": "Agentic Workforce",
+      "heading": "Hybrid Human Centric Leverage",
+      "copy": "AI copilots clear the grunt work—permitting, clicks, reconciliations—so humans stay human and 10× their impact, and growth goals while keeping culture intact."
+    },
+    {
+      "position": 12,
+      "layout": "single",
+      "tile_label": "Procurement",
+      "id": "Procurement Leverage",
+      "heading": "National Buying Power",
+      "copy": "Materials, storm response, health plans, payment processing, and shared specialists negotiated once so every partner wins."
+    },
+    {
+      "position": 13,
+      "layout": "single",
+      "tile_label": "ESO",
+      "id": "Employee Stock Ownership",
+      "heading": "Legacy Protected Growth Insurance",
+      "copy": "We Give your second-row leaders true upside so you can announce the exit proudly and keep the team motivated for decades. Long term Life changing outcomes drive competitive performance and legacy."
+    },
+    {
+      "position": 14,
+      "stack_location": "top",
+      "layout": "crown",
+      "_note": "Four tiles share the crown row at the top of the stack. Render as a single layer with four side-by-side blocks.",
+      "blocks": [
+        {
+          "tile_label": "Exit Plan",
+          "id": "Exit Planning",
+          "heading": "IPO Committee",
+          "copy": "Bankers, auditors, filings, plus founder life-design—sell, stay, or reinvent with a plan so post-exit shock and regret never hits."
+        },
+        {
+          "tile_label": "Robotics",
+          "id": "Robotics Integration",
+          "heading": "Human + Machine Future",
+          "copy": "We're the beta lab for VC-backed roof robotics—roofers share the upside, robots learn our playbooks, everyone wins. We will be first to market with an equitable plan to build the spatial model for robotic team mates."
+        },
+        {
+          "tile_label": "Growth",
+          "id": "Growth by Design",
+          "heading": "Scale With Purpose",
+          "copy": "Expansion roadmaps, greenfield launches, and knowledge transfer that unlock shareholder value and attract fresh capital."
+        },
+        {
+          "tile_label": "IPO",
+          "id": "IPO",
+          "heading": "Ring The Bell",
+          "copy": "The first roofer-built public company—owners keep 80%, confetti flies, and a brand-new asset class is born."
+        }
+      ]
+    }
+  ]
+}

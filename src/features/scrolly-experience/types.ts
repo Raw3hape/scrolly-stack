@@ -117,6 +117,10 @@ export interface BlockLabelProps {
   dimensions: [number, number, number];
   color?: string;
   opacity?: number;
+  /** Adaptive font size — scaled proportionally to cellSize by useAdaptiveMosaic */
+  labelFontSize?: number;
+  /** Adaptive max width — scaled proportionally to cellSize by useAdaptiveMosaic */
+  labelMaxWidth?: number;
 }
 
 /** Block component props */
@@ -149,6 +153,10 @@ export interface BlockProps {
   mosaicDimensions?: [number, number, number];
   /** Mosaic transition progress (0 = stack, >0 = transitioning) */
   mosaicProgress?: number;
+  /** Adaptive label font size from useAdaptiveMosaic */
+  labelFontSize?: number;
+  /** Adaptive label max width from useAdaptiveMosaic */
+  labelMaxWidth?: number;
 }
 
 /** Layer component props */
@@ -170,6 +178,10 @@ export interface LayerProps {
   mosaicProgress?: number;
   /** Pre-computed mosaic positions/dimensions per block id */
   mosaicBlockData?: Map<number, { position: [number, number, number]; dimensions: [number, number, number] }>;
+  /** Adaptive label font size from useAdaptiveMosaic */
+  labelFontSize?: number;
+  /** Adaptive label max width from useAdaptiveMosaic */
+  labelMaxWidth?: number;
 }
 
 /** Stack component props */

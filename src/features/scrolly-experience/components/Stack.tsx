@@ -11,7 +11,7 @@
  * All values driven by config.ts — zero hardcode.
  */
 
-import { useMemo, useRef, useEffect } from 'react';
+import { useMemo, useRef, useEffect, useState } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import Layer from './Layer';
@@ -23,6 +23,7 @@ import {
   precomputeTrajectories,
   type BlockTrajectory,
 } from '../utils/mosaicLayout';
+import { useAdaptiveMosaic } from '../hooks/useAdaptiveMosaic';
 import {
   easeInOutCubic,
   lerp,
@@ -277,15 +278,43 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     [layerPositions, geo],
   );
 
+  // Header measurement — needed by adaptive mosaic (state) and scene offset (ref)
+  const headerPxRef = useRef(0);
+  const contentRatioRef = useRef(0.45);
+  const [headerPx, setHeaderPx] = useState(0);
+
+  useEffect(() => {
+    const measure = () => {
+      const rootStyles = getComputedStyle(document.documentElement);
+      const h = parseFloat(rootStyles.getPropertyValue('--header-height')) || 0;
+      headerPxRef.current = h;
+      setHeaderPx(h);
+
+      const rawContentWidth = rootStyles.getPropertyValue('--content-width').trim();
+      const parsedContentWidth = rawContentWidth.endsWith('%')
+        ? parseFloat(rawContentWidth) / 100
+        : 0.45;
+
+      contentRatioRef.current = window.innerWidth <= 768 ? 0 : parsedContentWidth;
+    };
+
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
+
+  // Adaptive mosaic: fits grid to viewport, auto cols on mobile
+  const adaptedMosaic = useAdaptiveMosaic(mosaicConfig, allBlocks, headerPx);
+
   const trajectories = useMemo(
     () => {
-      const trajs = precomputeTrajectories(allBlocks, mosaicConfig);
+      const trajs = precomputeTrajectories(allBlocks, adaptedMosaic);
       return trajs.map((traj) => ({
         ...traj,
         arcControlPoint: computeArcControl(traj.stackPosition, traj.mosaicPosition),
       }));
     },
-    [allBlocks, mosaicConfig],
+    [allBlocks, adaptedMosaic],
   );
 
   // Compute interpolated mosaic data — uses Record instead of Map
@@ -306,26 +335,6 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   // ========================================================================
   const { size } = useThree();
   const groupRef = useRef<THREE.Group>(null);
-  const headerPxRef = useRef(0);
-  const contentRatioRef = useRef(0.45);
-
-  useEffect(() => {
-    const measure = () => {
-      const rootStyles = getComputedStyle(document.documentElement);
-      headerPxRef.current = parseFloat(rootStyles.getPropertyValue('--header-height')) || 0;
-
-      const rawContentWidth = rootStyles.getPropertyValue('--content-width').trim();
-      const parsedContentWidth = rawContentWidth.endsWith('%')
-        ? parseFloat(rawContentWidth) / 100
-        : 0.45;
-
-      contentRatioRef.current = window.innerWidth < 768 ? 0 : parsedContentWidth;
-    };
-
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, []);
 
   // ========================================================================
   // DAMPED SCENE OFFSET
@@ -426,6 +435,8 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
             isRevealed={isRevealed}
             mosaicProgress={mosaicProgress}
             mosaicBlockData={mosaicBlockData}
+            labelFontSize={adaptedMosaic.labelFontSize}
+            labelMaxWidth={adaptedMosaic.labelMaxWidth}
           />
         );
       })}

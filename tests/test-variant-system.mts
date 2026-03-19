@@ -30,15 +30,21 @@ function section(title: string) {
 section('1. Variant Registry');
 
 const allVariants = getAllVariants();
-assert(allVariants.length === 3, `getAllVariants() returns 3 variants (got ${allVariants.length})`);
+assert(allVariants.length === 6, `getAllVariants() returns 6 variants (got ${allVariants.length})`);
 
 const classic = getVariant('classic');
 const journey = getVariant('v2-journey');
 const reverse = getVariant('v3-reverse');
+const exact = getVariant('v4-exact');
+const exactDown = getVariant('v5-exact-down');
+const exactFlipped = getVariant('v6-exact-flipped');
 
 assert(classic.id === 'classic', 'classic variant exists');
 assert(journey.id === 'v2-journey', 'journey variant exists');
 assert(reverse.id === 'v3-reverse', 'reverse variant exists');
+assert(exact.id === 'v4-exact', 'exact variant exists');
+assert(exactDown.id === 'v5-exact-down', 'exactDown variant exists');
+assert(exactFlipped.id === 'v6-exact-flipped', 'exactFlipped variant exists');
 
 assert(getVariant('nonexistent').id === 'classic', 'Unknown ID falls back to classic');
 assert(getVariant(null).id === 'classic', 'null falls back to classic');
@@ -58,16 +64,22 @@ assert(countBlocks(journey) === 19, `Journey: 19 blocks (got ${countBlocks(journ
 assert(journey.layers.length === 12, `Journey: 12 layers (got ${journey.layers.length})`);
 assert(countBlocks(reverse) === 19, `Reverse: 19 blocks (got ${countBlocks(reverse)})`);
 assert(reverse.layers.length === 12, `Reverse: 12 layers (got ${reverse.layers.length})`);
+assert(countBlocks(exact) === 19, `Exact: 19 blocks (got ${countBlocks(exact)})`);
+assert(exact.layers.length === 14, `Exact: 14 layers (got ${exact.layers.length})`);
+assert(countBlocks(exactDown) === 19, `ExactDown: 19 blocks (got ${countBlocks(exactDown)})`);
+assert(exactDown.layers.length === 14, `ExactDown: 14 layers (got ${exactDown.layers.length})`);
+assert(countBlocks(exactFlipped) === 19, `ExactFlipped: 19 blocks (got ${countBlocks(exactFlipped)})`);
+assert(exactFlipped.layers.length === 14, `ExactFlipped: 14 layers (got ${exactFlipped.layers.length})`);
 
 // Unique block IDs
-for (const v of [classic, journey, reverse]) {
+for (const v of [classic, journey, reverse, exact, exactDown, exactFlipped]) {
   const allIds = v.layers.flatMap(l => l.blocks.map(b => b.id));
   const uniqueIds = new Set(allIds);
   assert(uniqueIds.size === allIds.length, `${v.name}: all ${allIds.length} block IDs unique`);
 }
 
 // Required fields
-for (const v of [classic, journey, reverse]) {
+for (const v of [classic, journey, reverse, exact]) {
   const blocks = v.layers.flatMap(l => l.blocks);
   const ok = blocks.every(b => b.label && b.color && b.tooltipTitle && b.icon && b.description !== undefined);
   assert(ok, `${v.name}: all blocks have required fields`);
@@ -80,6 +92,9 @@ section('3. Scroll Direction');
 assert(classic.scrollDirection === undefined, 'Classic: scrollDirection = undefined (default down)');
 assert(journey.scrollDirection === undefined, 'Journey: scrollDirection = undefined (default down)');
 assert(reverse.scrollDirection === 'up', 'Reverse: scrollDirection = "up"');
+assert(exact.scrollDirection === 'up', 'Exact: scrollDirection = "up"');
+assert(exactDown.scrollDirection === 'down', 'ExactDown: scrollDirection = "down"');
+assert(exactFlipped.scrollDirection === 'down', 'ExactFlipped: scrollDirection = "down"');
 
 // ─── 4. BLOCKS ABOVE ACTIVE ─────────────────────────────────────────────────
 
@@ -172,6 +187,14 @@ const ro = getOrderedSteps(reverse);
 assert(ro[0].id === 18, 'Reverse: first step id=18 (IPO — scroll starts with bottom blocks)');
 assert(ro[ro.length - 1].id === 0, 'Reverse: last step id=0 (Partnership — reached last)');
 
+const eo = getOrderedSteps(exact);
+assert(eo[0].id === 18, 'Exact: first step id=18 (IPO — scroll starts with bottom blocks)');
+assert(eo[eo.length - 1].id === 0, 'Exact: last step id=0 (Partnership — reached last)');
+
+const edo = getOrderedSteps(exactDown);
+assert(edo[0].id === 0, 'ExactDown: first step id=0 (Partnership — top-down)');
+assert(edo[edo.length - 1].id === 18, 'ExactDown: last step id=18 (IPO — reached last)');
+
 // Exact mirror
 const mirrorIds = jo.map(s => s.id).reverse();
 assert(JSON.stringify(ro.map(s => s.id)) === JSON.stringify(mirrorIds), 'Reverse is exact mirror of Journey');
@@ -183,6 +206,9 @@ section('8. Mosaic spanBlocks');
 assert(!classic.mosaicOverrides?.spanBlocks, 'Classic: no spanBlocks');
 assert(journey.mosaicOverrides?.spanBlocks?.[18] === 2, 'Journey: IPO spans 2');
 assert(reverse.mosaicOverrides?.spanBlocks?.[18] === 2, 'Reverse: IPO spans 2 (inherited)');
+assert(exact.mosaicOverrides?.spanBlocks?.[18] === 2, 'Exact: IPO spans 2');
+assert(exactDown.mosaicOverrides?.spanBlocks?.[18] === 2, 'ExactDown: IPO spans 2');
+assert(exactFlipped.mosaicOverrides?.spanBlocks?.[18] === 2, 'ExactFlipped: IPO spans 2');
 
 // Grid fill check
 function checkFill(v: typeof classic) {
@@ -204,6 +230,9 @@ function checkFill(v: typeof classic) {
 assert(checkFill(classic), 'Classic: mosaic fills perfectly');
 assert(checkFill(journey), 'Journey: mosaic fills perfectly (IPO span=2)');
 assert(checkFill(reverse), 'Reverse: mosaic fills perfectly');
+assert(checkFill(exact), 'Exact: mosaic fills perfectly');
+assert(checkFill(exactDown), 'ExactDown: mosaic fills perfectly');
+assert(checkFill(exactFlipped), 'ExactFlipped: mosaic fills perfectly');
 
 // ─── 9. INHERITANCE ──────────────────────────────────────────────────────────
 

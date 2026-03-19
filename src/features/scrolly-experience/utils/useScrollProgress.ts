@@ -119,6 +119,7 @@ export default function useScrollProgress(
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     rafId = requestAnimationFrame(() => {
       update();
       rafId = null;
@@ -126,6 +127,7 @@ export default function useScrollProgress(
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
       if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, [update]);

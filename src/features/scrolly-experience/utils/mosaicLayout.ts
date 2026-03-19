@@ -26,6 +26,33 @@ export interface MosaicBlockPosition {
 }
 
 /**
+ * Count how many rows the mosaic grid will have for given blocks and layout.
+ * Pure function — no side effects, no React dependency.
+ *
+ * @param blocks - Computed blocks with IDs (used for spanBlocks lookup)
+ * @param cols - Number of columns in the grid
+ * @param spanBlocks - Map of block ID → column span (default 1)
+ * @returns Number of rows needed
+ */
+export function getMosaicRows(
+  blocks: ComputedBlock[],
+  cols: number,
+  spanBlocks?: Record<number, number>,
+): number {
+  const spanMap = spanBlocks ?? {};
+  let totalCols = 0;
+  for (const block of blocks) {
+    const span = Math.min(spanMap[block.id] ?? 1, cols); // clamp span to cols
+    if (totalCols % cols !== 0 && (totalCols % cols) + span > cols) {
+      totalCols = Math.ceil(totalCols / cols) * cols;
+    }
+    totalCols += span;
+  }
+  return Math.ceil(totalCols / cols);
+}
+
+
+/**
  * Calculate flat grid positions for all blocks in the mosaic.
  * Supports spanBlocks — blocks that occupy multiple columns.
  *
@@ -40,17 +67,7 @@ export function calculateMosaicPositions(
   const { cellSize, gap, blockHeight } = mosaicCfg;
   const spanMap = mosaicCfg.spanBlocks ?? {};
 
-  // First pass: figure out total rows needed
-  let totalCols = 0;
-  for (const block of blocks) {
-    const span = spanMap[block.id] ?? 1;
-    // If adding this block would exceed the row, move to next row
-    if (totalCols % c !== 0 && (totalCols % c) + span > c) {
-      totalCols = Math.ceil(totalCols / c) * c; // jump to next row start
-    }
-    totalCols += span;
-  }
-  const rows = Math.ceil(totalCols / c);
+  const rows = getMosaicRows(blocks, c, mosaicCfg.spanBlocks);
 
   // Total grid dimensions
   const gridWidth = c * cellSize + (c - 1) * gap;

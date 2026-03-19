@@ -12,6 +12,9 @@ import type { StackVariant } from './types';
 import { classicVariant } from './classic';
 import { journeyVariant } from './v2-journey';
 import { reverseVariant } from './v3-reverse';
+import { exactVariant } from './v4-exact';
+import { exactDownVariant } from './v5-exact-down';
+import { exactFlippedVariant } from './v6-exact-flipped';
 
 export const DEFAULT_VARIANT_ID = 'classic';
 
@@ -19,6 +22,9 @@ const registry = new Map<string, StackVariant>([
   [classicVariant.id, classicVariant],
   [journeyVariant.id, journeyVariant],
   [reverseVariant.id, reverseVariant],
+  [exactVariant.id, exactVariant],
+  [exactDownVariant.id, exactDownVariant],
+  [exactFlippedVariant.id, exactFlippedVariant],
 ]);
 
 /**

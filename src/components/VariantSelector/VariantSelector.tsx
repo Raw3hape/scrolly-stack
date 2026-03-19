@@ -43,6 +43,33 @@ const variantIcons: Record<string, ReactNode> = {
       <path d="M12 18l-3-3m3 3l3-3" />
     </svg>
   ),
+  'v4-exact': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5" />
+      <path d="M2 12l10 5 10-5" />
+      <path d="M12 6l-3 3m3-3l3 3" />
+      <path d="M9 15h6" strokeWidth="2" />
+    </svg>
+  ),
+  'v5-exact-down': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5" />
+      <path d="M2 12l10 5 10-5" />
+      <path d="M12 18l-3-3m3 3l3-3" />
+      <path d="M9 9h6" strokeWidth="2" />
+    </svg>
+  ),
+  'v6-exact-flipped': (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5" />
+      <path d="M2 12l10 5 10-5" />
+      <path d="M12 6l-3 3m3-3l3 3" />
+      <path d="M12 18l-3-3m3 3l3-3" />
+    </svg>
+  ),
 };
 
 export default function VariantSelector({ onSelect }: VariantSelectorProps) {
@@ -63,7 +90,7 @@ export default function VariantSelector({ onSelect }: VariantSelectorProps) {
         </p>
 
         <div className="variant-selector__cards">
-          {variants.map((variant: StackVariant) => {
+          {variants.map((variant: StackVariant, index: number) => {
             const blockCount = variant.layers.reduce(
               (acc, layer) => acc + layer.blocks.length,
               0
@@ -78,6 +105,8 @@ export default function VariantSelector({ onSelect }: VariantSelectorProps) {
                 onClick={() => setSelectedId(variant.id)}
                 type="button"
               >
+                <span className="variant-card__number">{index + 1}</span>
+
                 <div className="variant-card__icon">
                   {variantIcons[variant.id] ?? variantIcons.classic}
                 </div>
