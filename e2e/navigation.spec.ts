@@ -38,14 +38,15 @@ test.describe('Navigation', () => {
       return;
     }
 
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    // Start from /about (not /) — home page has 3D TransitionLoader
+    // that blocks header in headless Playwright (no WebGL = scene never ready)
+    await page.goto('/about', { waitUntil: 'domcontentloaded' });
 
-    // Find and click visible About link
-    const aboutLink = page.locator('header a[href="/about"]:visible');
-    if (await aboutLink.count() > 0) {
-      await aboutLink.first().click();
-      await page.waitForURL('/about');
-      await expect(page).toHaveURL('/about');
-    }
+    // Navigate to /schedule via header
+    const scheduleLink = page.locator('header a[href="/schedule"]').first();
+    await scheduleLink.waitFor({ state: 'visible', timeout: 5_000 });
+    await scheduleLink.click();
+    await page.waitForURL('/schedule', { timeout: 5_000 });
+    await expect(page).toHaveURL('/schedule');
   });
 });

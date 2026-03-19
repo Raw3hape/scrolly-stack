@@ -16,7 +16,7 @@ import { exactVariant } from './v4-exact';
 import { exactDownVariant } from './v5-exact-down';
 import { exactFlippedVariant } from './v6-exact-flipped';
 
-export const DEFAULT_VARIANT_ID = 'classic';
+export const DEFAULT_VARIANT_ID = 'v6-exact-flipped';
 
 const registry = new Map<string, StackVariant>([
   [classicVariant.id, classicVariant],

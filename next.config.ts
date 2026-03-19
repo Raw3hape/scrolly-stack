@@ -6,6 +6,27 @@ const nextConfig: NextConfig = {
 
   // Disable the floating "N" dev indicator in bottom-left corner
   devIndicators: false,
+
+  // Redirect old /v2 URLs to root
+  async redirects() {
+    return [
+      {
+        source: '/v2',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/v2/about',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/v2/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

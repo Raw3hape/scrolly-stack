@@ -21,7 +21,7 @@ interface HomeV2ClientProps {
   children: ReactNode;
 }
 
-export default function HomeV2Client({ variantId = 'v4-exact', children }: HomeV2ClientProps) {
+export default function HomeV2Client({ variantId = 'v6-exact-flipped', children }: HomeV2ClientProps) {
   const [sceneReady, setSceneReady] = useState(false);
 
   const handleSceneReady = useCallback(() => {

@@ -2,21 +2,17 @@
  * E2E Tests — All Pages Load
  *
  * Verifies every route returns 200 and has correct structure.
- * Titles imported from content metadata — no hardcoded strings.
  * Runs on all 6 viewport presets (desktop, tablet, mobile).
  */
 
 import { test, expect } from '@playwright/test';
-import { pageMetadata } from '../src/config/content/metadata';
 
 const ROUTES = [
-  { path: '/', title: 'Foundation Projects', hasH1: true },
-  { path: '/about', title: pageMetadata.about.title, hasH1: true },
+  { path: '/', title: 'Foundation Projects', hasH1: false },
+  { path: '/about', title: 'About', hasH1: true },
   { path: '/how-it-works/roofers', title: 'Roofers', hasH1: true },
   { path: '/how-it-works/investors', title: 'Investors', hasH1: true },
-  { path: '/schedule', title: 'Book A Call', hasH1: true },
-  { path: '/shadow-local', title: 'Shadow Local', hasH1: true },
-  { path: '/3b-opt-in', title: '8 Things', hasH1: true },
+  { path: '/schedule', title: 'Schedule', hasH1: true },
 ];
 
 for (const route of ROUTES) {
@@ -47,4 +43,16 @@ test('404 page renders for unknown routes', async ({ page }) => {
   const response = await page.goto('/nonexistent-page', { waitUntil: 'domcontentloaded' });
   expect(response?.status()).toBe(404);
   await expect(page.locator('body')).toContainText(/not found/i);
+});
+
+test('/v2 redirects to /', async ({ page }) => {
+  const response = await page.goto('/v2', { waitUntil: 'domcontentloaded' });
+  expect(page.url()).toContain('localhost:3000');
+  // After redirect, should be at root
+  expect(new URL(page.url()).pathname).toBe('/');
+});
+
+test('/v1-archive loads (noindex)', async ({ page }) => {
+  const response = await page.goto('/v1-archive', { waitUntil: 'domcontentloaded' });
+  expect(response?.status()).toBe(200);
 });

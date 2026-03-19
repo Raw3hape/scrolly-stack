@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import '../status-pages.css';
+import '../../status-pages.css';
 
 export const metadata: Metadata = {
   title: 'Shadow Local',

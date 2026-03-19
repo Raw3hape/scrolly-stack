@@ -1,35 +1,33 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import { DM_Serif_Display } from 'next/font/google';
-import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
-import VersionBadge from '@/components/VersionBadge/VersionBadge';
-import LayoutShell from '@/components/LayoutShell/LayoutShell';
+import { Newsreader, Inter } from 'next/font/google';
+import V2Header from '@/components/V2Header/V2Header';
+import V2Footer from '@/components/V2Sections/V2Footer/V2Footer';
+import { footerContent } from '@/config/content-v2';
 import '@/styles/index.css';
+import '@/styles/tokens/stitch-overrides.css';
+import './v2-shared.css';
 
 /**
- * Satoshi — sans-serif body font (self-hosted)
- * Sets CSS variable --font-family used for body text, UI, buttons.
+ * Newsreader — editorial serif for headlines (Stitch theme)
+ * Sets CSS variable --font-newsreader, mapped to --font-family-serif
+ * via stitch-overrides.css.
  */
-const satoshi = localFont({
-  src: [
-    { path: '../fonts/Satoshi-Regular.woff2', weight: '400', style: 'normal' },
-    { path: '../fonts/Satoshi-Medium.woff2',  weight: '500', style: 'normal' },
-    { path: '../fonts/Satoshi-Bold.woff2',    weight: '700', style: 'normal' },
-  ],
-  variable: '--font-family',
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  variable: '--font-newsreader',
   display: 'swap',
+  style: ['normal', 'italic'],
+  weight: ['400', '500', '600'],
 });
 
 /**
- * DM Serif Display — editorial serif for headlines
- * Sets CSS variable --font-family-serif used for h1-h3, hero display.
- * Brand adjacencies: Kinfolk, Architectural Digest, Four Seasons.
+ * Inter — clean sans-serif for body (Stitch theme)
+ * Sets CSS variable --font-inter, mapped to --font-family
+ * via stitch-overrides.css.
  */
-const dmSerif = DM_Serif_Display({
-  weight: '400',
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-family-serif',
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -56,7 +54,7 @@ export const metadata: Metadata = {
 
 /**
  * Root layout — wraps all pages.
- * Provides: font, Header, Footer, global CSS.
+ * Provides: Newsreader + Inter fonts, V2Header, V2Footer, stitch-theme.
  */
 export default function RootLayout({
   children,
@@ -64,8 +62,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${satoshi.variable} ${dmSerif.variable}`}>
-      <body>
+    <html lang="en" className={`${newsreader.variable} ${inter.variable}`}>
+      <body className="stitch-theme">
         {/* Reset scroll on reload — disable browser scroll restoration */}
         <script
           dangerouslySetInnerHTML={{
@@ -75,13 +73,9 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <LayoutShell
-          header={<Header />}
-          footer={<Footer />}
-          versionBadge={<VersionBadge />}
-        >
-          {children}
-        </LayoutShell>
+        <V2Header />
+        <main id="main">{children}</main>
+        <V2Footer data={footerContent} />
       </body>
     </html>
   );

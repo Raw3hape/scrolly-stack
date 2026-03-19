@@ -1,29 +1,22 @@
 import type { Metadata } from 'next';
-import Section from '@/components/Section/Section';
-import PageHeader from '@/components/PageHeader/PageHeader';
-import { pageMetadata } from '@/config/content/metadata';
-import { scheduleContent } from '@/config/content/schedule';
-import '../status-pages.css';
 
-export const metadata: Metadata = pageMetadata.schedule;
+export const metadata: Metadata = {
+  title: 'Schedule A Call',
+  description: 'Book a free 15-minute strategy call with Foundation Projects to discuss your roofing company exit.',
+};
 
-/**
- * Schedule A Call Page — Foundation Projects
- *
- * Section 1: Heading + body + Calendly widget placeholder.
- */
 export default function SchedulePage() {
   return (
-    <Section width="narrow" centered>
-      <PageHeader
-        title={scheduleContent.heading}
-        description={scheduleContent.body}
-        align="center"
-      />
-      {/* Calendly embed will go here */}
-      <div className="placeholder-box">
-        [{scheduleContent.widgetPlaceholder}]
+    <section className="v2-section v2-section--fullscreen" style={{ textAlign: 'center' }}>
+      <div className="v2-container">
+        <h1 style={{ fontFamily: 'var(--font-family-serif)', marginBottom: 'var(--space-md)' }}>
+          Schedule A Call
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', maxWidth: '36rem', margin: '0 auto' }}>
+          This page is currently under construction.
+          We&apos;re crafting something exceptional — check back soon.
+        </p>
       </div>
-    </Section>
+    </section>
   );
 }
