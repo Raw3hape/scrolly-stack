@@ -77,6 +77,7 @@ function tileColorForCell(col: number, row: number): string {
 
 export default function BlueprintGrid({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const stateRef = useRef<{
     cols: number;
     rows: number;
@@ -100,8 +101,8 @@ export default function BlueprintGrid({ className }: { className?: string }) {
   // --- Build grid data ---
   const buildGrid = useCallback((w: number, h: number, dpr: number) => {
     const step = CFG.cellSize * dpr;
-    const cols = Math.ceil(w / step) + 1;
-    const rows = Math.ceil(h / step) + 1;
+    const cols = Math.ceil(w / step) + 2;
+    const rows = Math.ceil(h / step) + 2;
     const n = cols * rows;
 
     const ox = new Float32Array(n);
@@ -180,7 +181,7 @@ export default function BlueprintGrid({ className }: { className?: string }) {
     const canvas = canvasRef.current;
     if (!s || !canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = ctxRef.current;
     if (!ctx) return;
 
     const { cols, rows, cx, cy, ox, oy, dpr } = s;
@@ -313,6 +314,9 @@ export default function BlueprintGrid({ className }: { className?: string }) {
     canvas.height = h;
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
+
+    // Cache 2D context (avoids getContext on every draw frame)
+    ctxRef.current = canvas.getContext('2d');
 
     const prev = stateRef.current;
     const state = buildGrid(w, h, dpr);
