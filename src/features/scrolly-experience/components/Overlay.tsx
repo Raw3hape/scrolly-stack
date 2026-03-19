@@ -109,6 +109,8 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
         role="banner"
         style={{ opacity: heroOpacity }}
       >
+        <p className="hero__eyebrow">Opportunity</p>
+
         <h1 className="hero__headline">
           {heroContent.headline}{' '}
           <span className="hero__headline-accent">{heroContent.headlineAccent}</span>
@@ -124,7 +126,7 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
             className="hero__cta-button"
             aria-label={heroContent.ctaAriaLabel}
           >
-            {heroContent.ctaLabel}
+            {heroContent.ctaLabel} <span aria-hidden="true">→</span>
           </a>
 
           <p className="hero__status">
@@ -220,7 +222,7 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
         className="mosaic-trigger-zone"
         style={{
           height: `calc(${mosaicConfig.assemblyHeight} + ${mosaicConfig.holdHeight} + ${mosaicConfig.exitHeight})`,
-          marginBottom: `calc(-1 * ${mosaicConfig.exitHeight})`,
+          marginBottom: `calc(-1 * (${mosaicConfig.exitHeight} + ${mosaicConfig.contentOverlap}))`,
         }}
         aria-hidden="true"
       />

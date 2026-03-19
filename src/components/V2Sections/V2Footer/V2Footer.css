@@ -1,0 +1,262 @@
+/* === V2Footer === */
+
+/*
+ * Parallax reveal: footer is sticky at the bottom of the viewport.
+ * The .v2-content-wrapper (with solid background + z-index: 1) covers
+ * this footer while scrolling. As the content ends, the footer naturally
+ * reveals from behind — a "separate layer" effect with full opacity.
+ */
+.v2-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 0;
+  background: var(--stitch-dark-bg);
+  color: var(--stitch-dark-text);
+  padding: clamp(var(--space-2xl), 7vw, 8rem) var(--container-padding);
+  overflow: hidden;
+
+  /* --footer-reveal: 0 (fully covered) → 1 (fully revealed), set by JS */
+  --footer-reveal: 0;
+}
+
+/*
+ * Inner content parallax — driven by --footer-reveal custom property.
+ * JS sets --footer-reveal based on how far the content wrapper has scrolled
+ * past the viewport bottom. calc() maps progress → opacity + translateY.
+ */
+.v2-footer__grid {
+  opacity: var(--footer-reveal);
+  transform: translateY(calc((1 - var(--footer-reveal)) * 3rem));
+  transition: none; /* pure scroll-driven, no transitions */
+}
+
+/* Stagger each column — offset the reveal progress slightly */
+.v2-footer__grid > *:nth-child(1) {
+  opacity: var(--footer-reveal);
+  transform: translateY(calc((1 - var(--footer-reveal)) * 2rem));
+}
+
+.v2-footer__grid > *:nth-child(2) {
+  opacity: clamp(0, calc(var(--footer-reveal) * 1.6 - 0.2), 1);
+  transform: translateY(calc((1 - clamp(0, calc(var(--footer-reveal) * 1.6 - 0.2), 1)) * 2.5rem));
+}
+
+.v2-footer__grid > *:nth-child(3) {
+  opacity: clamp(0, calc(var(--footer-reveal) * 1.6 - 0.35), 1);
+  transform: translateY(calc((1 - clamp(0, calc(var(--footer-reveal) * 1.6 - 0.35), 1)) * 2.5rem));
+}
+
+.v2-footer__grid > *:nth-child(4) {
+  opacity: clamp(0, calc(var(--footer-reveal) * 1.6 - 0.5), 1);
+  transform: translateY(calc((1 - clamp(0, calc(var(--footer-reveal) * 1.6 - 0.5), 1)) * 2.5rem));
+}
+
+.v2-footer__bottom {
+  opacity: clamp(0, calc(var(--footer-reveal) * 1.5 - 0.4), 1);
+  transform: translateY(calc((1 - clamp(0, calc(var(--footer-reveal) * 1.5 - 0.4), 1)) * 2rem));
+}
+
+/* Reduced motion — skip transforms, show content immediately */
+@media (prefers-reduced-motion: reduce) {
+  .v2-footer__grid,
+  .v2-footer__grid > *,
+  .v2-footer__bottom {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* --- Grid layout: brand | col | col | subscribe --- */
+.v2-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.4fr;
+  gap: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+/* --- Brand column --- */
+.v2-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.v2-footer__logo-link {
+  display: inline-block;
+  line-height: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.v2-footer__logo-link:hover {
+  opacity: 0.8;
+}
+
+.v2-footer__logo {
+  width: auto;
+  height: 32px;
+  /* Invert logo to white for dark background */
+  filter: brightness(0) invert(1);
+}
+
+.v2-footer__brand-desc {
+  font: var(--font-body-sm);
+  color: var(--stitch-dark-text-muted);
+  line-height: var(--leading-relaxed);
+  max-width: 24ch;
+}
+
+/* --- Column titles --- */
+.v2-footer__col-title {
+  font: var(--font-overline);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--stitch-dark-accent);
+  margin-bottom: var(--space-lg);
+}
+
+/* --- Link lists --- */
+.v2-footer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.v2-footer__links a {
+  font: var(--font-body-sm);
+  color: var(--stitch-dark-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.v2-footer__links a:hover {
+  color: var(--stitch-dark-text);
+}
+
+/* --- Subscribe column --- */
+.v2-footer__subscribe-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.v2-footer__subscribe-text {
+  font: var(--font-body-sm);
+  color: var(--stitch-dark-text-muted);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-lg);
+}
+
+/* Email form */
+.v2-footer__subscribe-form {
+  display: flex;
+  gap: 0;
+}
+
+.v2-footer__subscribe-input {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: none;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  color: var(--stitch-dark-text);
+  font: var(--font-body-sm);
+  outline: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  min-width: 0;
+}
+
+.v2-footer__subscribe-input::placeholder {
+  color: var(--stitch-dark-text-muted);
+  opacity: 0.7;
+}
+
+.v2-footer__subscribe-input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--stitch-dark-accent);
+}
+
+.v2-footer__subscribe-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-gold-500);
+  border: 1px solid var(--color-gold-500);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--stitch-dark-bg);
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.v2-footer__subscribe-btn:hover {
+  background: var(--color-gold-300);
+  border-color: var(--color-gold-300);
+  transform: translateX(2px);
+}
+
+.v2-footer__subscribe-btn:active {
+  transform: scale(0.96);
+}
+
+/* --- Bottom bar --- */
+.v2-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.v2-footer__copyright {
+  font: var(--font-caption);
+  color: var(--stitch-dark-text-muted);
+}
+
+.v2-footer__tagline {
+  font: var(--font-caption);
+  color: var(--stitch-dark-text-muted);
+  font-style: italic;
+}
+
+/* --- Tablet --- */
+@media (max-width: 1024px) {
+  .v2-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+  }
+
+  .v2-footer__brand {
+    grid-column: 1 / -1;
+  }
+
+  .v2-footer__brand-desc {
+    max-width: none;
+  }
+}
+
+/* --- Mobile --- */
+@media (max-width: 768px) {
+  .v2-footer {
+    padding: var(--space-xl) var(--container-padding);
+  }
+
+  .v2-footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .v2-footer__bottom {
+    flex-direction: column;
+    gap: var(--space-xs);
+    text-align: center;
+  }
+}

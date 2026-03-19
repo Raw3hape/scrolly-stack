@@ -226,6 +226,13 @@ export default function Block({
       return mosaicPosition;
     }
 
+    // Pre-settle phase: mosaic is starting but blocks haven't entered mosaic
+    // mode yet.  Return BASE position so springs smoothly drop any lift/slide
+    // BEFORE the Bezier arc begins — this prevents the visible jerk.
+    if (mosaicProgress > 0) {
+      return [baseX, baseY, baseZ];
+    }
+
     let targetX = baseX;
     let targetY = baseY;
     let targetZ = baseZ;
@@ -251,10 +258,16 @@ export default function Block({
     mass: animation.spring.mass,
   };
 
+  // ========================================================================
+  // CLOSE PHASE: During early mosaic (0 → 0.25), keep springs active so
+  // blocks animate smoothly back to base. Only switch to immediate (= direct
+  // scroll-driven positions, no physics) once blocks have fully settled.
+  // ========================================================================
+  const IMMEDIATE_THRESHOLD = 0.25;
+
   const { springPosition } = useSpring({
     springPosition: getTargetPosition(),
-    // During mosaic: set positions instantly from scroll (no spring lag = no FPS drop)
-    immediate: !!isMosaicActive,
+    immediate: !!isMosaicActive && mosaicProgress > IMMEDIATE_THRESHOLD,
     config: springConfig,
     onChange: () => invalidate(),
   });

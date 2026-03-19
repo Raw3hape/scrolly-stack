@@ -1,0 +1,120 @@
+/* === MissionSection (dark block — full viewport height) === */
+.v2-mission {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(var(--space-xl), 4vw, var(--space-2xl));
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+.v2-mission__heading {
+  font: var(--font-h1);
+  font-family: var(--font-family-serif);
+  margin-bottom: var(--space-2xl);
+  line-height: var(--leading-tight);
+}
+
+.v2-mission__accent {
+  color: var(--stitch-dark-accent);
+  font-style: italic;
+}
+
+.v2-mission__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.v2-mission__step {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.v2-mission__step-icon {
+  width: clamp(2rem, 4vw, var(--space-2xl));
+  height: clamp(2rem, 4vw, var(--space-2xl));
+  border-radius: var(--radius-full);
+  background: var(--accent-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-inverse);
+  font-size: var(--font-size-lg);
+}
+
+.v2-mission__step-title {
+  font: var(--font-h4);
+  margin-bottom: var(--space-xs);
+}
+
+.v2-mission__step-text {
+  font: var(--font-body);
+  color: var(--stitch-dark-text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+.v2-mission__quote-card {
+  background: var(--stitch-glass-dark-bg);
+  backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-xl);
+  padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+  border: var(--stitch-glass-dark-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: var(--space-quote-card-min);
+}
+
+.v2-mission__quote-text {
+  font: var(--font-h3);
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  margin-bottom: var(--space-md);
+}
+
+.v2-mission__quote-body {
+  font: var(--font-body);
+  color: var(--stitch-dark-text-muted);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-lg);
+}
+
+.v2-mission__quote-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.v2-mission__quote-bar {
+  width: var(--space-2xl);
+  height: var(--border-width-accent);
+  background: var(--stitch-dark-accent);
+}
+
+.v2-mission__quote-label {
+  font: var(--font-overline);
+  color: var(--stitch-dark-accent);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .v2-mission {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .v2-mission__quote-card {
+    min-height: auto;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .v2-mission__heading {
+    font-size: var(--font-size-3xl);
+  }
+}

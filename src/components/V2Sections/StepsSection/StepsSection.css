@@ -1,0 +1,100 @@
+/* === StepsSection === */
+.v2-steps-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: clamp(var(--space-xl), 4vw, var(--space-2xl));
+  gap: var(--space-lg);
+}
+
+.v2-steps-header__heading {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  color: var(--text-primary);
+  font-style: italic;
+  max-width: var(--container-narrow, 36rem);
+}
+
+.v2-steps-header__subtext {
+  font: var(--font-body);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.v2-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(var(--space-md), 3vw, var(--space-xl));
+}
+
+.v2-step {
+  position: relative;
+}
+
+.v2-step__number {
+  font-size: var(--font-size-display);
+  font-family: var(--font-family-serif);
+  color: var(--stitch-dark-accent);
+  opacity: var(--step-number-opacity, 0.5);
+  margin-bottom: var(--space-lg);
+  transition: opacity var(--transition-base);
+}
+
+.v2-step:hover .v2-step__number {
+  opacity: 1;
+}
+
+.v2-step__title {
+  font: var(--font-h4);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.v2-step__text {
+  font: var(--font-body);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-md);
+}
+
+.v2-step__bar {
+  height: var(--border-width-bar);
+  width: 100%;
+  background: var(--stitch-surface-container-high, var(--border-default));
+  overflow: hidden;
+  border-radius: var(--radius-full);
+}
+
+.v2-step__bar-fill {
+  height: 100%;
+  width: 33%;
+  background: var(--text-primary);
+  transition: width var(--transition-smooth);
+}
+
+.v2-step:hover .v2-step__bar-fill {
+  width: 100%;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .v2-steps-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .v2-steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .v2-steps-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .v2-step__number {
+    font-size: clamp(2rem, 8vw, var(--font-size-display));
+  }
+}

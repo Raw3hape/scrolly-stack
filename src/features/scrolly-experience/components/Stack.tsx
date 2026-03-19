@@ -18,7 +18,7 @@ import Layer from './Layer';
 import { getLayerHeight, calculateBlockPositions } from '../utils/layoutUtils';
 import { useVariant } from '../VariantContext';
 import type { ResolvedGeometry } from '../VariantContext';
-import { isHeroStep } from '../utils/stepNavigation';
+import { isHeroStep, HERO_STEP } from '../utils/stepNavigation';
 import {
   precomputeTrajectories,
   type BlockTrajectory,
@@ -114,13 +114,17 @@ function calculateBlocksAboveActive(
     if (isAlreadySeen) {
       layer.blocks.forEach(block => aboveIds.push(block.id));
     } else if (layerIndex === activeLayerIndex) {
-      layer.blocks.forEach(block => {
-        if (block.id !== currentStep && (
-          scrollDirection === 'up'
-            ? block.id > currentStep
-            : block.id < currentStep
-        )) {
-          aboveIds.push(block.id);
+      // Use array index (not block ID) to determine reveal order within a layer.
+      // Block IDs may not be sequential after reordering (e.g. reversed crown).
+      const activeBlockIndex = layer.blocks.findIndex(b => b.id === currentStep);
+      layer.blocks.forEach((block, blockIndex) => {
+        if (block.id !== currentStep) {
+          const isBlockAlreadySeen = scrollDirection === 'up'
+            ? blockIndex > activeBlockIndex
+            : blockIndex < activeBlockIndex;
+          if (isBlockAlreadySeen) {
+            aboveIds.push(block.id);
+          }
         }
       });
     }
@@ -241,9 +245,22 @@ function interpolateMosaicPositions(
 export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlockHover }: StackProps) {
   const { layers, steps, geometry: geo, mosaicConfig, scrollDirection } = useVariant();
 
+  // =========================================================================
+  // CLOSE PHASE: Override currentStep when mosaic starts.
+  //
+  // When mosaicProgress > 0, ALL blocks must return to their base positions
+  // (no slide, no lift) BEFORE the Bezier arc begins. We achieve this by
+  // setting effectiveStep = HERO_STEP, which makes isActive = false and
+  // isAboveActive = [] for every block. Springs animate the return smoothly.
+  //
+  // isRevealed stays true (from real currentStep) so blocks remain visible —
+  // only the position offset (slide + lift) is deactivated.
+  // =========================================================================
+  const effectiveStep = mosaicProgress > 0 ? HERO_STEP : currentStep;
+
   const blocksAboveActive = useMemo(
-    () => calculateBlocksAboveActive(currentStep, layers, steps, scrollDirection),
-    [currentStep, layers, steps, scrollDirection]
+    () => calculateBlocksAboveActive(effectiveStep, layers, steps, scrollDirection),
+    [effectiveStep, layers, steps, scrollDirection]
   );
 
   // Lift direction: forward(down) = UP (+1), reverse(up) = DOWN (-1)
@@ -252,9 +269,9 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   // For reverse: layers ABOVE active haven't been seen yet but occlude it.
   // They must lift UP to make room, mirroring how forward lifts already-seen layers.
   const blocksNotYetSeenAbove = useMemo(() => {
-    if (scrollDirection !== 'up' || isHeroStep(currentStep)) return [];
+    if (scrollDirection !== 'up' || isHeroStep(effectiveStep)) return [];
     const activeLayerIndex = layers.findIndex(layer =>
-      layer.blocks.some(block => block.id === currentStep)
+      layer.blocks.some(block => block.id === effectiveStep)
     );
     if (activeLayerIndex < 0) return [];
     const ids: number[] = [];
@@ -271,7 +288,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     [layers, geo],
   );
 
-  const isRevealed = !isHeroStep(currentStep);
+  const isRevealed = !isHeroStep(currentStep);  // Keep real step — blocks stay visible
 
   const allBlocks = useMemo(
     () => collectAllBlocks(layerPositions, geo),
@@ -318,10 +335,15 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   );
 
   // Compute interpolated mosaic data — uses Record instead of Map
+  // Settle phase: delay mosaic override until viewStart threshold.
+  // During 0 → viewStart, springs return blocks to base positions (drop lift/slide).
+  // This prevents the visible jerk when blocks teleport from lifted to mosaic start.
+  const settleThreshold = mosaicConfig.motion.viewStart;
+
   const mosaicBlockData = useMemo((): MosaicBlockDataMap | undefined => {
-    if (mosaicProgress <= 0) return undefined;
+    if (mosaicProgress <= settleThreshold) return undefined;
     return interpolateMosaicPositions(mosaicProgress, trajectories, allBlocks);
-  }, [mosaicProgress, trajectories, allBlocks]);
+  }, [mosaicProgress, settleThreshold, trajectories, allBlocks]);
 
   // ========================================================================
   // SCENE OFFSET — emulates "right column" in 3D space
@@ -424,7 +446,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
             key={layer.id}
             layer={layer}
             baseY={baseY}
-            currentStep={currentStep}
+            currentStep={effectiveStep}
             allBlocksAboveActive={blocksAboveActive}
             aboveLiftSign={aboveLiftSign}
             allBlocksNotYetSeenAbove={blocksNotYetSeenAbove}

@@ -1,0 +1,49 @@
+/* === TestimonialSection (quote + attribution) === */
+.v2-testimonial {
+  text-align: center;
+  max-width: var(--content-text-max);
+  margin: 0 auto;
+  padding: var(--space-2xl) 0;
+}
+
+.v2-testimonial__bar {
+  width: var(--space-2xl);
+  height: var(--border-width-bar);
+  background: var(--color-gold-500);
+  margin: 0 auto var(--space-xl);
+  border-radius: var(--radius-full);
+}
+
+.v2-testimonial__quote {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: var(--leading-snug);
+  margin-bottom: var(--space-xl);
+}
+
+.v2-testimonial__attribution {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.v2-testimonial__author {
+  font: var(--font-h4);
+  color: var(--text-primary);
+  font-style: normal;
+}
+
+.v2-testimonial__company {
+  font: var(--font-body-sm);
+  color: var(--text-muted);
+  font-style: normal;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .v2-testimonial__quote {
+    font-size: var(--font-size-2xl);
+  }
+}

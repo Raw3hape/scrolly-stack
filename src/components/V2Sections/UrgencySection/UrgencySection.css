@@ -1,0 +1,99 @@
+/* =============================================================================
+ * UrgencySection — dark two-column card (text + image)
+ *
+ * Visual reference: Stitch Home Position 8
+ * Layout: dark rounded card, left text + right architectural photo
+ * ========================================================================== */
+
+/* The section itself gets base surface from SectionRenderer.
+   The card creates its own dark context. */
+.v2-urgency-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--stitch-dark-bg);
+  color: var(--stitch-dark-text);
+  min-height: clamp(20rem, 30vw, 28rem);
+}
+
+/* === Left column: text === */
+.v2-urgency-card__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(var(--space-xl), 4vw, var(--space-2xl));
+}
+
+.v2-urgency-card__heading {
+  font-family: var(--font-family-serif);
+  font-size: clamp(1.75rem, 2vw + 1rem, 2.75rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-lg);
+}
+
+.v2-urgency-card__accent {
+  color: var(--stitch-dark-accent);
+}
+
+.v2-urgency-card__text {
+  font: var(--font-body);
+  color: var(--stitch-dark-text-muted);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-xl);
+}
+
+/* CTA link — uppercase, tracked, gold accent */
+.v2-urgency-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font: var(--font-overline);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--stitch-dark-accent);
+  text-decoration: none;
+  transition: gap var(--transition-fast);
+}
+
+.v2-urgency-card__cta:hover {
+  gap: var(--space-md);
+}
+
+/* === Right column: image === */
+.v2-urgency-card__image-wrap {
+  position: relative;
+  min-height: clamp(16rem, 25vw, 24rem);
+}
+
+.v2-urgency-card__image {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* === Responsive: tablet === */
+@media (max-width: 1024px) {
+  .v2-urgency-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .v2-urgency-card__image-wrap {
+    min-height: 16rem;
+    order: -1;
+  }
+}
+
+/* === Responsive: mobile === */
+@media (max-width: 768px) {
+  .v2-urgency-card__image-wrap {
+    min-height: 12rem;
+  }
+
+  .v2-urgency-card__heading {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+}

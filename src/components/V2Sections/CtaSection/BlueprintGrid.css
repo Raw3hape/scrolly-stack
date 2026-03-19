@@ -1,0 +1,34 @@
+/* =============================================================================
+ * BlueprintGrid — Architectural grid canvas overlay
+ *
+ * Positioned absolutely behind CTA content.
+ * CSS mask-image fades grid: invisible at top → fully visible at bottom.
+ * ========================================================================== */
+
+.blueprint-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+
+  /* Gradient fade: invisible top → visible bottom */
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0%,
+    transparent 15%,
+    rgba(0, 0, 0, 0.05) 30%,
+    rgba(0, 0, 0, 0.2) 45%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0.8) 75%,
+    rgba(0, 0, 0, 1) 90%
+  );
+  mask-image: linear-gradient(to bottom,
+    transparent 0%,
+    transparent 15%,
+    rgba(0, 0, 0, 0.05) 30%,
+    rgba(0, 0, 0, 0.2) 45%,
+    rgba(0, 0, 0, 0.5) 60%,
+    rgba(0, 0, 0, 0.8) 75%,
+    rgba(0, 0, 0, 1) 90%
+  );
+}

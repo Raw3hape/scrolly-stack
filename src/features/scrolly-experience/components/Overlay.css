@@ -20,7 +20,7 @@
   --step-font-cta:            0.9rem;   /* 14.4px — step CTA label              */
 
   padding: 0; /* Padding handled by parent container */
-  padding-bottom: 50vh;
+  padding-bottom: 0;
   font-family: var(--font-family);
   width: 100%;
 }
@@ -271,10 +271,11 @@
 /* Title - Large and prominent */
 .step-content__title {
   margin: 0;
+  font-family: var(--font-family-serif);
   font-size: var(--step-font-title);
   color: var(--text-primary);
-  font-weight: var(--weight-extrabold);
-  letter-spacing: var(--tracking-tight);
+  font-weight: 400;
+  letter-spacing: -0.02em;
   line-height: var(--leading-tight);
 }
 
@@ -383,7 +384,7 @@
 /* === Responsive === */
 @media (max-width: 768px) {
   .overlay {
-    padding-bottom: 30vh;
+    padding-bottom: 0;
   }
 
   .hero {

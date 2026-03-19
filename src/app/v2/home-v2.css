@@ -1,0 +1,128 @@
+/* ============================================================================
+ * V2 HOME — Page-specific styles
+ *
+ * Shared section/animation styles are in v2-shared.css (imported via layout).
+ * This file contains only home-page-specific overrides.
+ * ========================================================================== */
+
+/* Reset 3D overlay STEP body font to Satoshi (main site sans-serif).
+ * Serif headlines in steps use Newsreader from Stitch theme for elegance. */
+.stitch-theme .overlay .step {
+  --font-family: 'Satoshi', system-ui, sans-serif;
+}
+
+/* ============================================================================
+ * HERO OVERRIDES — Match Stitch "Architectural Editorial" design system
+ *
+ * Specs from Stitch Design System:
+ *   Headlines: Newsreader, oversized, -0.02em tracking
+ *   Body: Inter, line-height 1.6
+ *   Primary: #103740 (deep teal)
+ *   Gold accent: tertiary_fixed_dim (#ffb86a)
+ *   Trust Badge: tertiary_fixed (#ffdcbc) bg + on_tertiary_fixed (#2c1700) text
+ *   Button: primary_container (#103740), radius DEFAULT (10px)
+ * ========================================================================== */
+
+/* Wider hero container for editorial-scale headline */
+.stitch-theme .hero {
+  --content-max-width: clamp(320px, 50vw, 800px);
+  max-width: clamp(320px, 50vw, 800px);
+}
+
+/* Eyebrow — "Trust Badge" chip from Stitch Design System */
+.stitch-theme .hero__eyebrow {
+  display: inline-block;
+  width: fit-content;
+  background: rgba(255, 220, 188, 0.55);
+  color: #5a3a10;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-family: var(--font-family);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+/* Headline — oversized Newsreader serif, "Architectural Editorial" impact */
+.stitch-theme .hero__headline {
+  font-family: var(--font-family-serif);
+  font-size: clamp(2.25rem, 1.75rem + 3vw, 3.75rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #103740;
+  margin-bottom: 1.5rem;
+}
+
+/* Accent inherits headline color — no gradient */
+.stitch-theme .hero__headline-accent {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: inherit;
+}
+
+/* Subheadline — Inter, generous line-height per spec */
+.stitch-theme .hero__subheadline {
+  font-family: var(--font-family);
+  font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem);
+  color: #41484a;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  max-width: 460px;
+}
+
+/* CTA wrapper — horizontal layout */
+.stitch-theme .hero__cta-wrapper {
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Button — primary_container (#103740), DEFAULT radius (10px) */
+.stitch-theme .hero__cta-button {
+  background: #103740;
+  color: #ffffff;
+  padding: 0.875rem 1.75rem;
+  border-radius: 10px;
+  font-family: var(--font-family);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 200ms ease-out, transform 200ms ease-out;
+}
+
+.stitch-theme .hero__cta-button::before {
+  display: none;
+}
+
+.stitch-theme .hero__cta-button:hover {
+  background: var(--stitch-cta-hover-bg);
+  box-shadow: var(--stitch-cta-hover-shadow);
+  transform: var(--stitch-cta-hover-lift);
+}
+
+/* Status line — Inter semibold, inline next to button */
+.stitch-theme .hero__status {
+  font-family: var(--font-family);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #103740;
+}
+
+/* Status dot → small gold circle (not verified badge) */
+.stitch-theme .hero__status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background: #ffb86a;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(255, 184, 106, 0.25);
+}
+

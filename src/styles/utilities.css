@@ -24,10 +24,24 @@
   /* Stacking context above fullscreen canvas (--z-canvas: 50) */
   position: relative;
   z-index: var(--z-content);
+  /* Opaque background so sections visually cover the fixed 3D canvas behind them */
+  background: var(--surface-base);
 }
 
 .section--compact {
   padding-block: var(--section-gap-sm);
+}
+
+/* Minimal top padding — for first section after scrolly experience */
+.section--flush-top {
+  padding-top: var(--space-lg);
+}
+
+/* Renders BELOW the fixed 3D canvas (z-canvas: 50).
+   Grid stays visually on top; section reveals as grid exits upward.
+   Allows aggressive contentOverlap without grid being cut off. */
+.section--under-canvas {
+  z-index: calc(var(--z-canvas) - 1);
 }
 
 /* === Flex === */

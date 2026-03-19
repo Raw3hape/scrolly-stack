@@ -4,6 +4,7 @@ import { DM_Serif_Display } from 'next/font/google';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import VersionBadge from '@/components/VersionBadge/VersionBadge';
+import LayoutShell from '@/components/LayoutShell/LayoutShell';
 import '@/styles/index.css';
 
 /**
@@ -74,10 +75,13 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <VersionBadge />
+        <LayoutShell
+          header={<Header />}
+          footer={<Footer />}
+          versionBadge={<VersionBadge />}
+        >
+          {children}
+        </LayoutShell>
       </body>
     </html>
   );

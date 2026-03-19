@@ -1,0 +1,116 @@
+/* =============================================================================
+ * CtaSection — Stitch-accurate CTA block
+ *
+ * Visual reference: Stitch Home Position 9
+ * Order: overline → heading (display) → button (large) → microcopy
+ * ========================================================================== */
+
+/* Override section padding with higher specificity (section + cta) */
+.v2-section.v2-cta {
+  text-align: center;
+  padding: 0; /* wrapper handles vertical padding; grid bleeds edge-to-edge */
+}
+
+/* Propagate flex height through the reveal wrapper */
+.v2-cta > .v2-reveal {
+  flex: 1;
+  display: flex;
+  width: 100%;
+}
+
+/* Wrapper — fills full section edge-to-edge for the canvas */
+.v2-cta__wrapper {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* Vertical padding only — no horizontal so grid bleeds to viewport edges */
+  padding: clamp(5rem, 10vw, 10rem) 0;
+}
+
+/* Content sits above grid with its own horizontal padding */
+.v2-cta__layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 0 var(--container-padding);
+}
+
+/* 1. Overline — small uppercase tracked text */
+.v2-cta__overline {
+  font: var(--font-overline);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-muted);
+  margin-bottom: var(--space-lg);
+}
+
+/* 2. Heading — display size, serif italic (biggest text on page) */
+.v2-cta__heading {
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-display);
+  font-weight: 400;
+  font-style: italic;
+  line-height: var(--leading-tight);
+  color: var(--text-primary);
+  max-width: 18ch;
+  margin: 0 auto var(--space-xl);
+}
+
+/* 3. Button — large, centered, prominent */
+.v2-cta__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  background: var(--stitch-dark-bg);
+  color: var(--text-inverse);
+  font: var(--font-button);
+  font-size: var(--font-size-lg);
+  text-decoration: none;
+  padding: var(--space-md) var(--space-2xl);
+  border-radius: var(--btn-radius);
+  box-shadow: var(--btn-shadow-primary);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  min-width: 12rem;
+}
+
+.v2-cta__button:hover {
+  background: var(--stitch-cta-hover-bg);
+  transform: var(--stitch-cta-hover-lift);
+  box-shadow: var(--stitch-cta-hover-shadow);
+}
+
+.v2-cta__button:active {
+  transform: scale(0.97);
+}
+
+/* 4. Microcopy — subtle text below button */
+.v2-cta__microcopy {
+  font: var(--font-body);
+  color: var(--text-muted);
+  margin-top: var(--space-lg);
+  max-width: 36ch;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .v2-cta__heading {
+    font-size: clamp(2rem, 6vw, var(--font-size-display));
+  }
+
+  .v2-cta__button {
+    width: 100%;
+    max-width: 20rem;
+    padding: var(--space-md) var(--space-lg);
+  }
+}

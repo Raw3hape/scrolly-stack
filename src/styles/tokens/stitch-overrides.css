@@ -1,0 +1,79 @@
+/* ============================================================================
+ * STITCH OVERRIDES — Design Token Delta for /v2/ pages
+ *
+ * Applied via .stitch-theme class on the /v2/ layout wrapper.
+ * Overrides ONLY the tokens that differ from the main design system.
+ *
+ * Source: Google Stitch project "Foundation Projects - Site Map & Content PRD"
+ * Design theme: "Architectural Editorial"
+ * ========================================================================== */
+
+.stitch-theme {
+  /* === Font overrides (Newsreader + Inter replace DM Serif + Satoshi) === */
+  --font-family-serif: var(--font-newsreader);
+  --font-family: var(--font-inter);
+
+  /* === Surface adjustments (warmer cream) === */
+  --surface-base:       #fef9f0;
+  --surface-card:       #ffffff;
+  --surface-card-hover: #f8f3ea;
+  --surface-raised:     #f8f3ea;
+  --surface-overlay:    rgba(254, 249, 240, 0.85);
+  --surface-glass:      rgba(254, 249, 240, 0.6);
+
+  /* Surface hierarchy from Stitch Material tokens */
+  --stitch-surface:               #fef9f0;
+  --stitch-surface-container-low: #f8f3ea;
+  --stitch-surface-container:     #f2ede4;
+  --stitch-surface-container-high:#ece8df;
+  --stitch-surface-dim:           #ded9d1;
+
+  /* === Color adjustments === */
+  --color-teal-500:   #1b6969;   /* was #297373 — Stitch secondary */
+  --color-teal-700:   #004f50;   /* was #1E5757 — deeper teal from Stitch */
+  --color-teal-300:   #8cd3d2;   /* lighter accent from Stitch */
+
+  /* Gold / Tertiary — same intent, slightly adjusted */
+  --color-gold-500:   #d79344;   /* was same — Stitch tertiary_fixed_dim */
+  --color-gold-300:   #ffb86a;   /* Stitch tertiary_fixed_dim */
+
+  /* === Glass adjustments (warmer tone) === */
+  --glass-bg:              rgba(254, 249, 240, 0.7);
+  --glass-bg-scrolled:     rgba(254, 249, 240, 0.85);
+  --glass-bg-sticky:       rgba(254, 249, 240, 0.92);
+  --glass-border:          1px solid rgba(254, 249, 240, 0.5);
+
+  /* === Dark section tokens (for bg-primary-container sections) === */
+  --stitch-dark-bg:         #103740;
+  --stitch-dark-text:       #fff;
+  --stitch-dark-text-muted: #a7cdd8;
+  --stitch-dark-accent:     #ffb86a;
+
+  /* === Additional semantic tokens === */
+  --stitch-outline:         #71787b;
+  --stitch-outline-variant: #c1c8ca;
+
+  /* === Glass for dark sections === */
+  --stitch-glass-dark-bg:     rgba(255, 255, 255, 0.05);
+  --stitch-glass-dark-border: 1px solid rgba(255, 255, 255, 0.1);
+  --stitch-glass-header-bg:   rgba(254, 249, 240, 0.85);
+  --overlay-hidden:           rgba(0, 0, 0, 0);
+  --overlay-visible:          rgba(0, 0, 0, 0.4);
+
+  /* === CTA Signature Gradient (primary → primary_container at 135°) === */
+  --stitch-cta-gradient: linear-gradient(135deg, #002128, #103740);
+  --stitch-cta-hover-bg: #004f50;
+  --stitch-cta-hover-shadow: 0 12px 40px rgba(16, 55, 64, 0.12);
+  --stitch-cta-hover-lift: translateY(-2px);
+
+  /* === Sizing tokens for v2 sections === */
+  --border-width-accent:   2px;
+  --border-width-bar:      4px;
+  --font-size-display:     clamp(2.5rem, 2rem + 3vw, 5rem);
+  --space-quote-card-min:  28rem;
+  --step-number-opacity:   0.5;
+  --container-narrow:      40rem;
+
+  /* === Force light mode === */
+  color-scheme: light;
+}

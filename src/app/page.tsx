@@ -48,7 +48,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       </noscript>
 
       {/* Section 2: Value Props Strip */}
-      <Section width="default">
+      <Section width="default" className="section--flush-top">
         <ValuePropsStrip items={homeValueProps} />
       </Section>
 

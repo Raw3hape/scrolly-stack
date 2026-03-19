@@ -295,7 +295,7 @@ export const mosaic = {
   },
 
   motion: {
-    viewStart: 0.08,             // delay camera/zoom shift to avoid the initial jerk
+    viewStart: 0.18,             // settle window: springs close blocks before Bezier arc starts
     viewEnd: 0.92,               // settle before the very end of the trigger zone
     parallaxFadeEnd: 0.18,       // remove mouse drift early in the morph
   },
@@ -315,9 +315,10 @@ export const mosaic = {
 
   // Scroll trigger zone heights (CSS values)
   // Total zone = assemblyHeight + holdHeight + exitHeight
-  assemblyHeight: '100vh',       // Scroll distance for 0→1 assembly animation
-  holdHeight: '30vh',            // Pause: assembled grid stays visible
-  exitHeight: '80vh',            // Scroll distance for grid to exit upward
+  assemblyHeight: '80vh',        // Scroll distance for 0→1 assembly (was 100vh)
+  holdHeight: '5vh',             // Brief pause before exit (was 20vh)
+  exitHeight: '50vh',            // Scroll distance for grid exit (was 60vh)
+  contentOverlap: '60vh',        // Pulls sections up — sections z:100 > canvas z:50
 };
 
 

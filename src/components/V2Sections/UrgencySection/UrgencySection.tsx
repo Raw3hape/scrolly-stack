@@ -1,0 +1,61 @@
+/**
+ * UrgencySection — dark card with two-column layout (text + image).
+ *
+ * Matches Stitch design:
+ * - Dark rounded card on light page background
+ * - Left: heading (with accent color), body text, CTA link
+ * - Right: architectural image with rounded corner
+ */
+
+import Image from 'next/image';
+import Link from 'next/link';
+import type { UrgencySection as UrgencySectionData } from '@/config/types-v2';
+import { ctaConfigV2 } from '@/config/nav-v2';
+import './UrgencySection.css';
+
+interface Props {
+  data: UrgencySectionData;
+}
+
+export default function UrgencySection({ data }: Props) {
+  return (
+    <div className="v2-container">
+      <div className="v2-urgency-card">
+        {/* Left column: text content */}
+        <div className="v2-urgency-card__content">
+          <h2 className="v2-urgency-card__heading">
+            {data.heading}
+            {data.headingAccent && (
+              <>
+                <br />
+                <span className="v2-urgency-card__accent">{data.headingAccent}</span>
+              </>
+            )}
+          </h2>
+
+          <p className="v2-urgency-card__text">{data.text}</p>
+
+          {data.ctaLabel && (
+            <Link href={ctaConfigV2.href} className="v2-urgency-card__cta">
+              {data.ctaLabel}
+              <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
+        </div>
+
+        {/* Right column: image */}
+        {data.image && (
+          <div className="v2-urgency-card__image-wrap">
+            <Image
+              src={data.image}
+              alt="Foundation Projects — building the future"
+              fill
+              className="v2-urgency-card__image"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

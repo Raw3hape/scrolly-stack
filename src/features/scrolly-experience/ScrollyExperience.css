@@ -57,6 +57,10 @@
   height: 100vh;
   z-index: var(--z-canvas);
   pointer-events: none; /* Clicks pass through to content/header behind */
+  /* Opaque background blocks sections behind the canvas (z < canvas).
+     The R3F Canvas itself is transparent (alpha: true), so without this,
+     section--under-canvas content would bleed through between grid tiles. */
+  background: var(--surface-base);
 }
 
 /* When mosaic is settled, enable pointer events for tile hover/click */

@@ -1,0 +1,97 @@
+/* === TeamSection (member grid) === */
+.v2-team-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+  max-width: var(--content-text-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.v2-team-header__heading {
+  font: var(--font-h1);
+  font-family: var(--font-family-serif);
+  line-height: var(--leading-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.v2-team-header__subtext {
+  font: var(--font-body-lg);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+.v2-team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+
+.v2-team-card {
+  background: var(--surface-card);
+  border-radius: var(--radius-xl);
+  padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.v2-team-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.v2-team-card__avatar {
+  width: clamp(3.5rem, 6vw, 5rem);
+  height: clamp(3.5rem, 6vw, 5rem);
+  border-radius: var(--radius-full);
+  background: var(--stitch-cta-gradient);
+  color: var(--text-inverse);
+  font: var(--font-h3);
+  font-family: var(--font-family-serif);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-md);
+  letter-spacing: var(--tracking-wide);
+}
+
+.v2-team-card__name {
+  font: var(--font-h4);
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.v2-team-card__role {
+  display: block;
+  font: var(--font-overline);
+  color: var(--color-teal-500);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  margin-bottom: var(--space-md);
+}
+
+.v2-team-card__bio {
+  font: var(--font-body);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .v2-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .v2-team-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .v2-team-header__heading {
+    font-size: var(--font-size-3xl);
+  }
+}

@@ -1,0 +1,105 @@
+/* === CardsSection === */
+.v2-cards-header {
+  text-align: center;
+  margin-bottom: clamp(var(--space-xl), 4vw, var(--space-2xl));
+}
+
+.v2-cards-header__heading {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+  font-style: italic;
+}
+
+.v2-cards-header__subtext {
+  font: var(--font-body-lg);
+  color: var(--text-muted);
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+/* ── Grid: separated cards with gaps ── */
+.v2-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+/* ── Individual card ── */
+.v2-card {
+  padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+  background: var(--stitch-surface-container-low, var(--surface-raised));
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle, transparent);
+  transition:
+    opacity       var(--transition-smooth),
+    filter        var(--transition-smooth),
+    transform     var(--transition-fast),
+    box-shadow    var(--transition-fast);
+  will-change: opacity, filter, transform;
+}
+
+/* ── Focus & Dim: dim siblings on grid hover ── */
+.v2-cards-grid:hover .v2-card {
+  opacity: 0.35;
+  filter: blur(1.5px);
+}
+
+/* ── Focused card: full visibility + lift ── */
+.v2-cards-grid .v2-card:hover {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.v2-card__icon {
+  font-size: var(--font-size-3xl);
+  color: var(--accent-brand);
+  margin-bottom: var(--space-md);
+}
+
+.v2-card__title {
+  font: var(--font-h4);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.v2-card__text {
+  font: var(--font-body);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Tablet ── */
+@media (max-width: 1024px) {
+  .v2-cards-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .v2-card:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ── Mobile: no hover effect ── */
+@media (max-width: 768px) {
+  .v2-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .v2-card:last-child {
+    grid-column: auto;
+  }
+
+  .v2-cards-grid:hover .v2-card {
+    opacity: 1;
+    filter: none;
+  }
+
+  .v2-cards-grid .v2-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
