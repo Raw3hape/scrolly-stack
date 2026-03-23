@@ -447,9 +447,9 @@
   }
 
   .step {
-    min-height: max(55vh, 380px); /* Reduced from 90vh — prevents dead space on landscape/short viewports */
-    padding-top: var(--space-xl);
-    padding-bottom: var(--space-3xl);
+    min-height: max(82vh, 560px); /* 1.5× of previous (55vh→82vh) — more breathing room between cards */
+    padding-top: var(--space-2xl);
+    padding-bottom: calc(var(--space-3xl) * 1.5);
     /* Always 100% opacity on mobile - no fade effect */
     opacity: 1 !important;
   }
@@ -465,10 +465,10 @@
   .step-content {
     max-width: 100%;
     background: var(--glass-card-bg);
-    /* No blur on mobile — GPU can't handle blur × multiple cards × WebGL at 60fps.
-     * Solid semi-transparent background is visually similar, zero GPU cost. */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    /* Light blur — 8px is ~50% cheaper than 16px while still frosting over
+     * the live WebGL canvas. Cards are GPU-promoted (will-change + contain). */
+    backdrop-filter: saturate(120%) blur(8px);
+    -webkit-backdrop-filter: saturate(120%) blur(8px);
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
     /* Stronger, very soft diffused shadows */
@@ -476,7 +476,7 @@
       var(--glass-card-shadow),
       var(--inset-highlight-strong);
     border: var(--glass-card-border);
-    /* Perf: GPU layer promotion still useful for compositing */
+    /* Perf: GPU layer promotion for compositing + blur */
     will-change: transform;
     contain: layout style paint;
   }
