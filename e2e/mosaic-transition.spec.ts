@@ -114,10 +114,13 @@ test.describe('Mosaic Transition', () => {
   // STEPS CONTAINER COMPLETE BEFORE TRIGGER
   // ===========================================================================
 
-  test('all 15 steps render before trigger zone', async ({ page }) => {
+  test('all steps render before trigger zone', async ({ page }) => {
     const steps = page.locator('.step');
     const count = await steps.count();
-    expect(count).toBe(15);
+    // v6-exact-flipped has 19 blocks; other variants may differ.
+    // At minimum, any production variant should have > 10 steps.
+    expect(count).toBeGreaterThanOrEqual(15);
+    expect(count).toBe(19);
   });
 
   // ===========================================================================

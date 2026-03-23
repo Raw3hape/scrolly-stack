@@ -118,3 +118,186 @@
     font-size: var(--font-size-3xl);
   }
 }
+
+/* =============================================================================
+ * Vertical variant — Stitch "About - Creative Variation 2", Chapter II
+ *
+ * Layout (top to bottom):
+ *   1. Centered header (chapter label + heading + subtext)
+ *   2. 3-column bordered grid (icon + title + text per column)
+ *   3. Dark quote card below, centered
+ * ========================================================================== */
+.v2-mission--vertical {
+  display: flex;
+  flex-direction: column;
+  grid-template-columns: none;
+}
+
+/* ── Header ── */
+.v2-mission--vertical__header {
+  text-align: center;
+  margin-bottom: clamp(var(--space-xl), 4vw, var(--space-3xl));
+}
+
+.v2-mission--vertical__chapter {
+  display: block;
+  font: var(--font-overline);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  opacity: 0.3;
+  margin-bottom: var(--space-sm);
+}
+
+.v2-mission--vertical__heading {
+  font: var(--font-h1);
+  font-family: var(--font-family-serif);
+  font-size: clamp(2.5rem, 2rem + 3vw, 4rem);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.v2-mission--vertical__subtext {
+  font: var(--font-body-lg);
+  color: var(--text-muted);
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: var(--leading-relaxed);
+}
+
+/* ── 3-column bordered grid ── */
+.v2-mission--vertical__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--stitch-section-border);
+  border-bottom: 1px solid var(--stitch-section-border);
+}
+
+.v2-mission--vertical__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(var(--space-lg), 3vw, var(--space-2xl));
+  transition: transform var(--transition-fast);
+}
+
+.v2-mission--vertical__item:hover {
+  transform: translateY(-4px);
+}
+
+.v2-mission--vertical__item--bordered {
+  border-right: 1px solid var(--stitch-section-border);
+}
+
+.v2-mission--vertical__item-icon {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: var(--space-xl);
+  color: var(--text-primary);
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.v2-mission--vertical__item-title {
+  font: var(--font-h3);
+  font-family: var(--font-family-serif);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.v2-mission--vertical__item-text {
+  font: var(--font-body);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Quote card ── */
+.v2-mission--vertical__quote {
+  max-width: 56rem;
+  margin: clamp(var(--space-xl), 4vw, var(--space-3xl)) auto 0;
+  width: 100%;
+}
+
+.v2-mission--vertical__quote-inner {
+  background: var(--stitch-dark-bg);
+  padding: clamp(var(--space-xl), 4vw, var(--space-3xl));
+  border-radius: var(--radius-xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Inner ghost border (Stitch detail) */
+.v2-mission--vertical__quote-border {
+  position: absolute;
+  inset: var(--space-md);
+  border: var(--stitch-glass-dark-border);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.v2-mission--vertical__quote-text {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  font-style: italic;
+  color: #fff;
+  line-height: var(--leading-snug);
+  margin-bottom: var(--space-lg);
+  position: relative;
+  z-index: 1;
+}
+
+.v2-mission--vertical__quote-label {
+  font: var(--font-overline);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--stitch-dark-accent);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Responsive: Vertical variant ── */
+@media (max-width: 1024px) {
+  .v2-mission--vertical__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .v2-mission--vertical__item:last-child {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--stitch-section-border);
+  }
+
+  .v2-mission--vertical__item--bordered:last-child {
+    border-right: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .v2-mission--vertical__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .v2-mission--vertical__item--bordered {
+    border-right: none;
+    border-bottom: 1px solid var(--stitch-section-border);
+  }
+
+  .v2-mission--vertical__item:last-child {
+    grid-column: auto;
+    border-top: none;
+  }
+
+  .v2-mission--vertical__heading {
+    font-size: var(--font-size-3xl);
+  }
+
+  .v2-mission--vertical__quote-text {
+    font-size: var(--font-size-2xl);
+  }
+}

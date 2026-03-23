@@ -28,8 +28,16 @@ export default function MouseParallaxGroup({
   const groupRef = useRef<THREE.Group>(null);
   const currentRotation = useRef({ x: 0, y: 0 });
 
+  // Detect touch device once (no mouse → no parallax needed)
+  const isTouchRef = useRef(
+    typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+  );
+
   useFrame((state, delta) => {
     if (!groupRef.current || !mouseRef.current) return;
+
+    // Touch devices: skip parallax entirely — zero GPU cost
+    if (isTouchRef.current) return;
 
     const fadeOut = smoothProgress(
       mosaicProgress,
@@ -65,7 +73,11 @@ export default function MouseParallaxGroup({
 
     groupRef.current.rotation.x = currentRotation.current.x;
     groupRef.current.rotation.y = currentRotation.current.y;
-    state.invalidate();
+
+    // Only invalidate if rotation is non-zero (settled → no re-render)
+    if (Math.abs(currentRotation.current.x) > 1e-5 || Math.abs(currentRotation.current.y) > 1e-5) {
+      state.invalidate();
+    }
   });
 
   return (

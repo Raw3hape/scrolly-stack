@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : undefined, // Local: auto (uses all CPU cores)
   reporter: 'list',
   timeout: 30_000,
 
@@ -36,7 +36,7 @@ export default defineConfig({
       use: { viewport: { width: 768, height: 1024 } },
     },
 
-    // Mobile
+    // Mobile — portrait
     {
       name: 'iphone-se',
       use: { ...devices['iPhone SE'] },
@@ -45,8 +45,25 @@ export default defineConfig({
       name: 'iphone-14',
       use: { ...devices['iPhone 14'] },
     },
+    {
+      name: 'iphone-14-pro-max',
+      use: { ...devices['iPhone 14 Pro Max'] },
+    },
+
+    // Mobile — landscape (edge case)
+    {
+      name: 'iphone-14-landscape',
+      use: {
+        ...devices['iPhone 14 landscape'],
+      },
+    },
   ],
 
-  // webServer is disabled — run `npm run dev` manually before tests.
-  // Enable for CI: { command: 'npm run dev', url: 'http://localhost:3000', reuseExistingServer: true }
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: true,
+    timeout: 60_000,
+  },
 });
+

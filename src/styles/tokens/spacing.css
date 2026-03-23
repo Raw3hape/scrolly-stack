@@ -23,7 +23,7 @@
   --container-max: 1400px;
   --container-padding: clamp(1rem, 3vw, 3rem);
   --header-height: 72px;
-  --header-height-mobile: 64px;
+  --header-height-mobile: 89px;
   --header-logo-height: 30px;
   --header-logo-height-mobile: 24px;
   --header-logo-height-sm: 21px;
@@ -32,8 +32,10 @@
   --container-padding-responsive: clamp(1rem, 3vw, 3rem);
   --content-max-width: 520px;
   --card-max-width: 460px;
-  --visual-height-mobile: 55vh;
-  --content-height-mobile: calc(100vh - var(--visual-height-mobile) - var(--header-height-mobile));
+  /* Hero layout is content-aware: hero fills full viewport (100dvh - header),
+   * cube position is computed by Stack.tsx from DOM measurement of .hero.
+   * No magic vh constants needed. */
+  --content-height-mobile: calc(100dvh - var(--header-height-mobile));
 
   /* === Layout Max-Widths === */
   --content-narrow-max: 640px;   /* PageHeader description, text columns        */

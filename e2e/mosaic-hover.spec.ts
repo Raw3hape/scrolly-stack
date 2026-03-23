@@ -163,11 +163,12 @@ test.describe('Mosaic Hover & Tilt', () => {
     expect(canvasBox).toBeTruthy();
 
     // Try multiple positions across the canvas to find a block.
-    // In settled mosaic, blocks fill the full canvas as a 5×3 grid.
+    // In settled mosaic, blocks fill the full canvas as a 5×4 grid (v6-exact-flipped).
     const positions = [
-      [0.15, 0.2], [0.35, 0.2], [0.55, 0.2], [0.75, 0.2], [0.9, 0.2],
-      [0.15, 0.5], [0.35, 0.5], [0.55, 0.5], [0.75, 0.5], [0.9, 0.5],
-      [0.15, 0.8], [0.35, 0.8], [0.55, 0.8], [0.75, 0.8], [0.9, 0.8],
+      [0.15, 0.15], [0.35, 0.15], [0.55, 0.15], [0.75, 0.15], [0.9, 0.15],
+      [0.15, 0.4],  [0.35, 0.4],  [0.55, 0.4],  [0.75, 0.4],  [0.9, 0.4],
+      [0.15, 0.65], [0.35, 0.65], [0.55, 0.65], [0.75, 0.65], [0.9, 0.65],
+      [0.15, 0.9],  [0.35, 0.9],  [0.55, 0.9],  [0.75, 0.9],  [0.9, 0.9],
     ];
 
     let tooltipFound = false;

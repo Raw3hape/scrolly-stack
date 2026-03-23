@@ -13,16 +13,34 @@
 /* Full-viewport sections — applied selectively to cards, mission, cta */
 .v2-section--fullscreen {
   min-height: 100vh;
+  min-height: 100dvh; /* iOS Safari: accounts for collapsing URL bar */
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+/* Small-phone padding override — 3vw resolves to ~11px at 375px */
+@media (max-width: 480px) {
+  .v2-section {
+    padding-inline: var(--space-md);
+  }
+}
+
+/* Landscape phones — prevent fullscreen sections from being too tall */
+@media (max-height: 500px) and (orientation: landscape) {
+  .v2-section--fullscreen {
+    min-height: auto;
+  }
 }
 
 .v2-section--dark {
   background: var(--stitch-dark-bg);
   color: var(--stitch-dark-text);
   position: relative;
-  overflow: hidden;
+  /* Use clip instead of hidden so parallax elements entering from below
+     are visible (clip respects overflow-clip-margin). */
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 /* Architectural texture — visible only on the right side, fades to clean bg on left */
@@ -57,10 +75,13 @@
   padding: 0 var(--container-padding);
 }
 
-/* === V2 sections wrapper (above sticky 3D canvas) === */
+/* === V2 sections wrapper (behind sticky 3D canvas) === */
 .v2-sections {
   position: relative;
-  z-index: var(--z-content);
+  /* Sections sit BELOW the fixed canvas. The grid slides upward during exit
+     to reveal these sections underneath — parallax "reveal from behind" effect.
+     v2-content-wrapper (z=100) covers the sticky footer beneath. */
+  z-index: calc(var(--z-canvas) - 1);
   background: var(--surface-base);
 }
 
@@ -76,133 +97,17 @@
 }
 
 /* ============================================================================
- * ENTRANCE ANIMATIONS — Scroll-Driven Parallax Reveal
+ * ENTRANCE ANIMATIONS
  *
- * Uses CSS animation-timeline: view() for GPU-accelerated, scroll-synced
- * parallax. Each section rises from below with opacity, translation, and
- * subtle scale — all driven by scroll position with zero JS overhead.
+ * The per-element parallax system now lives in `v2-parallax.css`.
+ * `.px-layer--bg / --fg / --accent` classes on individual elements read
+ * `--px-progress` from `useParallax` hook and derive transforms via calc().
  *
- * Fallback: IntersectionObserver (useInView) for unsupported browsers.
+ * Legacy `.v2-reveal` selector is preserved as a no-op for any remaining
+ * references — it does nothing visually.
  * ========================================================================== */
 
-/* --- Keyframes ----------------------------------------------------------- */
-@keyframes v2-parallax-in {
-  from {
-    opacity: 0;
-    transform: translateY(8vh) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.v2-reveal {
+  display: contents; /* no-op wrapper — parallax is now on .px-layer elements */
 }
 
-@keyframes v2-child-stagger {
-  from {
-    opacity: 0;
-    transform: translateY(5vh);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* --- Scroll-driven parallax (modern browsers) ---------------------------- */
-@supports (animation-timeline: view()) {
-  .v2-reveal {
-    transition: none;
-
-    /* Scroll-driven animation — spans a generous portion of the scroll */
-    animation: v2-parallax-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 45%;
-  }
-
-  /* Staggered children — each gets its own scroll-driven reveal */
-  .v2-reveal .v2-card,
-  .v2-reveal .v2-step,
-  .v2-reveal .v2-team-card {
-    animation: v2-child-stagger linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 35%;
-  }
-
-  /* Stagger offset via nth-child */
-  .v2-reveal .v2-card:nth-child(2),
-  .v2-reveal .v2-step:nth-child(2),
-  .v2-reveal .v2-team-card:nth-child(2) {
-    animation-range: entry 5% cover 40%;
-  }
-
-  .v2-reveal .v2-card:nth-child(3),
-  .v2-reveal .v2-step:nth-child(3),
-  .v2-reveal .v2-team-card:nth-child(3) {
-    animation-range: entry 10% cover 45%;
-  }
-
-  .v2-reveal .v2-card:nth-child(4),
-  .v2-reveal .v2-step:nth-child(4),
-  .v2-reveal .v2-team-card:nth-child(4) {
-    animation-range: entry 15% cover 50%;
-  }
-}
-
-/* --- Fallback: useInView trigger (Safari, older browsers) ---------------- */
-@supports not (animation-timeline: view()) {
-  .v2-reveal {
-    opacity: 0;
-    transform: translateY(2rem);
-    transition:
-      opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .v2-reveal[data-visible="true"] {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Staggered children */
-  .v2-reveal[data-visible="true"] .v2-card,
-  .v2-reveal[data-visible="true"] .v2-step,
-  .v2-reveal[data-visible="true"] .v2-team-card {
-    opacity: 0;
-    animation: v2-child-stagger 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .v2-reveal[data-visible="true"] .v2-card:nth-child(1),
-  .v2-reveal[data-visible="true"] .v2-step:nth-child(1),
-  .v2-reveal[data-visible="true"] .v2-team-card:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-
-  .v2-reveal[data-visible="true"] .v2-card:nth-child(2),
-  .v2-reveal[data-visible="true"] .v2-step:nth-child(2),
-  .v2-reveal[data-visible="true"] .v2-team-card:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-
-  .v2-reveal[data-visible="true"] .v2-card:nth-child(3),
-  .v2-reveal[data-visible="true"] .v2-step:nth-child(3),
-  .v2-reveal[data-visible="true"] .v2-team-card:nth-child(3) {
-    animation-delay: 0.35s;
-  }
-}
-
-/* Respect reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .v2-reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    animation: none !important;
-  }
-
-  .v2-reveal .v2-card,
-  .v2-reveal .v2-step,
-  .v2-reveal .v2-team-card {
-    animation: none !important;
-    opacity: 1 !important;
-  }
-}

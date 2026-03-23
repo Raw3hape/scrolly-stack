@@ -15,9 +15,15 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Eliminate 300ms tap delay on mobile for all interactive elements */
+a, button {
+  touch-action: manipulation;
+}
+
 body {
   min-height: 100vh;
-  overflow-x: hidden;
+  min-height: 100dvh; /* iOS Safari: accounts for collapsing URL bar */
+  overflow-x: clip;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

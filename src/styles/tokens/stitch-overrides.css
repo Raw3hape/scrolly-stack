@@ -25,8 +25,16 @@
   --surface-card:       #ffffff;
   --surface-card-hover: #f8f3ea;
   --surface-raised:     #f8f3ea;
+  --surface-elevated:   #f8f3ea;
   --surface-overlay:    rgba(254, 249, 240, 0.85);
   --surface-glass:      rgba(254, 249, 240, 0.6);
+
+  /* Section border (subtle divider — Stitch outline_variant at low opacity) */
+  --stitch-section-border: rgba(193, 200, 202, 0.3);
+
+  /* Gold badge tokens (trust badges, "Verified Exit") */
+  --color-gold-100:      #ffdcbc;
+  --color-gold-900:      #2c1700;
 
   /* Surface hierarchy from Stitch Material tokens */
   --stitch-surface:               #fef9f0;
@@ -80,6 +88,10 @@
   --space-quote-card-min:  28rem;
   --step-number-opacity:   0.5;
   --container-narrow:      40rem;
+
+  /* === Cinematic section (fullscreen photo + overlay) === */
+  --stitch-cinematic-overlay: rgba(16, 55, 64, 0.6);
+  --stitch-cinematic-chapter-color: var(--color-gold-300);
 
   /* === Force light mode === */
   color-scheme: light;

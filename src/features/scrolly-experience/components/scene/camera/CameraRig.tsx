@@ -53,6 +53,9 @@ export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps
   const mosaicUpRef = useRef(new THREE.Vector3());
 
 
+  // Track previous camera position for conditional invalidate
+  const prevCamPosRef = useRef(new THREE.Vector3());
+
   useFrame((state, delta) => {
     const d = THREE.MathUtils.damp;
 
@@ -88,16 +91,23 @@ export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps
     instantUpRef.current.lerpVectors(isoUpRef.current, mosaicUpRef.current, transitionProgress);
 
     // --- 3. CROSSFADE: blend damped ↔ instant by transitionProgress ---
-    // transitionProgress=0 → 100% damped (physical feel)
-    // transitionProgress=1 → 100% instant (scroll-driven)
     state.camera.position.lerpVectors(dampedPosRef.current, instantPosRef.current, transitionProgress);
     state.camera.up.lerpVectors(dampedUpRef.current, instantUpRef.current, transitionProgress);
 
     // --- 4. LOOK AT ORIGIN ---
     state.camera.lookAt(0, 0, 0);
 
-    // Always invalidate — crossfade runs every frame
-    state.invalidate();
+    // --- 5. CONDITIONAL INVALIDATE ---
+    // Only re-render if camera actually moved. When damping settles,
+    // WebGL goes idle = massive GPU savings during static hero view.
+    const camPos = state.camera.position;
+    const dx = camPos.x - prevCamPosRef.current.x;
+    const dy = camPos.y - prevCamPosRef.current.y;
+    const dz = camPos.z - prevCamPosRef.current.z;
+    if (dx * dx + dy * dy + dz * dz > 1e-8) {
+      state.invalidate();
+    }
+    prevCamPosRef.current.copy(camPos);
   });
 
   return null;

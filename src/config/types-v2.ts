@@ -38,6 +38,8 @@ interface SectionBase {
   id: string;
   /** Surface variant for section background */
   surface?: 'base' | 'low' | 'high' | 'dark';
+  /** When true, skip fullscreen centering — attach tightly to preceding content */
+  flush?: boolean;
 }
 
 /** Three-column card grid (e.g. Problem Statement) */
@@ -52,9 +54,32 @@ export interface CardsSection extends SectionBase {
   }>;
 }
 
+/** Fullscreen cinematic section with background photo + glassmorphism card */
+export interface CinematicSection extends SectionBase {
+  type: 'cinematic';
+  /** Chapter label (e.g. "Chapter I") */
+  chapterLabel?: string;
+  /** Chapter subtitle (e.g. "The Trap") */
+  chapterSubtitle?: string;
+  heading: string;
+  /** Glassmorphism card content */
+  card: {
+    title: string;
+    text: string;
+    /** Small footnote with icon (e.g. "The standard broker model is broken") */
+    footnote?: string;
+  };
+  /** Background photo URL (fullscreen, grayscale + dark overlay) */
+  backgroundUrl: string;
+}
+
 /** Dark mission block with steps + quote card */
 export interface MissionSection extends SectionBase {
   type: 'mission';
+  /** Layout variant: 'horizontal' (default, 2-col) or 'vertical' (centered, Stitch About) */
+  layout?: 'horizontal' | 'vertical';
+  /** Chapter label for vertical layout (e.g. "Chapter II") */
+  chapterLabel?: string;
   heading: string;
   /** Italic accent portion of heading (rendered separately) */
   headingAccent?: string;
@@ -94,6 +119,10 @@ export interface CtaSection extends SectionBase {
   buttonLabel?: string;
   /** Show arrow icon in button. Default: false */
   showArrow?: boolean;
+  /** Optional secondary ghost button (e.g. "View Our Process") */
+  secondaryButtonLabel?: string;
+  /** Route for secondary button */
+  secondaryHref?: string;
 }
 
 /** Urgency / FOMO dark card (two-column: text + image) */
@@ -115,6 +144,10 @@ export interface HeroSection extends SectionBase {
   heading: string;
   subtext?: string;
   buttonLabel?: string;
+  /** Layout variant: 'center' (default) or 'editorial' (left text + right image) */
+  layout?: 'center' | 'editorial';
+  /** Decorative image URL for editorial layout (right column) */
+  imageUrl?: string;
 }
 
 /** Team member grid (About page) */
@@ -122,24 +155,35 @@ export interface TeamSection extends SectionBase {
   type: 'team';
   heading: string;
   subtext?: string;
+  /** Chapter marker label (e.g. "Chapter III") */
+  chapterLabel?: string;
   members: Array<{
     name: string;
     role: string;
     bio: string;
+    /** Optional photo URL. Falls back to initials circle if missing */
+    imageUrl?: string;
   }>;
 }
 
 /** Single testimonial quote (About page) */
 export interface TestimonialSection extends SectionBase {
   type: 'testimonial';
+  /** Section heading (e.g. "Proof Of The Model") — shown in left column */
+  heading?: string;
   quote: string;
   author: string;
   company: string;
+  /** Author avatar URL */
+  avatarUrl?: string;
+  /** Trust badge text (e.g. "Verified Exit") */
+  badge?: string;
 }
 
 /** Full section union — extend this when adding new section types */
 export type Section =
   | CardsSection
+  | CinematicSection
   | MissionSection
   | StepsSection
   | CtaSection

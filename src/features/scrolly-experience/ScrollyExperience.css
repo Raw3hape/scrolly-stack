@@ -22,6 +22,7 @@
   display: flex;
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   flex-direction: row;
   padding-top: var(--header-height);
 }
@@ -55,8 +56,10 @@
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100svh; /* iOS Safari: svh = static, no reflow on address bar toggle */
   z-index: var(--z-canvas);
   pointer-events: none; /* Clicks pass through to content/header behind */
+  touch-action: pan-y; /* Allow vertical scroll, prevent horizontal drag conflicts */
   /* Opaque background blocks sections behind the canvas (z < canvas).
      The R3F Canvas itself is transparent (alpha: true), so without this,
      section--under-canvas content would bleed through between grid tiles. */
@@ -66,6 +69,12 @@
 /* When mosaic is settled, enable pointer events for tile hover/click */
 .col-visual--interactive {
   pointer-events: auto;
+}
+
+/* Keep settled mosaic fully visible above incoming sections.
+   Header still stays above via --z-header. */
+.col-visual--priority {
+  z-index: calc(var(--z-content) + 1);
 }
 
 
@@ -86,6 +95,8 @@
     flex-direction: column;
     padding-top: var(--header-height-mobile);
     min-height: 100vh;
+    min-height: 100svh;
+    overflow-x: clip;
   }
 
   .col-content {
@@ -95,9 +106,17 @@
     padding-right: var(--space-lg);
     position: relative;
     z-index: var(--z-content);
-    margin-top: -15vh;
-    padding-top: 5vh;
+    /* No negative margin — hero fills full viewport, steps always below fold. */
+    margin-top: 0;
+    /* layout-container already clears the fixed header. Only add breathing room. */
+    padding-top: var(--space-sm);
+    /* TRANSPARENT — so the fixed 3D canvas (z-50) shows through behind the
+     * hero text. The opaque background is applied per-section: .steps-container
+     * and .mosaic-trigger-zone get their own backgrounds to block bleed-through. */
+    background: transparent;
   }
+
+  /* col-visual: no mask — gradient edges removed for clean canvas display */
 }
 
 @media (max-width: 480px) {

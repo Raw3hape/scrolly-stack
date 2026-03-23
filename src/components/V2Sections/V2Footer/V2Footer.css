@@ -13,6 +13,8 @@
   background: var(--stitch-dark-bg);
   color: var(--stitch-dark-text);
   padding: clamp(var(--space-2xl), 7vw, 8rem) var(--container-padding);
+  /* Safe-area: prevent bottom content from being hidden by home indicator */
+  padding-bottom: calc(clamp(var(--space-2xl), 7vw, 8rem) + env(safe-area-inset-bottom, 0px));
   overflow: hidden;
 
   /* --footer-reveal: 0 (fully covered) → 1 (fully revealed), set by JS */
@@ -132,8 +134,10 @@
   transition: color var(--transition-fast);
 }
 
-.v2-footer__links a:hover {
-  color: var(--stitch-dark-text);
+@media (hover: hover) {
+  .v2-footer__links a:hover {
+    color: var(--stitch-dark-text);
+  }
 }
 
 /* --- Subscribe column --- */
@@ -167,6 +171,7 @@
   outline: none;
   transition: border-color var(--transition-fast), background var(--transition-fast);
   min-width: 0;
+  min-height: 44px; /* Apple HIG minimum touch target */
 }
 
 .v2-footer__subscribe-input::placeholder {
@@ -191,12 +196,16 @@
   cursor: pointer;
   transition: background var(--transition-fast), transform var(--transition-fast);
   flex-shrink: 0;
+  min-width: 44px;  /* Apple HIG minimum touch target */
+  min-height: 44px; /* Apple HIG minimum touch target */
 }
 
-.v2-footer__subscribe-btn:hover {
-  background: var(--color-gold-300);
-  border-color: var(--color-gold-300);
-  transform: translateX(2px);
+@media (hover: hover) {
+  .v2-footer__subscribe-btn:hover {
+    background: var(--color-gold-300);
+    border-color: var(--color-gold-300);
+    transform: translateX(2px);
+  }
 }
 
 .v2-footer__subscribe-btn:active {

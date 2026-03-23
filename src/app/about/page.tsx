@@ -1,22 +1,18 @@
 import type { Metadata } from 'next';
+import { aboutContent } from '@/config/content-v2';
+import SectionRenderer from '@/components/V2Sections/SectionRenderer';
 
 export const metadata: Metadata = {
-  title: 'About',
-  description: 'Learn about Foundation Projects — our mission, team, and approach to taking roofing companies public.',
+  title: aboutContent.metadata.title,
+  description: aboutContent.metadata.description,
 };
 
 export default function AboutPage() {
   return (
-    <section className="v2-section v2-section--fullscreen" style={{ textAlign: 'center' }}>
-      <div className="v2-container">
-        <h1 style={{ fontFamily: 'var(--font-family-serif)', marginBottom: 'var(--space-md)' }}>
-          About Us
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', maxWidth: '36rem', margin: '0 auto' }}>
-          This page is currently under construction.
-          We&apos;re crafting something exceptional — check back soon.
-        </p>
-      </div>
-    </section>
+    <div className="v2-content-wrapper">
+      {aboutContent.sections.map((section) => (
+        <SectionRenderer key={section.id} section={section} />
+      ))}
+    </div>
   );
 }

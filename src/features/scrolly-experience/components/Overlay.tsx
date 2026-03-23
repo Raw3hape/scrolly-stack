@@ -32,16 +32,17 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
     if (!isMobile) return;
 
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const fadeStart = 50;
-      const fadeEnd = 250;
+      const vh = window.innerHeight;
+      const fadeStart = vh * 0.06;  // ~40px on 667px, ~56px on 926px
+      const fadeEnd = vh * 0.45;    // ~300px on 667px, ~380px on 844px (matches larger hero zone)
+      const y = window.scrollY;
 
-      if (scrollY <= fadeStart) {
+      if (y <= fadeStart) {
         setHeroOpacity(1);
-      } else if (scrollY >= fadeEnd) {
+      } else if (y >= fadeEnd) {
         setHeroOpacity(0);
       } else {
-        const progress = (scrollY - fadeStart) / (fadeEnd - fadeStart);
+        const progress = (y - fadeStart) / (fadeEnd - fadeStart);
         setHeroOpacity(1 - progress);
       }
     };
@@ -52,51 +53,64 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Step tracking via IntersectionObserver — zero layout recalc during scroll.
+  // IO runs on a separate browser thread, fires callbacks only when visibility
+  // changes at threshold crossings. Entry.boundingClientRect is pre-computed.
   useEffect(() => {
-    let rafId: number | null = null;
+    const elements = [heroRef.current, ...stepRefs.current]
+      .filter((el): el is HTMLElement => Boolean(el));
+    if (elements.length === 0) return;
 
-    const scheduleUpdate = () => {
-      if (rafId !== null) return;
-      rafId = requestAnimationFrame(() => {
-        const targetY = window.innerHeight * 0.45;
-        const candidates = [heroRef.current, ...stepRefs.current]
-          .filter((element): element is HTMLElement => Boolean(element))
-          .map((element) => {
-            const rect = element.getBoundingClientRect();
-            const centerY = rect.top + rect.height / 2;
-            const isVisible = rect.bottom > 0 && rect.top < window.innerHeight;
+    // Track which elements are currently visible (Set, not Map).
+    // We call fresh getBoundingClientRect() when comparing — avoids using
+    // stale snapshot rects from different scroll positions (IO fires at
+    // threshold crossings, not every frame).
+    const visibleSet = new Set<HTMLElement>();
 
-            return {
-              element,
-              isVisible,
-              distance: Math.abs(centerY - targetY),
-            };
-          })
-          .filter((candidate) => candidate.isVisible);
-
-        if (candidates.length > 0) {
-          const best = candidates.reduce((closest, candidate) =>
-            candidate.distance < closest.distance ? candidate : closest,
-          );
-          const stepId = best.element.getAttribute('data-step-id');
-          setStep(stepId === 'hero' ? HERO_STEP : Number(stepId));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const el = entry.target as HTMLElement;
+          if (entry.isIntersecting) {
+            visibleSet.add(el);
+          } else {
+            visibleSet.delete(el);
+          }
         }
 
-        rafId = null;
-      });
-    };
+        // Pick element closest to 45% viewport height
+        if (visibleSet.size > 0) {
+          const targetY = window.innerHeight * 0.45;
+          let best: HTMLElement | null = null;
+          let bestDist = Infinity;
 
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', scheduleUpdate);
-    scheduleUpdate();
+          for (const el of visibleSet) {
+            // Fresh rect — all comparisons use the same scroll position
+            const rect = el.getBoundingClientRect();
+            const centerY = rect.top + rect.height / 2;
+            const dist = Math.abs(centerY - targetY);
+            if (dist < bestDist) {
+              bestDist = dist;
+              best = el;
+            }
+          }
 
-    return () => {
-      window.removeEventListener('scroll', scheduleUpdate);
-      window.removeEventListener('resize', scheduleUpdate);
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-    };
+          if (best) {
+            const stepId = best.getAttribute('data-step-id');
+            setStep(stepId === 'hero' ? HERO_STEP : Number(stepId));
+          }
+        }
+      },
+      {
+        // 21 thresholds (every 5%) — reduces step-switch latency at hero↔step1
+        // boundary where elements are tall and 20% increments miss early crossings
+        threshold: Array.from({ length: 21 }, (_, i) => i / 20),
+        rootMargin: '0px',
+      },
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, [setStep]);
 
   return (
@@ -171,12 +185,15 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
                   >
                     <svg
                       viewBox="0 0 24 24"
-                      fill="white"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       className="timeline-dot__icon"
                       aria-hidden="true"
-                    >
-                      <path d={step.icon} />
-                    </svg>
+                      dangerouslySetInnerHTML={{ __html: step.icon }}
+                    />
                   </div>
 
                   <h3 className="step-content__title">

@@ -5,9 +5,9 @@
  * ensuring the mosaic grid fits any screen without hardcoded magic numbers.
  *
  * All bounds are derived from existing config:
- *   - minCell = labels.fontSize × 4 (label readability)
  *   - maxCell = config.mosaic.cellSize (default cap)
- *   - padding = headerPx / zoom + gap (visible area below header)
+ *   - top padding = headerPx / zoom + gap (space below fixed header)
+ *   - side/bottom padding = gap
  *   - autoCols = floor(visibleWidth / cellSize), clamped [2, baseCols]
  *
  * ARCHITECTURE: Called in Stack.tsx, returns an adapted ResolvedMosaic that
@@ -20,7 +20,14 @@ import type { ResolvedMosaic } from '../VariantContext';
 import type { ComputedBlock } from '../types';
 import { getMosaicRows } from '../utils/mosaicLayout';
 
-/** Breakpoint — single source, matches CSS `@media (max-width: 768px)` */
+/**
+ * Breakpoint — single source, matches CSS `@media (max-width: 768px)`.
+ *
+ * NOTE: We compare against R3F `size.width` (Canvas pixel size), NOT
+ * `window.innerWidth` (browser viewport). These can differ when browser
+ * chrome or WebView insets shrink the canvas. `size.width` is the correct
+ * source here because it reflects the actual rendering area the camera sees.
+ */
 const MOBILE_BP = 768;
 
 export interface AdaptiveMosaicResult extends ResolvedMosaic {
@@ -67,21 +74,40 @@ export function useAdaptiveMosaic(
   ));
   const cols = isMobile ? autoCols : baseMosaic.cols;
 
-  // ── 2. Row count (pure function, supports spanBlocks with clamping) ─
-  const rows = getMosaicRows(blocks, cols, baseMosaic.spanBlocks);
+  // ── 1b. Scale multi-span blocks to fill full row on mobile ──────────
+  // Prevents trailing gaps (e.g. IPO span=2 on 3-col → gap in last row).
+  // On mobile with fewer cols, scale any multi-span to fill the full row.
+  const spanBlocks = isMobile && cols < (baseMosaic.cols ?? cols)
+    ? Object.fromEntries(
+        Object.entries(baseMosaic.spanBlocks ?? {}).map(
+          ([id, span]) => [Number(id), (span as number) > 1 ? cols : 1]
+        )
+      )
+    : baseMosaic.spanBlocks;
 
-  // ── 3. Padding — derived from header height ─────────────────────────
+  // ── 2. Row count (pure function, supports spanBlocks with clamping) ─
+  const rows = getMosaicRows(blocks, cols, spanBlocks);
+
+  // ── 3. Safe paddings in world units ─────────────────────────────────
+  // Header only occludes TOP of the viewport, not all sides.
+  // Using symmetric "header pad * 2" can force cellSize below fit bounds on
+  // short viewports, and a hard minCell then causes bottom clipping.
   const headerWorld = headerPx / zoom;
-  const pad = headerWorld + baseMosaic.gap; // header + one gap breathing room
+  const padX = baseMosaic.gap;                 // side breathing room
+  const padTop = headerWorld + baseMosaic.gap; // reserve area under fixed header
+  const padBottom = baseMosaic.gap;            // bottom breathing room
 
   // ── 4. Adaptive cellSize — fit grid into visible area ───────────────
-  const maxByH = (visH - (rows - 1) * baseMosaic.gap - pad * 2) / rows;
-  const maxByW = (visW - (cols - 1) * baseMosaic.gap - pad * 2) / cols;
+  const maxByH = (visH - (rows - 1) * baseMosaic.gap - padTop - padBottom) / rows;
+  const maxByW = (visW - (cols - 1) * baseMosaic.gap - padX * 2) / cols;
 
-  // Bounds: min = 4× font (label readability), max = default cellSize (don't upscale)
-  const minCell = labels.fontSize * 4;
+  // Never upscale above default. Keep fit as the hard guarantee so the final
+  // row cannot be clipped on shorter viewports.
   const maxCell = baseMosaic.cellSize; // from config, not a magic number
-  const cellSize = Math.max(minCell, Math.min(maxByH, maxByW, maxCell));
+  const fittedCell = Math.min(maxByH, maxByW, maxCell);
+  // Floor at 0.6 — small enough to guarantee fit on any viewport,
+  // large enough to keep block labels legible at the mosaic zoom level.
+  const cellSize = Math.max(0.6, fittedCell);
 
   // ── 5. Label scaling — proportional to cell size ────────────────────
   const scale = cellSize / defaultMosaic.cellSize;
@@ -92,6 +118,7 @@ export function useAdaptiveMosaic(
     ...baseMosaic,
     cols,
     cellSize,
+    spanBlocks,
     rows,
     labelFontSize,
     labelMaxWidth,

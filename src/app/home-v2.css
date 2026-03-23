@@ -126,3 +126,70 @@
   box-shadow: 0 0 0 3px rgba(255, 184, 106, 0.25);
 }
 
+/* === Mobile Overrides (all phones + small tablets) === */
+@media (max-width: 768px) {
+  /* Full-width hero — use all available horizontal space */
+  .stitch-theme .hero {
+    --content-max-width: 100%;
+    max-width: 100%;
+  }
+
+  .stitch-theme .hero__eyebrow {
+    margin-bottom: 0.75rem;
+    font-size: 0.625rem;
+  }
+
+  /* Headline — dramatically smaller for mobile:
+   * ~42px desktop → 24-32px mobile = ~4 lines instead of 6-7 */
+  .stitch-theme .hero__headline {
+    font-size: clamp(1.5rem, 1.2rem + 2vw, 2rem);
+    margin-bottom: 0.75rem;
+  }
+
+  /* Subheadline — tighter, full-width */
+  .stitch-theme .hero__subheadline {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    max-width: 100%;
+  }
+
+  /* CTA wrapper — row layout, wraps on very narrow screens */
+  .stitch-theme .hero__cta-wrapper {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* CTA button — compact, "Book A Call →" in one line */
+  .stitch-theme .hero__cta-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+
+  /* Status text — slightly smaller */
+  .stitch-theme .hero__status {
+    font-size: 0.8125rem;
+  }
+
+  /* Status dot — prevent squishing inside flex container */
+  .stitch-theme .hero__status-dot {
+    flex-shrink: 0;
+    aspect-ratio: 1;
+  }
+}
+
+/* === Small-Phone Overrides (iPhone SE, Galaxy Fold) === */
+@media (max-width: 480px) {
+  .stitch-theme .hero__headline {
+    font-size: clamp(1.375rem, 1.1rem + 2vw, 1.75rem);
+  }
+
+  .stitch-theme .hero__cta-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}

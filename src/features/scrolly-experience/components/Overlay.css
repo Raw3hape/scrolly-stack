@@ -116,15 +116,17 @@
   transition: left var(--transition-shimmer);
 }
 
-.hero__cta-button:hover::before {
-  left: 100%;
-}
+@media (hover: hover) {
+  .hero__cta-button:hover::before {
+    left: 100%;
+  }
 
-.hero__cta-button:hover {
-  transform: translateY(calc(-1 * var(--line-thick))) scale(1.02);
-  box-shadow: 
-    var(--shadow-lg),
-    var(--glow-primary);
+  .hero__cta-button:hover {
+    transform: translateY(calc(-1 * var(--line-thick))) scale(1.02);
+    box-shadow: 
+      var(--shadow-lg),
+      var(--glow-primary);
+  }
 }
 
 .hero__cta-button:active {
@@ -177,6 +179,7 @@
     transparent 100%
   );
   opacity: 0.3;
+  /* Mobile override bumps visibility — see @media block below */
 }
 
 .step {
@@ -343,8 +346,10 @@
   transition: transform var(--transition-fast);
 }
 
-.step-content__cta:hover .step-content__cta-arrow {
-  transform: translateX(4px);
+@media (hover: hover) {
+  .step-content__cta:hover .step-content__cta-arrow {
+    transform: translateX(4px);
+  }
 }
 
 /* === Loading State === */
@@ -388,32 +393,61 @@
   }
 
   .hero {
-    min-height: calc(100vh - var(--header-height-mobile) - var(--visual-height-mobile));
-    padding-top: var(--space-lg);
-    padding-bottom: var(--space-2xl);
-    background: transparent;
+    /* Fill viewport below header. Text at top (flex-start), cube in remaining space.
+     * Steps start below fold. Layout thrashing fix (P1) ensures smooth scrolling. */
+    min-height: calc(100svh - var(--header-height-mobile));
+    padding-top: 0;
+    padding-bottom: var(--space-lg);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;  /* Content starts at top of hero area */
+    justify-content: flex-start;
     /* Opacity controlled by JS based on scroll */
     transition: opacity var(--transition-micro);
   }
 
+  .hero__eyebrow {
+    display: none;
+  }
+
   .hero__headline {
-    font: var(--font-h1);
+    font: var(--font-h2);
+    font-size: clamp(1.875rem, 1.3rem + 2.8vw, 2.75rem);
+    margin-bottom: var(--space-sm);
   }
 
   .hero__subheadline {
     font-size: var(--font-size-base);
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
   }
 
   .steps-container {
     --timeline-gutter: 56px;
     --timeline-line-offset: 18px;
+    /* Transparent — 3D cube (fixed behind at z-50) shows through
+     * between frosted-glass step cards. */
+    background: transparent;
+    /* Extend edge-to-edge despite parent padding (needed for timeline) */
+    margin-left: calc(-1 * var(--space-lg));
+    margin-right: calc(-1 * var(--space-lg));
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+    /* Hero fills full viewport → steps always start below fold.
+     * Only needs breathing room for visual separation. */
+    padding-top: var(--space-2xl);
+  }
+
+
+
+  /* Timeline line: boosted visibility over 3D scene */
+  .timeline-line {
+    opacity: 0.5;
+    width: 2px;
+    box-shadow: 0 0 6px rgba(242, 237, 228, 0.4);
   }
 
   .step {
-    min-height: 90vh;  /* Much more spacing between sections */
+    min-height: max(55vh, 380px); /* Reduced from 90vh — prevents dead space on landscape/short viewports */
     padding-top: var(--space-xl);
     padding-bottom: var(--space-3xl);
     /* Always 100% opacity on mobile - no fade effect */
@@ -425,12 +459,16 @@
     filter: none !important;
   }
 
-  /* Frosted glass background for step content on mobile */
+  /* Frosted glass background for step content on mobile.
+   * backdrop-filter now blurs the live WebGL canvas — GPU compositing
+   * hints ensure each card is promoted to its own layer. */
   .step-content {
     max-width: 100%;
     background: var(--glass-card-bg);
-    backdrop-filter: saturate(150%) blur(16px);
-    -webkit-backdrop-filter: saturate(150%) blur(16px);
+    /* No blur on mobile — GPU can't handle blur × multiple cards × WebGL at 60fps.
+     * Solid semi-transparent background is visually similar, zero GPU cost. */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
     /* Stronger, very soft diffused shadows */
@@ -438,6 +476,9 @@
       var(--glass-card-shadow),
       var(--inset-highlight-strong);
     border: var(--glass-card-border);
+    /* Perf: GPU layer promotion still useful for compositing */
+    will-change: transform;
+    contain: layout style paint;
   }
 
   .step-content__title-row {
@@ -478,5 +519,18 @@
   .step-content__description-wrapper {
     grid-template-rows: 1fr;
     opacity: 1;
+  }
+}
+
+/* === Landscape phones — prevent huge empty hero/step areas === */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
+  }
+
+  .step {
+    min-height: max(70vh, 280px);
   }
 }

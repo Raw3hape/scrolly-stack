@@ -12,7 +12,7 @@
  * 3-PHASE SCROLL:
  * 1. Assembly (mosaic 0→1): blocks fly from stack to grid
  * 2. Hold: grid stays visible
- * 3. Exit (exit 0→1): translateY slides grid upward out of viewport
+ * 3. Exit (exit 0→1): sections at z=100 wipe over canvas z=50
  */
 
 import { useState, useRef, useMemo } from 'react';
@@ -34,15 +34,33 @@ export default function ScrollyExperience({ variantId, onReady }: ScrollyExperie
   const mosaicTriggerRef = useRef<HTMLDivElement>(null);
   const { mosaic: mosaicProgress, exit: exitProgress } = useScrollProgress(mosaicTriggerRef);
 
-  // Pointer events: only when mosaic is fully assembled AND not exiting
-  const isInteractive = mosaicProgress >= 1 && exitProgress <= 0;
+  // Touch detection — stable after mount (capability doesn't change mid-session)
+  const isTouchDevice = useMemo(
+    () => typeof window !== 'undefined'
+      && ('ontouchstart' in window || navigator.maxTouchPoints > 0),
+    [],
+  );
 
-  // Exit animation: translateY slides the canvas upward
-  // At exit=0: normal position. At exit=1: fully off-screen (-100vh)
+  // Pointer events: only when mosaic is fully assembled AND not exiting.
+  // Touch devices: no tile hover/click, so never make canvas interactive
+  // or promote z-index — prevents gesture interception on mobile.
+  const isInteractive = !isTouchDevice && mosaicProgress >= 1 && exitProgress <= 0;
+  const isPriorityFrame = !isTouchDevice && mosaicProgress >= 1 && exitProgress < 0.15;
+
+  // On touch devices: keep col-content scrollable even during mosaic hold.
+  // Mobile has no tile hover/click — disabling pointer-events only blocks scroll.
+  // On desktop: disable content for mosaic tile hover/click interactions.
+  const contentStyle = (isInteractive && !isTouchDevice)
+    ? { pointerEvents: 'none' as const }
+    : undefined;
+
+  // Exit: slide canvas UP + fade out. This physically moves the opaque
+  // fixed-position canvas upward, revealing v2-sections beneath (z=49).
   const exitStyle = useMemo(() => {
     if (exitProgress <= 0) return undefined;
     return {
-      transform: `translateY(${-exitProgress * 100}vh)`,
+      transform: `translateY(${-exitProgress * 100}%)`,
+      opacity: Math.max(0, 1 - exitProgress * 1.5), // fully transparent at ~67% exit
     };
   }, [exitProgress]);
 
@@ -51,7 +69,7 @@ export default function ScrollyExperience({ variantId, onReady }: ScrollyExperie
     <div className="layout-container">
       <div
         className="col-content"
-        style={isInteractive ? { pointerEvents: 'none' } : undefined}
+        style={contentStyle}
       >
         <Overlay
           currentStep={currentStep}
@@ -60,7 +78,7 @@ export default function ScrollyExperience({ variantId, onReady }: ScrollyExperie
         />
       </div>
       <div
-        className={`col-visual ${isInteractive ? 'col-visual--interactive' : ''}`}
+        className={`col-visual ${isInteractive ? 'col-visual--interactive' : ''} ${isPriorityFrame ? 'col-visual--priority' : ''}`}
         style={exitStyle}
       >
         <Scene

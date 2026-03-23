@@ -7,8 +7,9 @@
  * During mosaic transition, interpolates between normal zoom and
  * mosaic-specific zoom levels.
  *
- * BUG FIX: `mosaicFinalZoom` is now a parameter (from VariantContext),
- * not imported from config.ts — ensures variant overrides actually apply.
+ * maxIsoZoom: adaptive cap computed from stack height + viewport so the
+ * isometric cube never clips behind the header. When undefined, baseZoom
+ * is uncapped (fallback to config.animation.zoom.desktop).
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -20,6 +21,7 @@ export default function useResponsiveZoom(
   currentStep: number,
   mosaicProgress: number = 0,
   mosaicFinalZoom?: number,
+  maxIsoZoom?: number,
 ): number {
   const [baseZoom, setBaseZoom] = useState(() => {
     if (typeof window === 'undefined') return animation.zoom.desktop;
@@ -51,20 +53,29 @@ export default function useResponsiveZoom(
     };
   }, [handleResize]);
 
-  const isHero = isHeroStep(currentStep);
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= animation.zoom.mobileBreakpoint;
+  // Derive isMobile from debounced baseZoom to prevent flicker when
+  // iOS Safari's URL bar toggles — avoids reading raw window.innerWidth
+  // which can temporarily disagree with the debounced state.
+  const isMobile = baseZoom === animation.zoom.mobile;
 
-  // Hero state zoom
+  const isHero = isHeroStep(currentStep);
+
   if (isHero) {
     return isMobile ? animation.zoom.heroMobile : animation.zoom.heroDesktop;
   }
 
-  // Mosaic transition zoom: desktop lerps baseZoom → finalZoom.
+  // Apply adaptive cap: on desktop, limit iso zoom so cube fits below header.
+  // On mobile, maxIsoZoom is typically not provided (mobile zoom is already small).
+  const cappedBaseZoom = maxIsoZoom != null
+    ? Math.min(baseZoom, maxIsoZoom)
+    : baseZoom;
+
+  // Mosaic transition zoom: desktop lerps cappedBaseZoom → finalZoom.
   // On mobile, grid layout uses animation.zoom.mobile — camera stays at baseZoom.
   if (mosaicProgress > 0) {
     // On mobile, don't zoom in to finalZoom — grid is sized for mobile zoom
     if (isMobile) {
-      return baseZoom;
+      return cappedBaseZoom;
     }
 
     const finalZoom = mosaicFinalZoom ?? defaultMosaic.camera.finalZoom;
@@ -75,12 +86,12 @@ export default function useResponsiveZoom(
     );
 
     if (transitionProgress <= 0) {
-      return baseZoom;
+      return cappedBaseZoom;
     }
 
-    return lerp(baseZoom, finalZoom, transitionProgress);
+    return lerp(cappedBaseZoom, finalZoom, transitionProgress);
   }
 
-  return baseZoom;
+  return cappedBaseZoom;
 }
 

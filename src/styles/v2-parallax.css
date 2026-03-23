@@ -1,0 +1,104 @@
+/* ============================================================================
+ * V2 PARALLAX — Layered scroll-driven parallax system
+ *
+ * Reads `--px-progress` (0→1) set by useParallax hook on the parent section.
+ * Each `.px-layer--*` element computes its own transform/opacity via calc().
+ *
+ * Layers:
+ *   --bg     (speed 0.3×)  — background images, slow depth effect
+ *   --fg     (speed 1.0×)  — headings, text — base rhythm
+ *   --accent (speed 1.4×)  — cards, CTAs — dramatic, with scale
+ *
+ * Stagger: data-px-delay="0|1|2|3" shifts the effective progress backward,
+ *          creating sequential reveals within the same section.
+ *
+ * Direction: data-px-from="left|right" switches to horizontal translation.
+ *
+ * RESKIN: Adjust tokens in motion.css to change feel globally.
+ * ========================================================================== */
+
+/* === Base layer variables === */
+.px-layer--bg,
+.px-layer--fg,
+.px-layer--accent {
+  /* Inherit progress from parent section via --px-progress */
+  --_px-raw: var(--px-progress, 0);
+
+  /* Stagger: subtract delay offset (default 0) */
+  --_px-delay: 0;
+  --_px-shifted: calc(var(--_px-raw) - var(--_px-delay));
+
+  /* Clamp speed-adjusted progress to [0, 1] */
+  --_px-t: clamp(0, calc(var(--_px-shifted) * var(--_px-speed, 1)), 1);
+
+  /* Invert for "remaining" distance (1→0 as element reaches final position) */
+  --_px-inv: calc(1 - var(--_px-t));
+
+  will-change: transform, opacity;
+}
+
+/* === Layer: Background (images — slow, deep) === */
+.px-layer--bg {
+  --_px-speed: var(--parallax-speed-bg);
+  opacity: var(--_px-t);
+  transform: translateY(calc(var(--parallax-rise-lg) * var(--_px-inv)));
+}
+
+/* === Layer: Foreground (text — base rhythm) === */
+.px-layer--fg {
+  --_px-speed: var(--parallax-speed-fg);
+  opacity: var(--_px-t);
+  transform: translateY(calc(var(--parallax-rise-md) * var(--_px-inv)));
+}
+
+/* === Layer: Accent (cards, CTAs — dramatic with scale) === */
+.px-layer--accent {
+  --_px-speed: var(--parallax-speed-accent);
+  opacity: var(--_px-t);
+  transform:
+    translateY(calc(var(--parallax-rise-sm) * var(--_px-inv)))
+    scale(calc(var(--parallax-scale-from) + (1 - var(--parallax-scale-from)) * var(--_px-t)));
+}
+
+/* === Direction variants: horizontal slide === */
+.px-layer--bg[data-px-from="left"],
+.px-layer--fg[data-px-from="left"],
+.px-layer--accent[data-px-from="left"] {
+  transform: translateX(calc(var(--parallax-shift-x) * -1 * var(--_px-inv)));
+}
+
+.px-layer--bg[data-px-from="right"],
+.px-layer--fg[data-px-from="right"],
+.px-layer--accent[data-px-from="right"] {
+  transform: translateX(calc(var(--parallax-shift-x) * var(--_px-inv)));
+}
+
+/* Accent + horizontal needs scale too */
+.px-layer--accent[data-px-from="left"],
+.px-layer--accent[data-px-from="right"] {
+  transform:
+    translateX(calc(var(--parallax-shift-x) * var(--_px-inv)))
+    scale(calc(var(--parallax-scale-from) + (1 - var(--parallax-scale-from)) * var(--_px-t)));
+}
+
+.px-layer--accent[data-px-from="left"] {
+  transform:
+    translateX(calc(var(--parallax-shift-x) * -1 * var(--_px-inv)))
+    scale(calc(var(--parallax-scale-from) + (1 - var(--parallax-scale-from)) * var(--_px-t)));
+}
+
+/* === Stagger delays (shift progress backward) === */
+[data-px-delay="1"] { --_px-delay: var(--parallax-stagger-step); }
+[data-px-delay="2"] { --_px-delay: calc(var(--parallax-stagger-step) * 2); }
+[data-px-delay="3"] { --_px-delay: calc(var(--parallax-stagger-step) * 3); }
+
+/* === Accessibility: Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .px-layer--bg,
+  .px-layer--fg,
+  .px-layer--accent {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}

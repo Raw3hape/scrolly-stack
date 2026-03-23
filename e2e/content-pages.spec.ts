@@ -7,14 +7,7 @@
 
 import { test, expect } from '@playwright/test';
 import { ctaConfig, routes } from '../src/config/nav';
-import {
-  aboutHero,
-  expandedProblem,
-  comparison,
-  teamSection,
-  proofSection,
-  aboutClosingCta,
-} from '../src/config/content/about';
+import { ctaConfigV2 } from '../src/config/nav-v2';
 import {
   roofersHero,
   roofersValueProps,
@@ -186,139 +179,135 @@ test.describe('Home Page — All Sections', () => {
 });
 
 // ===========================================================================
-// ABOUT PAGE — ALL SECTIONS
+// ABOUT PAGE — V2 SECTIONS
 // ===========================================================================
 
-test.describe('About Page — All Sections', () => {
+test.describe('About Page — V2 Sections', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/about', { waitUntil: 'domcontentloaded' });
+    // Scroll to trigger IntersectionObserver animations
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    await page.evaluate(() => window.scrollTo(0, 0));
   });
 
   // --- Hero ---
-  test('hero heading matches content', async ({ page }) => {
+  test('hero heading is present', async ({ page }) => {
     const h1 = page.locator('h1');
-    await expect(h1).toContainText(aboutHero.heading);
+    await expect(h1).toContainText('Roofing Industry Professionals');
   });
 
-  test('hero body is present', async ({ page }) => {
-    const desc = page.locator('.page-header__description');
-    await expect(desc).toContainText('Foundation Projects');
+  test('hero subtext is present', async ({ page }) => {
+    const sub = page.locator('.v2-hero__subtext');
+    await expect(sub).toContainText('Foundation Projects');
   });
 
-  // --- Expanded Problem ---
-  test('expanded problem heading exists', async ({ page }) => {
-    const heading = page.locator('.about-problem__heading');
-    await expect(heading).toContainText(expandedProblem.heading);
+  // --- PE Trap (Cards) ---
+  test('PE trap section has 3 cards', async ({ page }) => {
+    const cards = page.locator('#pe-trap .v2-card');
+    await expect(cards).toHaveCount(3);
   });
 
-  test('expanded problem body text is present', async ({ page }) => {
-    const body = page.locator('.about-problem__body');
-    await expect(body).toContainText('PE firm');
+  test('PE trap heading mentions PE Trap', async ({ page }) => {
+    const heading = page.locator('#pe-trap .v2-cards-header__heading');
+    await expect(heading).toContainText('PE Trap');
   });
 
-  test('expanded problem punchline is visible', async ({ page }) => {
-    const punchline = page.locator('.about-problem__punchline');
-    await expect(punchline).toContainText(expandedProblem.punchline);
-  });
-
-  // --- Comparison Columns ---
-  test('comparison columns are visible', async ({ page }) => {
-    const comp = page.locator('.comparison');
-    await expect(comp).toBeVisible();
-  });
-
-  test('comparison has two columns', async ({ page }) => {
-    const columns = page.locator('.comparison__column');
-    await expect(columns).toHaveCount(2);
-  });
-
-  test('negative column has correct title', async ({ page }) => {
-    const negTitle = page.locator('.comparison__column--negative .comparison__title');
-    await expect(negTitle).toContainText(comparison.left.title);
-  });
-
-  test('positive column has correct title', async ({ page }) => {
-    const posTitle = page.locator('.comparison__column--positive .comparison__title');
-    await expect(posTitle).toContainText(comparison.right.title);
-  });
-
-  // --- Team Section ---
-  test('team heading is displayed', async ({ page }) => {
-    const heading = page.locator('.team-section__heading');
-    await expect(heading).toContainText(teamSection.heading);
-  });
-
-  test('team subheading is displayed', async ({ page }) => {
-    const sub = page.locator('.team-section__subheading');
-    await expect(sub).toContainText('team');
-  });
-
-  test('team accent stat is displayed', async ({ page }) => {
-    const stat = page.locator('.team-accent-stat');
-    await expect(stat).toContainText(teamSection.accentStat);
-  });
-
-  test('team grid has 6 members', async ({ page }) => {
-    const cards = page.locator('.team-card');
-    await expect(cards).toHaveCount(teamSection.members.length);
-  });
-
-  test('each team card has name, role, and bio', async ({ page }) => {
-    for (let i = 0; i < teamSection.members.length; i++) {
-      const card = page.locator('.team-card').nth(i);
-      await expect(card.locator('.team-card__name')).toContainText(teamSection.members[i].name);
-      await expect(card.locator('.team-card__role')).toContainText(teamSection.members[i].role);
-      await expect(card.locator('.team-card__bio')).not.toBeEmpty();
+  test('each PE trap card has title and text', async ({ page }) => {
+    const cards = page.locator('#pe-trap .v2-card');
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      await expect(cards.nth(i).locator('.v2-card__title')).not.toBeEmpty();
+      await expect(cards.nth(i).locator('.v2-card__text')).not.toBeEmpty();
     }
   });
 
-  test('team cards have avatar placeholders', async ({ page }) => {
-    const avatars = page.locator('.team-card__photo-placeholder');
-    await expect(avatars).toHaveCount(teamSection.members.length);
+  // --- Solution (Mission) ---
+  test('solution mission block exists', async ({ page }) => {
+    const mission = page.locator('#solution');
+    await expect(mission).toBeAttached();
   });
 
-  test('team cards have hover effect (not zero transform)', async ({ page }) => {
-    const card = page.locator('.team-card').first();
+  test('solution has quote card', async ({ page }) => {
+    const quoteCard = page.locator('#solution .v2-mission__quote-card');
+    await expect(quoteCard).toBeAttached();
+  });
+
+  test('solution has accent text', async ({ page }) => {
+    const accent = page.locator('#solution .v2-mission__accent');
+    await expect(accent).toContainText('brokers');
+  });
+
+  // --- Team ---
+  test('team heading mentions team', async ({ page }) => {
+    const heading = page.locator('#team .v2-team-header__heading');
+    await expect(heading).toContainText('Team');
+  });
+
+  test('team carousel has 6 member cards', async ({ page }) => {
+    const cards = page.locator('#team .v2-team-card');
+    await expect(cards).toHaveCount(6);
+  });
+
+  test('team cards have avatar initials', async ({ page }) => {
+    const avatars = page.locator('#team .v2-team-card__avatar');
+    const count = await avatars.count();
+    expect(count).toBe(6);
+    // First avatar should have initials "JS" (Jacob Sterling)
+    await expect(avatars.first()).toContainText('JS');
+  });
+
+  test('team cards have name and role', async ({ page }) => {
+    const firstCard = page.locator('#team .v2-team-card').first();
+    await expect(firstCard.locator('.v2-team-card__name')).toContainText('Jacob Sterling');
+    await expect(firstCard.locator('.v2-team-card__role')).toContainText('Founder');
+  });
+
+  test('team has carousel arrows', async ({ page }) => {
+    const arrows = page.locator('#team .v2-team-arrow');
+    await expect(arrows).toHaveCount(2);
+  });
+
+  test('team cards have hover effect', async ({ page }) => {
+    const card = page.locator('.v2-team-card').first();
     await card.hover();
-    // Card should have transition property
     const transition = await card.evaluate((el) =>
       window.getComputedStyle(el).getPropertyValue('transition')
     );
     expect(transition).toContain('transform');
   });
 
-  // --- Proof Section ---
-  test('proof heading is displayed', async ({ page }) => {
-    const heading = page.locator('.about-proof__heading');
-    await expect(heading).toContainText(proofSection.heading);
+  // --- Testimonial ---
+  test('testimonial quote is present', async ({ page }) => {
+    const quote = page.locator('#proof .v2-testimonial__quote');
+    await expect(quote).toContainText('4\u00d7');
   });
 
-  test('proof body text is present', async ({ page }) => {
-    const body = page.locator('.about-proof__body');
-    await expect(body).toContainText('exit');
+  test('testimonial has author attribution', async ({ page }) => {
+    const author = page.locator('#proof .v2-testimonial__author');
+    await expect(author).toContainText('Robert Vance');
   });
 
-  // --- Closing CTA ---
+  // --- CTA ---
   test('closing CTA block exists', async ({ page }) => {
-    const ctaBlock = page.locator('.cta-block');
+    const ctaBlock = page.locator('#about-cta');
     await expect(ctaBlock).toBeAttached();
   });
 
-  test('closing CTA heading matches', async ({ page }) => {
-    const heading = page.locator('.cta-block__heading');
-    await expect(heading).toContainText(aboutClosingCta.heading);
+  test('closing CTA heading is present', async ({ page }) => {
+    const heading = page.locator('#about-cta .v2-cta__heading');
+    await expect(heading).toContainText('roofing public');
   });
 
   test('closing CTA button links correctly', async ({ page }) => {
-    const cta = page.locator('.cta-block .link-button');
-    await expect(cta).toHaveAttribute('href', ctaConfig.href);
+    const cta = page.locator('#about-cta .v2-cta__button');
+    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
   });
 
   // --- Section count ---
-  test('page has at least 6 sections', async ({ page }) => {
-    const sections = page.locator('.section');
-    const count = await sections.count();
-    expect(count).toBeGreaterThanOrEqual(6);
+  test('page has exactly 6 V2 sections', async ({ page }) => {
+    const sections = page.locator('.v2-section');
+    await expect(sections).toHaveCount(6);
   });
 });
 
@@ -694,13 +683,13 @@ test.describe('Footer — Navigation Links', () => {
 // ===========================================================================
 
 test.describe('CTA Buttons — All Pages', () => {
-  const pages = [
-    { path: '/about', name: 'About' },
+  // V1 pages use .cta-block .link-button
+  const v1Pages = [
     { path: '/how-it-works/roofers', name: 'Roofers' },
     { path: '/how-it-works/investors', name: 'Investors' },
   ];
 
-  for (const p of pages) {
+  for (const p of v1Pages) {
     test(`${p.name} page CTA block button has correct href`, async ({ page }) => {
       await page.goto(p.path, { waitUntil: 'domcontentloaded' });
       const cta = page.locator('.cta-block .link-button');
@@ -713,6 +702,19 @@ test.describe('CTA Buttons — All Pages', () => {
       await expect(cta).toBeEnabled();
     });
   }
+
+  // About uses V2 CTA component
+  test('About page V2 CTA button has correct href', async ({ page }) => {
+    await page.goto('/about', { waitUntil: 'domcontentloaded' });
+    const cta = page.locator('#about-cta .v2-cta__button');
+    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+  });
+
+  test('About page V2 CTA button is clickable', async ({ page }) => {
+    await page.goto('/about', { waitUntil: 'domcontentloaded' });
+    const cta = page.locator('#about-cta .v2-cta__button');
+    await expect(cta).toBeEnabled();
+  });
 });
 
 // ===========================================================================
@@ -766,13 +768,10 @@ test.describe('Layout & Spacing', () => {
     expect(bg).toContain('gradient');
   });
 
-  test('CTA block has gradient background', async ({ page }) => {
+  test('V2 CTA section is present on About', async ({ page }) => {
     await page.goto('/about', { waitUntil: 'domcontentloaded' });
-    const block = page.locator('.cta-block');
-    const bg = await block.evaluate(
-      (el) => window.getComputedStyle(el).backgroundImage
-    );
-    expect(bg).toContain('gradient');
+    const block = page.locator('#about-cta');
+    await expect(block).toBeAttached();
   });
 
   test('value props strip has border-radius', async ({ page }) => {
@@ -784,9 +783,9 @@ test.describe('Layout & Spacing', () => {
     expect(parseInt(radius)).toBeGreaterThan(0);
   });
 
-  test('team cards have border-radius', async ({ page }) => {
+  test('V2 team cards have border-radius', async ({ page }) => {
     await page.goto('/about', { waitUntil: 'domcontentloaded' });
-    const card = page.locator('.team-card').first();
+    const card = page.locator('.v2-team-card').first();
     const radius = await card.evaluate(
       (el) => window.getComputedStyle(el).borderRadius
     );

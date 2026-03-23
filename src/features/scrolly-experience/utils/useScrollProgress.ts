@@ -24,16 +24,8 @@ export interface ScrollProgress {
 
 const INITIAL: ScrollProgress = { mosaic: 0, exit: 0 };
 
-/**
- * Parse CSS height value to pixels.
- * Supports 'vh' units and 'px'.
- */
-function cssHeightToPx(value: string): number {
-  if (value.endsWith('vh')) {
-    return (parseFloat(value) / 100) * window.innerHeight;
-  }
-  return parseFloat(value);
-}
+
+
 
 export default function useScrollProgress(
   triggerRef: RefObject<HTMLDivElement | null>,
@@ -45,6 +37,10 @@ export default function useScrollProgress(
     if (!el) return;
 
     const rect = el.getBoundingClientRect();
+    // Use window.innerHeight for entry/exit detection only.
+    // Phase boundaries are derived from DOM element height (below),
+    // NOT from viewport height — eliminates CSS↔JS mismatch on iOS
+    // where visualViewport.height changes when address bar hides.
     const viewportHeight = window.innerHeight;
 
     // Zone hasn't entered viewport yet
@@ -69,10 +65,17 @@ export default function useScrollProgress(
     const scrolledIn = viewportHeight - rect.top; // How far zone top has entered
     const totalHeight = rect.height;
 
-    // Phase boundaries in pixels
-    const assemblyPx = cssHeightToPx(mosaicConfig.assemblyHeight);
-    const holdPx = cssHeightToPx(mosaicConfig.holdHeight);
-    const exitPx = cssHeightToPx(mosaicConfig.exitHeight);
+    // Phase boundaries as proportions of the actual DOM height.
+    // Config values like '80vh' are treated as ratios (80:20:50).
+    // This guarantees phases always match the CSS-defined scroll distance,
+    // regardless of which vh unit CSS uses or what visualViewport reports.
+    const aVal = parseFloat(mosaicConfig.assemblyHeight);
+    const hVal = parseFloat(mosaicConfig.holdHeight);
+    const eVal = parseFloat(mosaicConfig.exitHeight);
+    const totalVal = aVal + hVal + eVal;
+    const assemblyPx = totalHeight * (aVal / totalVal);
+    const holdPx = totalHeight * (hVal / totalVal);
+    const exitPx = totalHeight * (eVal / totalVal);
 
     // Clamp scroll position to total zone
     const s = clamp(scrolledIn, 0, totalHeight);
@@ -120,6 +123,11 @@ export default function useScrollProgress(
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
+
+    // visualViewport.resize listener removed — phase boundaries are now
+    // derived from DOM element height, not viewport height. Address bar
+    // show/hide no longer affects phase calculation.
+
     rafId = requestAnimationFrame(() => {
       update();
       rafId = null;

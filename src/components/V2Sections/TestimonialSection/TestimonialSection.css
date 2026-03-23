@@ -1,38 +1,108 @@
-/* === TestimonialSection (quote + attribution) === */
+/* =============================================================================
+ * TestimonialSection — Stitch "Proof Of The Model" two-column layout
+ *
+ * Left: heading + progress dots
+ * Right: quote card with avatar + verified badge
+ * ========================================================================== */
+
 .v2-testimonial {
-  text-align: center;
-  max-width: var(--content-text-max);
-  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-2xl);
+  align-items: center;
   padding: var(--space-2xl) 0;
 }
 
-.v2-testimonial__bar {
-  width: var(--space-2xl);
-  height: var(--border-width-bar);
-  background: var(--color-gold-500);
-  margin: 0 auto var(--space-xl);
+/* ── Left column (heading) ── */
+.v2-testimonial__left {
+  flex: 0 0 33%;
+}
+
+.v2-testimonial__heading {
+  font: var(--font-h1);
+  font-family: var(--font-family-serif);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+/* Decorative progress dots */
+.v2-testimonial__dots {
+  display: flex;
+  gap: var(--space-xs);
+  margin-top: var(--space-xl);
+}
+
+.v2-testimonial__dot {
+  width: var(--space-md);
+  height: 3px;
   border-radius: var(--radius-full);
+  background: var(--stitch-section-border);
+}
+
+.v2-testimonial__dot--active {
+  width: var(--space-2xl);
+  background: var(--stitch-dark-accent);
+}
+
+/* ── Right column (quote card) ── */
+.v2-testimonial__right {
+  flex: 1;
+}
+
+.v2-testimonial__card {
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--space-xl), 4vw, var(--space-2xl));
+  position: relative;
+}
+
+/* Decorative large quote icon */
+.v2-testimonial__quote-icon {
+  position: absolute;
+  top: calc(-1 * var(--space-lg));
+  left: calc(-1 * var(--space-lg));
+  font-size: 5rem;
+  font-family: var(--font-family-serif);
+  color: var(--stitch-section-border);
+  opacity: 0.5;
+  line-height: 1;
 }
 
 .v2-testimonial__quote {
-  font: var(--font-h2);
+  font: var(--font-h3);
   font-family: var(--font-family-serif);
-  font-style: italic;
   color: var(--text-primary);
   line-height: var(--leading-snug);
   margin-bottom: var(--space-xl);
 }
 
+/* Attribution row: avatar + name + badge */
 .v2-testimonial__attribution {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.v2-testimonial__avatar-wrap {
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.v2-testimonial__avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .v2-testimonial__author {
   font: var(--font-h4);
   color: var(--text-primary);
   font-style: normal;
+  display: block;
 }
 
 .v2-testimonial__company {
@@ -41,8 +111,30 @@
   font-style: normal;
 }
 
-/* Mobile */
+/* Trust badge */
+.v2-testimonial__badge {
+  margin-left: auto;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  background: var(--color-gold-100);
+  color: var(--color-gold-900);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Responsive: stack on mobile ── */
 @media (max-width: 768px) {
+  .v2-testimonial {
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .v2-testimonial__left {
+    flex: none;
+  }
+
   .v2-testimonial__quote {
     font-size: var(--font-size-2xl);
   }

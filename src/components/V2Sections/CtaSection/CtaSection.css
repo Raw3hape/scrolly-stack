@@ -1,8 +1,9 @@
 /* =============================================================================
  * CtaSection — Stitch-accurate CTA block
  *
- * Visual reference: Stitch Home Position 9
+ * Visual reference: Stitch Home Position 9 / About Creative Variation 2
  * Order: overline → heading (display) → button (large) → microcopy
+ * Layers: BlueprintGrid → ArchitecturalLines → InnerFrame → Content
  * ========================================================================== */
 
 /* Override section padding with higher specificity (section + cta) */
@@ -11,8 +12,8 @@
   padding: 0; /* wrapper handles vertical padding; grid bleeds edge-to-edge */
 }
 
-/* Propagate flex height through the reveal wrapper */
-.v2-cta > .v2-reveal {
+/* Propagate flex height to the CTA wrapper (direct child of section) */
+.v2-cta > .v2-cta__wrapper {
   flex: 1;
   display: flex;
   width: 100%;
@@ -29,6 +30,42 @@
   align-items: center;
   /* Vertical padding only — no horizontal so grid bleeds to viewport edges */
   padding: clamp(5rem, 10vw, 10rem) 0;
+}
+
+/* --------------------------------------------------------------------------
+ * Decorative 12-column architectural lines (Stitch fidelity)
+ * Thin vertical dividers spanning full height at ~8% opacity
+ * ----------------------------------------------------------------------- */
+.v2-cta__arch-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  pointer-events: none;
+  opacity: 0.08;
+}
+
+.v2-cta__arch-col {
+  border-right: 1px solid var(--stitch-dark-text, #fff);
+  height: 100%;
+}
+
+.v2-cta__arch-col:last-child {
+  border-right: none;
+}
+
+/* --------------------------------------------------------------------------
+ * Inner decorative frame border (Stitch detail)
+ * Subtle rounded rectangle inset from section edges
+ * ----------------------------------------------------------------------- */
+.v2-cta__inner-frame {
+  position: absolute;
+  inset: var(--space-lg);
+  z-index: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg, 0.75rem);
+  pointer-events: none;
 }
 
 /* Content sits above grid with its own horizontal padding */
@@ -94,12 +131,70 @@
   transform: scale(0.97);
 }
 
-/* 4. Microcopy — subtle text below button */
+/* 4. Buttons row — flex wrap for primary + secondary */
+.v2-cta__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+/* Secondary ghost button */
+.v2-cta__button--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-inverse);
+  box-shadow: none;
+}
+
+.v2-cta__button--secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.03);
+}
+
+/* 5. Microcopy — subtle text below heading, above buttons */
 .v2-cta__microcopy {
   font: var(--font-body);
   color: var(--text-muted);
-  margin-top: var(--space-lg);
+  margin-bottom: var(--space-xl);
   max-width: 36ch;
+}
+
+/* === Dark variant overrides (when parent section has v2-section--dark) === */
+
+/* Heading: cream/white text on dark bg */
+.v2-section--dark .v2-cta__heading {
+  color: var(--stitch-surface, #fef9f0);
+}
+
+/* Primary button only gets gold treatment (exclude secondary) */
+.v2-section--dark .v2-cta__button:not(.v2-cta__button--secondary) {
+  background: var(--stitch-dark-accent);
+  color: var(--stitch-dark-bg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.v2-section--dark .v2-cta__button:not(.v2-cta__button--secondary):hover {
+  background: var(--color-gold-100, #ffdcbc);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Secondary ghost button in dark mode — subtle, distinct from primary */
+.v2-section--dark .v2-cta__button--secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--stitch-surface, #fef9f0);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+
+.v2-section--dark .v2-cta__button--secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.v2-section--dark .v2-cta__overline,
+.v2-section--dark .v2-cta__microcopy {
+  color: var(--stitch-dark-text-muted);
 }
 
 /* === Responsive === */
@@ -108,9 +203,19 @@
     font-size: clamp(2rem, 6vw, var(--font-size-display));
   }
 
+  .v2-cta__buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .v2-cta__button {
     width: 100%;
     max-width: 20rem;
     padding: var(--space-md) var(--space-lg);
   }
+
+  .v2-cta__inner-frame {
+    inset: var(--space-md);
+  }
 }
+

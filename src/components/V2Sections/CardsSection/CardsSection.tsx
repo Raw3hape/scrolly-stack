@@ -15,15 +15,15 @@ export default function CardsSection({ data }: Props) {
   return (
     <div className="v2-container">
       <div className="v2-cards-header">
-        <h2 className="v2-cards-header__heading">{data.heading}</h2>
+        <h2 className="v2-cards-header__heading px-layer--fg">{data.heading}</h2>
         {data.subtext && (
           <p className="v2-cards-header__subtext">{data.subtext}</p>
         )}
       </div>
 
       <div className="v2-cards-grid">
-        {data.cards.map((card) => (
-          <div key={card.title} className="v2-card">
+        {data.cards.map((card, i) => (
+          <div key={card.title} className="v2-card px-layer--accent" data-px-delay={String(i)}>
             <div className="v2-card__icon">
               <V2Icon name={card.icon} />
             </div>

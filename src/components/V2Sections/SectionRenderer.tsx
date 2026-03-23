@@ -1,7 +1,9 @@
 /**
- * SectionRenderer — maps Section data type → visual component + entrance animation.
+ * SectionRenderer — maps Section data type → visual component + parallax.
  *
- * Client component (uses useInView for IntersectionObserver).
+ * Client component: uses useParallax to write `--px-progress` (0→1) on
+ * the root `<section>`. Inner elements use `.px-layer--*` CSS classes
+ * to derive their own transform/opacity via calc().
  *
  * Usage:
  *   {pageContent.sections.map(s => <SectionRenderer key={s.id} section={s} />)}
@@ -10,8 +12,9 @@
 'use client';
 
 import type { Section } from '@/config/types-v2';
-import useInView from '@/hooks/useInView';
+import useParallax from '@/hooks/useParallax';
 import CardsSection from './CardsSection/CardsSection';
+import CinematicSection from './CinematicSection/CinematicSection';
 import MissionSection from './MissionSection/MissionSection';
 import StepsSection from './StepsSection/StepsSection';
 import CtaSection from './CtaSection/CtaSection';
@@ -34,6 +37,7 @@ const surfaceMap: Record<string, string> = {
 function renderSection(section: Section) {
   switch (section.type) {
     case 'cards':        return <CardsSection data={section} />;
+    case 'cinematic':    return <CinematicSection data={section} />;
     case 'mission':      return <MissionSection data={section} />;
     case 'steps':        return <StepsSection data={section} />;
     case 'cta':          return <CtaSection data={section} />;
@@ -46,10 +50,11 @@ function renderSection(section: Section) {
 }
 
 export default function SectionRenderer({ section }: SectionRendererProps) {
-  const ref = useInView<HTMLElement>();
+  const ref = useParallax<HTMLElement>();
   const surfaceClass = surfaceMap[section.surface ?? 'base'] ?? '';
   const isCtaSection = section.type === 'cta';
-  const isFullscreen = ['cards', 'mission', 'cta'].includes(section.type);
+  const isFullscreen = ['cards', 'cinematic', 'mission', 'cta'].includes(section.type)
+    && !section.flush;
 
   return (
     <section
@@ -57,10 +62,7 @@ export default function SectionRenderer({ section }: SectionRendererProps) {
       id={section.id}
       className={`v2-section ${surfaceClass}${isCtaSection ? ' v2-cta' : ''}${isFullscreen ? ' v2-section--fullscreen' : ''}`}
     >
-      <div className="v2-reveal">
-        {renderSection(section)}
-      </div>
+      {renderSection(section)}
     </section>
   );
 }
-

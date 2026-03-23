@@ -10,6 +10,8 @@
   right: 0;
   z-index: var(--z-header, 1000);
   padding: var(--space-sm) 0;
+  /* Safe-area: prevent content behind Dynamic Island / notch on iOS */
+  padding-top: max(var(--space-sm), env(safe-area-inset-top, 0px));
   transition:
     transform var(--transition-base),
     background var(--transition-base),
@@ -78,12 +80,14 @@
   transition: width var(--transition-base);
 }
 
-.v2-header__link:hover {
-  color: var(--text-primary);
-}
+@media (hover: hover) {
+  .v2-header__link:hover {
+    color: var(--text-primary);
+  }
 
-.v2-header__link:hover::after {
-  width: 100%;
+  .v2-header__link:hover::after {
+    width: 100%;
+  }
 }
 
 /* === CTA + Actions === */
@@ -109,10 +113,12 @@
     box-shadow var(--transition-fast);
 }
 
-.v2-header__cta:hover {
-  background: var(--stitch-cta-hover-bg);
-  transform: var(--stitch-cta-hover-lift);
-  box-shadow: var(--stitch-cta-hover-shadow);
+@media (hover: hover) {
+  .v2-header__cta:hover {
+    background: var(--stitch-cta-hover-bg);
+    transform: var(--stitch-cta-hover-lift);
+    box-shadow: var(--stitch-cta-hover-shadow);
+  }
 }
 
 .v2-header__cta:active {
@@ -173,13 +179,15 @@
   position: fixed;
   top: 0;
   right: 0;
-  bottom: 0;
   width: min(85vw, 24rem);
+  height: 100vh;
+  height: 100dvh; /* iOS Safari: accounts for collapsing URL bar */
   z-index: var(--z-header, 1000);
   background: var(--surface-base);
   transform: translateX(100%);
   transition: transform var(--transition-smooth);
   overflow-y: auto;
+  overscroll-behavior: contain; /* Prevent scroll chaining to body */
 }
 
 .v2-drawer--open {
@@ -190,6 +198,8 @@
   display: flex;
   flex-direction: column;
   padding: calc(var(--header-height, 3.5rem) + var(--space-xl)) var(--space-xl) var(--space-xl);
+  /* Safe-area: prevent CTA from being obscured by home indicator on notched iPhones */
+  padding-bottom: calc(var(--space-xl) + env(safe-area-inset-bottom, 0px));
   min-height: 100%;
 }
 
@@ -254,10 +264,22 @@
   }
 
   .v2-header__cta {
-    display: none;
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--font-size-sm);
   }
 
   .v2-header__burger {
     display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .v2-header__cta {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-xs);
+  }
+
+  .v2-header__cta span[aria-hidden] {
+    display: none; /* Hide arrow on very small screens to save space */
   }
 }

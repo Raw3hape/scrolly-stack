@@ -1,4 +1,14 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+
+/**
+ * Viewport — enables safe-area-inset env variables on notched iOS devices.
+ * Without viewport-fit: cover, env(safe-area-inset-*) always resolves to 0.
+ */
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 import { Newsreader, Inter } from 'next/font/google';
 import V2Header from '@/components/V2Header/V2Header';
 import V2Footer from '@/components/V2Sections/V2Footer/V2Footer';
@@ -6,6 +16,7 @@ import { footerContent } from '@/config/content-v2';
 import '@/styles/index.css';
 import '@/styles/tokens/stitch-overrides.css';
 import './v2-shared.css';
+import '@/styles/v2-parallax.css';
 
 /**
  * Newsreader — editorial serif for headlines (Stitch theme)

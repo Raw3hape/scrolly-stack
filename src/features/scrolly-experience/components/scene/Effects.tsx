@@ -11,12 +11,15 @@ import type { ReactElement } from 'react';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { mosaic as mosaicConfig, postProcessing } from '../../config';
 import { lerp, smoothProgress } from '../../utils/easings';
+import { getIOSGpuOverrides } from '../../utils/iosGpuProfile';
 
 interface EffectsProps {
   mosaicProgress?: number;
 }
 
 export default function Effects({ mosaicProgress = 0 }: EffectsProps) {
+  // iOS: disable MSAA on effects pass (prevents silent render target crash)
+  const iosOverrides = getIOSGpuOverrides();
   if (!postProcessing.enabled) return null;
 
   const transitionProgress = smoothProgress(
@@ -52,7 +55,7 @@ export default function Effects({ mosaicProgress = 0 }: EffectsProps) {
   if (effects.length === 0) return null;
 
   return (
-    <EffectComposer multisampling={2}>
+    <EffectComposer multisampling={iosOverrides ? iosOverrides.multisampling : 2}>
       {effects}
     </EffectComposer>
   );

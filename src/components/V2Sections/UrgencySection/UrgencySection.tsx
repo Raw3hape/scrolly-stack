@@ -22,7 +22,7 @@ export default function UrgencySection({ data }: Props) {
     <div className="v2-container">
       <div className="v2-urgency-card">
         {/* Left column: text content */}
-        <div className="v2-urgency-card__content">
+        <div className="v2-urgency-card__content px-layer--fg">
           <h2 className="v2-urgency-card__heading">
             {data.heading}
             {data.headingAccent && (
@@ -45,7 +45,7 @@ export default function UrgencySection({ data }: Props) {
 
         {/* Right column: image */}
         {data.image && (
-          <div className="v2-urgency-card__image-wrap">
+          <div className="v2-urgency-card__image-wrap px-layer--bg" data-px-from="right">
             <Image
               src={data.image}
               alt="Foundation Projects — building the future"

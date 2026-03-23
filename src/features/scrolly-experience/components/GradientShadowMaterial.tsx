@@ -10,6 +10,7 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { animation, materials } from '../config';
 import { palette } from '@/config/palette';
+import { getIOSGpuOverrides } from '../utils/iosGpuProfile';
 import type { GradientShadowMaterialProps } from '../types';
 
 
@@ -28,6 +29,7 @@ export default function GradientShadowMaterial({
   const currentHoverRef = useRef(0);
   const targetHoverRef = useRef(0);
   const currentSaturationRef = useRef(1.0);
+  const frameCountRef = useRef(0);
 
   // Stable cache key: shader code is identical for all blocks.
   // Only isActive changes material props (roughness, envMapIntensity).
@@ -38,6 +40,10 @@ export default function GradientShadowMaterial({
     const colA = new THREE.Color(colorA);
     const colB = new THREE.Color(colorB);
 
+    // iOS: disable expensive shader features that hit compilation limits
+    const iosOverrides = getIOSGpuOverrides();
+    const iosMat = iosOverrides?.materialOverrides;
+
     const mat = new THREE.MeshPhysicalMaterial({
       color: palette.white,
       roughness: isActive ? materials.active.roughness : materials.block.roughness,
@@ -47,12 +53,12 @@ export default function GradientShadowMaterial({
       transmission: materials.physical.transmission,
       ior: materials.physical.ior,
       thickness: materials.physical.thickness,
-      iridescence: materials.physical.iridescence,
+      iridescence: iosMat ? iosMat.iridescence : materials.physical.iridescence,
       iridescenceIOR: materials.physical.iridescenceIOR,
-      clearcoat: materials.physical.clearcoat,
+      clearcoat: iosMat ? iosMat.clearcoat : materials.physical.clearcoat,
       clearcoatRoughness: materials.physical.clearcoatRoughness,
       // Sheen (velvet highlight)
-      sheen: materials.physical.sheen,
+      sheen: iosMat ? iosMat.sheen : materials.physical.sheen,
       sheenRoughness: materials.physical.sheenRoughness,
       sheenColor: new THREE.Color(materials.physical.sheenColor),
     });
@@ -177,10 +183,13 @@ export default function GradientShadowMaterial({
     // STABILITY FIX: Don't freeze ALL useFrame work during mosaic.
     // uTime and saturation always update — prevents color pop.
     // Only hover-lerp is skipped (15 blocks × lerp/frame = performance saving).
+    frameCountRef.current++;
 
     if (shaderRef.current) {
-      // uTime — ALWAYS update (prevents shimmer jump)
-      shaderRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+      // uTime — throttle to every 3rd frame (shimmer = sin(t*0.3), very slow)
+      if (frameCountRef.current % 3 === 0) {
+        shaderRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+      }
 
       // Hover lerp — skip during mosaic transition only
       if (!isMosaicTransitioning) {

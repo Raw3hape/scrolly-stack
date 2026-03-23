@@ -15,6 +15,7 @@ import { Suspense, useState, useEffect, useCallback, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import * as THREE from 'three';
+import { getIOSGpuOverrides } from '../utils/iosGpuProfile';
 import Stack from './Stack';
 import HoverTooltip from './HoverTooltip';
 import SceneLoader from './scene/SceneLoader';
@@ -24,7 +25,9 @@ import MouseParallaxGroup from './scene/MouseParallaxGroup';
 import { CameraRig, ZoomController, useResponsiveZoom } from './scene/camera';
 import { animation, lighting, render } from '../config';
 import { useVariant } from '../VariantContext';
+import useAdaptiveFinalZoom from '../hooks/useAdaptiveFinalZoom';
 import { isHeroStep, getStepElementId } from '../utils/stepNavigation';
+import { computeMaxIsoZoom as computeMaxIso } from '../utils/computeMaxIsoZoom';
 import type { SceneProps, RawBlockData, MousePosition } from '../types';
 
 // =============================================================================
@@ -51,9 +54,33 @@ function ReadySignal({ onReady }: { onReady?: () => void }) {
 }
 
 export default function Scene({ currentStep, mosaicProgress, onBlockClick, onReady }: SceneProps & { onReady?: () => void }) {
-  const { mosaicConfig } = useVariant();
-  const zoom = useResponsiveZoom(currentStep, mosaicProgress, mosaicConfig.camera.finalZoom);
+  const { mosaicConfig, layers, geometry: geo } = useVariant();
+
+  // Total block count — needed for adaptive zoom row calculation
+  const totalBlocks = layers.reduce((sum, layer) => sum + layer.blocks.length, 0);
+
+  // ── Adaptive isometric zoom cap ────────────────────────────────────────
+  // Uses shared utility (also used by Stack.tsx for position compensation)
+  // to ensure camera zoom and cube positioning use the same value.
+  const [maxIsoZoomLive, setMaxIsoZoomLive] = useState(() => computeMaxIso(layers, geo));
+  useEffect(() => {
+    const handleResize = () => setMaxIsoZoomLive(computeMaxIso(layers, geo));
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [layers, geo]);
+
+  // Dynamic mosaic zoom: fills viewport with header clearance, replaces static finalZoom
+  const adaptiveFinalZoom = useAdaptiveFinalZoom(mosaicConfig, totalBlocks);
+  const zoom = useResponsiveZoom(currentStep, mosaicProgress, adaptiveFinalZoom, maxIsoZoomLive);
   const isHero = isHeroStep(currentStep);
+
+  // iOS GPU overrides — null on desktop (zero changes to desktop path)
+  const iosOverrides = getIOSGpuOverrides();
+
+  // Use capped DPR on mobile to reduce GPU load (3× screens don't need 2× render)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= animation.zoom.mobileBreakpoint;
+  const activeDpr = isMobile && render.mobileDpr ? render.mobileDpr : render.dpr;
 
   // Hover state for tooltip (DOM overlay — needs state for re-render)
   const [hoveredBlock, setHoveredBlock] = useState<RawBlockData | null>(null);
@@ -106,8 +133,8 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
       <Canvas
-        shadows={{ type: THREE[render.shadowMapType as keyof typeof THREE] as THREE.ShadowMapType }}
-        dpr={render.dpr as [number, number]}
+        shadows={{ type: THREE[(iosOverrides?.shadowMapType ?? render.shadowMapType) as keyof typeof THREE] as THREE.ShadowMapType }}
+        dpr={activeDpr as [number, number]}
         orthographic
         camera={{
           zoom: zoom,
@@ -115,7 +142,26 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
           fov: 25,
         }}
         style={{ width: '100%', height: '100%', background: 'transparent' }}
-        gl={{ antialias: true, alpha: true, toneMapping: THREE.AgXToneMapping }}
+        gl={{
+          antialias: true,
+          alpha: true,
+          toneMapping: iosOverrides
+            ? THREE.ACESFilmicToneMapping
+            : THREE.AgXToneMapping,
+          ...(iosOverrides ? { powerPreference: iosOverrides.powerPreference } : {}),
+        }}
+        onCreated={({ gl }) => {
+          // WebGL context-loss safety net — if iOS kills the context
+          // (memory pressure, background tab), dismiss the loader so the
+          // user isn't stuck on a frozen loading screen.
+          const canvas = gl.domElement;
+          const handleContextLost = (e: Event) => {
+            e.preventDefault();
+            console.warn('[ScrollyStack] WebGL context lost — dismissing loader');
+            onReady?.();
+          };
+          canvas.addEventListener('webglcontextlost', handleContextLost);
+        }}
       >
         <CameraRig isHero={isHero} mosaicProgress={mosaicProgress} />
         <ZoomController targetZoom={zoom} mosaicProgress={mosaicProgress} />

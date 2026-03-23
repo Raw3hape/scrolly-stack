@@ -1,10 +1,25 @@
-/* === TeamSection (member grid) === */
+/* =============================================================================
+ * TeamSection — Stitch "The Curators" photo gallery
+ *
+ * Layout: heading + arrows top → horizontal scrollable photo cards below.
+ * Each card: 3:4 photo (grayscale → color hover) + left-border info block.
+ * ========================================================================== */
+
+/* ── Header (title left + arrows right) ── */
 .v2-team-header {
-  text-align: center;
-  margin-bottom: var(--space-2xl);
-  max-width: var(--content-text-max);
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-xl);
+}
+
+.v2-team-header__chapter {
+  display: block;
+  font: var(--font-overline);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
 }
 
 .v2-team-header__heading {
@@ -12,86 +27,158 @@
   font-family: var(--font-family-serif);
   line-height: var(--leading-tight);
   color: var(--text-primary);
-  margin-bottom: var(--space-sm);
 }
 
-.v2-team-header__subtext {
-  font: var(--font-body-lg);
-  color: var(--text-muted);
-  line-height: var(--leading-relaxed);
+.v2-team-header__arrows {
+  display: flex;
+  gap: var(--space-md);
 }
 
-.v2-team-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-xl);
-}
-
-.v2-team-card {
-  background: var(--surface-card);
-  border-radius: var(--radius-xl);
-  padding: clamp(var(--space-lg), 3vw, var(--space-xl));
-  text-align: center;
-  box-shadow: var(--shadow-md);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-.v2-team-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-.v2-team-card__avatar {
-  width: clamp(3.5rem, 6vw, 5rem);
-  height: clamp(3.5rem, 6vw, 5rem);
+/* ── Arrow buttons (round, borderless) ── */
+.v2-team-arrow {
+  width: 3rem;
+  height: 3rem;
   border-radius: var(--radius-full);
-  background: var(--stitch-cta-gradient);
-  color: var(--text-inverse);
-  font: var(--font-h3);
-  font-family: var(--font-family-serif);
+  border: 1px solid var(--stitch-section-border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto var(--space-md);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.v2-team-arrow:hover {
+  background: var(--stitch-dark-bg);
+  color: var(--text-inverse);
+}
+
+.v2-team-arrow--hidden {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ── Scrollable track ── */
+.v2-team-track {
+  display: flex;
+  gap: var(--space-xl);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding: 0 var(--container-padding) var(--space-lg);
+
+  /* Hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.v2-team-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Photo card ── */
+.v2-team-card {
+  flex: 0 0 clamp(280px, 28vw, 450px);
+  scroll-snap-align: start;
+}
+
+/* Photo wrapper */
+.v2-team-card__photo-wrap {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  margin-bottom: var(--space-lg);
+  border-radius: 2px;
+  background: var(--surface-elevated);
+}
+
+.v2-team-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1);
+  transition: filter var(--transition-slow);
+}
+
+.v2-team-card:hover .v2-team-card__photo {
+  filter: grayscale(0);
+}
+
+/* Fallback initials (when no photo) */
+.v2-team-card__avatar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--stitch-cta-gradient);
+  color: var(--text-inverse);
+  font: var(--font-h1);
+  font-family: var(--font-family-serif);
   letter-spacing: var(--tracking-wide);
 }
 
-.v2-team-card__name {
-  font: var(--font-h4);
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+/* Left-border info block */
+.v2-team-card__info {
+  border-left: 1px solid var(--stitch-section-border);
+  padding-left: var(--space-lg);
 }
 
 .v2-team-card__role {
   display: block;
-  font: var(--font-overline);
-  color: var(--color-teal-500);
+  font-size: 0.625rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: var(--tracking-widest);
-  margin-bottom: var(--space-md);
+  letter-spacing: 0.2em;
+  color: var(--color-teal-500);
+  margin-bottom: var(--space-xs);
+}
+
+.v2-team-card__name {
+  font: var(--font-h3);
+  font-family: var(--font-family-serif);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
 }
 
 .v2-team-card__bio {
-  font: var(--font-body);
+  font: var(--font-body-sm);
   color: var(--text-muted);
   line-height: var(--leading-relaxed);
+  max-width: 24rem;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .v2-team-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Mobile */
+/* ── Responsive ── */
 @media (max-width: 768px) {
-  .v2-team-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-  }
-
   .v2-team-header__heading {
     font-size: var(--font-size-3xl);
+  }
+
+  .v2-team-header__arrows {
+    gap: var(--space-sm);
+  }
+
+  .v2-team-arrow {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .v2-team-card {
+    flex: 0 0 72vw;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .v2-team-track {
+    scroll-behavior: auto;
+  }
+
+  .v2-team-card__photo {
+    filter: none;
   }
 }

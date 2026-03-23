@@ -11,7 +11,7 @@
  * All values driven by config.ts — zero hardcode.
  */
 
-import { useMemo, useRef, useEffect, useState } from 'react';
+import { useMemo, useRef, useLayoutEffect, useState } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import Layer from './Layer';
@@ -24,6 +24,7 @@ import {
   type BlockTrajectory,
 } from '../utils/mosaicLayout';
 import { useAdaptiveMosaic } from '../hooks/useAdaptiveMosaic';
+import useAdaptiveFinalZoom from '../hooks/useAdaptiveFinalZoom';
 import {
   easeInOutCubic,
   lerp,
@@ -32,6 +33,7 @@ import {
   smoothProgress,
 } from '../utils/easings';
 import { animation } from '../config';
+import { computeMaxIsoZoom } from '../utils/computeMaxIsoZoom';
 import type { StackProps, LayerData, StepData, ComputedBlock } from '../types';
 
 // =============================================================================
@@ -245,6 +247,10 @@ function interpolateMosaicPositions(
 export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlockHover }: StackProps) {
   const { layers, steps, geometry: geo, mosaicConfig, scrollDirection } = useVariant();
 
+  // Adaptive mosaic zoom — viewport-derived, matches Scene.tsx's camera zoom
+  const totalBlocks = layers.reduce((sum, layer) => sum + layer.blocks.length, 0);
+  const adaptiveFinalZoom = useAdaptiveFinalZoom(mosaicConfig, totalBlocks);
+
   // =========================================================================
   // CLOSE PHASE: Override currentStep when mosaic starts.
   //
@@ -297,27 +303,107 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
 
   // Header measurement — needed by adaptive mosaic (state) and scene offset (ref)
   const headerPxRef = useRef(0);
-  const contentRatioRef = useRef(0.45);
+  // Initialize from actual viewport — avoids first-frame snap to desktop value
+  // on mobile (0.45 → 0 drift visible as cube sliding left-to-right).
+  const contentRatioRef = useRef(
+    typeof window !== 'undefined' && window.innerWidth <= animation.zoom.mobileBreakpoint ? 0 : 0.45
+  );
+  // Mobile: hero content bottom (px from viewport top) — cached to avoid
+  // getComputedStyle/DOM reads in useFrame (layout thrashing at 60fps).
+  // Cube centers in remaining space below this line.
+  const heroBottomRef = useRef(0);
+  // Cached maxIsoZoom — computed on mount+resize, NEVER in useFrame
+  // (getComputedStyle inside useFrame = layout thrashing at 60fps)
+  const maxIsoZoomRef = useRef(0);
   const [headerPx, setHeaderPx] = useState(0);
 
-  useEffect(() => {
+  // useLayoutEffect: runs before first paint and before first R3F useFrame,
+  // so all refs (contentRatio, headerPx, heroBottom, maxIsoZoom) are correct
+  // on the very first render frame — prevents startup position drift.
+  useLayoutEffect(() => {
     const measure = () => {
-      const rootStyles = getComputedStyle(document.documentElement);
-      const h = parseFloat(rootStyles.getPropertyValue('--header-height')) || 0;
+      // Measure REAL header height from DOM — CSS token is inaccurate on mobile
+      // (--header-height-mobile = 64px, actual V2Header ≈ 90px due to padding)
+      const headerEl = document.querySelector('.v2-header');
+      const h = headerEl
+        ? headerEl.getBoundingClientRect().height
+        : 72; // fallback
       headerPxRef.current = h;
       setHeaderPx(h);
+
+      const rootStyles = getComputedStyle(document.documentElement);
+      const isMobileViewport = window.innerWidth <= animation.zoom.mobileBreakpoint;
 
       const rawContentWidth = rootStyles.getPropertyValue('--content-width').trim();
       const parsedContentWidth = rawContentWidth.endsWith('%')
         ? parseFloat(rawContentWidth) / 100
         : 0.45;
 
-      contentRatioRef.current = window.innerWidth <= 768 ? 0 : parsedContentWidth;
+      contentRatioRef.current = isMobileViewport ? 0 : parsedContentWidth;
+
+      // Measure hero TEXT CONTENT bottom (not the container, which is 100dvh).
+      // Use last content element (.hero__cta-wrapper) as the boundary.
+      // Cube will center in the space between contentBottom and viewport bottom.
+      if (isMobileViewport) {
+        const ctaEl = document.querySelector('.hero__cta-wrapper');
+        if (ctaEl) {
+          const ctaRect = ctaEl.getBoundingClientRect();
+          // Only cache when hero is near viewport — stale negative values
+          // during deep scroll cause cube to fly off-screen on resize events
+          if (ctaRect.bottom > 0 && ctaRect.top < window.innerHeight) {
+            heroBottomRef.current = ctaRect.bottom;
+          }
+        }
+      }
+
+      // Cache maxIsoZoom — avoids getComputedStyle in useFrame (layout thrashing)
+      maxIsoZoomRef.current = computeMaxIsoZoom(layers, geo);
     };
 
     measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    // Debounce resize — iOS address bar show/hide fires rapid resize events
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(measure, 150);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout);
+    };
+  }, [layers, geo]);
+
+  // Re-measure heroBottomRef when user scrolls BACK to hero zone.
+  // measure() only runs on mount/resize — this handles the "returned to hero"
+  // case where CTA rect was stale from a deep-scroll resize event.
+  // rAF-throttled: at most one getBoundingClientRect per frame, NOT in useFrame.
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isMobile = window.innerWidth <= animation.zoom.mobileBreakpoint;
+    if (!isMobile) return;
+
+    let rafId: number | null = null;
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        // Only measure when hero is near viewport top
+        if (window.scrollY > window.innerHeight * 0.5) return;
+        const ctaEl = document.querySelector('.hero__cta-wrapper');
+        if (!ctaEl) return;
+        const ctaRect = ctaEl.getBoundingClientRect();
+        if (ctaRect.bottom > 0 && ctaRect.top < window.innerHeight) {
+          heroBottomRef.current = ctaRect.bottom;
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // Adaptive mosaic: fits grid to viewport, auto cols on mobile
@@ -372,7 +458,14 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   // ========================================================================
   const dampedOffsetXRef = useRef(0);
   const dampedOffsetYRef = useRef(0);
+  const dampedOffsetZRef = useRef(0);
   const offsetInitializedRef = useRef(false);
+
+  // Hero blend: damped 0→1 float synced with CameraRig's UNIFIED_LAMBDA.
+  // Prevents offset discontinuity when camera transitions between iso↔hero.
+  // Without this, Z-offset and headerCompY switch instantly while camera is
+  // still damping → Z means different things in iso vs hero → cube flies away.
+  const heroBlendRef = useRef(0);
 
   /** Must match CameraRig & ZoomController UNIFIED_LAMBDA for synchronized motion */
   const OFFSET_LAMBDA = 4;
@@ -390,11 +483,14 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
 
     // Deterministic target zoom per state (not the live animated zoom)
     // — keeps offset stable (same state = same position, no damp-jitter)
+    // Cap iso zoom with computeMaxIsoZoom so position compensation matches
+    // the actual camera zoom (which is also capped by the same function).
     const isHeroView = isHeroStep(currentStep);
     const isMobile = size.width < animation.zoom.mobileBreakpoint;
+    const maxIso = maxIsoZoomRef.current || animation.zoom.desktop;
     const targetZoom = isHeroView
       ? (isMobile ? animation.zoom.heroMobile : animation.zoom.heroDesktop)
-      : (isMobile ? animation.zoom.mobile : animation.zoom.desktop);
+      : (isMobile ? animation.zoom.mobile : Math.min(animation.zoom.desktop, maxIso));
 
     const worldPerPx = 1 / targetZoom;
     const targetOffsetX = size.width * contentRatioRef.current * 0.5 * worldPerPx;
@@ -402,9 +498,29 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     // 1. Cross-axis compensation: X offset in isometric also shifts screen-Y.
     const crossAxisCompY = targetOffsetX * ISO_PROJECTION.yPerX;
 
-    // 2. Header compensation: fixed header covers top of canvas,
-    //    shift cube DOWN to center in visible area below header.
-    const headerCompY = -(headerPxRef.current / (2 * targetZoom * ISO_PROJECTION.screenYPerWorldY));
+    // 2. Hero blend: damped transition synced with camera damping.
+    //    Iso camera: +Z = up-left on screen. Hero camera: +Z = down on screen.
+    //    Blending prevents Z-offset from having wrong semantics during transition.
+    const heroTarget = (isMobile && isHeroView) ? 1 : 0;
+
+    // 3. Header + visual-zone compensation.
+    //    Blended via heroBlend instead of instant if/else — stays synced with
+    //    CameraRig's damped camera transition.
+    const isoHeaderCompY = -(headerPxRef.current / (2 * targetZoom * ISO_PROJECTION.screenYPerWorldY));
+    const hb = heroBlendRef.current;
+    const headerCompY = isoHeaderCompY * (1 - hb);
+
+    // 4. Z-offset for top-down hero camera, blended via heroBlend.
+    //    Compute hero Z value always (even in iso), then scale by heroBlend.
+    //    This ensures smooth transition without semantic discontinuity.
+    let heroZ = 0;
+    if (isMobile) {
+      const heroBottom = heroBottomRef.current || size.height * 0.5;
+      const cubeZoneCenter = (heroBottom + size.height) / 2;
+      const shiftPx = cubeZoneCenter - size.height / 2;
+      heroZ = shiftPx / targetZoom;
+    }
+    const targetOffsetZ = heroZ * hb;
 
     const targetOffsetY = mosaicConfig.sceneOffset.stackY + crossAxisCompY + headerCompY;
 
@@ -412,18 +528,31 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     if (!offsetInitializedRef.current) {
       dampedOffsetXRef.current = targetOffsetX;
       dampedOffsetYRef.current = targetOffsetY;
+      dampedOffsetZRef.current = targetOffsetZ;
+      heroBlendRef.current = heroTarget; // snap, no damping on first frame
       offsetInitializedRef.current = true;
     }
 
     // Smooth hero↔iso transition via damping (synced with camera & zoom λ)
     dampedOffsetXRef.current = d(dampedOffsetXRef.current, targetOffsetX, OFFSET_LAMBDA, delta);
     dampedOffsetYRef.current = d(dampedOffsetYRef.current, targetOffsetY, OFFSET_LAMBDA, delta);
+    // Z: heroBlendRef already provides damping — writing directly avoids
+    // double-damping that would make Z lag behind the camera transition.
+    heroBlendRef.current = d(heroBlendRef.current, heroTarget, OFFSET_LAMBDA, delta);
+    dampedOffsetZRef.current = targetOffsetZ;
 
-    // During mosaic transition, lerp towards center (0, mosaicY)
+    // During mosaic transition, lerp towards center (0, mosaicY, 0).
+    // Apply header compensation to mosaicY so the grid is centered in the
+    // visible area below the fixed header — same principle as headerCompY above.
     const finalX = lerp(dampedOffsetXRef.current, 0, transitionProgress);
-    const finalY = lerp(dampedOffsetYRef.current, mosaicConfig.sceneOffset.mosaicY, transitionProgress);
+    // Use adaptive zoom (viewport-derived) for accurate header compensation
+    const mosaicZoom = adaptiveFinalZoom;
+    const mosaicHeaderCompY = -(headerPxRef.current / (2 * mosaicZoom * ISO_PROJECTION.screenYPerWorldY));
+    const mosaicTargetY = mosaicConfig.sceneOffset.mosaicY + mosaicHeaderCompY;
+    const finalY = lerp(dampedOffsetYRef.current, mosaicTargetY, transitionProgress);
+    const finalZ = lerp(dampedOffsetZRef.current, 0, transitionProgress);
 
-    groupRef.current.position.set(finalX, finalY, 0);
+    groupRef.current.position.set(finalX, finalY, finalZ);
   });
 
   return (

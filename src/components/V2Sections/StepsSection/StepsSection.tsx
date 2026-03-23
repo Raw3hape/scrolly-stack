@@ -15,7 +15,7 @@ export default function StepsSection({ data }: Props) {
     <div className="v2-container">
       <div className="v2-steps-header">
         <div>
-          <h2 className="v2-steps-header__heading">{data.heading}</h2>
+          <h2 className="v2-steps-header__heading px-layer--fg">{data.heading}</h2>
         </div>
         {data.subtext && (
           <p className="v2-steps-header__subtext">{data.subtext}</p>
@@ -23,8 +23,8 @@ export default function StepsSection({ data }: Props) {
       </div>
 
       <div className="v2-steps-grid">
-        {data.steps.map((step) => (
-          <div key={step.number} className="v2-step">
+        {data.steps.map((step, i) => (
+          <div key={step.number} className="v2-step px-layer--accent" data-px-delay={String(i)}>
             <div className="v2-step__number">{step.number}</div>
             <h3 className="v2-step__title">{step.title}</h3>
             <p className="v2-step__text">{step.text}</p>

@@ -455,7 +455,7 @@ export const exactVariant: StackVariant = {
   },
   mosaicOverrides: {
     cols: 5,
-    finalZoom: 65,
+    finalZoom: 72,               // Fills viewport with header clearance
     spanBlocks: { 18: 2 },  // IPO spans 2 columns in mosaic
   },
 };

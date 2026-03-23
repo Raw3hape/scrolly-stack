@@ -26,6 +26,17 @@
   --transition-smooth: var(--duration-slow)   var(--ease-out);
   --transition-spring: var(--duration-base)   var(--ease-spring);
   --transition-shimmer: var(--duration-slow)   ease;
+
+  /* === Parallax Layer System === */
+  --parallax-rise-sm:  clamp(2rem, 8vh, 6rem);    /* accent layer */
+  --parallax-rise-md:  clamp(3rem, 12vh, 8rem);   /* foreground layer */
+  --parallax-rise-lg:  clamp(4rem, 20vh, 12rem);  /* background layer */
+  --parallax-speed-bg:     0.4;    /* slow — creates depth           */
+  --parallax-speed-fg:     1.2;    /* base rhythm (slightly fast)    */
+  --parallax-speed-accent: 1.6;    /* dramatic — appears later       */
+  --parallax-stagger-step: 0.12;   /* progress offset between siblings */
+  --parallax-scale-from:   0.94;   /* accent layer scale start       */
+  --parallax-shift-x:  clamp(1.5rem, 8vw, 6rem);  /* horizontal slide */
 }
 
 /* === Accessibility: Reduced Motion === */

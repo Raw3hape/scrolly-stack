@@ -273,6 +273,7 @@ export const labels = {
 
 export const render = {
   dpr: [1, 2],           // Restored full Retina resolution
+  mobileDpr: [1, 1.5],   // Mobile: balanced sharpness vs GPU load (1.5× = sweet spot)
   shadows: true,
   shadowMapType: 'VSMShadowMap',  // Restored premium butter-soft shadows
 };
@@ -284,7 +285,7 @@ export const render = {
 
 export const mosaic = {
   // Grid layout
-  cols: 5,                       // 5 × 3 = 15 blocks
+  cols: 5,                       // Default columns — row count is variant-dependent
   cellSize: 3.0,                 // Uniform tile size — fills full-screen canvas
   gap: 0.2,                      // Gap between tiles
   blockHeight: 0.3,              // Thin tile height (viewed from above)
@@ -315,10 +316,12 @@ export const mosaic = {
 
   // Scroll trigger zone heights (CSS values)
   // Total zone = assemblyHeight + holdHeight + exitHeight
-  assemblyHeight: '80vh',        // Scroll distance for 0→1 assembly (was 100vh)
-  holdHeight: '5vh',             // Brief pause before exit (was 20vh)
-  exitHeight: '50vh',            // Scroll distance for grid exit (was 60vh)
-  contentOverlap: '60vh',        // Pulls sections up — sections z:100 > canvas z:50
+  assemblyHeight: '80vh',        // Scroll distance for 0→1 assembly
+  holdHeight: '20vh',            // Stable final-frame window
+  exitHeight: '50vh',            // Scroll distance for exit (canvas slides up + fades)
+  // Pulls next section up by (exit + overlap) via negative margin on trigger zone.
+  // 30vh keeps sections from appearing too early during hold (z=101 protects).
+  contentOverlap: '30vh',
 };
 
 

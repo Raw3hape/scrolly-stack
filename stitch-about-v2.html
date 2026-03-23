@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              "surface-container-highest": "#e7e2d9",
+              "surface-container-low": "#f8f3ea",
+              "on-background": "#1d1c16",
+              "on-primary-fixed-variant": "#284c55",
+              "primary-container": "#103740",
+              "on-tertiary-fixed-variant": "#683d00",
+              "on-secondary-container": "#236f6f",
+              "secondary": "#1b6969",
+              "on-error-container": "#93000a",
+              "primary-fixed": "#c3e9f4",
+              "secondary-fixed-dim": "#8cd3d2",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#32302a",
+              "on-surface": "#1d1c16",
+              "background": "#fef9f0",
+              "outline": "#71787b",
+              "tertiary-container": "#4b2b00",
+              "surface": "#fef9f0",
+              "on-secondary": "#ffffff",
+              "on-tertiary-container": "#cf8c3e",
+              "secondary-container": "#a8efee",
+              "error": "#ba1a1a",
+              "on-secondary-fixed": "#002020",
+              "tertiary": "#2e1800",
+              "surface-container": "#f2ede4",
+              "tertiary-fixed": "#ffdcbc",
+              "on-tertiary": "#ffffff",
+              "surface-container-high": "#ece8df",
+              "tertiary-fixed-dim": "#ffb86a",
+              "error-container": "#ffdad6",
+              "on-primary-fixed": "#001f26",
+              "inverse-primary": "#a7cdd8",
+              "secondary-fixed": "#a8efee",
+              "on-primary-container": "#7ca0ab",
+              "outline-variant": "#c1c8ca",
+              "on-tertiary-fixed": "#2c1700",
+              "surface-variant": "#e7e2d9",
+              "surface-bright": "#fef9f0",
+              "primary-fixed-dim": "#a7cdd8",
+              "surface-tint": "#40646d",
+              "inverse-on-surface": "#f5f0e7",
+              "primary": "#002128",
+              "on-error": "#ffffff",
+              "on-surface-variant": "#41484a",
+              "on-secondary-fixed-variant": "#004f50",
+              "surface-dim": "#ded9d1"
+            },
+            fontFamily: {
+              "headline": ["Newsreader"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .headline-tight { letter-spacing: -0.02em; line-height: 1.1; }
+      .editorial-spacing { padding-top: 8rem; padding-bottom: 8rem; }
+      .glass-nav { backdrop-filter: blur(20px); }
+      .staggered-text {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+      }
+      .hide-scrollbar::-webkit-scrollbar { display: none; }
+      .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-background font-body">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full flex justify-between items-center px-8 py-4 z-50 bg-[#fef9f0]/70 backdrop-blur-md">
+<div class="text-2xl font-headline tracking-tighter text-[#103740]">Foundation Projects</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#103740] font-bold border-b-2 border-[#ffb86a] pb-1 transition-colors duration-300" href="#">About</a>
+<a class="text-[#1d1c16]/70 font-medium hover:text-[#1b6969] transition-colors duration-300" href="#">Roofers</a>
+<a class="text-[#1d1c16]/70 font-medium hover:text-[#1b6969] transition-colors duration-300" href="#">Investors</a>
+<a class="text-[#1d1c16]/70 font-medium hover:text-[#1b6969] transition-colors duration-300" href="#">Process</a>
+</div>
+<button class="bg-primary-container text-on-primary px-6 py-2.5 rounded hover:opacity-90 transition-all active:scale-95 font-medium">
+            Book A Call
+        </button>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="editorial-spacing px-8 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+<div class="lg:col-span-8">
+<h1 class="font-headline text-6xl md:text-8xl text-primary-container headline-tight mb-8">
+                        We're A Team Of Roofing Industry Professionals On A Mission To Get Owners Like You A Big Exit
+                    </h1>
+<p class="font-body text-xl text-on-surface-variant max-w-2xl leading-relaxed">
+                        We know what your company is worth. We built Foundation Projects to avoid brokers/PE taking advantage.
+                    </p>
+</div>
+<div class="lg:col-span-4 hidden lg:block">
+<div class="aspect-[4/5] bg-surface-container-low rounded-lg overflow-hidden relative">
+<img class="w-full h-full object-cover grayscale contrast-125 opacity-80" data-alt="Modern architectural detail of a premium roof line" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBX2APLOJ_83bZdQwQ0rn9FyZ0Bfw21mUceg6Oj-5orhoFeDrTp5mX_EoSFUXZ2geGn2hVLnZpT0L1fs2lxrtSKSD65UXYjmCTzPL4Z_OBQLnuCibAFXfAzxlIQQ-5xGfYWf72uEOoCG6ttQRdRwlWdqDKobT8LQOgEfd8sAvmm1i6j-OwLXXSifdv6_Fzy8dAVgXG_vzEOzQ3IICFAtgpBawFy-Ab_en3WxHSWSAxwHnG8-s87aIWCp8k6A-U_Mb3LapV41dabzV7u"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Chapter I: The Trap -->
+<section class="relative min-h-screen flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale brightness-50" data-alt="Cinematic wide shot of industrial roofing project" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtZOkjOvEBTWZ6eAEKyTAhaUbZjetOkSp-gXyPlmzB04ujdDvRQop0t-rAQ0qFQMEMQOPioLFwQUUbNdk7c2X3JMJLtcjOTu1hrVlgxvVlMX0jzgyr2PdhPFZz7wVJvVIqEopxZ_bJD5h7Y3i-pA08tyWXhtiVNxLJVSd1fTSLXOv8PPc56CIfBBtsVVe2-D_ufxXT4zpq8Zj5KCIWk8N4sgQNt0KPykzoGbWsFpbUVGu9V3Jjuz2cs5sWltxoZFE6qfuYPGqFVI9-"/>
+<div class="absolute inset-0 bg-primary-container/60 backdrop-multiply"></div>
+</div>
+<div class="relative z-10 max-w-7xl mx-auto px-8 w-full py-24">
+<div class="mb-12">
+<span class="text-tertiary-fixed-dim font-bold tracking-[0.3em] text-sm uppercase block mb-4">Chapter I</span>
+<h2 class="font-headline text-white/40 text-2xl mb-12">The Trap</h2>
+</div>
+<div class="staggered-text gap-y-12">
+<div class="col-span-12 lg:col-span-8">
+<h2 class="font-headline text-5xl md:text-7xl text-white headline-tight">
+                            The 'PE Trap' Costing Owners Millions
+                        </h2>
+</div>
+<div class="col-span-12 lg:col-start-6 lg:col-span-6 bg-surface/5 backdrop-blur-xl p-12 border border-white/10 rounded-xl">
+<h3 class="font-headline text-3xl mb-6 text-tertiary-fixed-dim italic">The 3x vs 10x Flip</h3>
+<p class="text-white/80 text-lg leading-relaxed mb-8">
+                            Too many owners get taken advantage of when they exit. Private Equity firms buy your legacy at a 3x multiple, only to bundle it and flip it for 10x within twenty-four months. You built the value; they keep the profit.
+                        </p>
+<div class="flex items-center gap-4 text-error-container font-medium border-t border-white/10 pt-6">
+<span class="material-symbols-outlined">trending_down</span>
+<span class="uppercase tracking-widest text-xs">The standard broker model is broken for roofers.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Chapter II: The Solution -->
+<section class="editorial-spacing bg-white">
+<div class="max-w-7xl mx-auto px-8">
+<div class="text-center mb-24">
+<span class="text-primary-container/30 font-bold tracking-[0.3em] text-sm uppercase block mb-4">Chapter II</span>
+<h2 class="font-headline text-5xl md:text-6xl text-primary-container headline-tight mb-8">'So We Built a Better One'</h2>
+<p class="text-xl leading-relaxed text-on-surface-variant max-w-3xl mx-auto">
+                        We aren't brokers looking for a quick commission. We are builders creating a platform for public exit. By aggregating industry-leading roofing firms, we allow you to participate in the real upside.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-y border-surface-container-highest">
+<div class="p-12 md:border-r border-surface-container-highest flex flex-col items-center text-center group">
+<div class="w-16 h-16 mb-8 text-primary-container transition-transform duration-500 group-hover:-translate-y-2">
+<span class="material-symbols-outlined !text-5xl">account_balance</span>
+</div>
+<h4 class="font-headline text-2xl text-primary-container mb-4">Public Market Liquidity</h4>
+<p class="text-on-surface-variant leading-relaxed">Exit at institutional multiples, not local fire-sale prices.</p>
+</div>
+<div class="p-12 lg:border-r border-surface-container-highest flex flex-col items-center text-center group">
+<div class="w-16 h-16 mb-8 text-primary-container transition-transform duration-500 group-hover:-translate-y-2">
+<span class="material-symbols-outlined !text-5xl">handshake</span>
+</div>
+<h4 class="font-headline text-2xl text-primary-container mb-4">Legacy Protection</h4>
+<p class="text-on-surface-variant leading-relaxed">Your team remains, your name stays, your culture thrives.</p>
+</div>
+<div class="p-12 col-span-1 md:col-span-2 lg:col-span-1 flex flex-col items-center text-center group">
+<div class="w-16 h-16 mb-8 text-primary-container transition-transform duration-500 group-hover:-translate-y-2">
+<span class="material-symbols-outlined !text-5xl">architecture</span>
+</div>
+<h4 class="font-headline text-2xl text-primary-container mb-4">Architectural Integrity</h4>
+<p class="text-on-surface-variant leading-relaxed">We focus on quality and structure, ensuring long-term value creation.</p>
+</div>
+</div>
+<div class="mt-24 max-w-4xl mx-auto">
+<div class="bg-primary-container p-16 rounded-xl text-center relative overflow-hidden">
+<div class="absolute inset-0 border border-white/10 m-4 rounded-lg pointer-events-none"></div>
+<h3 class="font-headline text-4xl mb-6 text-white italic relative z-10">"The goal isn't just to sell. The goal is to be part of the most valuable roofing entity ever built."</h3>
+<p class="font-label uppercase tracking-[0.3em] text-xs text-tertiary-fixed-dim relative z-10">— Our Founding Principle</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Chapter III: The Curators -->
+<section class="editorial-spacing bg-surface-container overflow-hidden">
+<div class="max-w-7xl mx-auto px-8 mb-16">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-primary-container/30 font-bold tracking-[0.3em] text-sm uppercase block mb-4">Chapter III</span>
+<h2 class="font-headline text-5xl text-primary-container">The Curators</h2>
+</div>
+<div class="hidden md:flex gap-4">
+<button class="w-12 h-12 rounded-full border border-primary-container/20 flex items-center justify-center hover:bg-primary-container hover:text-white transition-all">
+<span class="material-symbols-outlined">west</span>
+</button>
+<button class="w-12 h-12 rounded-full border border-primary-container/20 flex items-center justify-center hover:bg-primary-container hover:text-white transition-all">
+<span class="material-symbols-outlined">east</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex gap-8 overflow-x-auto px-8 pb-12 hide-scrollbar snap-x snap-mandatory">
+<!-- Team Member 1 -->
+<div class="flex-none w-[320px] md:w-[450px] snap-start">
+<div class="aspect-[3/4] overflow-hidden mb-6 bg-surface-container-high rounded-sm">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Marcus Thorne" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmedK40XHbRbxaxM4RyZN15OBzrmPMvwKgCS47vRKu_jZkpWgJW2S_a3ZP-pqbY9eZgwWVS6x9yQSUjG9-vO1s0EHNM0LjaPKC36rKwX-YzvZCJF2Rwl9HilEI412TrnB4uWFzawz__TvZ6510Yo1ScdDjtWiHeuyBphMpfOTV5uNHNcc27A6Ew43pL5DmWZ2vK_4sdHlrH3V-2mHc4KCR_Ww8no8rBPbfNlwvu8Qsa7DKBLL5E6tk8YcSuedCzMPvbb1J_ErepYib"/>
+</div>
+<div class="border-l border-primary-container/20 pl-6">
+<span class="block font-label text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-2">Operations Principal</span>
+<h4 class="font-headline text-3xl text-primary-container mb-4">Marcus Thorne</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed max-w-sm">25 years in roofing operations. Formerly scaled three regional outfits to $50M+ exits.</p>
+</div>
+</div>
+<!-- Team Member 2 -->
+<div class="flex-none w-[320px] md:w-[450px] snap-start">
+<div class="aspect-[3/4] overflow-hidden mb-6 bg-surface-container-high rounded-sm">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Elena Rodriguez" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0j8BmRbEtuXQsNUFFoveZxyrXXfv6JxVhdiDS1mzjNcpiMGfn2HgRaaOMMM2LZzlByf7-3Es3jexlvYlIW_J8BLy2yhFvLXfjPYKAylw1nXfIzTnX7S3QYFSlnt70z0j1F_ODwRoalvydCyQdUT2egt_WSSjgHRafmW6s-pQ793Bw2tIbu4QPa7tb1xmB9oSk8EaqZghWNptYgXx0DVSM9iE8tt7wXmjCttw2bLLF7rRjRDCQqYZW9JF0kCfHld_lkonDGb_gJLKV"/>
+</div>
+<div class="border-l border-primary-container/20 pl-6">
+<span class="block font-label text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-2">M&amp;A Strategy</span>
+<h4 class="font-headline text-3xl text-primary-container mb-4">Elena Rodriguez</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed max-w-sm">Specialist in construction roll-ups. Expert in finding the hidden value in your balance sheet.</p>
+</div>
+</div>
+<!-- Team Member 3 -->
+<div class="flex-none w-[320px] md:w-[450px] snap-start">
+<div class="aspect-[3/4] overflow-hidden mb-6 bg-surface-container-high rounded-sm">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="Jacob Sterling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkZjRjQOH0ikNMTjOqDzXqe4gBYg2YzjlJ0kUbGAlVCqm8D4myhpSk94Ru9PIQzc9i79ARsPG6pzBRIMskToUcMt6eWE6QIAy09rdlTkL4-jvpDkmvA-8UhOJiQnnCnoHxS12bycszbNj-JVMHzdY8qR7yh76HLRXovzLNsvbpE2Jie-B4yUJZGYmn6kJwHjR_HzVl0Oyo_eTrCitRCLMPY5MTEqH0WscDfDpCT3KKemztBYkgUDFfJQrMCTIMZ6jiGfHMCL1dhwpT"/>
+</div>
+<div class="border-l border-primary-container/20 pl-6">
+<span class="block font-label text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-2">Founder</span>
+<h4 class="font-headline text-3xl text-primary-container mb-4">Jacob Sterling</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed max-w-sm">Started Foundation Projects after watching his father's 40-year company sold for pennies.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials Section -->
+<section class="editorial-spacing overflow-hidden bg-surface">
+<div class="max-w-7xl mx-auto px-8">
+<div class="flex flex-col md:flex-row gap-16 items-center">
+<div class="md:w-1/3">
+<h2 class="font-headline text-5xl text-primary-container headline-tight">Proof Of The Model</h2>
+<div class="mt-8 flex gap-2">
+<div class="w-12 h-1 bg-tertiary-fixed-dim"></div>
+<div class="w-4 h-1 bg-surface-container-high"></div>
+<div class="w-4 h-1 bg-surface-container-high"></div>
+</div>
+</div>
+<div class="md:w-2/3">
+<div class="p-12 bg-surface-container-low rounded-lg relative">
+<span class="material-symbols-outlined absolute -top-6 -left-6 text-7xl text-surface-container-highest opacity-50">format_quote</span>
+<p class="font-headline text-3xl text-primary leading-tight mb-8">"I was about to sign a 4x multiple with a PE firm. Foundation showed me how my company was actually a 10x asset if we partnered for a public exit. My family's wealth changed overnight."</p>
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a successful roofing business owner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyvr30AJ3qoJuO0iI17pQyOXQmaQ_STGrJVjtCPwvUaodE0KvCurSxL1oPuSHx1MnPsDv5m9CrAe179XIxOaQazlMgn7UjvWII0SxTfMNYUymQ5MvFdk6eC-rqIYo72r13U9Tklwqc-OQfR1UDwf0ONO5KrA-PfI5L0KukV2NKcMOMH2_wAYMvj3EYclS1bJ7yZSonxRCEI1OsZNdSP65qF1Vz8mkAfJDTWgp6sSK_yOes2v3341eLWD3VBU-kp6goVef-g7X7cpiY"/>
+</div>
+<div>
+<p class="font-bold text-primary-container">Robert Vance</p>
+<p class="text-on-surface-variant text-sm">Former Owner, Vance Professional Roofing</p>
+</div>
+<div class="ml-auto bg-tertiary-fixed px-3 py-1 rounded text-on-tertiary-fixed text-xs font-bold uppercase tracking-widest">
+                                    Verified Exit
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mission/CTA Section -->
+<section class="editorial-spacing bg-primary-container text-surface relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="grid grid-cols-12 h-full">
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+<div class="border-r border-surface-container-low h-full"></div>
+</div>
+</div>
+<div class="max-w-4xl mx-auto px-8 text-center relative z-10">
+<h2 class="font-headline text-6xl headline-tight mb-8">Building the platform that takes roofing public.</h2>
+<p class="text-xl text-on-primary-container mb-12">Don't leave your legacy to chance or predatory brokers. Let's see what your company is actually worth in a public environment.</p>
+<div class="flex flex-col md:flex-row gap-4 justify-center">
+<button class="bg-tertiary-fixed-dim text-on-tertiary-fixed font-bold py-5 px-10 rounded-lg text-lg hover:bg-tertiary-fixed transition-all shadow-xl shadow-black/20">
+                        Book A Call
+                    </button>
+<button class="bg-surface/10 backdrop-blur-md border border-surface/20 text-surface py-5 px-10 rounded-lg text-lg hover:bg-surface/20 transition-all">
+                        View Our Process
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-20 px-12 grid grid-cols-1 md:grid-cols-4 gap-12 bg-[#103740] text-[#fef9f0]">
+<div class="md:col-span-1">
+<div class="text-xl font-headline text-[#ffb86a] mb-6">Foundation Projects</div>
+<p class="text-sm text-[#fef9f0]/60 leading-relaxed">Architectural Integrity in Roofing. Transforming trade into a sophisticated asset class.</p>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-sm uppercase tracking-widest text-[#ffb86a]">Navigate</h5>
+<ul class="space-y-4">
+<li><a class="text-[#fef9f0]/80 hover:text-[#ffb86a] transition-all" href="#">About</a></li>
+<li><a class="text-[#fef9f0]/80 hover:text-[#ffb86a] transition-all" href="#">Roofers</a></li>
+<li><a class="text-[#fef9f0]/80 hover:text-[#ffb86a] transition-all" href="#">Investors</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-sm uppercase tracking-widest text-[#ffb86a]">Resources</h5>
+<ul class="space-y-4">
+<li><a class="text-[#fef9f0]/80 hover:text-[#ffb86a] transition-all" href="#">Privacy Policy</a></li>
+<li><a class="text-[#fef9f0]/80 hover:text-[#ffb86a] transition-all" href="#">Terms of Service</a></li>
+<li><a class="text-[#fef9f0]/80 hover:text-[#ffb86a] transition-all" href="#">Investor Relations</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-sm uppercase tracking-widest text-[#ffb86a]">Connect</h5>
+<p class="text-[#fef9f0]/80 mb-4">Ready for your exit?</p>
+<a class="text-[#ffb86a] underline decoration-[#ffb86a] decoration-2" href="mailto:contact@foundationprojects.com">Contact</a>
+</div>
+<div class="md:col-span-4 pt-12 border-t border-surface/10 flex flex-col md:flex-row justify-between items-center text-xs text-[#fef9f0]/40">
+<p>© 2024 Foundation Projects. Architectural Integrity in Roofing.</p>
+<p>Designed for the Built World.</p>
+</div>
+</footer>
+</body></html>
