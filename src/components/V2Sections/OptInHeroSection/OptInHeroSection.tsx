@@ -14,7 +14,7 @@
 
 import { useCallback, useState } from 'react';
 import dynamic from 'next/dynamic';
-import type { OptInHeroSection as OptInHeroSectionData } from '@/config/types-v2';
+import type { OptInHeroSection as OptInHeroSectionData } from '@/config/types';
 import V2Icon from '../V2Icon/V2Icon';
 import './OptInHeroSection.css';
 

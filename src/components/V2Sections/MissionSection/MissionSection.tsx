@@ -7,10 +7,10 @@
  * - 'vertical': centered header → 3-col bordered grid → quote below
  *   Matches Stitch "About - Creative Variation 2", Chapter II.
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  */
 
-import type { MissionSection as MissionSectionData } from '@/config/types-v2';
+import type { MissionSection as MissionSectionData } from '@/config/types';
 import V2Icon from '../V2Icon/V2Icon';
 import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
 import InteractiveGrid from '@/components/InteractiveGrid/InteractiveGrid';

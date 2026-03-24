@@ -1,11 +1,11 @@
 /**
- * V2Header — Stitch «Architectural Editorial» header.
+ * Header — Stitch "Architectural Editorial" header.
  *
  * Features:
  * - Glassmorphism on scroll
  * - Hide on scroll-down, reveal on scroll-up
  * - Mobile drawer with full-screen overlay
- * - Data-driven from nav-v2.ts
+ * - Data-driven from nav.ts
  */
 
 'use client';
@@ -13,10 +13,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { navLinksV2, ctaConfigV2, brandConfigV2, routesV2 } from '@/config/nav-v2';
-import './V2Header.css';
+import { navLinks, ctaConfig, brandConfig, routes } from '@/config/nav';
+import './Header.css';
 
-export default function V2Header() {
+export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -53,9 +53,9 @@ export default function V2Header() {
   }, []);
 
   const headerClasses = [
-    'v2-header',
-    isScrolled ? 'v2-header--scrolled' : '',
-    isHidden ? 'v2-header--hidden' : '',
+    'header',
+    isScrolled ? 'header--scrolled' : '',
+    isHidden ? 'header--hidden' : '',
   ].filter(Boolean).join(' ');
 
   const close = () => setIsMenuOpen(false);
@@ -63,43 +63,43 @@ export default function V2Header() {
   return (
     <>
       <header className={headerClasses}>
-        <div className="v2-header__inner">
+        <div className="header__inner">
           {/* Brand */}
-          <Link href={routesV2.home} className="v2-header__brand" onClick={close}>
+          <Link href={routes.home} className="header__brand" onClick={close}>
             <Image
-              src={brandConfigV2.logo}
-              alt={brandConfigV2.wordmark}
+              src={brandConfig.logo}
+              alt={brandConfig.wordmark}
               width={120}
               height={30}
-              className="v2-header__logo"
+              className="header__logo"
               priority
             />
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="v2-header__nav" aria-label="V2 navigation">
-            {navLinksV2.map((link) => (
-              <Link key={link.href} href={link.href} className="v2-header__link">
+          <nav className="header__nav" aria-label="Main navigation">
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="header__link">
                 {link.label}
               </Link>
             ))}
           </nav>
 
           {/* CTA + Burger */}
-          <div className="v2-header__actions">
-            <Link href={ctaConfigV2.href} className="v2-header__cta">
-              {ctaConfigV2.label} <span aria-hidden="true">→</span>
+          <div className="header__actions">
+            <Link href={ctaConfig.href} className="header__cta">
+              {ctaConfig.label} <span aria-hidden="true">→</span>
             </Link>
 
             <button
-              className={`v2-header__burger ${isMenuOpen ? 'v2-header__burger--open' : ''}`}
+              className={`header__burger ${isMenuOpen ? 'header__burger--open' : ''}`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMenuOpen}
             >
-              <span className="v2-header__burger-line" />
-              <span className="v2-header__burger-line" />
-              <span className="v2-header__burger-line" />
+              <span className="header__burger-line" />
+              <span className="header__burger-line" />
+              <span className="header__burger-line" />
             </button>
           </div>
         </div>
@@ -107,29 +107,29 @@ export default function V2Header() {
 
       {/* Overlay */}
       <div
-        className={`v2-header__overlay ${isMenuOpen ? 'v2-header__overlay--open' : ''}`}
+        className={`header__overlay ${isMenuOpen ? 'header__overlay--open' : ''}`}
         onClick={close}
         aria-hidden="true"
       />
 
       {/* Mobile drawer */}
       <nav
-        className={`v2-drawer ${isMenuOpen ? 'v2-drawer--open' : ''}`}
+        className={`drawer ${isMenuOpen ? 'drawer--open' : ''}`}
         aria-label="Mobile navigation"
       >
-        <div className="v2-drawer__content">
-          <div className="v2-drawer__links">
-            {navLinksV2.map((link) => (
-              <Link key={link.href} href={link.href} className="v2-drawer__link" onClick={close}>
+        <div className="drawer__content">
+          <div className="drawer__links">
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="drawer__link" onClick={close}>
                 {link.label}
               </Link>
             ))}
           </div>
-          <Link href={ctaConfigV2.href} className="v2-drawer__cta" onClick={close}>
-            {ctaConfigV2.label} <span aria-hidden="true">→</span>
+          <Link href={ctaConfig.href} className="drawer__cta" onClick={close}>
+            {ctaConfig.label} <span aria-hidden="true">→</span>
           </Link>
-          {ctaConfigV2.microcopy && (
-            <span className="v2-drawer__microcopy">{ctaConfigV2.microcopy}</span>
+          {ctaConfig.microcopy && (
+            <span className="drawer__microcopy">{ctaConfig.microcopy}</span>
           )}
         </div>
       </nav>

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
+import Footer from '@/components/V2Sections/Footer/Footer';
+import { footerContent } from '@/config/content';
 import VersionBadge from '@/components/VersionBadge/VersionBadge';
 
 /**
@@ -27,7 +28,7 @@ export default function V1ArchiveLayout({
     <>
       <Header />
       {children}
-      <Footer />
+      <Footer data={footerContent} />
       <VersionBadge />
     </>
   );

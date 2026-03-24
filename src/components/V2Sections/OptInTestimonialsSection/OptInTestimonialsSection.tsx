@@ -7,7 +7,7 @@
 
 'use client';
 
-import type { OptInTestimonialsSection as OptInTestimonialsSectionData } from '@/config/types-v2';
+import type { OptInTestimonialsSection as OptInTestimonialsSectionData } from '@/config/types';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 
 interface Props {

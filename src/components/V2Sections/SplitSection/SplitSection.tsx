@@ -9,10 +9,10 @@
  * - Desktop: 2-col grid
  * - Tablet/Mobile: stacked (image → text)
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  */
 
-import type { SplitSection as SplitSectionData } from '@/config/types-v2';
+import type { SplitSection as SplitSectionData } from '@/config/types';
 import './SplitSection.css';
 
 interface Props {

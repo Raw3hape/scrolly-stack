@@ -1,11 +1,11 @@
 'use client';
 
 /**
- * V2Footer — shared footer for /v2/ pages.
- * Data-driven: receives content from content-v2.ts FooterContent.
+ * Footer — shared site footer.
+ * Data-driven: receives content from content.ts FooterContent.
  *
  * Features:
- * - Real SVG logo from brandConfigV2
+ * - Real SVG logo from brandConfig
  * - Email subscription input with submit button
  * - Link columns (Company, Legal)
  * - Bottom bar with copyright + tagline
@@ -15,16 +15,16 @@
 import { useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { FooterContent } from '@/config/types-v2';
-import { brandConfigV2, routesV2 } from '@/config/nav-v2';
+import type { FooterContent } from '@/config/types';
+import { brandConfig, routes } from '@/config/nav';
 import { siteConfig } from '@/config/site';
-import './V2Footer.css';
+import './Footer.css';
 
 interface Props {
   data: FooterContent;
 }
 
-export default function V2Footer({ data }: Props) {
+export default function Footer({ data }: Props) {
   const footerRef = useRef<HTMLElement>(null);
 
   /**
@@ -67,27 +67,27 @@ export default function V2Footer({ data }: Props) {
   }, [updateReveal]);
 
   return (
-    <footer className="v2-footer" ref={footerRef}>
-      <div className="v2-footer__grid">
+    <footer className="footer" ref={footerRef}>
+      <div className="footer__grid">
         {/* Brand column — logo + description */}
-        <div className="v2-footer__brand">
-          <Link href={routesV2.home} className="v2-footer__logo-link">
+        <div className="footer__brand">
+          <Link href={routes.home} className="footer__logo-link">
             <Image
-              src={brandConfigV2.logo}
-              alt={brandConfigV2.wordmark}
+              src={brandConfig.logo}
+              alt={brandConfig.wordmark}
               width={160}
               height={40}
-              className="v2-footer__logo"
+              className="footer__logo"
             />
           </Link>
-          <p className="v2-footer__brand-desc">{data.brandDescription}</p>
+          <p className="footer__brand-desc">{data.brandDescription}</p>
         </div>
 
         {/* Link columns */}
         {data.columns.map((col) => (
           <div key={col.title}>
-            <h4 className="v2-footer__col-title">{col.title}</h4>
-            <ul className="v2-footer__links">
+            <h4 className="footer__col-title">{col.title}</h4>
+            <ul className="footer__links">
               {col.links.map((link) => (
                 <li key={link.label}>
                   <Link href={link.href}>{link.label}</Link>
@@ -99,25 +99,25 @@ export default function V2Footer({ data }: Props) {
 
         {/* Subscribe column — email input */}
         {data.subscribeText && (
-          <div className="v2-footer__subscribe-col">
-            <h4 className="v2-footer__col-title">
+          <div className="footer__subscribe-col">
+            <h4 className="footer__col-title">
               {data.subscribeTitle ?? 'Stay Informed'}
             </h4>
-            <p className="v2-footer__subscribe-text">{data.subscribeText}</p>
+            <p className="footer__subscribe-text">{data.subscribeText}</p>
             <form
-              className="v2-footer__subscribe-form"
+              className="footer__subscribe-form"
               onSubmit={(e) => e.preventDefault()}
             >
               <input
                 type="email"
-                className="v2-footer__subscribe-input"
+                className="footer__subscribe-input"
                 placeholder={data.subscribePlaceholder ?? 'Email Address'}
                 aria-label={data.subscribePlaceholder ?? 'Email Address'}
                 required
               />
               <button
                 type="submit"
-                className="v2-footer__subscribe-btn"
+                className="footer__subscribe-btn"
                 aria-label="Subscribe"
               >
                 <svg
@@ -142,10 +142,10 @@ export default function V2Footer({ data }: Props) {
       </div>
 
       {/* Bottom bar */}
-      <div className="v2-footer__bottom">
-        <p className="v2-footer__copyright">{siteConfig.copyright}</p>
+      <div className="footer__bottom">
+        <p className="footer__copyright">{siteConfig.copyright}</p>
         {data.copyrightTagline && (
-          <p className="v2-footer__tagline">{data.copyrightTagline}</p>
+          <p className="footer__tagline">{data.copyrightTagline}</p>
         )}
       </div>
     </footer>

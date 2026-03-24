@@ -9,8 +9,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import type { UrgencySection as UrgencySectionData } from '@/config/types-v2';
-import { ctaConfigV2 } from '@/config/nav-v2';
+import type { UrgencySection as UrgencySectionData } from '@/config/types';
+import { ctaConfig } from '@/config/nav';
 import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
 import './UrgencySection.css';
 
@@ -46,7 +46,7 @@ export default function UrgencySection({ data }: Props) {
           <p className="v2-urgency-card__text">{data.text}</p>
 
           {data.ctaLabel && (
-            <Link href={ctaConfigV2.href} className="v2-urgency-card__cta">
+            <Link href={ctaConfig.href} className="v2-urgency-card__cta">
               {data.ctaLabel}
               <span aria-hidden="true">&rarr;</span>
             </Link>

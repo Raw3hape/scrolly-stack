@@ -17,8 +17,8 @@
  */
 
 import Link from 'next/link';
-import type { CtaSection as CtaSectionData } from '@/config/types-v2';
-import { ctaConfigV2 } from '@/config/nav-v2';
+import type { CtaSection as CtaSectionData } from '@/config/types';
+import { ctaConfig } from '@/config/nav';
 import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
 import BlueprintGrid from './BlueprintGrid';
 import './CtaSection.css';
@@ -74,8 +74,8 @@ export default function CtaSection({ data }: Props) {
           className="v2-cta__buttons v2-cta__reveal"
           style={{ '--reveal-order': 2 } as React.CSSProperties}
         >
-          <Link href={ctaConfigV2.href} className="v2-cta__button">
-            {data.buttonLabel ?? ctaConfigV2.label} <span aria-hidden="true">→</span>
+          <Link href={ctaConfig.href} className="v2-cta__button">
+            {data.buttonLabel ?? ctaConfig.label} <span aria-hidden="true">→</span>
           </Link>
           {data.secondaryButtonLabel && (
             <Link

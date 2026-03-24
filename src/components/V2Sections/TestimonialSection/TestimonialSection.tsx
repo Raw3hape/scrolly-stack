@@ -7,7 +7,7 @@
 
 'use client';
 
-import type { TestimonialSection as TestimonialSectionData } from '@/config/types-v2';
+import type { TestimonialSection as TestimonialSectionData } from '@/config/types';
 import TestimonialCarousel from '@/components/TestimonialCarousel';
 
 interface Props {

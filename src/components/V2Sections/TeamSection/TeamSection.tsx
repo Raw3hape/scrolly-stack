@@ -4,13 +4,13 @@
  * Each card shows a photo on top (3:4 aspect ratio, grayscale → color on hover)
  * with a left-bordered info block below. Scrollable carousel with snap + nav arrows.
  *
- * Data-driven: receives content via props from content-v2.ts.
+ * Data-driven: receives content via props from content.ts.
  */
 
 'use client';
 
 import { useRef, useState, useCallback, useEffect } from 'react';
-import type { TeamSection as TeamSectionData } from '@/config/types-v2';
+import type { TeamSection as TeamSectionData } from '@/config/types';
 import './TeamSection.css';
 
 interface Props {

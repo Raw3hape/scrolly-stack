@@ -5,7 +5,7 @@
  * Icons are based on Stitch "Architectural Editorial" design language.
  */
 
-import type { V2Icon as V2IconName } from '@/config/types-v2';
+import type { V2Icon as V2IconName } from '@/config/types';
 
 interface Props {
   name: V2IconName;

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { investorsContent } from '@/config/content-v2';
+import { investorsContent } from '@/config/content';
 import SectionRenderer from '@/components/V2Sections/SectionRenderer';
 
 export const metadata: Metadata = {

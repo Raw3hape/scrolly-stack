@@ -9,12 +9,12 @@
  * - Desktop: 12-col asymmetric grid
  * - Tablet/Mobile: stacked single column
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  */
 
 import Link from 'next/link';
-import type { BenefitsGridSection as BenefitsGridSectionData } from '@/config/types-v2';
-import { ctaConfigV2 } from '@/config/nav-v2';
+import type { BenefitsGridSection as BenefitsGridSectionData } from '@/config/types';
+import { ctaConfig } from '@/config/nav';
 import V2Icon from '../V2Icon/V2Icon';
 import './BenefitsGridSection.css';
 
@@ -30,7 +30,7 @@ export default function BenefitsGridSection({ data }: Props) {
         <h2 className="v2-benefits__heading">{data.heading}</h2>
         <p className="v2-benefits__text">{data.text}</p>
         {data.ctaLabel && (
-          <Link href={ctaConfigV2.href} className="v2-benefits__cta">
+          <Link href={ctaConfig.href} className="v2-benefits__cta">
             {data.ctaLabel}
           </Link>
         )}
