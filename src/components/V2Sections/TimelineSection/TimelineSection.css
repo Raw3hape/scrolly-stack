@@ -195,7 +195,7 @@
   background: var(--stitch-surface-container-low);
   padding: clamp(var(--space-lg), 3vw, var(--space-xl));
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(193, 200, 202, 0.08);
+  border: 1px solid var(--silver-alpha-8);
   position: relative;
   overflow: hidden;
 
@@ -234,14 +234,14 @@
   border: 1px solid transparent;
   background: linear-gradient(
     135deg,
-    rgba(229, 173, 107, 0.2) 0%,
+    var(--gold-300-alpha-20) 0%,
     transparent 40%,
     transparent 60%,
-    rgba(41, 115, 115, 0.12) 100%
+    var(--teal-500-alpha-12) 100%
   ) border-box;
   mask:
-    linear-gradient(#fff 0 0) padding-box,
-    linear-gradient(#fff 0 0);
+    linear-gradient(var(--color-white) 0 0) padding-box,
+    linear-gradient(var(--color-white) 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
   opacity: 0;

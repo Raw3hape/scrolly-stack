@@ -93,4 +93,47 @@
   --selection-bg:        rgba(41, 115, 115, 0.12);
   --status-success-glow: 0 0 0 2px rgba(62, 140, 89, 0.2);
   --hover-opacity:       0.85;  /* Brand hover opacity for interactive elements */
+
+  /* === Pure white / dark utility === */
+  --color-white:         #ffffff;
+  --color-error:         #ba1a1a;  /* Stitch error red */
+
+  /* === Sand palette extended (warm off-whites used in light-mode surfaces) === */
+  --color-sand-warm:     #fef9f0;  /* Warm cream — used in dark-mode headings */
+  --color-gold-100:      #ffdcbc;  /* Lightest gold — used in footnotes, hover accents */
+  --color-gold-900:      #2c1700;  /* Deep brown — text on gold badges */
+
+  /* === Glass-white overlays (white at various opacities) === */
+  /* RESKIN: base = #ffffff */
+  --glass-white-5:       rgba(255, 255, 255, 0.05);
+  --glass-white-6:       rgba(255, 255, 255, 0.06);
+  --glass-white-8:       rgba(255, 255, 255, 0.08);
+  --glass-white-10:      rgba(255, 255, 255, 0.10);
+  --glass-white-12:      rgba(255, 255, 255, 0.12);
+  --glass-white-15:      rgba(255, 255, 255, 0.15);
+  --glass-white-20:      rgba(255, 255, 255, 0.20);
+  --glass-white-40:      rgba(255, 255, 255, 0.40);
+  --glass-white-80:      rgba(255, 255, 255, 0.80);
+
+  /* === Dark overlays (black at various opacities) === */
+  /* RESKIN: base = #000000 */
+  --overlay-dark-5:      rgba(0, 0, 0, 0.05);
+  --overlay-dark-20:     rgba(0, 0, 0, 0.20);
+  --overlay-dark-25:     rgba(0, 0, 0, 0.25);
+  --overlay-dark-50:     rgba(0, 0, 0, 0.50);
+  --overlay-dark-80:     rgba(0, 0, 0, 0.80);
+  --overlay-dark-100:    rgba(0, 0, 0, 1);
+
+  /* === Brand-alpha overlays (anchor/teal/gold with transparency) === */
+  /* RESKIN: recalculate rgba when brand colors change */
+  --anchor-900-alpha-20: rgba(16, 55, 64, 0.20);
+  --anchor-900-alpha-30: rgba(16, 55, 64, 0.30);
+  --anchor-900-alpha-80: rgba(16, 55, 64, 0.80);
+  --anchor-deep-alpha-92: rgba(10, 40, 48, 0.92);
+  --anchor-deep-alpha-75: rgba(12, 45, 52, 0.75);
+  --teal-100-alpha-15:   rgba(168, 239, 238, 0.15);
+  --gold-300-alpha-20:   rgba(229, 173, 107, 0.20);
+  --gold-500-alpha-8:    rgba(215, 147, 68, 0.08);
+  --teal-500-alpha-12:   rgba(41, 115, 115, 0.12);
+  --silver-alpha-8:      rgba(193, 200, 202, 0.08);
 }

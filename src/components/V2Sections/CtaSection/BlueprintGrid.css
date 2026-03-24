@@ -16,19 +16,19 @@
   -webkit-mask-image: linear-gradient(to bottom,
     transparent 0%,
     transparent 15%,
-    rgba(0, 0, 0, 0.05) 30%,
-    rgba(0, 0, 0, 0.2) 45%,
-    rgba(0, 0, 0, 0.5) 60%,
-    rgba(0, 0, 0, 0.8) 75%,
-    rgba(0, 0, 0, 1) 90%
+    var(--overlay-dark-5) 30%,
+    var(--overlay-dark-20) 45%,
+    var(--overlay-dark-50) 60%,
+    var(--overlay-dark-80) 75%,
+    var(--overlay-dark-100) 90%
   );
   mask-image: linear-gradient(to bottom,
     transparent 0%,
     transparent 15%,
-    rgba(0, 0, 0, 0.05) 30%,
-    rgba(0, 0, 0, 0.2) 45%,
-    rgba(0, 0, 0, 0.5) 60%,
-    rgba(0, 0, 0, 0.8) 75%,
-    rgba(0, 0, 0, 1) 90%
+    var(--overlay-dark-5) 30%,
+    var(--overlay-dark-20) 45%,
+    var(--overlay-dark-50) 60%,
+    var(--overlay-dark-80) 75%,
+    var(--overlay-dark-100) 90%
   );
 }
