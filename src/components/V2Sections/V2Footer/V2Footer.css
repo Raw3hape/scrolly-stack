@@ -162,8 +162,8 @@
 .v2-footer__subscribe-input {
   flex: 1;
   padding: var(--space-sm) var(--space-md);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--glass-white-8);
+  border: 1px solid var(--glass-white-15);
   border-right: none;
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
   color: var(--stitch-dark-text);
@@ -180,7 +180,7 @@
 }
 
 .v2-footer__subscribe-input:focus {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--glass-white-12);
   border-color: var(--stitch-dark-accent);
 }
 
@@ -219,7 +219,7 @@
   justify-content: space-between;
   margin-top: var(--space-2xl);
   padding-top: var(--space-lg);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--glass-white-10);
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;

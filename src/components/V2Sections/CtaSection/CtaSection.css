@@ -47,7 +47,7 @@
 }
 
 .v2-cta__arch-col {
-  border-right: 1px solid var(--stitch-dark-text, #fff);
+  border-right: 1px solid var(--stitch-dark-text, var(--color-white));
   height: 100%;
 }
 
@@ -63,7 +63,7 @@
   position: absolute;
   inset: var(--space-lg);
   z-index: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-white-10);
   border-radius: var(--radius-lg, 0.75rem);
   pointer-events: none;
 }
@@ -141,15 +141,15 @@
 
 /* Secondary ghost button */
 .v2-cta__button--secondary {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass-white-10);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--glass-white-20);
   color: var(--text-inverse);
   box-shadow: none;
 }
 
 .v2-cta__button--secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--glass-white-20);
   transform: scale(1.03);
 }
 
@@ -165,31 +165,31 @@
 
 /* Heading: cream/white text on dark bg */
 .v2-section--dark .v2-cta__heading {
-  color: var(--stitch-surface, #fef9f0);
+  color: var(--stitch-surface, var(--color-sand-warm));
 }
 
 /* Primary button only gets gold treatment (exclude secondary) */
 .v2-section--dark .v2-cta__button:not(.v2-cta__button--secondary) {
   background: var(--stitch-dark-accent);
   color: var(--stitch-dark-bg);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 30px var(--overlay-dark-20);
 }
 
 .v2-section--dark .v2-cta__button:not(.v2-cta__button--secondary):hover {
-  background: var(--color-gold-100, #ffdcbc);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  background: var(--color-gold-100);
+  box-shadow: 0 12px 40px var(--overlay-dark-25);
 }
 
 /* Secondary ghost button in dark mode — subtle, distinct from primary */
 .v2-section--dark .v2-cta__button--secondary {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--stitch-surface, #fef9f0);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--glass-white-8);
+  color: var(--stitch-surface, var(--color-sand-warm));
+  border: 1px solid var(--glass-white-20);
   box-shadow: none;
 }
 
 .v2-section--dark .v2-cta__button--secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--glass-white-15);
 }
 
 .v2-section--dark .v2-cta__overline,

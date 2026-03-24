@@ -38,9 +38,9 @@
   /* Near-opaque left for crisp text, fading right for frosted card */
   background: linear-gradient(
     to right,
-    rgba(10, 40, 48, 0.92) 0%,
-    rgba(12, 45, 52, 0.75) 40%,
-    rgba(16, 55, 64, 0.3) 100%
+    var(--anchor-deep-alpha-92) 0%,
+    var(--anchor-deep-alpha-75) 40%,
+    var(--anchor-900-alpha-30) 100%
   );
 }
 
@@ -105,11 +105,11 @@
   /* Very light tint — lets blurred photo show through with frosted effect */
   /* LightningCSS auto-adds -webkit- prefix. Do NOT add manually
      or it strips the standard property, breaking Chromium. */
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-white-6);
   backdrop-filter: blur(32px) saturate(140%) brightness(1.1);
   border-radius: var(--radius-xl);
   padding: clamp(var(--space-lg), 3vw, var(--space-xl));
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-white-12);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -301,7 +301,7 @@
   font: var(--font-h2);
   font-family: var(--font-family-serif);
   font-style: italic;
-  color: #fff;
+  color: var(--color-white);
   line-height: var(--leading-snug);
   margin-bottom: var(--space-lg);
   position: relative;

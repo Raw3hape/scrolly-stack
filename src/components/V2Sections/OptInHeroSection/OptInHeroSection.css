@@ -72,8 +72,8 @@
   align-items: center;
   gap: var(--space-xs);
   padding: var(--space-xs) var(--space-md);
-  background: var(--color-gold-100, #ffdcbc);
-  color: var(--color-gold-900, #2c1700);
+  background: var(--color-gold-100);
+  color: var(--color-gold-900);
   font-size: var(--font-size-xs);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-widest);
@@ -199,7 +199,7 @@
 .v2-optin__input {
   width: 100%;
   padding: var(--space-md) var(--space-lg);
-  background: var(--surface-card, #f7f4ef);
+  background: var(--surface-card, var(--color-sand-50));
   border: var(--border-width-thin, 1px) solid
     color-mix(in srgb, var(--stitch-dark-bg) 12%, transparent);
   border-radius: var(--radius-md);
@@ -218,7 +218,7 @@
 
 .v2-optin__input:hover {
   border-color: color-mix(in srgb, var(--stitch-dark-bg) 25%, transparent);
-  background: var(--surface-card-hover, #f2ede4);
+  background: var(--surface-card-hover, var(--color-sand-100));
 }
 
 .v2-optin__input:focus {
@@ -227,7 +227,7 @@
   box-shadow:
     0 0 0 3px color-mix(in srgb, var(--color-teal-500) 15%, transparent),
     var(--shadow-sm);
-  background: var(--color-sand-25, #fdfcfa);
+  background: var(--color-sand-25);
 }
 
 /* === Submit Button (solid bg — matches CTA section, no gradient flicker) === */
