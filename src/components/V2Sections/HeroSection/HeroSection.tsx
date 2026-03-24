@@ -23,7 +23,7 @@ export default function HeroSection({ data }: Props) {
   return (
     <div className={`v2-container${data.backgroundCanvas ? ' v2-container--has-canvas' : ''}`}>
       {/* Decorative 3D grid background — temporarily hidden */}
-      {/* {data.backgroundCanvas && <HeroGridLoader />} */}
+      {/* {data.backgroundCanvas && <HeroGridLoader />} — uses shared HeroGridCanvas */}
 
       <div className={`v2-hero${isEditorial ? ' v2-hero--editorial' : ''}`}>
         {/* Editorial: grid wrapper for vertical centering */}
@@ -31,7 +31,7 @@ export default function HeroSection({ data }: Props) {
           <>
             <div className="v2-hero__grid">
               {/* 3D grid background (investors hero) — temporarily hidden */}
-              {/* {data.stat && <HeroGridCanvas />} */}
+              {/* {data.stat && <HeroGridCanvas config={HERO_GRID_SECTION} />} — uses shared HeroGridCanvas */}
 
               <div className="v2-hero__content">
                 {data.overline && (
