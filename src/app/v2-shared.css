@@ -8,6 +8,9 @@
 /* === Shared section patterns === */
 .v2-section {
   padding: clamp(3rem, 6vw, 6rem) var(--container-padding);
+  /* Contain parallax translateX animations without creating a scroll container.
+     `clip` (vs `hidden`) preserves sticky positioning and vertical flow. */
+  overflow-x: clip;
 }
 
 /* Full-viewport sections — applied selectively to cards, mission, cta */
@@ -24,12 +27,49 @@
   .v2-section {
     padding-inline: var(--space-md);
   }
+
+  /* Bleed sections stay edge-to-edge on all breakpoints */
+  .v2-section--bleed {
+    padding-inline: 0;
+  }
 }
 
 /* Landscape phones — prevent fullscreen sections from being too tall */
 @media (max-height: 500px) and (orientation: landscape) {
   .v2-section--fullscreen {
     min-height: auto;
+  }
+}
+
+/* Scroll-expand: starts as a rounded card, expands to fullscreen on scroll.
+   Reads --px-progress (0→1) written by useParallax on this <section>. */
+.v2-section--expand {
+  --_expand-t: clamp(0, var(--px-progress, 1), 1);
+  --_expand-inv: calc(1 - var(--_expand-t));
+
+  /* Remove section padding — cinematic content handles its own padding */
+  padding: 0;
+  /* Transparent — photo inside .v2-cinematic IS the background */
+  background: transparent;
+
+  margin: calc(var(--expand-inset-start) * var(--_expand-inv));
+  /* Pull-up fades as section expands; base spacing ensures gap at full expansion */
+  margin-top: calc(
+    var(--space-xl)
+    + var(--expand-pull-up) * var(--_expand-inv)
+    + var(--expand-inset-start) * var(--_expand-inv)
+  );
+  border-radius: calc(var(--expand-radius-start) * var(--_expand-inv));
+  overflow: hidden;
+  /* Create own backdrop root so backdrop-filter works regardless of parent wrappers */
+  isolation: isolate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-section--expand {
+    margin: 0;
+    border-radius: 0;
+    will-change: auto;
   }
 }
 
@@ -55,6 +95,21 @@
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to right, transparent 10%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,1) 75%);
   mask-image: linear-gradient(to right, transparent 10%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,1) 75%);
+}
+
+/* Expand sections have their own photo bg — no texture overlay */
+.v2-section--expand.v2-section--dark::after {
+  display: none;
+}
+
+/* Expand + dark: force overflow hidden so border-radius clips the photo */
+.v2-section--expand.v2-section--dark {
+  overflow: hidden;
+}
+
+/* Full-bleed — strips inline padding so child carousels scroll edge-to-edge */
+.v2-section--bleed {
+  padding-inline: 0;
 }
 
 .v2-section--surface {

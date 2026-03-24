@@ -20,7 +20,6 @@
   
   /* Frosted glass effect */
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   background: var(--glass-card-bg);
   border: var(--glass-card-border);
   box-shadow: 

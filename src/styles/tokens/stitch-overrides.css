@@ -53,10 +53,10 @@
   --color-gold-300:   #ffb86a;   /* Stitch tertiary_fixed_dim */
 
   /* === Glass adjustments (warmer tone) === */
-  --glass-bg:              rgba(254, 249, 240, 0.7);
-  --glass-bg-scrolled:     rgba(254, 249, 240, 0.85);
-  --glass-bg-sticky:       rgba(254, 249, 240, 0.92);
-  --glass-border:          1px solid rgba(254, 249, 240, 0.5);
+  --glass-bg:              rgba(254, 249, 240, 0.45);
+  --glass-bg-scrolled:     rgba(254, 249, 240, 0.55);
+  --glass-bg-sticky:       rgba(254, 249, 240, 0.65);
+  --glass-border:          1px solid rgba(254, 249, 240, 0.35);
 
   /* === Dark section tokens (for bg-primary-container sections) === */
   --stitch-dark-bg:         #103740;
@@ -71,7 +71,7 @@
   /* === Glass for dark sections === */
   --stitch-glass-dark-bg:     rgba(255, 255, 255, 0.05);
   --stitch-glass-dark-border: 1px solid rgba(255, 255, 255, 0.1);
-  --stitch-glass-header-bg:   rgba(254, 249, 240, 0.85);
+  --stitch-glass-header-bg:   rgba(254, 249, 240, 0.55);
   --overlay-hidden:           rgba(0, 0, 0, 0);
   --overlay-visible:          rgba(0, 0, 0, 0.4);
 
@@ -90,7 +90,7 @@
   --container-narrow:      40rem;
 
   /* === Cinematic section (fullscreen photo + overlay) === */
-  --stitch-cinematic-overlay: rgba(16, 55, 64, 0.6);
+  --stitch-cinematic-overlay: rgba(16, 55, 64, 0.3);
   --stitch-cinematic-chapter-color: var(--color-gold-300);
 
   /* === Force light mode === */

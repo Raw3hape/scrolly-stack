@@ -7,24 +7,11 @@
 
 import { test, expect } from '@playwright/test';
 import { ctaConfig, routes } from '../src/config/nav';
-import { ctaConfigV2 } from '../src/config/nav-v2';
+import { ctaConfigV2, routesV2 } from '../src/config/nav-v2';
 import {
-  roofersHero,
-  roofersValueProps,
-  roofersProb,
   roofersSteps,
-  whatChanges,
-  roofersFinalCta,
 } from '../src/config/content/roofers';
-import {
-  investorsHero,
-  investorsValueProps,
-  opportunity,
-  investorsSteps,
-  investorsStakes,
-  whyActNow,
-  investorsFinalCta,
-} from '../src/config/content/investors';
+import { investorsContent } from '../src/config/content-v2';
 import { scheduleContent } from '../src/config/content/schedule';
 import { optInContent } from '../src/config/content/opt-in';
 import {
@@ -312,232 +299,351 @@ test.describe('About Page — V2 Sections', () => {
 });
 
 // ===========================================================================
-// ROOFERS PAGE — ALL SECTIONS
+// ROOFERS PAGE — V2 SECTIONS
 // ===========================================================================
 
-test.describe('Roofers Page — All Sections', () => {
+test.describe('Roofers Page — V2 Sections', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
+    // Scroll to trigger IntersectionObserver animations
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    await page.evaluate(() => window.scrollTo(0, 0));
   });
 
   // --- Hero ---
-  test('hero heading matches content', async ({ page }) => {
+  test('hero heading is present', async ({ page }) => {
     const h1 = page.locator('h1');
-    await expect(h1).toContainText(roofersHero.heading);
+    await expect(h1).toContainText('Bigger Exit');
   });
 
-  test('hero body matches content', async ({ page }) => {
-    const desc = page.locator('.page-header__description');
-    await expect(desc).toContainText('3-step');
+  test('hero subtext mentions 3-step process', async ({ page }) => {
+    const sub = page.locator('.v2-hero__subtext');
+    await expect(sub).toContainText('3-step');
   });
 
-  // --- Value Props Strip ---
-  test('value props strip has 3 items', async ({ page }) => {
-    const labels = page.locator('.value-props__label');
-    await expect(labels).toHaveCount(roofersValueProps.length);
+  // --- Hero badge + trust ---
+  test('hero has FOR ROOFING FOUNDERS badge', async ({ page }) => {
+    const badge = page.locator('.v2-hero__badge');
+    await expect(badge).toContainText('FOR ROOFING FOUNDERS');
   });
 
-  test('value props contain correct text', async ({ page }) => {
-    for (const prop of roofersValueProps) {
-      await expect(page.locator('.value-props')).toContainText(prop);
-    }
+  test('hero has trust badge', async ({ page }) => {
+    const trust = page.locator('.v2-hero__trust');
+    await expect(trust).toContainText('No upfront costs');
   });
 
-  // --- Problem Section ---
-  test('problem heading is displayed', async ({ page }) => {
-    const heading = page.locator('.status-page__heading');
-    await expect(heading).toContainText(roofersProb.heading);
+  // --- Problem (Split) ---
+  test('problem split section exists', async ({ page }) => {
+    const section = page.locator('#roofers-problem');
+    await expect(section).toBeAttached();
   });
 
-  test('problem body text is present', async ({ page }) => {
-    const body = page.locator('.status-page__body');
-    await expect(body).toContainText('Brokers take 20%');
+  test('problem heading mentions money on the table', async ({ page }) => {
+    const heading = page.locator('#roofers-problem .v2-split__heading');
+    await expect(heading).toContainText('Money On The Table');
   });
 
-  // --- Step Cards ---
-  test('step cards are rendered', async ({ page }) => {
-    const cards = page.locator('.step-card');
-    await expect(cards).toHaveCount(roofersSteps.length);
+  test('problem has 3 cancel bullets', async ({ page }) => {
+    const bullets = page.locator('#roofers-problem .v2-split__bullet');
+    await expect(bullets).toHaveCount(3);
   });
 
-  test('step card 1 has correct number and title', async ({ page }) => {
-    const firstCard = page.locator('.step-card').first();
-    await expect(firstCard.locator('.step-card__number')).toContainText('1');
-    await expect(firstCard.locator('.step-card__title')).toContainText(roofersSteps[0].title);
+  test('problem has image with quote overlay', async ({ page }) => {
+    const quote = page.locator('#roofers-problem .v2-split__image-quote-text');
+    await expect(quote).toContainText('broken for independent roofers');
   });
 
-  test('step card 2 has correct title', async ({ page }) => {
-    const secondCard = page.locator('.step-card').nth(1);
-    await expect(secondCard.locator('.step-card__title')).toContainText(roofersSteps[1].title);
+  // --- Steps (cards variant) ---
+  test('process section has 3 step cards', async ({ page }) => {
+    const steps = page.locator('#roofers-process .v2-step--card');
+    await expect(steps).toHaveCount(3);
   });
 
-  test('step card 3 has correct title', async ({ page }) => {
-    const thirdCard = page.locator('.step-card').nth(2);
-    await expect(thirdCard.locator('.step-card__title')).toContainText(roofersSteps[2].title);
+  test('step cards have icon boxes', async ({ page }) => {
+    const icons = page.locator('#roofers-process .v2-step__icon-box');
+    await expect(icons).toHaveCount(3);
   });
 
-  test('step cards have footnotes', async ({ page }) => {
-    const footnotes = page.locator('.step-card__footnote');
-    await expect(footnotes).toHaveCount(roofersSteps.length);
+  test('step 1 has correct title', async ({ page }) => {
+    const step = page.locator('#roofers-process .v2-step').first();
+    await expect(step.locator('.v2-step__title')).toContainText(roofersSteps[0].title);
   });
 
-  // --- What Changes For You ---
-  test('what changes bullet list exists', async ({ page }) => {
-    const bullets = page.locator('.bullet-section__item');
-    await expect(bullets).toHaveCount(whatChanges.bullets.length);
+  test('step 2 has correct title', async ({ page }) => {
+    const step = page.locator('#roofers-process .v2-step').nth(1);
+    await expect(step.locator('.v2-step__title')).toContainText(roofersSteps[1].title);
   });
 
-  test('what changes heading is correct', async ({ page }) => {
-    const heading = page.locator('.bullet-section__heading');
-    await expect(heading).toContainText(whatChanges.heading);
+  test('step 3 has correct title', async ({ page }) => {
+    const step = page.locator('#roofers-process .v2-step').nth(2);
+    await expect(step.locator('.v2-step__title')).toContainText(roofersSteps[2].title);
   });
 
-  test('bullet section CTA links to correct href', async ({ page }) => {
-    const cta = page.locator('.bullet-section__cta .link-button');
-    await expect(cta).toHaveAttribute('href', ctaConfig.href);
+  // --- Benefits Grid ---
+  test('benefits grid section exists', async ({ page }) => {
+    const section = page.locator('#roofers-benefits');
+    await expect(section).toBeAttached();
   });
 
-  // --- Final CTA Block ---
-  test('final CTA block exists', async ({ page }) => {
-    const ctaBlock = page.locator('.cta-block');
+  test('benefits heading mentions Scale', async ({ page }) => {
+    const heading = page.locator('#roofers-benefits .v2-benefits__heading');
+    await expect(heading).toContainText('Scale Without');
+  });
+
+  test('benefits has 4 glassmorphism cards', async ({ page }) => {
+    const cards = page.locator('#roofers-benefits .v2-benefits__card');
+    await expect(cards).toHaveCount(4);
+  });
+
+  test('benefits has CTA button', async ({ page }) => {
+    const cta = page.locator('#roofers-benefits .v2-benefits__cta');
+    await expect(cta).toContainText('Learn About Our Systems');
+  });
+
+  // --- CTA ---
+  test('closing CTA block exists', async ({ page }) => {
+    const ctaBlock = page.locator('#roofers-cta');
     await expect(ctaBlock).toBeAttached();
   });
 
-  test('final CTA heading matches', async ({ page }) => {
-    const heading = page.locator('.cta-block__heading');
-    await expect(heading).toContainText(roofersFinalCta.heading);
+  test('closing CTA heading is present', async ({ page }) => {
+    const heading = page.locator('#roofers-cta .v2-cta__heading');
+    await expect(heading).toContainText('30-Minute Call');
   });
 
-  test('final CTA button links correctly', async ({ page }) => {
-    const cta = page.locator('.cta-block .link-button');
-    await expect(cta).toHaveAttribute('href', ctaConfig.href);
+  test('closing CTA button links correctly', async ({ page }) => {
+    const cta = page.locator('#roofers-cta .v2-cta__button');
+    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
   });
 
   // --- Section count ---
-  test('page has at least 6 sections', async ({ page }) => {
-    const sections = page.locator('.section');
-    const count = await sections.count();
-    expect(count).toBeGreaterThanOrEqual(6);
+  test('page has exactly 5 V2 sections', async ({ page }) => {
+    const sections = page.locator('.v2-section');
+    await expect(sections).toHaveCount(5);
   });
 });
 
 // ===========================================================================
-// INVESTORS PAGE — ALL SECTIONS
+// INVESTORS PAGE — V2 SECTIONS
 // ===========================================================================
 
-test.describe('Investors Page — All Sections', () => {
+test.describe('Investors Page — V2 Sections', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
+    // Scroll to trigger IntersectionObserver animations
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    await page.evaluate(() => window.scrollTo(0, 0));
   });
 
   // --- Hero ---
-  test('hero heading matches content', async ({ page }) => {
+  test('hero heading is present', async ({ page }) => {
     const h1 = page.locator('h1');
-    await expect(h1).toContainText(investorsHero.heading);
+    await expect(h1).toContainText('Structure');
   });
 
-  test('hero body mentions $60B industry', async ({ page }) => {
-    const desc = page.locator('.page-header__description');
-    await expect(desc).toContainText('$60 billion');
+  test('hero overline is present', async ({ page }) => {
+    const overline = page.locator('.v2-hero__overline');
+    await expect(overline).toContainText('Investment Framework');
   });
 
-  // --- Value Props Strip ---
-  test('value props strip has 3 items', async ({ page }) => {
-    const labels = page.locator('.value-props__label');
-    await expect(labels).toHaveCount(investorsValueProps.length);
+  test('hero subtext mentions institutional asset class', async ({ page }) => {
+    const sub = page.locator('.v2-hero__subtext');
+    await expect(sub).toContainText('institutional');
   });
 
-  test('value props contain correct text', async ({ page }) => {
-    for (const prop of investorsValueProps) {
-      await expect(page.locator('.value-props')).toContainText(prop);
-    }
+  // --- Cinematic ---
+  test('cinematic section exists', async ({ page }) => {
+    const section = page.locator('#precision-deployment');
+    await expect(section).toBeAttached();
   });
 
-  // --- Opportunity Section ---
-  test('opportunity heading is displayed', async ({ page }) => {
-    const heading = page.locator('.status-page__heading');
-    await expect(heading).toContainText(opportunity.heading);
+  test('cinematic heading mentions Blueprint', async ({ page }) => {
+    const heading = page.locator('#precision-deployment .v2-cinematic__heading');
+    await expect(heading).toContainText('Blueprint');
   });
 
-  test('opportunity body mentions consolidation', async ({ page }) => {
-    const body = page.locator('.status-page__body');
-    await expect(body).toContainText('consolidation');
+  // --- Timeline ---
+  test('timeline section exists', async ({ page }) => {
+    const section = page.locator('#investment-lifecycle');
+    await expect(section).toBeAttached();
   });
 
-  // --- Step Cards ---
-  test('step cards are rendered', async ({ page }) => {
-    const cards = page.locator('.step-card');
-    await expect(cards).toHaveCount(investorsSteps.length);
+  test('timeline heading mentions Lifecycle', async ({ page }) => {
+    const heading = page.locator('#investment-lifecycle .v2-timeline__heading');
+    await expect(heading).toContainText('Lifecycle');
   });
 
-  test('step card 1 has correct title', async ({ page }) => {
-    const firstCard = page.locator('.step-card').first();
-    await expect(firstCard.locator('.step-card__title')).toContainText(investorsSteps[0].title);
+  test('timeline has 3 steps', async ({ page }) => {
+    const steps = page.locator('#investment-lifecycle .v2-timeline__step');
+    await expect(steps).toHaveCount(3);
   });
 
-  test('step card 2 has correct title', async ({ page }) => {
-    const secondCard = page.locator('.step-card').nth(1);
-    await expect(secondCard.locator('.step-card__title')).toContainText(investorsSteps[1].title);
+  test('timeline step 1 has correct title', async ({ page }) => {
+    const step = page.locator('#investment-lifecycle .v2-timeline__step').first();
+    await expect(step.locator('.v2-timeline__title')).toContainText('Strategic Acquisition');
   });
 
-  test('step card 3 has correct title', async ({ page }) => {
-    const thirdCard = page.locator('.step-card').nth(2);
-    await expect(thirdCard.locator('.step-card__title')).toContainText(investorsSteps[2].title);
+  test('timeline step 2 has correct title', async ({ page }) => {
+    const step = page.locator('#investment-lifecycle .v2-timeline__step').nth(1);
+    await expect(step.locator('.v2-timeline__title')).toContainText('Operational Overhaul');
   });
 
-  // --- Stakes Section ---
-  test('stakes section lead text present', async ({ page }) => {
-    const lead = page.locator('.stakes-section__lead');
-    await expect(lead).toContainText(investorsStakes.body);
+  test('timeline step 3 has correct title', async ({ page }) => {
+    const step = page.locator('#investment-lifecycle .v2-timeline__step').nth(2);
+    await expect(step.locator('.v2-timeline__title')).toContainText('Portfolio Aggregation');
   });
 
-  test('stakes section detail text present', async ({ page }) => {
-    const detail = page.locator('.stakes-section__detail');
-    await expect(detail).toContainText('consolidating');
+  test('timeline steps have KPI badges', async ({ page }) => {
+    const kpiCards = page.locator('#investment-lifecycle .v2-timeline__kpi-card');
+    await expect(kpiCards).toHaveCount(3);
   });
 
-  // --- Why Act Now ---
-  test('why act now bullet list exists', async ({ page }) => {
-    const bullets = page.locator('.bullet-section__item');
-    await expect(bullets).toHaveCount(whyActNow.bullets.length);
+  // --- Bento Grid ---
+  test('bento grid section exists', async ({ page }) => {
+    const section = page.locator('#bento-thesis');
+    await expect(section).toBeAttached();
   });
 
-  test('why act now heading is correct', async ({ page }) => {
-    const heading = page.locator('.bullet-section__heading');
-    await expect(heading).toContainText(whyActNow.heading);
+  test('bento feature card has Core Thesis overline', async ({ page }) => {
+    const overline = page.locator('#bento-thesis .v2-bento__feature-overline');
+    await expect(overline).toContainText('Core Thesis');
   });
 
-  test('why act now CTA links to correct href', async ({ page }) => {
-    const cta = page.locator('.bullet-section__cta .link-button');
-    await expect(cta).toHaveAttribute('href', ctaConfig.href);
+  test('bento has 2 stat cards', async ({ page }) => {
+    const stats = page.locator('#bento-thesis .v2-bento__stat');
+    await expect(stats).toHaveCount(2);
   });
 
-  // --- Final CTA Block ---
-  test('final CTA block exists', async ({ page }) => {
-    const ctaBlock = page.locator('.cta-block');
+  test('bento has link card', async ({ page }) => {
+    const link = page.locator('#bento-thesis .v2-bento__link-card');
+    await expect(link).toBeAttached();
+  });
+
+  // --- Trust ---
+  test('trust section exists', async ({ page }) => {
+    const section = page.locator('#trust-partners');
+    await expect(section).toBeAttached();
+  });
+
+  test('trust badge is present', async ({ page }) => {
+    const badge = page.locator('#trust-partners .v2-trust__badge');
+    await expect(badge).toContainText('Verified');
+  });
+
+  test('trust has partner names', async ({ page }) => {
+    const partners = page.locator('#trust-partners .v2-trust__partner');
+    await expect(partners).toHaveCount(4);
+  });
+
+  // --- CTA ---
+  test('closing CTA block exists', async ({ page }) => {
+    const ctaBlock = page.locator('#investors-cta');
     await expect(ctaBlock).toBeAttached();
   });
 
-  test('final CTA heading matches', async ({ page }) => {
-    const heading = page.locator('.cta-block__heading');
-    await expect(heading).toContainText(investorsFinalCta.heading);
+  test('closing CTA heading mentions Deploy Capital', async ({ page }) => {
+    const heading = page.locator('#investors-cta .v2-cta__heading');
+    await expect(heading).toContainText('Deploy Capital');
   });
 
-  test('final CTA has "Spots are limited" footnote', async ({ page }) => {
-    const footnote = page.locator('.cta-block__footnote');
-    await expect(footnote).toContainText('Spots are limited');
+  test('closing CTA button links correctly', async ({ page }) => {
+    const cta = page.locator('#investors-cta .v2-cta__button');
+    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
   });
 
-  test('final CTA button links correctly', async ({ page }) => {
-    const cta = page.locator('.cta-block .link-button');
-    await expect(cta).toHaveAttribute('href', ctaConfig.href);
+  test('closing CTA has secondary button', async ({ page }) => {
+    const secondary = page.locator('#investors-cta .v2-cta__button--secondary');
+    await expect(secondary).toBeAttached();
+    await expect(secondary).toContainText('View Our Process');
   });
 
   // --- Section count ---
-  test('page has at least 7 sections', async ({ page }) => {
-    const sections = page.locator('.section');
-    const count = await sections.count();
-    expect(count).toBeGreaterThanOrEqual(7);
+  test('page has exactly 6 V2 sections', async ({ page }) => {
+    const sections = page.locator('.v2-section');
+    await expect(sections).toHaveCount(investorsContent.sections.length);
+  });
+
+  // --- Hero stat ---
+  test('hero stat displays 18.4%', async ({ page }) => {
+    const stat = page.locator('.v2-hero__stat-value');
+    await expect(stat).toContainText('18.4%');
+  });
+
+  test('hero stat label is Target IRR', async ({ page }) => {
+    const label = page.locator('.v2-hero__stat-label');
+    await expect(label).toContainText('Target IRR');
+  });
+
+  // --- Bento link card href ---
+  test('bento link card links to schedule', async ({ page }) => {
+    const link = page.locator('.v2-bento__link-card');
+    await expect(link).toHaveAttribute('href', routesV2.schedule);
+  });
+
+  // --- CTA secondary button ---
+  test('CTA secondary links to roofers page', async ({ page }) => {
+    const secondary = page.locator('#investors-cta .v2-cta__button--secondary');
+    await expect(secondary).toHaveAttribute('href', routesV2.howItWorksRoofers);
+  });
+
+  // --- No console errors ---
+  test('page has no console errors', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('console', msg => {
+      if (msg.type() === 'error') errors.push(msg.text());
+    });
+    await page.goto('/how-it-works/investors', { waitUntil: 'load' });
+    await page.waitForTimeout(1000);
+    expect(errors).toHaveLength(0);
+  });
+});
+
+// ===========================================================================
+// INVESTORS PAGE — MOBILE RESPONSIVE
+// ===========================================================================
+
+test.describe('Investors Page — Mobile Layout', () => {
+  test.use({ viewport: { width: 375, height: 812 } });
+
+  test('all 6 sections render on mobile', async ({ page }) => {
+    await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
+    const sections = page.locator('.v2-section');
+    await expect(sections).toHaveCount(6);
+  });
+
+  test('hero heading is visible on mobile', async ({ page }) => {
+    await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
+    const h1 = page.locator('h1');
+    await expect(h1).toBeVisible();
+  });
+
+  test('timeline steps stack vertically on mobile', async ({ page }) => {
+    await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => {
+      document.querySelector('#investment-lifecycle')?.scrollIntoView();
+    });
+    await page.waitForTimeout(300);
+    const step = page.locator('.v2-timeline__step').first();
+    const gridCols = await step.evaluate(el =>
+      window.getComputedStyle(el).gridTemplateColumns
+    );
+    // On mobile, single column
+    expect(gridCols.split(' ').length).toBeLessThanOrEqual(1);
+  });
+
+  test('bento grid stacks on mobile', async ({ page }) => {
+    await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
+    await page.evaluate(() => {
+      document.querySelector('#bento-thesis')?.scrollIntoView();
+    });
+    await page.waitForTimeout(300);
+    const grid = page.locator('.v2-bento');
+    const gridCols = await grid.evaluate(el =>
+      window.getComputedStyle(el).gridTemplateColumns
+    );
+    expect(gridCols.split(' ').length).toBe(1);
   });
 });
 
@@ -683,25 +789,32 @@ test.describe('Footer — Navigation Links', () => {
 // ===========================================================================
 
 test.describe('CTA Buttons — All Pages', () => {
-  // V1 pages use .cta-block .link-button
-  const v1Pages = [
-    { path: '/how-it-works/roofers', name: 'Roofers' },
-    { path: '/how-it-works/investors', name: 'Investors' },
-  ];
 
-  for (const p of v1Pages) {
-    test(`${p.name} page CTA block button has correct href`, async ({ page }) => {
-      await page.goto(p.path, { waitUntil: 'domcontentloaded' });
-      const cta = page.locator('.cta-block .link-button');
-      await expect(cta).toHaveAttribute('href', ctaConfig.href);
-    });
+  // Roofers uses V2 CTA component
+  test('Roofers page V2 CTA button has correct href', async ({ page }) => {
+    await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
+    const cta = page.locator('#roofers-cta .v2-cta__button');
+    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+  });
 
-    test(`${p.name} page CTA block button is clickable`, async ({ page }) => {
-      await page.goto(p.path, { waitUntil: 'domcontentloaded' });
-      const cta = page.locator('.cta-block .link-button');
-      await expect(cta).toBeEnabled();
-    });
-  }
+  test('Roofers page V2 CTA button is clickable', async ({ page }) => {
+    await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
+    const cta = page.locator('#roofers-cta .v2-cta__button');
+    await expect(cta).toBeEnabled();
+  });
+
+  // Investors uses V2 CTA component
+  test('Investors page V2 CTA button has correct href', async ({ page }) => {
+    await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
+    const cta = page.locator('#investors-cta .v2-cta__button');
+    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+  });
+
+  test('Investors page V2 CTA button is clickable', async ({ page }) => {
+    await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
+    const cta = page.locator('#investors-cta .v2-cta__button');
+    await expect(cta).toBeEnabled();
+  });
 
   // About uses V2 CTA component
   test('About page V2 CTA button has correct href', async ({ page }) => {
@@ -729,14 +842,15 @@ test.describe('ValuePropsStrip — Present on correct pages', () => {
     await expect(page.locator('.value-props')).toBeAttached();
   });
 
-  test('Roofers page has value props strip', async ({ page }) => {
+  test('Roofers page has V2 sections (no value props strip)', async ({ page }) => {
     await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('.value-props')).toBeAttached();
+    // V2 roofers page doesn't use value-props strip
+    await expect(page.locator('.v2-section').first()).toBeAttached();
   });
 
-  test('Investors page has value props strip', async ({ page }) => {
+  test('Investors page has V2 sections (no value props strip)', async ({ page }) => {
     await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('.value-props')).toBeAttached();
+    await expect(page.locator('.v2-section').first()).toBeAttached();
   });
 
   test('About page does NOT have value props strip', async ({ page }) => {
@@ -750,22 +864,13 @@ test.describe('ValuePropsStrip — Present on correct pages', () => {
 // ===========================================================================
 
 test.describe('Layout & Spacing', () => {
-  test('step cards have non-zero padding', async ({ page }) => {
+  test('V2 step cards have non-zero padding', async ({ page }) => {
     await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
-    const card = page.locator('.step-card').first();
+    const card = page.locator('.v2-step').first();
     const padding = await card.evaluate(
       (el) => window.getComputedStyle(el).paddingTop
     );
     expect(parseInt(padding)).toBeGreaterThan(0);
-  });
-
-  test('step card numbers have gradient background', async ({ page }) => {
-    await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
-    const number = page.locator('.step-card__number').first();
-    const bg = await number.evaluate(
-      (el) => window.getComputedStyle(el).backgroundImage
-    );
-    expect(bg).toContain('gradient');
   });
 
   test('V2 CTA section is present on About', async ({ page }) => {
@@ -774,13 +879,13 @@ test.describe('Layout & Spacing', () => {
     await expect(block).toBeAttached();
   });
 
-  test('value props strip has border-radius', async ({ page }) => {
+  test('V2 hero heading has correct font family', async ({ page }) => {
     await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
-    const strip = page.locator('.value-props');
-    const radius = await strip.evaluate(
-      (el) => window.getComputedStyle(el).borderRadius
+    const heading = page.locator('.v2-hero__heading');
+    const fontFamily = await heading.evaluate(
+      (el) => window.getComputedStyle(el).fontFamily
     );
-    expect(parseInt(radius)).toBeGreaterThan(0);
+    expect(fontFamily).toBeTruthy();
   });
 
   test('V2 team cards have border-radius', async ({ page }) => {

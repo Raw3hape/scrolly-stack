@@ -1,0 +1,201 @@
+/* ============================================================================
+ * SplitSection — 2-column: image (left) + text/bullets (right)
+ *
+ * Matches Stitch "Problem: The Gap" pattern.
+ * Desktop: md:grid-cols-2. Mobile: stacked.
+ * ========================================================================== */
+
+.v2-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .v2-split {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(var(--space-2xl), 5vw, 5rem);
+  }
+}
+
+/* Reverse: image right */
+.v2-split--reverse .v2-split__image-col {
+  order: 2;
+}
+
+.v2-split--reverse .v2-split__content {
+  order: 1;
+}
+
+@media (max-width: 767px) {
+  .v2-split--reverse .v2-split__image-col,
+  .v2-split--reverse .v2-split__content {
+    order: unset;
+  }
+}
+
+/* ── Image column ── */
+.v2-split__image-wrapper {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.v2-split__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.v2-split__image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(16, 55, 64, 0.8) 0%,
+    transparent 60%
+  );
+}
+
+/* Quote at bottom of image */
+.v2-split__image-quote {
+  position: absolute;
+  bottom: var(--space-xl);
+  left: var(--space-xl);
+  right: var(--space-xl);
+}
+
+.v2-split__image-quote-text {
+  font-family: var(--font-family-serif);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  font-style: italic;
+  color: #fff;
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Text column ── */
+.v2-split__heading {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  line-height: var(--leading-tight);
+  color: var(--stitch-dark-bg);
+  margin-bottom: var(--space-lg);
+}
+
+.v2-split__text {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-xl);
+}
+
+/* ── Bullet list ── */
+.v2-split__bullets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.v2-split__bullet {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.v2-split__bullet-icon {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  margin-top: 0.125rem;
+}
+
+.v2-split__bullet-icon--cancel {
+  color: #ba1a1a; /* Stitch error token */
+}
+
+.v2-split__bullet-icon--check {
+  color: var(--color-teal-500);
+}
+
+.v2-split__bullet-text {
+  font: var(--font-body);
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Mobile ── */
+@media (max-width: 767px) {
+  .v2-split__image-wrapper {
+    aspect-ratio: 3 / 2;
+  }
+
+  .v2-split__image-quote {
+    bottom: var(--space-md);
+    left: var(--space-md);
+    right: var(--space-md);
+  }
+}
+
+/* ============================================================================
+ * Scroll-reveal animations
+ *
+ * Uses [data-visible] set by useParallax on the parent <section>.
+ * Bullets stagger in sequentially, image quote fades up.
+ * ========================================================================== */
+
+/* Bullets: hidden initially, stagger in */
+.v2-split__bullet {
+  opacity: 0;
+  transform: translateY(var(--space-md));
+  transition:
+    opacity var(--duration-base, 0.5s) var(--ease-out, ease-out),
+    transform var(--duration-base, 0.5s) var(--ease-out, ease-out);
+}
+
+[data-visible] .v2-split__bullet {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger: each bullet delayed incrementally */
+[data-visible] .v2-split__bullet:nth-child(1) { transition-delay: 0.3s; }
+[data-visible] .v2-split__bullet:nth-child(2) { transition-delay: 0.45s; }
+[data-visible] .v2-split__bullet:nth-child(3) { transition-delay: 0.6s; }
+[data-visible] .v2-split__bullet:nth-child(4) { transition-delay: 0.75s; }
+
+/* Image quote: slide up gently */
+.v2-split__image-quote {
+  opacity: 0;
+  transform: translateY(var(--space-sm));
+  transition:
+    opacity var(--duration-slower, 0.8s) var(--ease-out, ease-out) 0.4s,
+    transform var(--duration-slower, 0.8s) var(--ease-out, ease-out) 0.4s;
+}
+
+[data-visible] .v2-split__image-quote {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .v2-split__bullet,
+  .v2-split__image-quote {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

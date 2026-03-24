@@ -58,14 +58,14 @@ for (const viewport of VIEWPORTS) {
       });
     }
 
-    // Specific tests for Roofers step cards layout
-    test('Roofers — step cards layout is correct', async ({ page }) => {
+    // Specific tests for Roofers V2 step cards layout
+    test('Roofers — V2 step cards layout is correct', async ({ page }) => {
       await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
       
-      const grid = page.locator('.step-cards');
-      await expect(grid).toBeVisible();
+      const grid = page.locator('.v2-steps-grid');
+      await expect(grid).toBeAttached();
 
-      const cards = page.locator('.step-card');
+      const cards = page.locator('.v2-step');
       const count = await cards.count();
       expect(count).toBe(3);
 

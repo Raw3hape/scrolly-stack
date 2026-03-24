@@ -1,0 +1,91 @@
+/* ============================================================================
+ * TrustSection — badge + heading + partner names
+ *
+ * Centered layout with gold badge pill and grayscale partner logos.
+ * Subtle hover animation on partners for interactivity.
+ *
+ * Breakpoints: 768px (partners wrap), 480px (badge compact)
+ * ========================================================================== */
+
+.v2-trust {
+  text-align: center;
+  padding: var(--space-xl) 0;
+}
+
+/* ── Badge pill ── */
+.v2-trust__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  background: var(--color-gold-100);
+  padding: var(--space-2xs, 0.125rem) var(--space-sm);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-lg);
+}
+
+.v2-trust__badge-icon {
+  font-size: var(--font-size-xs);
+  color: var(--color-gold-900);
+  font-weight: var(--weight-bold);
+}
+
+.v2-trust__badge-text {
+  font: var(--font-overline);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-gold-900);
+}
+
+/* ── Heading ── */
+.v2-trust__heading {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  color: var(--text-primary);
+  max-width: var(--content-text-max);
+  margin: 0 auto var(--space-2xl);
+}
+
+/* ── Partner names row ── */
+.v2-trust__partners {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+
+.v2-trust__partner {
+  font-family: var(--font-family-serif);
+  font-size: clamp(var(--font-size-base), 0.875rem + 0.5vw, var(--font-size-xl));
+  color: var(--text-primary);
+  white-space: nowrap;
+  transition:
+    opacity var(--transition-base),
+    filter  var(--transition-base);
+}
+
+/* Hover: highlight individual partner */
+.v2-trust__partners:hover .v2-trust__partner {
+  opacity: 0.5;
+}
+
+.v2-trust__partners .v2-trust__partner:hover {
+  opacity: 1;
+  filter: none;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .v2-trust__partners {
+    gap: var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .v2-trust__partners {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+}

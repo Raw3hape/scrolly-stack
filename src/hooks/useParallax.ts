@@ -27,6 +27,13 @@ interface UseParallaxOptions {
   threshold?: number;
   /** IO root margin. Default: '100px 0px' (pre-activate 100px before enter). */
   rootMargin?: string;
+  /**
+   * Controls how far the section's top edge must travel into the viewport
+   * for progress to reach 1. Expressed as a fraction of viewport height.
+   * Default: 0.45 (top edge crosses 45% from top).
+   * Higher = slower (needs more scrolling), lower = faster.
+   */
+  completionFactor?: number;
 }
 
 /**
@@ -41,7 +48,7 @@ function quantize(v: number): number {
 export default function useParallax<T extends HTMLElement>(
   options: UseParallaxOptions = {},
 ) {
-  const { threshold = 0, rootMargin = '100px 0px' } = options;
+  const { threshold = 0, rootMargin = '100px 0px', completionFactor = 0.45 } = options;
   const ref = useRef<T>(null);
 
   // Mutable flag — avoids re-renders for visibility tracking
@@ -58,13 +65,8 @@ export default function useParallax<T extends HTMLElement>(
 
     // progress:
     //   0 = element's top edge arrives at the bottom of the viewport
-    //   1 = element's top edge reaches ~55% from the top
-    //
-    // "completionTarget" controls how early elements finish animating.
-    // 0.45*vh means full opacity is reached when the top of the section
-    // has crossed 45% of the viewport — well before the section center.
-    // This prevents the "semi-transparent in the middle" problem.
-    const completionTarget = vh * 0.45;
+    //   1 = element's top edge reaches completionFactor from the top
+    const completionTarget = vh * completionFactor;
     const scrolled = vh - rect.top;          // how far the top edge has entered
     const raw = scrolled / completionTarget;
     const progress = quantize(Math.max(0, Math.min(1, raw)));

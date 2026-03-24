@@ -1,9 +1,12 @@
 /**
  * CardsSection — renders a grid of info cards.
  * Data-driven: receives all content via props from content-v2.ts.
+ *
+ * Heading uses ScrollTypewriter for scroll-driven letter-by-letter reveal.
  */
 
 import type { CardsSection as CardsSectionData } from '@/config/types-v2';
+import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
 import V2Icon from '../V2Icon/V2Icon';
 import './CardsSection.css';
 
@@ -15,7 +18,13 @@ export default function CardsSection({ data }: Props) {
   return (
     <div className="v2-container">
       <div className="v2-cards-header">
-        <h2 className="v2-cards-header__heading px-layer--fg">{data.heading}</h2>
+        {/* Scroll-driven letter-by-letter heading reveal */}
+        <ScrollTypewriter
+          text={data.heading}
+          as="h2"
+          className="v2-cards-header__heading"
+          completionFactor={0.45}
+        />
         {data.subtext && (
           <p className="v2-cards-header__subtext">{data.subtext}</p>
         )}
@@ -35,3 +44,4 @@ export default function CardsSection({ data }: Props) {
     </div>
   );
 }
+

@@ -1,0 +1,192 @@
+/* ============================================================================
+ * BenefitsGridSection — dark 12-col grid
+ *
+ * Left (5 cols): heading + body + CTA button
+ * Right (7 cols): 2×2 glassmorphism card grid
+ *
+ * SCROLL-EXPAND: The parent <section>.v2-section--expand handles the
+ * margin / border-radius / overflow animation. This component only needs
+ * to restore its own background and padding inside the expand wrapper.
+ * ========================================================================== */
+
+/* ── Expand integration ── */
+
+/* Override --expand transparent bg: keep the dark background on the section itself */
+.v2-section--expand.v2-section--dark:has(.v2-benefits) {
+  background: var(--stitch-dark-bg);
+}
+
+/* Re-enable the architectural texture (expand normally disables section::after) */
+.v2-section--expand.v2-section--dark:has(.v2-benefits)::after {
+  display: block;
+}
+
+/* Content container: restore padding + constrain width inside expand */
+.v2-section--expand .v2-benefits {
+  padding: clamp(3rem, 6vw, 6rem) var(--container-padding);
+  max-width: var(--container-max);
+  margin-inline: auto;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: 100dvh;
+  align-content: center;
+}
+
+.v2-benefits {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .v2-benefits {
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(var(--space-2xl), 4vw, 4rem);
+  }
+}
+
+/* ── Left column: content ── */
+.v2-benefits__heading {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  line-height: var(--leading-tight);
+  color: #fff;
+  margin-bottom: var(--space-lg);
+}
+
+.v2-benefits__text {
+  font: var(--font-body-lg);
+  color: var(--stitch-dark-text-muted);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-xl);
+}
+
+.v2-benefits__cta {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-xl);
+  background: var(--color-gold-100);
+  color: var(--color-gold-900);
+  border-radius: var(--btn-radius);
+  font: var(--font-button);
+  font-weight: 700;
+  text-decoration: none;
+  transition: filter var(--transition-fast), transform var(--transition-fast);
+}
+
+.v2-benefits__cta:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.v2-benefits__cta:active {
+  transform: translateY(0);
+}
+
+/* ── Right column: 2×2 glassmorphism grid ── */
+.v2-benefits__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.v2-benefits__card {
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background var(--transition-base), transform var(--transition-fast);
+}
+
+.v2-benefits__card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.v2-benefits__card-icon {
+  color: var(--stitch-dark-accent);
+  margin-bottom: var(--space-md);
+}
+
+.v2-benefits__card-title {
+  font-family: var(--font-family-serif);
+  font-size: clamp(1.125rem, 1rem + 0.3vw, 1.25rem);
+  color: #fff;
+  margin-bottom: var(--space-xs);
+}
+
+.v2-benefits__card-text {
+  font-size: var(--font-size-sm);
+  color: var(--stitch-dark-text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Mobile ── */
+@media (max-width: 767px) {
+  .v2-benefits__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .v2-benefits__cta {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ============================================================================
+ * Scroll-reveal animations
+ * ========================================================================== */
+
+/* CTA button: slide up */
+.v2-benefits__cta {
+  opacity: 0;
+  transform: translateY(var(--space-md));
+  transition:
+    opacity var(--duration-base, 0.5s) var(--ease-out, ease-out) 0.3s,
+    transform var(--duration-base, 0.5s) var(--ease-out, ease-out) 0.3s,
+    filter var(--transition-fast);
+}
+
+[data-visible] .v2-benefits__cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cards: staggered entrance with scale */
+.v2-benefits__card {
+  opacity: 0;
+  transform: translateY(var(--space-lg)) scale(0.96);
+  transition:
+    opacity var(--duration-base, 0.6s) var(--ease-out, ease-out),
+    transform var(--duration-base, 0.6s) var(--ease-out, ease-out),
+    background var(--transition-base);
+}
+
+[data-visible] .v2-benefits__card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+[data-visible] .v2-benefits__card:nth-child(1) { transition-delay: 0.15s; }
+[data-visible] .v2-benefits__card:nth-child(2) { transition-delay: 0.3s; }
+[data-visible] .v2-benefits__card:nth-child(3) { transition-delay: 0.45s; }
+[data-visible] .v2-benefits__card:nth-child(4) { transition-delay: 0.6s; }
+
+/* Icon: subtle glow on card hover */
+.v2-benefits__card:hover .v2-benefits__card-icon {
+  filter: drop-shadow(0 0 8px var(--stitch-dark-accent));
+  transition: filter var(--transition-fast);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-benefits__cta,
+  .v2-benefits__card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

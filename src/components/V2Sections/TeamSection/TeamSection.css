@@ -70,7 +70,9 @@
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  padding: 0 var(--container-padding) var(--space-lg);
+  padding-block-end: var(--space-lg);
+  /* Edge-to-edge scroll; snap positions honour container inset */
+  scroll-padding-inline: var(--container-padding);
 
   /* Hide scrollbar */
   scrollbar-width: none;
@@ -85,6 +87,16 @@
 .v2-team-card {
   flex: 0 0 clamp(280px, 28vw, 450px);
   scroll-snap-align: start;
+}
+
+/* Align first card with the .v2-container heading above;
+   give last card breathing room at the trailing edge. */
+.v2-team-card:first-child {
+  margin-inline-start: var(--container-padding);
+}
+
+.v2-team-card:last-child {
+  margin-inline-end: var(--container-padding);
 }
 
 /* Photo wrapper */

@@ -79,7 +79,6 @@
 .glass {
   background: var(--surface-glass);
   backdrop-filter: var(--glass-saturation) var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-saturation) var(--glass-blur);
   border: var(--glass-border);
 }
 

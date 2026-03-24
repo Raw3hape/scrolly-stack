@@ -1,8 +1,8 @@
 /* =============================================================================
- * TestimonialSection — Stitch "Proof Of The Model" two-column layout
+ * TestimonialSection — Interactive carousel layout
  *
- * Left: heading + progress dots
- * Right: quote card with avatar + verified badge
+ * Left: heading + animated progress bar + arrows
+ * Right: quote cards with crossfade transition
  * ========================================================================== */
 
 .v2-testimonial {
@@ -13,7 +13,7 @@
   padding: var(--space-2xl) 0;
 }
 
-/* ── Left column (heading) ── */
+/* ── Left column (heading + controls) ── */
 .v2-testimonial__left {
   flex: 0 0 33%;
 }
@@ -26,35 +26,151 @@
   color: var(--text-primary);
 }
 
-/* Decorative progress dots */
-.v2-testimonial__dots {
+/* ── Progress bar ── */
+.v2-testimonial__progress {
   display: flex;
   gap: var(--space-xs);
   margin-top: var(--space-xl);
 }
 
-.v2-testimonial__dot {
-  width: var(--space-md);
+.v2-testimonial__segment {
+  position: relative;
   height: 3px;
   border-radius: var(--radius-full);
   background: var(--stitch-section-border);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  flex: 0 0 var(--space-md);
+  transition: flex var(--transition-smooth);
 }
 
-.v2-testimonial__dot--active {
-  width: var(--space-2xl);
+.v2-testimonial__segment--active {
+  flex: 0 0 var(--space-2xl);
+}
+
+.v2-testimonial__segment:focus-visible {
+  outline: 2px solid var(--stitch-dark-accent);
+  outline-offset: 2px;
+}
+
+/* Animated fill for active segment during auto-play */
+.v2-testimonial__segment-fill {
+  position: absolute;
+  inset: 0;
   background: var(--stitch-dark-accent);
+  border-radius: inherit;
+  transform-origin: left;
+  animation: testimonial-progress-fill var(--testimonial-interval, 8000ms) linear forwards;
 }
 
-/* ── Right column (quote card) ── */
+@keyframes testimonial-progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ── Navigation arrows ── */
+.v2-testimonial__arrows {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.v2-testimonial__arrow {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--stitch-section-border);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.v2-testimonial__arrow:hover {
+  background: var(--stitch-dark-bg);
+  color: var(--text-inverse);
+}
+
+.v2-testimonial__arrow:active {
+  transform: scale(0.92);
+}
+
+.v2-testimonial__arrow:focus-visible {
+  outline: 2px solid var(--stitch-dark-accent);
+  outline-offset: 2px;
+}
+
+/* ── Right column (quote cards) ── */
 .v2-testimonial__right {
   flex: 1;
+  min-width: 0;
 }
 
+.v2-testimonial__slides {
+  position: relative;
+}
+
+/* All cards stacked via grid; only active one is visible */
 .v2-testimonial__card {
+  grid-area: 1 / 1;
   background: var(--surface-elevated);
   border-radius: var(--radius-lg);
   padding: clamp(var(--space-xl), 4vw, var(--space-2xl));
   position: relative;
+  opacity: 0;
+  transform: translateY(var(--space-lg)) scale(0.97);
+  filter: blur(4px);
+  pointer-events: none;
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out),
+    filter 700ms var(--ease-out);
+  visibility: hidden;
+  will-change: opacity, transform, filter;
+}
+
+.v2-testimonial__slides {
+  display: grid;
+}
+
+.v2-testimonial__card--active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* Staggered entrance for inner card content */
+.v2-testimonial__card--active .v2-testimonial__quote {
+  animation: testimonial-content-in 600ms var(--ease-out) 150ms both;
+}
+
+.v2-testimonial__card--active .v2-testimonial__attribution {
+  animation: testimonial-content-in 600ms var(--ease-out) 300ms both;
+}
+
+@keyframes testimonial-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-sm));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Decorative large quote icon */
@@ -122,6 +238,7 @@
   color: var(--color-gold-900);
   padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-sm);
+  white-space: nowrap;
 }
 
 /* ── Responsive: stack on mobile ── */
@@ -133,9 +250,42 @@
 
   .v2-testimonial__left {
     flex: none;
+    width: 100%;
+  }
+
+  /* On mobile: heading top, then progress + arrows side by side */
+  .v2-testimonial__arrows {
+    margin-top: var(--space-md);
+  }
+
+  .v2-testimonial__arrow {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
   .v2-testimonial__quote {
     font-size: var(--font-size-2xl);
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .v2-testimonial__card {
+    transition: none;
+    transform: none;
+    filter: none;
+  }
+
+  .v2-testimonial__card--active .v2-testimonial__quote,
+  .v2-testimonial__card--active .v2-testimonial__attribution {
+    animation: none;
+  }
+
+  .v2-testimonial__segment-fill {
+    animation: none;
+  }
+
+  .v2-testimonial__segment {
+    transition: none;
   }
 }

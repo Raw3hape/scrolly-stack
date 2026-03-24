@@ -49,7 +49,7 @@ export default function CinematicSection({ data }: Props) {
         <div className="v2-cinematic__grid">
           <h2 className="v2-cinematic__heading px-layer--fg" data-px-delay="1">{data.heading}</h2>
 
-          <div className="v2-cinematic__card px-layer--accent" data-px-from="right" data-px-delay="2">
+          <div className="v2-cinematic__card" data-px-delay="2">
             <h3 className="v2-cinematic__card-title">{data.card.title}</h3>
             <p className="v2-cinematic__card-text">{data.card.text}</p>
             {data.card.footnote && (

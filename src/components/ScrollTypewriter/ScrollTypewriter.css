@@ -1,0 +1,43 @@
+/* ============================================================================
+ * ScrollTypewriter — Scroll-driven letter-by-letter reveal
+ *
+ * Each character's opacity is computed via CSS calc() using:
+ *   --px-progress  (0→1, set by useParallax on the container)
+ *   --char-index   (0-based position of this character)
+ *   --char-total   (total non-space characters count)
+ *
+ * The formula maps each char to a narrow window of the scroll progress:
+ *   opacity = clamp(0, (progress * total - index) * sharpness, 1)
+ *
+ * "sharpness" controls how abruptly each letter appears:
+ *   Higher = snappier cut, Lower = softer fade-in per letter.
+ * ========================================================================== */
+
+/* Characters inherit parent font — this component is purely about animation */
+
+.scroll-typewriter__char {
+  opacity: clamp(
+    0,
+    (var(--px-progress, 0) * var(--char-total, 1) - var(--char-index, 0)) * 3.5,
+    1
+  );
+  will-change: opacity;
+}
+
+/* Spaces are always visible to preserve word spacing rhythm */
+.scroll-typewriter__space {
+  opacity: 1;
+}
+
+/* When fully revealed, remove will-change to free GPU memory */
+.scroll-typewriter[data-visible="true"] .scroll-typewriter__char {
+  will-change: auto;
+}
+
+/* === Reduced Motion: show everything immediately === */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-typewriter__char {
+    opacity: 1 !important;
+    will-change: auto;
+  }
+}

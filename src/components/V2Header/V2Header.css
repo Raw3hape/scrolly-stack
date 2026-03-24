@@ -12,6 +12,11 @@
   padding: var(--space-sm) 0;
   /* Safe-area: prevent content behind Dynamic Island / notch on iOS */
   padding-top: max(var(--space-sm), env(safe-area-inset-top, 0px));
+  /* Frosted glass — always on for legibility over scrolling content.
+     Do NOT add -webkit-backdrop-filter manually — LightningCSS (Turbopack)
+     auto-prefixes and removes the standard property if it sees both. */
+  background: rgba(254, 249, 240, 0.55);
+  backdrop-filter: blur(12px);
   transition:
     transform var(--transition-base),
     background var(--transition-base),
@@ -19,9 +24,8 @@
 }
 
 .v2-header--scrolled {
-  background: var(--stitch-glass-header-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
+  background: rgba(254, 249, 240, 0.7);
+  backdrop-filter: blur(16px);
   box-shadow: var(--shadow-sm);
 }
 

@@ -34,7 +34,6 @@
   /* Frosted glass effect - more pronounced */
   background: var(--glass-bg);
   backdrop-filter: var(--glass-saturation) var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-saturation) var(--glass-blur);
   border-bottom: var(--glass-border);
   /* Stronger, more diffused shadow */
   box-shadow: var(--glass-shadow);
@@ -47,7 +46,6 @@
 .header--sticky {
   background: var(--glass-bg-sticky);
   backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
 }
 
 .header--transparent {
@@ -58,7 +56,6 @@
 .header--scrolled {
   background: var(--glass-bg-scrolled);
   backdrop-filter: var(--glass-saturation) var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-saturation) var(--glass-blur);
   /* Stronger, very soft shadow when scrolled */
   box-shadow: var(--glass-shadow-scrolled);
   border-bottom: var(--glass-border);

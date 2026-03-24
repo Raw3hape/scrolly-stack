@@ -1,0 +1,352 @@
+/* ============================================================================
+ * TimelineSection — Interactive scroll-driven vertical timeline
+ *
+ * Architecture:
+ *   - Scroll-driven center line (scaleY via --tl-line-progress)
+ *   - Sequential stagger reveal: number → title → text → KPI card
+ *   - No dots, no hover blur — clean, airy, minimal
+ *   - Generous spacing between steps for breathing room
+ *
+ * All values reference design tokens from effects.css / motion.css.
+ * Breakpoints: 768px (mobile→desktop), 480px (small mobile)
+ * ========================================================================== */
+
+/* ── Container override — extra horizontal breathing room ── */
+.v2-timeline__container {
+  padding-left: clamp(var(--space-lg), 6vw, var(--space-3xl));
+  padding-right: clamp(var(--space-lg), 6vw, var(--space-3xl));
+}
+
+/* ── Header ── */
+.v2-timeline__header {
+  text-align: center;
+  margin-bottom: clamp(var(--space-2xl), 6vw, 6rem);
+}
+
+.v2-timeline__heading {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.v2-timeline__divider {
+  width: 6rem;
+  height: var(--line-thin);
+  background: var(--color-gold-300);
+  margin: 0 auto;
+}
+
+/* ── Timeline container ── */
+.v2-timeline {
+  position: relative;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+/* ── Center line — background track (desktop only) ── */
+.v2-timeline__line {
+  display: none;
+}
+
+/* ── Center line — active progress overlay (desktop only) ── */
+.v2-timeline__line-active {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .v2-timeline__line {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: var(--line-thin);
+    background: var(--timeline-line-color);
+    opacity: 0.15;
+    transform: translateX(-50%);
+  }
+
+  .v2-timeline__line-active {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: calc(var(--line-thin) + 1px);
+    background: linear-gradient(
+      to bottom,
+      var(--timeline-line-active-from),
+      var(--timeline-line-active-to)
+    );
+    transform: translateX(-50%) scaleY(var(--tl-line-progress, 0));
+    transform-origin: top center;
+    z-index: 1;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+}
+
+/* ── Step row ── */
+.v2-timeline__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  /* Generous vertical spacing between steps */
+  margin-bottom: clamp(5rem, 12vw, 10rem);
+  align-items: center;
+}
+
+.v2-timeline__step:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .v2-timeline__step {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(var(--space-2xl), 6vw, 6rem);
+  }
+
+  /* Reverse: KPI card first, content second */
+  .v2-timeline__step--reverse .v2-timeline__content {
+    order: 2;
+    text-align: left;
+  }
+
+  .v2-timeline__step--reverse .v2-timeline__kpi-wrapper {
+    order: 1;
+  }
+}
+
+/* ── Sequential stagger reveal items ── */
+.v2-timeline__reveal-item {
+  opacity: 0;
+  transform: translateY(var(--space-md));
+  transition:
+    opacity  var(--timeline-reveal-duration) var(--timeline-reveal-ease),
+    transform var(--timeline-reveal-duration) var(--timeline-reveal-ease);
+}
+
+/* Stagger delays: number → title → text */
+.v2-timeline__reveal-item--number {
+  transition-delay: 0s;
+}
+
+.v2-timeline__reveal-item--title {
+  transition-delay: 0.12s;
+}
+
+.v2-timeline__reveal-item--text {
+  transition-delay: 0.24s;
+}
+
+/* Revealed state */
+.v2-timeline__reveal-item[data-revealed] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Content alignment ── */
+@media (min-width: 768px) {
+  .v2-timeline__content--right-align {
+    text-align: right;
+  }
+
+  .v2-timeline__content--right-align .v2-timeline__text {
+    margin-left: auto;
+  }
+}
+
+/* ── Step number — gold italic serif ── */
+.v2-timeline__number {
+  display: block;
+  font-family: var(--font-family-serif);
+  font-size: clamp(var(--font-size-3xl), 2rem + 2vw, 3.75rem);
+  font-style: italic;
+  color: var(--color-gold-300);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Step title ── */
+.v2-timeline__title {
+  font: var(--font-h3);
+  font-family: var(--font-family-serif);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+/* ── Step body text ── */
+.v2-timeline__text {
+  font: var(--font-body);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+  max-width: 26rem;
+}
+
+/* ── KPI card wrapper ── */
+.v2-timeline__kpi-wrapper {
+  position: relative;
+}
+
+/* ── KPI card — reveal animation ── */
+.v2-timeline__kpi-card {
+  background: var(--stitch-surface-container-low);
+  padding: clamp(var(--space-lg), 3vw, var(--space-xl));
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(193, 200, 202, 0.08);
+  position: relative;
+  overflow: hidden;
+
+  /* Reveal: start hidden, slide from direction */
+  opacity: 0;
+  transform: translateX(var(--timeline-reveal-x));
+  transition:
+    opacity   var(--timeline-reveal-duration) var(--timeline-reveal-ease),
+    transform var(--timeline-reveal-duration) var(--timeline-reveal-ease),
+    box-shadow var(--transition-fast);
+  /* KPI card appears after text (stagger after content items) */
+  transition-delay: 0.36s, 0.36s, 0s;
+}
+
+/* Direction: if from left, slide from left */
+.v2-timeline__kpi-card[data-reveal-from="left"] {
+  transform: translateX(calc(var(--timeline-reveal-x) * -1));
+}
+
+.v2-timeline__kpi-card[data-reveal-from="right"] {
+  transform: translateX(var(--timeline-reveal-x));
+}
+
+/* Revealed state */
+.v2-timeline__kpi-card[data-revealed] {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Subtle shimmer border on reveal — pseudo-element */
+.v2-timeline__kpi-card[data-revealed]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(
+    135deg,
+    rgba(229, 173, 107, 0.2) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(41, 115, 115, 0.12) 100%
+  ) border-box;
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  animation: shimmer-in var(--duration-slower) var(--ease-out) 0.5s forwards;
+  pointer-events: none;
+}
+
+@keyframes shimmer-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Card hover — gentle lift only, no group blur */
+.v2-timeline__step:hover .v2-timeline__kpi-card[data-revealed] {
+  box-shadow: var(--shadow-md);
+}
+
+.v2-timeline__kpi-icon {
+  color: var(--color-teal-500);
+  margin-bottom: var(--space-sm);
+}
+
+.v2-timeline__kpi-icon svg {
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+}
+
+.v2-timeline__kpi-label {
+  font: var(--font-overline);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--stitch-outline);
+  margin-bottom: var(--space-xs);
+}
+
+.v2-timeline__kpi-value {
+  font: var(--font-h4);
+  font-family: var(--font-family-serif);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+/* ── Mobile: single column with animated left border ── */
+@media (max-width: 768px) {
+  .v2-timeline__step {
+    padding-left: var(--space-lg);
+    border-left: var(--line-thick) solid var(--stitch-outline-variant);
+    margin-bottom: clamp(3rem, 8vw, 6rem);
+    transition: border-color var(--transition-smooth);
+  }
+
+  /* Active step: gold left border */
+  .v2-timeline__step--active {
+    border-left-color: var(--color-gold-300);
+  }
+
+  .v2-timeline__number {
+    font-size: var(--font-size-3xl);
+  }
+
+  /* Mobile: simplify to vertical-only reveal */
+  .v2-timeline__kpi-card {
+    transform: translateY(var(--space-md));
+  }
+
+  .v2-timeline__kpi-card[data-reveal-from="left"],
+  .v2-timeline__kpi-card[data-reveal-from="right"] {
+    transform: translateY(var(--space-md));
+  }
+
+  .v2-timeline__kpi-card[data-revealed],
+  .v2-timeline__kpi-card[data-revealed][data-reveal-from="left"],
+  .v2-timeline__kpi-card[data-revealed][data-reveal-from="right"] {
+    transform: translateY(0);
+  }
+}
+
+/* ── Small mobile ── */
+@media (max-width: 480px) {
+  .v2-timeline__container {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  .v2-timeline__kpi-card {
+    padding: var(--space-md);
+  }
+}
+
+/* ── Accessibility: Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .v2-timeline__reveal-item,
+  .v2-timeline__kpi-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .v2-timeline__line-active {
+    transform: translateX(-50%) scaleY(1) !important;
+    transition: none !important;
+  }
+
+  .v2-timeline__kpi-card[data-revealed]::after {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}

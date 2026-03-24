@@ -1,0 +1,97 @@
+/* ============================================================================
+ * ScheduleQuoteSection — Dark testimonial quote block
+ *
+ * Full-width dark section with large quote, author avatar, and
+ * semi-transparent background image. Zero hardcoded values.
+ * ========================================================================== */
+
+.v2-schedule-quote {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background image overlay */
+.v2-schedule-quote__bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 33%;
+  height: 100%;
+  opacity: 0.1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.v2-schedule-quote__inner {
+  position: relative;
+  max-width: 48rem;
+  padding: var(--space-3xl) var(--space-2xl);
+}
+
+/* Quote icon */
+.v2-schedule-quote__icon {
+  color: var(--stitch-dark-accent);
+  margin-bottom: var(--space-lg);
+  display: block;
+}
+
+.v2-schedule-quote__text {
+  font: var(--font-h2);
+  font-style: italic;
+  line-height: var(--leading-snug);
+  color: var(--stitch-dark-text);
+  margin-bottom: var(--space-xl);
+}
+
+/* Author row */
+.v2-schedule-quote__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.v2-schedule-quote__avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--stitch-glass-dark-bg);
+}
+
+.v2-schedule-quote__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.v2-schedule-quote__name {
+  font: var(--font-body-lg);
+  font-weight: var(--weight-bold);
+  color: var(--stitch-dark-text);
+}
+
+.v2-schedule-quote__role {
+  font: var(--font-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--stitch-dark-accent);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .v2-schedule-quote__inner {
+    padding: var(--space-2xl) var(--space-lg);
+  }
+
+  .v2-schedule-quote__text {
+    font-size: var(--font-size-2xl);
+  }
+
+  .v2-schedule-quote__bg {
+    width: 50%;
+    opacity: 0.06;
+  }
+}

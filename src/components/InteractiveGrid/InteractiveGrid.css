@@ -1,0 +1,68 @@
+/* ============================================================================
+ * InteractiveGrid — Mouse-reactive grid of subtle squares
+ *
+ * Grid cells glow softly near the cursor position.
+ * Uses CSS custom properties `--mouse-x` and `--mouse-y` (0→1 range)
+ * set by JS on mousemove, then each cell computes its proximity
+ * to the cursor via calc() for a radial glow effect.
+ * ========================================================================== */
+
+.interactive-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 12), 1fr);
+  grid-template-rows: repeat(var(--grid-rows, 6), 1fr);
+  gap: 1px;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* Allow mouse events on the parent, not individual cells */
+.interactive-grid--active {
+  pointer-events: auto;
+}
+
+.interactive-grid__cell {
+  position: relative;
+  aspect-ratio: 1;
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs, 2px);
+  transition: border-color var(--duration-slow) var(--ease-out),
+              background-color var(--duration-slow) var(--ease-out);
+}
+
+/* Proximity glow — computed via CSS calc from --mouse-x/--mouse-y */
+.interactive-grid__cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+/* Hover state on the grid container triggers cell visibility */
+.interactive-grid:hover .interactive-grid__cell {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Cells near cursor glow subtly — handled via inline style opacity from JS */
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .interactive-grid__cell,
+  .interactive-grid__cell::after {
+    transition: none;
+  }
+}
+
+/* Mobile: hide the grid (no mouse hover) */
+@media (max-width: 768px) {
+  .interactive-grid {
+    display: none;
+  }
+}

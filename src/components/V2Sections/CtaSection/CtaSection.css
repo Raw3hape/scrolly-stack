@@ -219,3 +219,36 @@
   }
 }
 
+/* =============================================================================
+ * Scroll-driven stagger reveal for supporting elements
+ *
+ * --px-progress (0→1) is set by useParallax on the parent <section>.
+ * --reveal-order (0, 1, 2) is set inline on each element.
+ *
+ * Each element starts appearing after the heading reveal is ~60% done,
+ * then completes over a short scroll range with a per-element stagger delay.
+ * ========================================================================== */
+
+.v2-cta__reveal {
+  --_delay: calc(var(--reveal-order, 0) * 0.12);
+  --_progress: clamp(0, (var(--px-progress, 0) - 0.45 - var(--_delay)) * 5, 1);
+
+  opacity: var(--_progress);
+  transform: translateY(calc((1 - var(--_progress)) * 1.5rem));
+  will-change: opacity, transform;
+}
+
+/* Remove will-change after section fully revealed to free GPU memory */
+[data-visible="true"] .v2-cta__reveal {
+  will-change: auto;
+}
+
+/* === Reduced Motion: show everything immediately === */
+@media (prefers-reduced-motion: reduce) {
+  .v2-cta__reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}
+

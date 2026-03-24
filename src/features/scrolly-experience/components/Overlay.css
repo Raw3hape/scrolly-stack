@@ -468,7 +468,6 @@
     /* Light blur — 8px is ~50% cheaper than 16px while still frosting over
      * the live WebGL canvas. Cards are GPU-promoted (will-change + contain). */
     backdrop-filter: saturate(120%) blur(8px);
-    -webkit-backdrop-filter: saturate(120%) blur(8px);
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
     /* Stronger, very soft diffused shadows */

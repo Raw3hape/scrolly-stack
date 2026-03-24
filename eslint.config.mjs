@@ -38,7 +38,10 @@ export default [
   {
     // Prevent Three.js imports outside the scrolly-experience feature
     files: ['src/**/*.ts', 'src/**/*.tsx'],
-    ignores: ['src/features/scrolly-experience/**'],
+    ignores: [
+      'src/features/scrolly-experience/**',
+      'src/components/V2Sections/HeroSection/HeroGridCanvas.tsx',
+    ],
     rules: {
       'no-restricted-imports': ['error', {
         paths: [

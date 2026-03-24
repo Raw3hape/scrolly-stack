@@ -1,0 +1,371 @@
+/* ============================================================================
+ * OptInHeroSection — 3D Book + Lead Magnet Form
+ *
+ * BEM: .v2-optin__*
+ * Responsive: mobile-first, breakpoints at 768px and 1024px
+ * Zero hardcode: all values from design tokens
+ * ========================================================================== */
+
+/* === Grid Layout === */
+.v2-optin {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+  align-items: start;
+  padding: var(--space-2xl) 0;
+}
+
+@media (min-width: 1024px) {
+  .v2-optin {
+    grid-template-columns: 5fr 7fr;
+    gap: var(--space-3xl);
+  }
+}
+
+/* === Book Column === */
+.v2-optin__book-col {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .v2-optin__book-col {
+    order: 1;
+    position: sticky;
+    top: var(--space-3xl);
+  }
+}
+
+.v2-optin__book-canvas {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 1023px) {
+  .v2-optin__book-canvas {
+    max-width: 320px;
+    aspect-ratio: 3 / 4;
+  }
+}
+
+/* === Trust Badge === */
+.v2-optin__trust {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .v2-optin__trust {
+    justify-content: flex-start;
+  }
+}
+
+.v2-optin__trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-gold-100, #ffdcbc);
+  color: var(--color-gold-900, #2c1700);
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+}
+
+.v2-optin__trust-icon {
+  width: var(--icon-xs);
+  height: var(--icon-xs);
+}
+
+.v2-optin__trust-metric {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+}
+
+/* === Content Column === */
+.v2-optin__content-col {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+  .v2-optin__content-col {
+    order: 2;
+    gap: var(--space-xl);
+  }
+}
+
+/* === Overline === */
+.v2-optin__overline {
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-teal-500);
+}
+
+/* === Heading === */
+.v2-optin__heading {
+  font: var(--font-h1);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+@media (max-width: 767px) {
+  .v2-optin__heading {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+/* === Subtext === */
+.v2-optin__subtext {
+  font: var(--font-body-lg);
+  color: var(--text-muted);
+  max-width: var(--content-text-max);
+}
+
+/* === Form Card === */
+.v2-optin__form-card {
+  background: var(--stitch-surface-container-low, var(--surface-raised));
+  padding: var(--space-xl) var(--space-xl);
+  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .v2-optin__form-card {
+    padding: var(--space-2xl);
+  }
+}
+
+.v2-optin__form-decor {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8rem;
+  height: 8rem;
+  background: var(--stitch-dark-bg);
+  opacity: 0.05;
+  border-radius: var(--radius-full);
+  transform: translate(50%, -50%);
+  pointer-events: none;
+}
+
+/* === Form Grid === */
+.v2-optin__form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 768px) {
+  .v2-optin__form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* === Field === */
+.v2-optin__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.v2-optin__label {
+  font-size: var(--font-size-2xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--text-muted);
+  margin-left: var(--space-xs);
+}
+
+.v2-optin__input {
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--surface-card, #f7f4ef);
+  border: var(--border-width-thin, 1px) solid
+    color-mix(in srgb, var(--stitch-dark-bg) 12%, transparent);
+  border-radius: var(--radius-md);
+  font: var(--font-body);
+  color: var(--text-primary);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.v2-optin__input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.v2-optin__input:hover {
+  border-color: color-mix(in srgb, var(--stitch-dark-bg) 25%, transparent);
+  background: var(--surface-card-hover, #f2ede4);
+}
+
+.v2-optin__input:focus {
+  outline: none;
+  border-color: var(--color-teal-500);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-teal-500) 15%, transparent),
+    var(--shadow-sm);
+  background: var(--color-sand-25, #fdfcfa);
+}
+
+/* === Submit Button (solid bg — matches CTA section, no gradient flicker) === */
+.v2-optin__submit-wrap {
+  margin-top: var(--space-md);
+}
+
+@media (min-width: 768px) {
+  .v2-optin__submit-wrap {
+    grid-column: 1 / -1;
+  }
+}
+
+.v2-optin__submit {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg) var(--space-xl);
+  background: var(--stitch-dark-bg);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--btn-radius);
+  font: var(--font-button);
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+  box-shadow: var(--btn-shadow-primary);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.v2-optin__submit:hover {
+  background: var(--stitch-cta-hover-bg);
+  transform: var(--stitch-cta-hover-lift);
+  box-shadow: var(--stitch-cta-hover-shadow);
+}
+
+.v2-optin__submit:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.v2-optin__submit:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* === Disclaimer === */
+.v2-optin__disclaimer {
+  font-size: var(--font-size-2xs);
+  text-align: center;
+  margin-top: var(--space-md);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+}
+
+/* === Success State === */
+.v2-optin__success {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+.v2-optin__success-icon {
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+  color: var(--status-success);
+  margin-bottom: var(--space-md);
+}
+
+.v2-optin__success-heading {
+  font: var(--font-h3);
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.v2-optin__success-text {
+  font: var(--font-body);
+  color: var(--text-muted);
+}
+
+/* === Value Props Grid === */
+.v2-optin__props {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: var(--line-thin) solid var(--stitch-outline-variant);
+  border-top-color: color-mix(in srgb, var(--stitch-outline-variant) 20%, transparent);
+}
+
+@media (min-width: 768px) {
+  .v2-optin__props {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.v2-optin__prop {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.v2-optin__prop-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--color-teal-500) 10%, transparent);
+  color: var(--color-teal-500);
+  border-radius: var(--radius-sm);
+}
+
+.v2-optin__prop-title {
+  font: var(--font-h4);
+  font-family: var(--font-family-serif);
+  font-weight: var(--weight-normal);
+  font-size: var(--font-size-xl);
+  color: var(--stitch-dark-bg);
+}
+
+.v2-optin__prop-text {
+  font: var(--font-body-sm);
+  color: var(--text-muted);
+}
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .v2-optin__submit {
+    transition: none;
+  }
+
+  .v2-optin__input {
+    transition: none;
+  }
+}

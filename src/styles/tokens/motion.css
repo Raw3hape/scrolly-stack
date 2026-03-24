@@ -37,6 +37,20 @@
   --parallax-stagger-step: 0.12;   /* progress offset between siblings */
   --parallax-scale-from:   0.94;   /* accent layer scale start       */
   --parallax-shift-x:  clamp(1.5rem, 8vw, 6rem);  /* horizontal slide */
+
+  /* === Hero Intro Animation === */
+  --intro-duration:     1.2s;
+  --intro-ease:         cubic-bezier(0.16, 1, 0.3, 1);   /* smooth ease-out  */
+  --intro-rise:         clamp(2rem, 6vh, 5rem);           /* vertical travel   */
+  --intro-stagger:      120ms;                            /* delay per child   */
+
+  /* === Scroll-Expand Card System === */
+  --expand-inset-start:  clamp(3rem, 8vw, 10rem);     /* initial margin from viewport edges  */
+  --expand-radius-start: clamp(24px, 4vw, 48px);      /* initial corner rounding            */
+  --expand-scale-start:  0.55;                         /* initial scale — roughly half size   */
+  --expand-scale-bg:     1.25;                         /* bg zoom to compensate for scale     */
+  --expand-speed:        0.5;                          /* <1 = slower expansion, 1 = normal   */
+  --expand-pull-up:      clamp(-6rem, -10vw, -3rem);   /* pull section up to overlap hero     */
 }
 
 /* === Accessibility: Reduced Motion === */

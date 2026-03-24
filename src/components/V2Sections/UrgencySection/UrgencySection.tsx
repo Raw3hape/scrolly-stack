@@ -11,6 +11,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { UrgencySection as UrgencySectionData } from '@/config/types-v2';
 import { ctaConfigV2 } from '@/config/nav-v2';
+import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
 import './UrgencySection.css';
 
 interface Props {
@@ -24,11 +25,20 @@ export default function UrgencySection({ data }: Props) {
         {/* Left column: text content */}
         <div className="v2-urgency-card__content px-layer--fg">
           <h2 className="v2-urgency-card__heading">
-            {data.heading}
+            <ScrollTypewriter
+              text={data.heading}
+              as="span"
+              completionFactor={0.4}
+            />
             {data.headingAccent && (
               <>
                 <br />
-                <span className="v2-urgency-card__accent">{data.headingAccent}</span>
+                <ScrollTypewriter
+                  text={data.headingAccent}
+                  className="v2-urgency-card__accent"
+                  as="span"
+                  completionFactor={0.3}
+                />
               </>
             )}
           </h2>

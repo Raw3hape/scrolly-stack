@@ -1,0 +1,75 @@
+/* ============================================================================
+ * ScheduleHeroSection — Hero header for Schedule page
+ *
+ * Centered layout: large serif heading + subtext + SMS pill badge.
+ * All values from design tokens — zero hardcoded colors/sizes.
+ * ========================================================================== */
+
+.v2-schedule-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: var(--content-text-max);
+  margin: 0 auto;
+  padding-top: var(--space-3xl);
+}
+
+.v2-schedule-hero__heading {
+  font: var(--font-h1);
+  color: var(--stitch-dark-bg);
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-display);
+  line-height: var(--leading-tight);
+}
+
+.v2-schedule-hero__subtext {
+  font: var(--font-body-lg);
+  color: var(--text-muted);
+  max-width: 36rem;
+  margin-bottom: var(--space-xl);
+  line-height: var(--leading-relaxed);
+}
+
+/* SMS pill badge */
+.v2-schedule-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--stitch-surface-container-low);
+  border-radius: var(--radius-full);
+  font: var(--font-body);
+  color: var(--text-primary);
+}
+
+.v2-schedule-hero__badge-icon {
+  color: var(--color-teal-500);
+  flex-shrink: 0;
+}
+
+.v2-schedule-hero__badge-keyword {
+  font-weight: var(--weight-bold);
+  color: var(--color-teal-500);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .v2-schedule-hero {
+    padding-top: var(--space-2xl);
+  }
+
+  .v2-schedule-hero__heading {
+    font-size: var(--font-size-3xl);
+  }
+
+  .v2-schedule-hero__badge {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-sm);
+  }
+}

@@ -3,9 +3,14 @@
  *
  * Layout (top to bottom):
  *   1. Overline (uppercase, tracked)
- *   2. Heading (display-size serif italic)
+ *   2. Heading (display-size serif italic) — scroll-driven letter-by-letter reveal
  *   3. Buttons: primary + optional secondary (ghost)
  *   4. Microcopy (small, muted, below buttons)
+ *
+ * Animations:
+ *   - Heading uses ScrollTypewriter for per-character reveal tied to scroll
+ *   - Supporting elements (overline, microcopy, buttons) use CSS-only stagger
+ *     driven by --px-progress from the parent SectionRenderer
  *
  * Supports dark variant via surface='dark' (dark teal bg, light text).
  * Background: BlueprintGrid canvas (architectural grid with mouse-driven glow).
@@ -14,6 +19,7 @@
 import Link from 'next/link';
 import type { CtaSection as CtaSectionData } from '@/config/types-v2';
 import { ctaConfigV2 } from '@/config/nav-v2';
+import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
 import BlueprintGrid from './BlueprintGrid';
 import './CtaSection.css';
 
@@ -39,16 +45,35 @@ export default function CtaSection({ data }: Props) {
 
       <div className="v2-container v2-cta__layout">
         {data.overline && (
-          <span className="v2-cta__overline px-layer--fg">{data.overline}</span>
+          <span
+            className="v2-cta__overline v2-cta__reveal"
+            style={{ '--reveal-order': 0 } as React.CSSProperties}
+          >
+            {data.overline}
+          </span>
         )}
 
-        <h2 className="v2-cta__heading px-layer--fg" data-px-delay="1">{data.heading}</h2>
+        {/* Scroll-driven letter-by-letter heading reveal */}
+        <ScrollTypewriter
+          text={data.heading}
+          as="h2"
+          className="v2-cta__heading"
+          completionFactor={0.55}
+        />
 
         {data.microcopy && (
-          <p className="v2-cta__microcopy">{data.microcopy}</p>
+          <p
+            className="v2-cta__microcopy v2-cta__reveal"
+            style={{ '--reveal-order': 1 } as React.CSSProperties}
+          >
+            {data.microcopy}
+          </p>
         )}
 
-        <div className="v2-cta__buttons px-layer--accent" data-px-delay="2">
+        <div
+          className="v2-cta__buttons v2-cta__reveal"
+          style={{ '--reveal-order': 2 } as React.CSSProperties}
+        >
           <Link href={ctaConfigV2.href} className="v2-cta__button">
             {data.buttonLabel ?? ctaConfigV2.label} <span aria-hidden="true">→</span>
           </Link>

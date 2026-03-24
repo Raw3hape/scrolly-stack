@@ -1,22 +1,25 @@
 import type { Metadata } from 'next';
+import { scheduleContent } from '@/config/content-v2';
+import SectionRenderer from '@/components/V2Sections/SectionRenderer';
 
 export const metadata: Metadata = {
-  title: 'Schedule A Call',
-  description: 'Book a free 15-minute strategy call with Foundation Projects to discuss your roofing company exit.',
+  title: scheduleContent.metadata.title,
+  description: scheduleContent.metadata.description,
 };
 
+/**
+ * SchedulePage — Book A Call
+ *
+ * Data-driven: all content from content-v2.ts → SectionRenderer.
+ * Sections: schedule-hero + schedule-booking (modular calendar) +
+ * schedule-quote + CTA.
+ */
 export default function SchedulePage() {
   return (
-    <section className="v2-section v2-section--fullscreen" style={{ textAlign: 'center' }}>
-      <div className="v2-container">
-        <h1 style={{ fontFamily: 'var(--font-family-serif)', marginBottom: 'var(--space-md)' }}>
-          Schedule A Call
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', maxWidth: '36rem', margin: '0 auto' }}>
-          This page is currently under construction.
-          We&apos;re crafting something exceptional — check back soon.
-        </p>
-      </div>
-    </section>
+    <div className="v2-content-wrapper">
+      {scheduleContent.sections.map((section) => (
+        <SectionRenderer key={section.id} section={section} />
+      ))}
+    </div>
   );
 }
