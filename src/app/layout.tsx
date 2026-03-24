@@ -10,9 +10,9 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 };
 import { Newsreader, Inter } from 'next/font/google';
-import V2Header from '@/components/V2Header/V2Header';
-import V2Footer from '@/components/V2Sections/V2Footer/V2Footer';
-import { footerContent } from '@/config/content-v2';
+import Header from '@/components/Header/Header';
+import Footer from '@/components/V2Sections/Footer/Footer';
+import { footerContent } from '@/config/content';
 import '@/styles/index.css';
 import '@/styles/tokens/stitch-overrides.css';
 import './v2-shared.css';
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
 
 /**
  * Root layout — wraps all pages.
- * Provides: Newsreader + Inter fonts, V2Header, V2Footer, stitch-theme.
+ * Provides: Newsreader + Inter fonts, Header, Footer, stitch-theme.
  */
 export default function RootLayout({
   children,
@@ -84,9 +84,9 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <V2Header />
+        <Header />
         <main id="main">{children}</main>
-        <V2Footer data={footerContent} />
+        <Footer data={footerContent} />
       </body>
     </html>
   );

@@ -323,8 +323,8 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   useLayoutEffect(() => {
     const measure = () => {
       // Measure REAL header height from DOM — CSS token is inaccurate on mobile
-      // (--header-height-mobile = 64px, actual V2Header ≈ 90px due to padding)
-      const headerEl = document.querySelector('.v2-header');
+      // (--header-height-mobile = 64px, actual Header ≈ 90px due to padding)
+      const headerEl = document.querySelector('.header');
       const h = headerEl
         ? headerEl.getBoundingClientRect().height
         : 72; // fallback

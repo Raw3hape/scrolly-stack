@@ -10,13 +10,13 @@
  * All timing/spacing values come from design tokens (effects.css, motion.css).
  * Gracefully degrades: `prefers-reduced-motion` skips all animations.
  *
- * Data-driven: receives content via props from content-v2.ts.
+ * Data-driven: receives content via props from content.ts.
  */
 
 'use client';
 
 import { useEffect, useRef, useCallback, useState } from 'react';
-import type { TimelineSection as TimelineSectionData } from '@/config/types-v2';
+import type { TimelineSection as TimelineSectionData } from '@/config/types';
 import V2Icon from '../V2Icon/V2Icon';
 import './TimelineSection.css';
 

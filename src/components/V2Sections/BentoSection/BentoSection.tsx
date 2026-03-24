@@ -10,15 +10,15 @@
  *                     stats(3 each) bottom row
  *   Mobile: single column, stats in 2-col sub-grid.
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  */
 
 'use client';
 
 import { useRef, useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import type { BentoSection as BentoSectionData } from '@/config/types-v2';
-import { ctaConfigV2 } from '@/config/nav-v2';
+import type { BentoSection as BentoSectionData } from '@/config/types';
+import { ctaConfig } from '@/config/nav';
 import './BentoSection.css';
 
 // ── Animated Counter Hook ──────────────────────────────────────────────────
@@ -206,7 +206,7 @@ export default function BentoSection({ data }: Props) {
         {/* ── Link card ── */}
         {data.linkCard && (
           <Link
-            href={data.linkCard.href ?? ctaConfigV2.href}
+            href={data.linkCard.href ?? ctaConfig.href}
             className="v2-bento__link-card"
             style={{ '--bento-i': 2 } as React.CSSProperties}
           >

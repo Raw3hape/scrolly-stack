@@ -8,7 +8,7 @@
  *  - `provider: 'custom'`    → renders placeholder (for future custom integrations)
  *
  * To switch to Calendly: change `provider` to 'calendly' and set `embedUrl`
- * in content-v2.ts — no component code changes needed.
+ * in content.ts — no component code changes needed.
  *
  * Client component — contains interactive calendar state.
  */
@@ -16,7 +16,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import type { ScheduleBookingSection as ScheduleBookingSectionData } from '@/config/types-v2';
+import type { ScheduleBookingSection as ScheduleBookingSectionData } from '@/config/types';
 import V2Icon from '../V2Icon/V2Icon';
 import './ScheduleBookingSection.css';
 

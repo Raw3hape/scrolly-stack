@@ -1,11 +1,11 @@
 /**
  * CardsSection — renders a grid of info cards.
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  *
  * Heading uses ScrollTypewriter for scroll-driven letter-by-letter reveal.
  */
 
-import type { CardsSection as CardsSectionData } from '@/config/types-v2';
+import type { CardsSection as CardsSectionData } from '@/config/types';
 import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
 import V2Icon from '../V2Icon/V2Icon';
 import './CardsSection.css';

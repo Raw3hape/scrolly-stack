@@ -17,7 +17,7 @@
 'use client';
 
 import { useRef, useEffect, useCallback } from 'react';
-import type { OptInTestimonialsSection as OptInTestimonialsSectionData } from '@/config/types-v2';
+import type { OptInTestimonialsSection as OptInTestimonialsSectionData } from '@/config/types';
 import './OptInTestimonialsSection.css';
 
 interface Props {

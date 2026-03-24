@@ -10,14 +10,14 @@
  *   - Optional icon (V2Icon) and CTA per step
  *   - Responsive: 3-col grid → vertical stack on mobile
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  */
 
 'use client';
 
 import { useRef, useState, useEffect, useCallback } from 'react';
-import type { StepsSection as StepsSectionData } from '@/config/types-v2';
-import { ctaConfigV2 } from '@/config/nav-v2';
+import type { StepsSection as StepsSectionData } from '@/config/types';
+import { ctaConfig } from '@/config/nav';
 import V2Icon from '../V2Icon/V2Icon';
 import './StepsSection.css';
 
@@ -138,7 +138,7 @@ export default function StepsSection({ data }: Props) {
     };
   }, []);
 
-  const ctaHref = data.ctaHref ?? ctaConfigV2.href;
+  const ctaHref = data.ctaHref ?? ctaConfig.href;
 
   return (
     <div className="v2-container v2-steps-root" ref={sectionRef}>

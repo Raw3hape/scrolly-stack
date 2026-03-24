@@ -10,10 +10,10 @@
  * px-layer--fg (base rhythm), partners are px-layer--accent with delay
  * for dramatic last reveal.
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  */
 
-import type { TrustSection as TrustSectionData } from '@/config/types-v2';
+import type { TrustSection as TrustSectionData } from '@/config/types';
 import './TrustSection.css';
 
 interface Props {

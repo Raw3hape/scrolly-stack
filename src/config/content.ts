@@ -1,7 +1,7 @@
 /**
- * V2 Page Content — Foundation Projects (Stitch edition)
+ * Page Content — Foundation Projects (Stitch edition)
  *
- * Single source of truth for ALL text content on /v2/ pages.
+ * Single source of truth for ALL text content.
  * Content sourced from Google Stitch project «Foundation Projects - Site Map & Content PRD»
  *
  * TO EDIT CONTENT: Change strings in this file → hot-reload updates the page.
@@ -10,8 +10,8 @@
  * TO REORDER: Move objects within the array.
  */
 
-import type { PageContent, FooterContent } from './types-v2';
-import { routesV2 } from './nav-v2';
+import type { PageContent, FooterContent } from './types';
+import { routes } from './nav';
 
 // =============================================================================
 // SHARED FOOTER (used across all V2 pages)
@@ -24,10 +24,10 @@ export const footerContent: FooterContent = {
     {
       title: 'Company',
       links: [
-        { label: 'About Us', href: routesV2.about },
-        { label: 'Investor Relations', href: routesV2.howItWorksInvestors },
-        { label: 'Partnerships', href: routesV2.howItWorksRoofers },
-        { label: 'Contact', href: routesV2.schedule },
+        { label: 'About Us', href: routes.about },
+        { label: 'Investor Relations', href: routes.howItWorksInvestors },
+        { label: 'Partnerships', href: routes.howItWorksRoofers },
+        { label: 'Contact', href: routes.schedule },
       ],
     },
     {
@@ -573,7 +573,7 @@ export const investorsContent: PageContent = {
       linkCard: {
         title: 'Investor Portal',
         text: 'Real-time portfolio performance tracking.',
-        href: routesV2.schedule,
+        href: routes.schedule,
         icon: 'chart-bar',
       },
       highlight: {
@@ -615,7 +615,7 @@ export const investorsContent: PageContent = {
         'Schedule a confidential institutional briefing. No commitments \u2014 just the blueprint.',
       buttonLabel: 'Schedule Briefing',
       secondaryButtonLabel: 'View Our Process',
-      secondaryHref: routesV2.howItWorksRoofers,
+      secondaryHref: routes.howItWorksRoofers,
     },
   ],
   footer: footerContent,

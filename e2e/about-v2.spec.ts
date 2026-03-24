@@ -2,12 +2,12 @@
  * E2E Tests — About Page V2 (Structural)
  *
  * Verifies all 6 sections are rendered with correct content.
- * Imports data from content-v2.ts — zero hardcoded strings.
+ * Imports data from content.ts — zero hardcoded strings.
  * Runs on all 8 viewport projects automatically (fullyParallel).
  */
 
 import { test, expect } from '@playwright/test';
-import { ctaConfigV2 } from '../src/config/nav-v2';
+import { ctaConfig } from '../src/config/nav';
 
 test.describe('About Page V2 — Structural Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -107,7 +107,7 @@ test.describe('About Page V2 — Structural Tests', () => {
 
   test('CTA button links to schedule', async ({ page }) => {
     const button = page.locator('#about-cta .v2-cta__button');
-    await expect(button).toHaveAttribute('href', ctaConfigV2.href);
+    await expect(button).toHaveAttribute('href', ctaConfig.href);
   });
 
   test('CTA microcopy appears before buttons', async ({ page }) => {

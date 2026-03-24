@@ -7,11 +7,10 @@
 
 import { test, expect } from '@playwright/test';
 import { ctaConfig, routes } from '../src/config/nav';
-import { ctaConfigV2, routesV2 } from '../src/config/nav-v2';
 import {
   roofersSteps,
 } from '../src/config/content/roofers';
-import { investorsContent } from '../src/config/content-v2';
+import { investorsContent } from '../src/config/content';
 import { scheduleContent } from '../src/config/content/schedule';
 import { optInContent } from '../src/config/content/opt-in';
 import {
@@ -288,7 +287,7 @@ test.describe('About Page — V2 Sections', () => {
 
   test('closing CTA button links correctly', async ({ page }) => {
     const cta = page.locator('#about-cta .v2-cta__button');
-    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+    await expect(cta).toHaveAttribute('href', ctaConfig.href);
   });
 
   // --- Section count ---
@@ -414,7 +413,7 @@ test.describe('Roofers Page — V2 Sections', () => {
 
   test('closing CTA button links correctly', async ({ page }) => {
     const cta = page.locator('#roofers-cta .v2-cta__button');
-    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+    await expect(cta).toHaveAttribute('href', ctaConfig.href);
   });
 
   // --- Section count ---
@@ -550,7 +549,7 @@ test.describe('Investors Page — V2 Sections', () => {
 
   test('closing CTA button links correctly', async ({ page }) => {
     const cta = page.locator('#investors-cta .v2-cta__button');
-    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+    await expect(cta).toHaveAttribute('href', ctaConfig.href);
   });
 
   test('closing CTA has secondary button', async ({ page }) => {
@@ -579,13 +578,13 @@ test.describe('Investors Page — V2 Sections', () => {
   // --- Bento link card href ---
   test('bento link card links to schedule', async ({ page }) => {
     const link = page.locator('.v2-bento__link-card');
-    await expect(link).toHaveAttribute('href', routesV2.schedule);
+    await expect(link).toHaveAttribute('href', routes.schedule);
   });
 
   // --- CTA secondary button ---
   test('CTA secondary links to roofers page', async ({ page }) => {
     const secondary = page.locator('#investors-cta .v2-cta__button--secondary');
-    await expect(secondary).toHaveAttribute('href', routesV2.howItWorksRoofers);
+    await expect(secondary).toHaveAttribute('href', routes.howItWorksRoofers);
   });
 
   // --- No console errors ---
@@ -794,7 +793,7 @@ test.describe('CTA Buttons — All Pages', () => {
   test('Roofers page V2 CTA button has correct href', async ({ page }) => {
     await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
     const cta = page.locator('#roofers-cta .v2-cta__button');
-    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+    await expect(cta).toHaveAttribute('href', ctaConfig.href);
   });
 
   test('Roofers page V2 CTA button is clickable', async ({ page }) => {
@@ -807,7 +806,7 @@ test.describe('CTA Buttons — All Pages', () => {
   test('Investors page V2 CTA button has correct href', async ({ page }) => {
     await page.goto('/how-it-works/investors', { waitUntil: 'domcontentloaded' });
     const cta = page.locator('#investors-cta .v2-cta__button');
-    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+    await expect(cta).toHaveAttribute('href', ctaConfig.href);
   });
 
   test('Investors page V2 CTA button is clickable', async ({ page }) => {
@@ -820,7 +819,7 @@ test.describe('CTA Buttons — All Pages', () => {
   test('About page V2 CTA button has correct href', async ({ page }) => {
     await page.goto('/about', { waitUntil: 'domcontentloaded' });
     const cta = page.locator('#about-cta .v2-cta__button');
-    await expect(cta).toHaveAttribute('href', ctaConfigV2.href);
+    await expect(cta).toHaveAttribute('href', ctaConfig.href);
   });
 
   test('About page V2 CTA button is clickable', async ({ page }) => {

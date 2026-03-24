@@ -11,7 +11,7 @@
 
 'use client';
 
-import type { Section } from '@/config/types-v2';
+import type { Section } from '@/config/types';
 import useParallax from '@/hooks/useParallax';
 import CardsSection from './CardsSection/CardsSection';
 import CinematicSection from './CinematicSection/CinematicSection';

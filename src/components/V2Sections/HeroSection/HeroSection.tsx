@@ -5,11 +5,11 @@
  * - 'center' (default): centered text + CTA, dark background
  * - 'editorial': left-aligned text (8 cols) + decorative image (4 cols), light background
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  */
 
-import type { HeroSection as HeroSectionData } from '@/config/types-v2';
-import { ctaConfigV2 } from '@/config/nav-v2';
+import type { HeroSection as HeroSectionData } from '@/config/types';
+import { ctaConfig } from '@/config/nav';
 import LinkButton from '@/components/LinkButton/LinkButton';
 import './HeroSection.css';
 
@@ -92,8 +92,8 @@ export default function HeroSection({ data }: Props) {
               <p className="v2-hero__subtext px-layer--fg" data-px-delay="1">{data.subtext}</p>
             )}
             <div className="v2-hero__actions">
-              <LinkButton href={ctaConfigV2.href} variant="primary" arrow>
-                {data.buttonLabel ?? ctaConfigV2.label}
+              <LinkButton href={ctaConfig.href} variant="primary" arrow>
+                {data.buttonLabel ?? ctaConfig.label}
               </LinkButton>
               {data.trustBadge && (
                 <span className="v2-hero__trust">

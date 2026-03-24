@@ -4,14 +4,14 @@
  * Left column: section heading + animated progress bar + nav arrows.
  * Right column: quote card with crossfade transition between slides.
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  * Uses useCarousel hook for state management.
  */
 
 'use client';
 
 import { useRef, useCallback } from 'react';
-import type { TestimonialSection as TestimonialSectionData } from '@/config/types-v2';
+import type { TestimonialSection as TestimonialSectionData } from '@/config/types';
 import useCarousel from '@/hooks/useCarousel';
 import './TestimonialSection.css';
 

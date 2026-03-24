@@ -4,7 +4,7 @@
  * Server component — purely presentational.
  */
 
-import type { ScheduleQuoteSection as ScheduleQuoteSectionData } from '@/config/types-v2';
+import type { ScheduleQuoteSection as ScheduleQuoteSectionData } from '@/config/types';
 import './ScheduleQuoteSection.css';
 
 interface Props {

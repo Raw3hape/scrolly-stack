@@ -4,7 +4,7 @@
  * Server component — no interactivity needed.
  */
 
-import type { ScheduleHeroSection as ScheduleHeroSectionData } from '@/config/types-v2';
+import type { ScheduleHeroSection as ScheduleHeroSectionData } from '@/config/types';
 import './ScheduleHeroSection.css';
 
 interface Props {

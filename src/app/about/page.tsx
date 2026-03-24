@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { aboutContent } from '@/config/content-v2';
+import { aboutContent } from '@/config/content';
 import SectionRenderer from '@/components/V2Sections/SectionRenderer';
 
 export const metadata: Metadata = {

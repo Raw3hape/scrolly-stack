@@ -8,10 +8,10 @@
  *     - Large heading (8/12 cols)
  *     - Glassmorphism card (6/12 cols, offset right)
  *
- * Data-driven: receives all content via props from content-v2.ts.
+ * Data-driven: receives all content via props from content.ts.
  */
 
-import type { CinematicSection as CinematicSectionData } from '@/config/types-v2';
+import type { CinematicSection as CinematicSectionData } from '@/config/types';
 import './CinematicSection.css';
 
 interface Props {

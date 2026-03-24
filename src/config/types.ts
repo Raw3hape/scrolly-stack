@@ -1,5 +1,5 @@
 /**
- * V2 Section Types — Foundation Projects (Stitch edition)
+ * Section Types — Foundation Projects (Stitch edition)
  *
  * Discriminated union for data-driven page sections.
  * Each section type maps to a dedicated component via SectionRenderer.
@@ -113,7 +113,7 @@ export interface StepsSection extends SectionBase {
     /** Optional CTA label shown when this step is active */
     ctaLabel?: string;
   }>;
-  /** Shared CTA href for all steps. Falls back to ctaConfigV2.href */
+  /** Shared CTA href for all steps. Falls back to ctaConfig.href */
   ctaHref?: string;
 }
 
@@ -125,7 +125,7 @@ export interface CtaSection extends SectionBase {
   heading: string;
   /** Microcopy below the button (e.g. "No commitments...") */
   microcopy?: string;
-  /** CTA button label. href comes from nav-v2.ts ctaConfigV2 */
+  /** CTA button label. href comes from nav.ts ctaConfig */
   buttonLabel?: string;
   /** Show arrow icon in button. Default: false */
   showArrow?: boolean;
@@ -452,7 +452,7 @@ export interface FooterColumn {
   title: string;
   links: Array<{
     label: string;
-    /** Route key from nav-v2.ts or absolute path */
+    /** Route key from nav.ts or absolute path */
     href: string;
   }>;
 }

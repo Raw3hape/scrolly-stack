@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { scheduleContent } from '@/config/content-v2';
+import { scheduleContent } from '@/config/content';
 import SectionRenderer from '@/components/V2Sections/SectionRenderer';
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 /**
  * SchedulePage — Book A Call
  *
- * Data-driven: all content from content-v2.ts → SectionRenderer.
+ * Data-driven: all content from content.ts → SectionRenderer.
  * Sections: schedule-hero + schedule-booking (modular calendar) +
  * schedule-quote + CTA.
  */
