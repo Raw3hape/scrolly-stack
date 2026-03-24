@@ -12,7 +12,7 @@ Foundation Projects is a marketing website for a roofing business consulting com
 - **Language:** TypeScript (strict mode, `allowJs: false`)
 - **3D:** React Three Fiber 9 + drei + postprocessing (client-only)
 - **Styling:** CSS Custom Properties (design tokens) + co-located component CSS — see `DESIGN_SYSTEM.md`
-- **Fonts:** DM Serif Display (headlines, via `next/font/google`) + Satoshi (body, self-hosted via `next/font/local`)
+- **Fonts:** Newsreader (headlines, via `next/font/google`) + Inter (body, via `next/font/google`)
 - **Deploy:** Vercel
 - **Lint:** ESLint 9 (flat config) + `--max-warnings=0`
 - **Types:** `tsc --noEmit` via `npm run typecheck`

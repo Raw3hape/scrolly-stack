@@ -40,7 +40,6 @@ export default [
     files: ['src/**/*.ts', 'src/**/*.tsx'],
     ignores: [
       'src/features/scrolly-experience/**',
-      'src/components/V2Sections/HeroSection/HeroGridCanvas.tsx',
     ],
     rules: {
       'no-restricted-imports': ['error', {

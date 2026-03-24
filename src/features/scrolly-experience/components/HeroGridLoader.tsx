@@ -8,12 +8,16 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { HERO_GRID_FULLSCREEN } from './HeroGridCanvas';
 
-const HeroGridCanvas = dynamic(() => import('./HeroGridCanvas'), {
-  ssr: false,
-  loading: () => null,   // No visible fallback — canvas fades in via CSS
-});
+const HeroGridCanvasLazy = dynamic(
+  () => import('./HeroGridCanvas/HeroGridCanvas'),
+  {
+    ssr: false,
+    loading: () => null,   // No visible fallback — canvas fades in via CSS
+  },
+);
 
 export default function HeroGridLoader() {
-  return <HeroGridCanvas />;
+  return <HeroGridCanvasLazy config={HERO_GRID_FULLSCREEN} />;
 }
