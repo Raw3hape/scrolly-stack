@@ -15,38 +15,27 @@ import { useMemo, useRef, useLayoutEffect, useState } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import Layer from './Layer';
-import { getLayerHeight, calculateBlockPositions } from '../utils/layoutUtils';
 import { useVariant } from '../VariantContext';
-import type { ResolvedGeometry } from '../VariantContext';
-import { isHeroStep, HERO_STEP } from '../utils/stepNavigation';
-import {
-  precomputeTrajectories,
-  type BlockTrajectory,
-} from '../utils/mosaicLayout';
+import { isHeroStep } from '../utils/stepNavigation';
 import { useAdaptiveMosaic } from '../hooks/useAdaptiveMosaic';
 import useAdaptiveFinalZoom from '../hooks/useAdaptiveFinalZoom';
+import { useBlockState } from '../hooks/useBlockState';
 import {
-  easeInOutCubic,
+  useMosaicTransition,
+  calculateLayerPositions,
+  collectAllBlocks,
+} from '../hooks/useMosaicTransition';
+import type { MosaicBlockDataMap, MosaicBlockDatum } from '../hooks/useMosaicTransition';
+import {
   lerp,
-  lerpV3,
-  quadraticBezierV3,
   smoothProgress,
 } from '../utils/easings';
 import { animation } from '../config';
 import { computeMaxIsoZoom } from '../utils/computeMaxIsoZoom';
-import type { StackProps, LayerData, StepData, ComputedBlock } from '../types';
+import type { StackProps } from '../types';
 
-// =============================================================================
-// TYPES
-// =============================================================================
-
-export interface MosaicBlockDatum {
-  position: [number, number, number];
-  dimensions: [number, number, number];
-}
-
-/** Block data lookup keyed by block ID */
-export type MosaicBlockDataMap = Record<number, MosaicBlockDatum>;
+// Re-export types for consumers that imported them from Stack
+export type { MosaicBlockDataMap, MosaicBlockDatum };
 
 // =============================================================================
 // ISOMETRIC CROSS-AXIS CORRECTION — derived from camera config, zero hardcode
@@ -89,73 +78,6 @@ const ISO_PROJECTION = (() => {
 // =============================================================================
 
 /**
- * VARIANT-SAFE: Uses layer indices.
- * scrollDirection='down': layers with LOWER index = "already seen" (above)
- * scrollDirection='up':   layers with HIGHER index = "already seen" (below, seen first)
- */
-function calculateBlocksAboveActive(
-  currentStep: number,
-  layers: LayerData[],
-  _steps: StepData[],
-  scrollDirection: 'down' | 'up',
-): number[] {
-  if (isHeroStep(currentStep)) return [];
-
-  const activeLayerIndex = layers.findIndex(layer =>
-    layer.blocks.some(block => block.id === currentStep)
-  );
-  if (activeLayerIndex < 0) return [];
-
-  const aboveIds: number[] = [];
-
-  layers.forEach((layer, layerIndex) => {
-    const isAlreadySeen = scrollDirection === 'up'
-      ? layerIndex > activeLayerIndex   // bottom-to-top: higher index = seen first
-      : layerIndex < activeLayerIndex;  // top-to-bottom: lower index = seen first
-
-    if (isAlreadySeen) {
-      layer.blocks.forEach(block => aboveIds.push(block.id));
-    } else if (layerIndex === activeLayerIndex) {
-      // Use array index (not block ID) to determine reveal order within a layer.
-      // Block IDs may not be sequential after reordering (e.g. reversed crown).
-      const activeBlockIndex = layer.blocks.findIndex(b => b.id === currentStep);
-      layer.blocks.forEach((block, blockIndex) => {
-        if (block.id !== currentStep) {
-          const isBlockAlreadySeen = scrollDirection === 'up'
-            ? blockIndex > activeBlockIndex
-            : blockIndex < activeBlockIndex;
-          if (isBlockAlreadySeen) {
-            aboveIds.push(block.id);
-          }
-        }
-      });
-    }
-  });
-
-  return aboveIds;
-}
-
-function calculateLayerPositions(
-  layers: LayerData[],
-  geo: ResolvedGeometry,
-): Array<{ layer: LayerData; baseY: number }> {
-  let totalHeight = 0;
-  layers.forEach((layer) => {
-    totalHeight += getLayerHeight(layer, geo);
-  });
-
-  const positions: Array<{ layer: LayerData; baseY: number }> = [];
-  let currentY = totalHeight / 2;
-
-  for (const layer of layers) {
-    positions.push({ layer, baseY: currentY });
-    currentY -= getLayerHeight(layer, geo);
-  }
-
-  return positions;
-}
-
-/**
  * VARIANT-SAFE + SCROLL-DIRECTION-SAFE.
  * Hero always shows the TOP layer (index 0) because the camera is top-down,
  * so only the topmost layer is visible regardless of scroll direction.
@@ -173,74 +95,6 @@ function calculateLayerOpacity(
 }
 
 // =============================================================================
-// SINGLE-PHASE BEZIER INTERPOLATION
-// =============================================================================
-
-function collectAllBlocks(
-  layerPositions: Array<{ layer: LayerData; baseY: number }>,
-  geo: ResolvedGeometry,
-): ComputedBlock[] {
-  const allBlocks: ComputedBlock[] = [];
-  for (const { layer, baseY } of layerPositions) {
-    const blocks = calculateBlockPositions(layer, baseY, geo);
-    allBlocks.push(...blocks);
-  }
-  return allBlocks;
-}
-
-function computeArcControl(
-  stack: [number, number, number],
-  grid: [number, number, number],
-): [number, number, number] {
-  const midX = (stack[0] + grid[0]) / 2;
-  const midY = (stack[1] + grid[1]) / 2;
-  const midZ = (stack[2] + grid[2]) / 2;
-
-  const dx = grid[0] - stack[0];
-  const dy = grid[1] - stack[1];
-  const dz = grid[2] - stack[2];
-  const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-  const lift = 1.5 + distance * 0.5;
-
-  return [midX, midY + lift, midZ];
-}
-
-/**
- * PERFORMANCE FIX #6: Returns a flat Record<blockId, data> instead of 2 Maps.
- * Eliminates 2 Map allocations per frame → simple object keyed by ID.
- */
-function interpolateMosaicPositions(
-  progress: number,
-  trajectories: BlockTrajectory[],
-  allBlocks: ComputedBlock[],
-): MosaicBlockDataMap {
-  const t = easeInOutCubic(progress);
-  const result: MosaicBlockDataMap = {};
-
-  for (let i = 0; i < trajectories.length; i++) {
-    const traj = trajectories[i];
-
-    const pos = quadraticBezierV3(
-      traj.stackPosition,
-      traj.arcControlPoint,
-      traj.mosaicPosition,
-      t,
-    );
-
-    const dims = lerpV3(
-      traj.stackDimensions,
-      traj.mosaicDimensions,
-      t,
-    ) as [number, number, number];
-
-    result[allBlocks[i].id] = { position: pos, dimensions: dims };
-  }
-
-  return result;
-}
-
-// =============================================================================
 // STACK COMPONENT
 // =============================================================================
 
@@ -252,56 +106,32 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   const adaptiveFinalZoom = useAdaptiveFinalZoom(mosaicConfig, totalBlocks);
 
   // =========================================================================
-  // CLOSE PHASE: Override currentStep when mosaic starts.
-  //
-  // When mosaicProgress > 0, ALL blocks must return to their base positions
-  // (no slide, no lift) BEFORE the Bezier arc begins. We achieve this by
-  // setting effectiveStep = HERO_STEP, which makes isActive = false and
-  // isAboveActive = [] for every block. Springs animate the return smoothly.
-  //
-  // isRevealed stays true (from real currentStep) so blocks remain visible —
-  // only the position offset (slide + lift) is deactivated.
+  // BLOCK STATE — active, revealed, above-active
   // =========================================================================
-  const effectiveStep = mosaicProgress > 0 ? HERO_STEP : currentStep;
+  const {
+    effectiveStep,
+    blocksAboveActive,
+    aboveLiftSign,
+    blocksNotYetSeenAbove,
+    isRevealed,
+  } = useBlockState(currentStep, mosaicProgress, layers, steps, scrollDirection);
 
-  const blocksAboveActive = useMemo(
-    () => calculateBlocksAboveActive(effectiveStep, layers, steps, scrollDirection),
-    [effectiveStep, layers, steps, scrollDirection]
-  );
-
-  // Lift direction: forward(down) = UP (+1), reverse(up) = DOWN (-1)
-  const aboveLiftSign = scrollDirection === 'up' ? -1 : 1;
-
-  // For reverse: layers ABOVE active haven't been seen yet but occlude it.
-  // They must lift UP to make room, mirroring how forward lifts already-seen layers.
-  const blocksNotYetSeenAbove = useMemo(() => {
-    if (scrollDirection !== 'up' || isHeroStep(effectiveStep)) return [];
-    const activeLayerIndex = layers.findIndex(layer =>
-      layer.blocks.some(block => block.id === effectiveStep)
-    );
-    if (activeLayerIndex < 0) return [];
-    const ids: number[] = [];
-    layers.forEach((layer, idx) => {
-      if (idx < activeLayerIndex) {
-        layer.blocks.forEach(b => ids.push(b.id));
-      }
-    });
-    return ids;
-  }, [scrollDirection, currentStep, layers]);
-
+  // =========================================================================
+  // LAYOUT — layer positions and all blocks
+  // =========================================================================
   const layerPositions = useMemo(
     () => calculateLayerPositions(layers, geo),
     [layers, geo],
   );
-
-  const isRevealed = !isHeroStep(currentStep);  // Keep real step — blocks stay visible
 
   const allBlocks = useMemo(
     () => collectAllBlocks(layerPositions, geo),
     [layerPositions, geo],
   );
 
-  // Header measurement — needed by adaptive mosaic (state) and scene offset (ref)
+  // =========================================================================
+  // HEADER MEASUREMENT — needed by adaptive mosaic (state) and scene offset (ref)
+  // =========================================================================
   const headerPxRef = useRef(0);
   // Initialize from actual viewport — avoids first-frame snap to desktop value
   // on mobile (0.45 → 0 drift visible as cube sliding left-to-right).
@@ -406,30 +236,18 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     };
   }, []);
 
-  // Adaptive mosaic: fits grid to viewport, auto cols on mobile
+  // =========================================================================
+  // MOSAIC TRANSITION — trajectory precomputation & interpolation
+  // =========================================================================
   const adaptedMosaic = useAdaptiveMosaic(mosaicConfig, allBlocks, headerPx);
-
-  const trajectories = useMemo(
-    () => {
-      const trajs = precomputeTrajectories(allBlocks, adaptedMosaic);
-      return trajs.map((traj) => ({
-        ...traj,
-        arcControlPoint: computeArcControl(traj.stackPosition, traj.mosaicPosition),
-      }));
-    },
-    [allBlocks, adaptedMosaic],
-  );
-
-  // Compute interpolated mosaic data — uses Record instead of Map
-  // Settle phase: delay mosaic override until viewStart threshold.
-  // During 0 → viewStart, springs return blocks to base positions (drop lift/slide).
-  // This prevents the visible jerk when blocks teleport from lifted to mosaic start.
   const settleThreshold = mosaicConfig.motion.viewStart;
 
-  const mosaicBlockData = useMemo((): MosaicBlockDataMap | undefined => {
-    if (mosaicProgress <= settleThreshold) return undefined;
-    return interpolateMosaicPositions(mosaicProgress, trajectories, allBlocks);
-  }, [mosaicProgress, settleThreshold, trajectories, allBlocks]);
+  const { mosaicBlockData } = useMosaicTransition(
+    allBlocks,
+    adaptedMosaic,
+    mosaicProgress,
+    settleThreshold,
+  );
 
   // ========================================================================
   // SCENE OFFSET — emulates "right column" in 3D space
