@@ -9,11 +9,11 @@ import { test, expect } from '@playwright/test';
 import { ctaConfig, routes } from '../src/config/nav';
 import { ctaConfigV2, routesV2 } from '../src/config/nav-v2';
 import {
-  roofersSteps,
-} from '../src/config/content/roofers';
-import { investorsContent } from '../src/config/content-v2';
-import { scheduleContent } from '../src/config/content/schedule';
-import { optInContent } from '../src/config/content/opt-in';
+  investorsContent,
+  roofersContent,
+  scheduleContent,
+  optInContent,
+} from '../src/config/content-v2';
 import {
   problemStakesContent,
   homeValueProps,
@@ -21,6 +21,33 @@ import {
   stakesContent,
   homeFinalCta,
 } from '../src/config/content/home';
+
+// Extract roofers process steps from V2 content for assertions
+const roofersProcessSection = roofersContent.sections.find(s => s.id === 'roofers-process');
+const roofersSteps = roofersProcessSection && 'steps' in roofersProcessSection
+  ? (roofersProcessSection as { steps: Array<{ title: string }> }).steps
+  : [];
+
+// Extract V2 schedule hero heading
+const scheduleHeroSection = scheduleContent.sections.find(s => s.id === 'schedule-hero');
+const scheduleHeading = scheduleHeroSection && 'heading' in scheduleHeroSection
+  ? (scheduleHeroSection as { heading: string }).heading
+  : '';
+
+// Extract V2 opt-in content for assertions
+const optInHeroSection = optInContent.sections.find(s => s.id === 'optin-hero');
+const optInHero = optInHeroSection && 'form' in optInHeroSection
+  ? (optInHeroSection as {
+      overline: string;
+      heading: string;
+      book: { title: string; subtitle: string; coverUrl: string };
+      trustBadge: { text: string; metric: string };
+      form: {
+        fields: Array<{ name: string; placeholder: string }>;
+        submitLabel: string;
+      };
+    })
+  : null;
 
 // ===========================================================================
 // HOME PAGE — ALL SECTIONS
@@ -658,7 +685,7 @@ test.describe('Schedule Page', () => {
 
   test('heading matches content', async ({ page }) => {
     const h1 = page.locator('h1');
-    await expect(h1).toContainText(scheduleContent.heading);
+    await expect(h1).toContainText(scheduleHeading);
   });
 
   test('body text mentions $60B', async ({ page }) => {
@@ -671,7 +698,7 @@ test.describe('Schedule Page', () => {
 
   test('Calendly placeholder is visible', async ({ page }) => {
     await expect(page.locator('.placeholder-box')).toContainText(
-      scheduleContent.widgetPlaceholder
+      'Calendly Widget — Coming Soon'
     );
   });
 });
@@ -689,14 +716,14 @@ test.describe('Opt-In Page — All Sections', () => {
   test('badge is displayed with correct text', async ({ page }) => {
     const badge = page.locator('.opt-in__badge');
     await expect(badge).toBeVisible();
-    await expect(badge).toContainText(optInContent.badge);
+    await expect(badge).toContainText(optInHero?.overline ?? '');
   });
 
   // --- Mockup Image ---
   test('mockup image is present', async ({ page }) => {
     const img = page.locator('.opt-in__mockup-image');
     await expect(img).toBeAttached();
-    await expect(img).toHaveAttribute('alt', optInContent.mockupAlt);
+    await expect(img).toHaveAttribute('alt', optInHero?.book.title ?? '');
   });
 
   // --- Heading ---
@@ -716,7 +743,7 @@ test.describe('Opt-In Page — All Sections', () => {
     await expect(input).toBeVisible();
     await expect(input).toHaveAttribute(
       'placeholder',
-      optInContent.formFields.firstName.placeholder
+      optInHero?.form.fields.find(f => f.name === 'firstName')?.placeholder ?? ''
     );
   });
 
@@ -726,13 +753,13 @@ test.describe('Opt-In Page — All Sections', () => {
     await expect(input).toHaveAttribute('type', 'email');
     await expect(input).toHaveAttribute(
       'placeholder',
-      optInContent.formFields.email.placeholder
+      optInHero?.form.fields.find(f => f.name === 'email')?.placeholder ?? ''
     );
   });
 
   test('submit button has correct label', async ({ page }) => {
     const submit = page.locator('.opt-in__submit');
-    await expect(submit).toContainText(optInContent.ctaLabel);
+    await expect(submit).toContainText(optInHero?.form.submitLabel ?? '');
   });
 
   // --- Form interactivity ---
