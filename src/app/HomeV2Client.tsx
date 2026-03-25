@@ -27,12 +27,15 @@ interface HomeV2ClientProps {
 /** Max time to wait for WebGL ready signal before forcing loader dismiss */
 const READY_TIMEOUT_MS = 8_000;
 
+/** Module-level flag — skip branded loader on SPA return visits */
+let hasLoadedOnce = false;
+
 export default function HomeV2Client({ variantId = 'v6-exact-flipped', children }: HomeV2ClientProps) {
-  const [sceneReady, setSceneReady] = useState(false);
+  const [sceneReady, setSceneReady] = useState(hasLoadedOnce);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleSceneReady = useCallback(() => {
-    // Cancel timeout if scene became ready normally
+    hasLoadedOnce = true;
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -41,9 +44,9 @@ export default function HomeV2Client({ variantId = 'v6-exact-flipped', children 
   }, []);
 
   // Safety net: dismiss loader after timeout if onReady never fires.
-  // This handles silent WebGL crashes on iOS where the canvas renders
-  // nothing but no error is thrown.
+  // Skip if already loaded once (SPA return visit).
   useEffect(() => {
+    if (hasLoadedOnce) return;
     timeoutRef.current = setTimeout(() => {
       setSceneReady((prev) => {
         if (!prev) {

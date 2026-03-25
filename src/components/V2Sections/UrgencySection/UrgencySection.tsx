@@ -12,6 +12,7 @@ import Link from 'next/link';
 import type { UrgencySection as UrgencySectionData } from '@/config/types';
 import { ctaConfig } from '@/config/nav';
 import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
+import InteractiveGrid from '@/components/InteractiveGrid/InteractiveGrid';
 import './UrgencySection.css';
 
 interface Props {
@@ -19,10 +20,17 @@ interface Props {
 }
 
 export default function UrgencySection({ data }: Props) {
+  const centered = !data.image;
+
   return (
     <div className="v2-container">
-      <div className="v2-urgency-card">
-        {/* Left column: text content */}
+      <div className={`v2-urgency-card${centered ? ' v2-urgency-card--centered' : ''}`}>
+        {/* Interactive grid background when no image */}
+        {centered && (
+          <InteractiveGrid cols={8} rows={5} glowRadius={2.5} glowIntensity={0.07} />
+        )}
+
+        {/* Text content */}
         <div className="v2-urgency-card__content px-layer--fg">
           <h2 className="v2-urgency-card__heading">
             <ScrollTypewriter

@@ -274,9 +274,10 @@ function ExplodedGridModel({ layoutRef, containerWidthRef }: { layoutRef: React.
 
 interface HeroExplodedGrid3DProps {
   className?: string;
+  onReady?: () => void;
 }
 
-export default function HeroExplodedGrid3D({ className }: HeroExplodedGrid3DProps) {
+export default function HeroExplodedGrid3D({ className, onReady }: HeroExplodedGrid3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Window-level mouse tracking — writes to shared mouseNDC
@@ -316,7 +317,12 @@ export default function HeroExplodedGrid3D({ className }: HeroExplodedGrid3DProp
       <Canvas
         orthographic
         camera={{ zoom: 65, position: [100, 100, 100], near: 0.1, far: 500 }}
-        onCreated={({ camera }) => { camera.lookAt(0, 0, 0); }}
+        onCreated={({ camera, gl }) => {
+          camera.lookAt(0, 0, 0);
+          requestAnimationFrame(() => onReady?.());
+          const canvas = gl.domElement;
+          canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); onReady?.(); });
+        }}
         dpr={[1, 2]}
         gl={{
           antialias: true,

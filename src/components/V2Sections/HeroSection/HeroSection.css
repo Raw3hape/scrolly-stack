@@ -763,24 +763,3 @@
     align-items: flex-start;
   }
 }
-
-/* ── SPA Navigation: suppress intro animations on revisit ──
-   When [data-hero-revisit] is set on <html> (after first SPA navigation),
-   skip all hero intro animations — the 3D model is already visible in the
-   persistent canvas, so staggered fade-ins would look jarring. */
-[data-hero-revisit] .v2-hero__badge,
-[data-hero-revisit] .v2-hero__heading,
-[data-hero-revisit] .v2-hero__subtext,
-[data-hero-revisit] .v2-hero__actions,
-[data-hero-revisit] .v2-hero__overline,
-[data-hero-revisit] .v2-hero__glow,
-[data-hero-revisit] .v2-hero__trust,
-[data-hero-revisit] .v2-hero__trust-pill,
-[data-hero-revisit] .v2-hero__image-col,
-[data-hero-revisit] .v2-hero__stat-col,
-[data-hero-revisit] .v2-hero__3d-col,
-[data-hero-revisit] .v2-hero__scroll-hint {
-  animation: none !important;
-  opacity: 1 !important;
-  transform: none !important;
-}

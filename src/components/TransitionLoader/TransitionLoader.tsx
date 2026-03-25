@@ -11,7 +11,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './TransitionLoader.css';
 
 interface TransitionLoaderProps {
@@ -21,6 +21,11 @@ interface TransitionLoaderProps {
 
 export default function TransitionLoader({ visible }: TransitionLoaderProps) {
   const [mounted, setMounted] = useState(true);
+
+  // Re-mount when visible switches back to true (reused across SPA navigations)
+  useEffect(() => {
+    if (visible) setMounted(true);
+  }, [visible]);
 
   const handleTransitionEnd = useCallback(() => {
     if (!visible) {

@@ -63,6 +63,32 @@
   gap: var(--space-md);
 }
 
+/* === Centered variant (no image) — text centered + interactive grid bg === */
+.v2-urgency-card--centered {
+  grid-template-columns: 1fr;
+  position: relative;
+}
+
+.v2-urgency-card--centered .v2-urgency-card__content {
+  text-align: center;
+  align-items: center;
+  max-width: 42rem;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.v2-urgency-card--centered .v2-urgency-card__cta {
+  pointer-events: auto;
+}
+
+.v2-urgency-card--centered .interactive-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
 /* === Right column: image === */
 .v2-urgency-card__image-wrap {
   position: relative;

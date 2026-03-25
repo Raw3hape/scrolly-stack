@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 
 const HeroExplodedGrid3D = dynamic(
@@ -8,5 +9,27 @@ const HeroExplodedGrid3D = dynamic(
 );
 
 export default function HeroExplodedGrid3DLoader({ className }: { className?: string }) {
-  return <HeroExplodedGrid3D className={className} />;
+  const [ready, setReady] = useState(false);
+  const reducedMotion = useRef(
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  const handleReady = useCallback(() => {
+    setReady(true);
+    window.dispatchEvent(new Event('page:ready'));
+  }, []);
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        opacity: ready ? 1 : 0,
+        transition: reducedMotion.current ? 'none' : 'opacity 0.6s ease-out',
+      }}
+    >
+      <HeroExplodedGrid3D className={className} onReady={handleReady} />
+    </div>
+  );
 }

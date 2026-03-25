@@ -196,9 +196,10 @@ function PyramidModel({ layoutRef, textMeasureRef, containerWidthRef }: { layout
 // ─── Canvas Wrapper (default export) ───
 interface HeroPyramid3DProps {
   className?: string;
+  onReady?: () => void;
 }
 
-export default function HeroPyramid3D({ className }: HeroPyramid3DProps) {
+export default function HeroPyramid3D({ className, onReady }: HeroPyramid3DProps) {
   const handleMouseMove = useCallback((e: MouseEvent) => {
     mouseNDC.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouseNDC.y = (e.clientY / window.innerHeight) * 2 - 1;
@@ -233,7 +234,12 @@ export default function HeroPyramid3D({ className }: HeroPyramid3DProps) {
       <Canvas
         orthographic
         camera={{ zoom: 65, position: [100, 100, 100], near: 0.1, far: 500 }}
-        onCreated={({ camera }) => { camera.lookAt(0, 0, 0); }}
+        onCreated={({ camera, gl }) => {
+          camera.lookAt(0, 0, 0);
+          requestAnimationFrame(() => onReady?.());
+          const canvas = gl.domElement;
+          canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); onReady?.(); });
+        }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, toneMapping: THREE.AgXToneMapping }}
         style={{ background: 'transparent', cursor: 'grab' }}

@@ -400,9 +400,10 @@ function RubiksCubeModel({ reducedMotion, hoveredRef, layoutRef, textMeasureRef,
 
 interface HeroRubiksCube3DProps {
   className?: string;
+  onReady?: () => void;
 }
 
-export default function HeroRubiksCube3D({ className }: HeroRubiksCube3DProps) {
+export default function HeroRubiksCube3D({ className, onReady }: HeroRubiksCube3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Window-level mouse tracking — writes to shared mouseNDC
@@ -445,7 +446,12 @@ export default function HeroRubiksCube3D({ className }: HeroRubiksCube3DProps) {
       <Canvas
         orthographic
         camera={{ zoom: 65, position: [100, 100, 100], near: 0.1, far: 500 }}
-        onCreated={({ camera }) => { camera.lookAt(0, 0, 0); }}
+        onCreated={({ camera, gl }) => {
+          camera.lookAt(0, 0, 0);
+          requestAnimationFrame(() => onReady?.());
+          const canvas = gl.domElement;
+          canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); onReady?.(); });
+        }}
         dpr={[1, 2]}
         gl={{
           antialias: true,

@@ -13,7 +13,7 @@ import { Newsreader, Inter } from 'next/font/google';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/V2Sections/Footer/Footer';
 import { footerContent } from '@/config/content';
-import NavigationTracker from '@/components/NavigationTracker';
+import PageTransitionOverlay from '@/components/PageTransitionOverlay';
 import '@/styles/index.css';
 import '@/styles/tokens/stitch-overrides.css';
 import './v2-shared.css';
@@ -57,7 +57,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Foundation Projects',
-    images: ['/og-image.png'],
   },
   twitter: {
     card: 'summary_large_image',
@@ -85,7 +84,7 @@ export default function RootLayout({
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <NavigationTracker />
+        <PageTransitionOverlay />
         <Header />
         <main id="main">{children}</main>
         <Footer data={footerContent} />

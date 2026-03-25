@@ -51,7 +51,7 @@ export default function HeroSection({ data }: Props) {
                 {data.overline && (
                   <span className="v2-hero__overline">{data.overline}</span>
                 )}
-                <h1 className="v2-hero__heading px-layer--fg">
+                <h1 className="v2-hero__heading ">
                   {data.heading.split('\n').map((line, i, arr) => (
                     <span key={i} className={i > 0 ? 'v2-hero__heading-accent' : undefined}>
                       {line}
@@ -60,10 +60,10 @@ export default function HeroSection({ data }: Props) {
                   ))}
                 </h1>
                 {data.subtext && (
-                  <p className="v2-hero__subtext px-layer--fg" data-px-delay="1">{data.subtext}</p>
+                  <p className="v2-hero__subtext ">{data.subtext}</p>
                 )}
                 {data.buttonLabel && (
-                  <div className="v2-hero__actions px-layer--fg" data-px-delay="2">
+                  <div className="v2-hero__actions ">
                     <LinkButton href={ctaConfig.href} variant="primary" arrow>
                       {data.buttonLabel}
                     </LinkButton>
@@ -72,7 +72,7 @@ export default function HeroSection({ data }: Props) {
               </div>
 
               {!Hero3D && data.imageUrl ? (
-                <div className="v2-hero__image-col px-layer--bg" data-px-from="right">
+                <div className="v2-hero__image-col">
                   <div className="v2-hero__image-wrapper">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -87,7 +87,7 @@ export default function HeroSection({ data }: Props) {
 
               {/* Stat display (investors hero) */}
               {data.stat && !data.imageUrl && (
-                <div className="v2-hero__stat-col px-layer--bg" data-px-from="right">
+                <div className="v2-hero__stat-col">
                   <div className="v2-hero__stat-block">
                     <span className="v2-hero__stat-value">{data.stat.value}</span>
                     <span className="v2-hero__stat-label">{data.stat.label}</span>
@@ -98,7 +98,7 @@ export default function HeroSection({ data }: Props) {
 
             {/* 3D backdrop — spans full hero, model offset to right in world space */}
             {Hero3D && (
-              <div className="v2-hero__3d-col px-layer--bg" data-px-from="right">
+              <div className="v2-hero__3d-col">
                 <Hero3D className="v2-hero__3d-canvas" />
               </div>
             )}
@@ -116,9 +116,9 @@ export default function HeroSection({ data }: Props) {
               {data.badge && (
                 <span className="v2-hero__badge">{data.badge}</span>
               )}
-              <h1 className="v2-hero__heading px-layer--fg">{data.heading}</h1>
+              <h1 className="v2-hero__heading ">{data.heading}</h1>
               {data.subtext && (
-                <p className="v2-hero__subtext px-layer--fg" data-px-delay="1">{data.subtext}</p>
+                <p className="v2-hero__subtext ">{data.subtext}</p>
               )}
               <div className="v2-hero__actions">
                 <LinkButton href={ctaConfig.href} variant="primary" arrow>
