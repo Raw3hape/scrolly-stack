@@ -19,7 +19,7 @@
 
 'use client';
 
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
   Environment,
@@ -336,6 +336,7 @@ interface FreebieBook3DProps {
 
 export default function FreebieBook3D({ title, subtitle, className }: FreebieBook3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
 
   // Window-level mouse tracking — writes to shared mouseNDC
   const handleMouseMove = useCallback((e: MouseEvent) => {
@@ -348,8 +349,17 @@ export default function FreebieBook3D({ title, subtitle, className }: FreebieBoo
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [handleMouseMove]);
 
+  const handleCreated = useCallback(() => {
+    // Delay slightly so the first frame renders before fade-in starts
+    requestAnimationFrame(() => setReady(true));
+  }, []);
+
   return (
-    <div ref={containerRef} className={className}>
+    <div
+      ref={containerRef}
+      className={className}
+      style={{ opacity: ready ? 1 : 0, transition: 'opacity 0.4s ease-out' }}
+    >
       <Canvas
         camera={{ position: [0, 0, 6], fov: 36 }}
         dpr={[1, 2]}
@@ -359,6 +369,7 @@ export default function FreebieBook3D({ title, subtitle, className }: FreebieBoo
           toneMapping: THREE.AgXToneMapping,
         }}
         style={{ background: 'transparent', cursor: 'grab' }}
+        onCreated={handleCreated}
       >
         <ambientLight intensity={0.15} />
         <directionalLight position={[5, 14, 5]} intensity={2.4} color="#ffffff" />

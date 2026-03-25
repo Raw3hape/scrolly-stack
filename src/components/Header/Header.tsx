@@ -13,10 +13,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { navLinks, ctaConfig, brandConfig, routes } from '@/config/nav';
 import './Header.css';
 
 export default function Header() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -78,11 +80,21 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="header__nav" aria-label="Main navigation">
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="header__link">
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.href === '/'
+                ? pathname === '/'
+                : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`header__link ${isActive ? 'header__link--active' : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* CTA + Burger */}
@@ -119,11 +131,22 @@ export default function Header() {
       >
         <div className="drawer__content">
           <div className="drawer__links">
-            {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="drawer__link" onClick={close}>
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.href === '/'
+                ? pathname === '/'
+                : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`drawer__link ${isActive ? 'drawer__link--active' : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
+                  onClick={close}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </div>
           <Link href={ctaConfig.href} className="drawer__cta" onClick={close}>
             {ctaConfig.label} <span aria-hidden="true">→</span>

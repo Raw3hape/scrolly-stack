@@ -76,11 +76,12 @@
   max-width: 460px;
 }
 
-/* CTA wrapper — horizontal layout */
+/* CTA wrapper — horizontal layout, wraps on ultra-wide screens */
 .stitch-theme .hero__cta-wrapper {
   flex-direction: row;
   align-items: center;
   gap: var(--space-lg);
+  flex-wrap: wrap;
 }
 
 /* Button — primary_container (#103740), DEFAULT radius (10px) */
@@ -97,6 +98,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  white-space: nowrap;
   transition: background var(--transition-fast), transform var(--transition-fast);
 }
 

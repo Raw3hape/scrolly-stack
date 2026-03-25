@@ -186,12 +186,10 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
                 onBlockHover={handleBlockHover}
               />
           </MouseParallaxGroup>
+          <ReadySignal onReady={onReady} />
         </Suspense>
 
-
-
         <Effects mosaicProgress={mosaicProgress} />
-        <ReadySignal onReady={onReady} />
       </Canvas>
 
       <HoverTooltip

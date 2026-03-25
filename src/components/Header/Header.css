@@ -99,6 +99,14 @@
   }
 }
 
+.header__link--active {
+  color: var(--text-primary);
+}
+
+.header__link--active::after {
+  width: 100%;
+}
+
 .header__link:focus-visible {
   outline: var(--focus-outline-width) solid var(--accent-brand);
   outline-offset: var(--focus-outline-offset);
@@ -119,8 +127,9 @@
   color: var(--text-inverse);
   padding: 0.55em 1.4em;
   border-radius: var(--radius-md);
-  font: var(--font-button);
-  letter-spacing: 0.01em;
+  font: var(--font-body-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
   text-decoration: none;
   transition:
     background var(--transition-fast),
@@ -255,6 +264,11 @@
   border-bottom: var(--line-thin) solid var(--border-default);
   transition: color var(--transition-fast);
   font-style: italic;
+}
+
+.drawer__link--active {
+  color: var(--stitch-dark-accent);
+  border-bottom-color: var(--stitch-dark-accent);
 }
 
 .drawer__link:hover {

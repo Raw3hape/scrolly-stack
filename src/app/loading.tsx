@@ -1,5 +1,8 @@
-import Spinner from '@/components/Spinner/Spinner';
-
 export default function Loading() {
-  return <Spinner />;
+  return (
+    <div
+      className="v2-content-wrapper"
+      style={{ minHeight: '100vh' }}
+    />
+  );
 }

@@ -17,14 +17,14 @@ export const aboutContent: PageContent = {
       type: 'hero',
       id: 'about-hero',
       surface: 'base',
-      layout: 'editorial',
+      layout: 'left',
       heading:
         'We\u2019re A Team Of Roofing Industry Professionals On A Mission To Get Owners Like You A Big Exit',
       subtext:
         'We\u2019ve spent years inside this industry. We know what your company is worth. And we built Foundation Projects because we got tired of watching good roofing owners like you get taken advantage of by brokers and private equity firms.',
       buttonLabel: 'Book A Call',
-      imageUrl:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBX2APLOJ_83bZdQwQ0rn9FyZ0Bfw21mUceg6Oj-5orhoFeDrTp5mX_EoSFUXZ2geGn2hVLnZpT0L1fs2lxrtSKSD65UXYjmCTzPL4Z_OBQLnuCibAFXfAzxlIQQ-5xGfYWf72uEOoCG6ttQRdRwlWdqDKobT8LQOgEfd8sAvmm1i6j-OwLXXSifdv6_Fzy8dAVgXG_vzEOzQ3IICFAtgpBawFy-Ab_en3WxHSWSAxwHnG8-s87aIWCp8k6A-U_Mb3LapV41dabzV7u',
+      backgroundGlow: true,
+      hero3dModel: 'exploded-grid' as const,
     },
     {
       type: 'cinematic',

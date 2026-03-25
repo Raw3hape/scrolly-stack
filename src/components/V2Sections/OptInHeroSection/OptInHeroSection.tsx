@@ -23,7 +23,7 @@ const FreebieBook3D = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div style={{ aspectRatio: '3/4', background: 'transparent' }} aria-label="Loading 3D book preview" />
+      <div className="v2-optin__book-canvas" aria-label="Loading 3D book preview" />
     ),
   },
 );

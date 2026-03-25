@@ -31,7 +31,7 @@ export const roofersContent: PageContent = {
         'We Only Get Paid When You Do',
       ],
       backgroundGlow: true,
-      backgroundCanvas: false, // hidden — set to true to re-enable 3D grid
+      hero3dModel: 'pyramid' as const,
     },
 
     // ── S2: Problem — The Gap (split: image + text + bullets) ──

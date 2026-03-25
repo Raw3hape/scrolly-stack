@@ -17,6 +17,7 @@ export const routes = {
 
 /** Header navigation links — matches Stitch header exactly */
 export const navLinks = [
+  { label: 'Home', href: routes.home },
   { label: 'About', href: routes.about },
   { label: 'Roofers', href: routes.howItWorksRoofers },
   { label: 'Investors', href: routes.howItWorksInvestors },

@@ -13,6 +13,14 @@
   overflow-x: clip;
 }
 
+/* Hero sections fill the full viewport — remove section padding so
+   flex centering can place content at the true visible center. */
+.v2-section:has(.v2-hero--left),
+.v2-section:has(.v2-hero--editorial) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 /* Full-viewport sections — applied selectively to cards, mission, cta */
 .v2-section--fullscreen {
   min-height: 100vh;

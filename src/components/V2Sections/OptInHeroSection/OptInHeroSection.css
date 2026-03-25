@@ -6,6 +6,34 @@
  * Zero hardcode: all values from design tokens
  * ========================================================================== */
 
+/* ── Intro @keyframes ── */
+@keyframes optinIntroUp {
+  from {
+    opacity: 0;
+    transform: translateY(var(--intro-rise));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes optinIntroLeft {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--intro-rise) * -1));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes optinIntroFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* === Grid Layout === */
 .v2-optin {
   display: grid;
@@ -368,8 +396,86 @@
   color: var(--text-muted);
 }
 
+/* ── Staggered Intro Animations ──
+ *
+ * Same pattern as HeroSection on About/Roofers/Investors:
+ * CSS keyframe animations fire on page load with cascading delays
+ * driven by --intro-stagger (120ms) and --intro-duration (1.2s).
+ */
+
+/* Book column: slide from left */
+.v2-optin__book-col {
+  animation: optinIntroLeft var(--intro-duration) var(--intro-ease)
+    calc(var(--intro-stagger) * 1) both;
+}
+
+/* Trust badge below book: fade in after book */
+.v2-optin__trust {
+  animation: optinIntroFade var(--intro-duration) var(--intro-ease)
+    calc(var(--intro-stagger) * 3) both;
+}
+
+/* Overline */
+.v2-optin__overline {
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease) both;
+}
+
+/* Heading */
+.v2-optin__heading {
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease)
+    calc(var(--intro-stagger) * 1) both;
+}
+
+/* Subtext */
+.v2-optin__subtext {
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease)
+    calc(var(--intro-stagger) * 2) both;
+}
+
+/* Form card */
+.v2-optin__form-card {
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease)
+    calc(var(--intro-stagger) * 3) both;
+}
+
+/* Value props container */
+.v2-optin__props {
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease)
+    calc(var(--intro-stagger) * 4) both;
+}
+
+/* Individual value prop items: stagger each by nth-child */
+.v2-optin__prop {
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease) both;
+}
+
+.v2-optin__prop:nth-child(1) {
+  animation-delay: calc(var(--intro-stagger) * 4);
+}
+
+.v2-optin__prop:nth-child(2) {
+  animation-delay: calc(var(--intro-stagger) * 5);
+}
+
+.v2-optin__prop:nth-child(3) {
+  animation-delay: calc(var(--intro-stagger) * 6);
+}
+
 /* === Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {
+  .v2-optin__book-col,
+  .v2-optin__trust,
+  .v2-optin__overline,
+  .v2-optin__heading,
+  .v2-optin__subtext,
+  .v2-optin__form-card,
+  .v2-optin__props,
+  .v2-optin__prop {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
   .v2-optin__submit {
     transition: none;
   }
