@@ -48,7 +48,11 @@ const inter = Inter({
  * Individual pages can override via their own `metadata` export.
  */
 export const metadata: Metadata = {
-  metadataBase: new URL('https://foundationprojects.com'),
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : 'https://scrolly-stack.vercel.app',
+  ),
   title: {
     default: 'Foundation Projects — We Take Roofing Companies Public',
     template: '%s | Foundation Projects',
