@@ -4,129 +4,119 @@
 
 import type { PageContent } from '../types';
 import { footerContent } from './shared';
-import { routes } from '../nav';
 
 export const investorsContent: PageContent = {
   slug: 'how-it-works/investors',
   metadata: {
-    title: 'How It Works \u2014 Investors | Foundation Projects',
+    title: 'Invest in Roofing Companies Going Public | Foundation Projects',
     description:
-      'The architectural blueprint for institutional-grade returns in the roofing asset class. Precision deployment, strategic acquisition, public-market exit.',
+      'Invest early in the first institutional roofing platform heading to a public exit. Ground floor opportunity in a $60B recession-resistant industry.',
   },
   sections: [
-    // ── S1: Hero — "The Equity of Structure" ──
+    // ── S1: Hero — "Invest in the Roofing Companies Going Public" ──
     {
       type: 'hero',
       id: 'investors-hero',
       surface: 'base',
-      layout: 'editorial',
-      overline: 'Investment Framework',
-      heading: 'The Equity of\nStructure.',
+      layout: 'left',
+      badge: 'FOR INVESTORS',
+      heading:
+        'Invest in the Roofing Companies Going Public',
       subtext:
-        'Transitioning roofing from a fragmented trade into a high-yield institutional asset class. We provide the capital, the technology, and the governance.',
-      stat: {
-        value: '18.4%',
-        label: 'Target IRR',
-      },
+        'Roofing is a $60 billion industry that\u2019s never had a serious institutional platform. We\u2019re building it \u2014 and we\u2019re looking for investors who want in early.',
+      buttonLabel: 'Book A Call',
+      trustBadges: [
+        'Ground Floor Investing Opportunity',
+        'Recession-Resistant Industry',
+        'Get Paid When The Platform Goes Public',
+      ],
+      backgroundGlow: true,
     },
 
-    // ── S2: Cinematic — "Precision Deployment" ──
+    // ── S2: Narrative — "Get In Early On A $60B Industry" ──
     {
-      type: 'cinematic',
-      id: 'precision-deployment',
-      surface: 'dark',
-      chapterLabel: 'The Model',
-      chapterSubtitle: 'Precision Deployment',
-      heading: 'Built Like A Blueprint',
-      card: {
-        title: 'Precision Deployment',
-        text: 'Our model is built on the same principles as a blueprint: rigorous planning, material integrity, and a focus on longevity. We acquire established roofing operations and scale them through centralized efficiency.',
-        footnote: 'Read Whitepaper',
-      },
-      backgroundUrl:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuBui31Eggs0Rm1wRiKwLI_X5vBhN91BmL3LefpCWc1rUVEYh__JDhoFp-MC9wV3gIjXCn9GIcWHud17_Zx0BC3P7IDW6ub0rWdabnG4voXOWm1Z5OTlUxnTS7OIG-T8jGkJKL9Qg-Ks8lSdY0IFtnU4kV-ShdVSJigGwgrfnqTRgW8r9jiaFv-NUfu3yeOvEjDjZxiZXaV1pg1O8ZmdHHmsseh7fvRB3OGqSF0eAkMeiZaQL_XTXY020uY9froPiVvXbst36HpsmaAr',
+      type: 'urgency',
+      id: 'investors-narrative',
+      surface: 'base',
+      heading: 'Get In Early On A $60B Industry',
+      text: 'Most investors find out about consolidation plays in leading industries long after the value has already been created and the upside has already been distributed.\n\nFoundation Projects is at the beginning of that curve, assembling best-in-class roofing companies into a single platform with one destination: a public exit.',
     },
 
-    // ── S3: Timeline — "Our Investment Lifecycle" ──
+    // ── S3: Process — "Here's How It Works" (vertical scroll timeline) ──
     {
       type: 'timeline',
-      id: 'investment-lifecycle',
+      id: 'investors-process',
       surface: 'base',
-      heading: 'Our Investment Lifecycle',
+      heading: 'Here\u2019s How It Works',
       steps: [
         {
           number: '01.',
-          title: 'Strategic Acquisition',
-          text: 'Identifying high-performing regional roofing contractors with a minimum 10-year track record and strong community reputation.',
-          icon: 'search',
-          kpiLabel: 'KPI Focus',
-          kpiValue: 'EBITDA Stability & Safety Rating',
+          title: 'Book A 30 Minute Call',
+          text: 'First, we figure out if we\u2019re a good fit. We\u2019ll look at your roofing business, talk through your goals, and if it makes sense for both sides, we sign an NDA, agree on a Letter of Intent, and set your entry valuation.',
+          icon: 'clock',
+          kpiLabel: 'What You Get',
+          kpiValue: 'Fit Assessment & Entry Valuation',
         },
         {
           number: '02.',
-          title: 'Operational Overhaul',
-          text: 'Implementing our proprietary logistics and CRM engine to reduce waste and improve field team communication by 40%.',
-          icon: 'cog',
-          kpiLabel: 'KPI Focus',
-          kpiValue: 'Tech Stack Integration & Margin Expansion',
+          title: 'We Identify & Scale',
+          text: 'We source best-in-class roofing companies, assess fit, and bring them into the platform at entry valuations that make sense. Every company that joins strengthens the whole.',
+          icon: 'search',
+          kpiLabel: 'The Result',
+          kpiValue: 'Best-in-Class Platform Growth',
         },
         {
           number: '03.',
-          title: 'Portfolio Aggregation',
-          text: 'Bundling regional leaders into a national infrastructure asset, creating diversified risk profiles and economies of scale.',
+          title: 'We Go Public',
+          text: 'When the platform is ready, the companies combine and we take it public. That\u2019s where the multiple expansion happens \u2014 and where investors who got in early get paid.',
           icon: 'building',
-          kpiLabel: 'KPI Focus',
-          kpiValue: 'Aggregate Yield & Geographic Resilience',
+          kpiLabel: 'The Payoff',
+          kpiValue: 'Multiple Expansion & Early Returns',
         },
       ],
     },
 
-    // ── S4: Bento Grid — Core Thesis + Stats ──
+    // ── S4: Window — centered text on light background ──
     {
-      type: 'bento',
-      id: 'bento-thesis',
+      type: 'cta',
+      id: 'investors-window',
       surface: 'base',
-      feature: {
-        overline: 'Core Thesis',
-        heading: 'Roofing is the ultimate infrastructure annuity.',
-        text: 'Unlike traditional real estate, roofing is a non-discretionary capital expenditure. Weather and age make it a perpetual requirement.',
-        bullets: [
-          'Non-cyclical demand driven by weather and building age',
-          'Recession-resistant: roofs must be maintained regardless of economy',
-          'Fragmented market with 80,000+ operators creates consolidation opportunity',
-        ],
-      },
-      linkCard: {
-        title: 'Investor Portal',
-        text: 'Real-time portfolio performance tracking.',
-        href: routes.schedule,
-        icon: 'chart-bar',
-      },
-      highlight: {
-        value: '18.4',
-        label: 'Target IRR',
-        context: 'Across 10+ active regional portfolios',
-      },
-      stats: [
-        { value: '10', suffix: '+', label: 'Active Markets' },
-        { value: '450', prefix: '$', suffix: 'M', label: 'Asset Value Managed' },
-        { value: '7.2', suffix: '×', label: 'Average Exit Multiple' },
-        { value: '96', suffix: '%', label: 'Operator Retention Rate' },
-      ],
+      minimal: true,
+      heading: 'The Window Is Open.',
+      headingAccent: 'It Won\u2019t Stay Open Forever.',
+      microcopy:
+        'You\u2019ve spent years building your business. The window to get a return on that business is open. It won\u2019t stay open forever.\n\nThe roofing industry is consolidating right now. The first platforms are already forming. Owners who get in early will lock in better valuations and a bigger share of what the platform is worth when it goes public. Owners who wait will be selling into a crowded market with fewer buyers and less leverage.',
+      buttonLabel: 'Book A Call',
     },
 
-    // ── S5: Trust — "Governed by integrity" ──
+    // ── S5: Benefits — "Roofing Consolidation Has Already Started" ──
     {
-      type: 'trust',
-      id: 'trust-partners',
-      surface: 'base',
-      badge: 'Verified Institutional Partner',
-      heading: 'Governed by integrity, built for performance.',
-      partners: [
-        'Goldman & Co.',
-        'Vanguard Group',
-        'Architectural Digest',
-        'REIT Journal',
+      type: 'benefits-grid',
+      id: 'investors-benefits',
+      surface: 'dark',
+      heading: 'Roofing Consolidation Has Already Started. Early Investors Win.',
+      text: 'When you work with us and get in early, here\u2019s what happens:',
+      cards: [
+        {
+          icon: 'arrow-up',
+          title: 'Get In Before The Multiples Rise',
+          text: 'Early entry means lower valuations and bigger upside when the platform goes public.',
+        },
+        {
+          icon: 'shield',
+          title: 'Proven, Durable Demand',
+          text: 'Roofing is recession-resistant \u2014 roofs must be maintained regardless of the economy.',
+        },
+        {
+          icon: 'users',
+          title: '$1B+ In Roofing Revenue Experience',
+          text: 'Back a team that has built and scaled roofing operations at massive scale.',
+        },
+        {
+          icon: 'chart-bar',
+          title: 'A Public Exit \u2014 Not A PE Flip',
+          text: 'Participate in a public-market exit where early investors capture the multiple expansion.',
+        },
       ],
     },
 
@@ -134,14 +124,12 @@ export const investorsContent: PageContent = {
     {
       type: 'cta',
       id: 'investors-cta',
-      surface: 'dark',
-      overline: 'Deploy Capital',
-      heading: 'Deploy Capital Into Roofing\u2019s Public Moment.',
+      surface: 'base',
+      overline: 'Limited Spots',
+      heading: 'Get Skin In The Game In The Roofing Industry',
       microcopy:
-        'Schedule a confidential institutional briefing. No commitments \u2014 just the blueprint.',
-      buttonLabel: 'Schedule Briefing',
-      secondaryButtonLabel: 'View Our Process',
-      secondaryHref: routes.howItWorksRoofers,
+        'The first institutional platforms are forming right now. The window to get in at the ground floor is open \u2014 but it won\u2019t stay open long. As the platform grows and the IPO gets closer, early entry becomes harder to find.\n\nBook a 30-minute call today to see if this is a fit for your investing goals. Spots are limited.',
+      buttonLabel: 'Book A Call',
     },
   ],
   footer: footerContent,

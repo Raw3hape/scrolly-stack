@@ -69,7 +69,7 @@
   display: block;
   font: var(--font-overline);
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: var(--tracking-ultra-wide);
   color: var(--stitch-cinematic-chapter-color, var(--color-gold-300));
   margin-bottom: var(--space-sm);
 }
@@ -112,10 +112,10 @@
      CSS animations with `fill-mode: forwards` create stacking contexts
      which isolate backdrop-filter from seeing elements behind them. */
   background: var(--glass-white-6);
-  backdrop-filter: blur(32px) saturate(140%) brightness(1.1);
+  backdrop-filter: var(--glass-blur) saturate(140%) brightness(1.1);
 
   padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
-  border: 1px solid var(--glass-white-12);
+  border: var(--line-thin) solid var(--glass-white-12);
   border-radius: var(--radius-xl);
 }
 

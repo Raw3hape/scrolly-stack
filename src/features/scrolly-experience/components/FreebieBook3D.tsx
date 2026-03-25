@@ -29,6 +29,7 @@ import {
   useTexture,
 } from '@react-three/drei';
 import * as THREE from 'three';
+import { palette } from '@/config/palette';
 
 /**
  * LogoPlane — Renders the Foundation Projects logo as a crisp texture
@@ -73,18 +74,18 @@ const PAGE_H = COVER_H - PAGE_OVERHANG * 2;
 const PAGE_D = SPINE_D - COVER_THICK * 2;
 const PAGE_LAYER_COUNT = 3; // fewer visible page layers for slim book
 
-// ─── Brand Colors (mapped from design tokens in colors.css) ───────────────
+// ─── Brand Colors (sourced from palette.ts — single source of truth) ──────
 const C = {
-  coverFront: '#297373',    // --color-teal-500
-  coverBack: '#1E5757',     // --color-teal-700
-  spine: '#1A4E58',         // --color-anchor-700
-  spineEdge: '#103740',     // --color-anchor-900
-  pages: '#F2EDE4',         // --color-sand-100
-  pageLines: '#E8E1D6',     // --color-sand-200
-  accent: '#D79344',        // --color-gold-500
-  textLight: '#FDFCFA',     // --color-sand-25
-  textMuted: '#3A8C8C',     // --color-teal-300
-  textGold: '#E5AD6B',      // --color-gold-300
+  coverFront: palette.teal500,
+  coverBack:  palette.teal700,
+  spine:      palette.anchor700,
+  spineEdge:  palette.anchor900,
+  pages:      palette.sand100,
+  pageLines:  palette.sand200,
+  accent:     palette.gold500,
+  textLight:  palette.sand25,
+  textMuted:  palette.teal300,
+  textGold:   palette.gold300,
 } as const;
 
 // ─── Mouse Parallax Config ───────────────────────────────────────────────────

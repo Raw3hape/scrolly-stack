@@ -27,7 +27,7 @@ export const navLinks = [
 export const ctaConfig = {
   label: 'Book A Call',
   href: routes.schedule,
-  microcopy: 'Free 15-min call',
+  microcopy: 'Free 30-min call',
 } as const;
 
 /** Brand configuration */

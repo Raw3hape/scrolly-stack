@@ -57,7 +57,7 @@
 
 .v2-booking__expect-item:hover .v2-booking__expect-icon {
   background: var(--color-teal-100);
-  transform: scale(1.05);
+  transform: scale(var(--hover-scale-lg));
 }
 
 .v2-booking__expect-title {
@@ -112,7 +112,7 @@
   background: var(--surface-card);
   padding: var(--space-xl) var(--space-2xl);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--stitch-outline-variant);
+  border: var(--line-thin) solid var(--stitch-outline-variant);
   box-shadow: var(--shadow-xl);
   min-height: 600px;
   display: flex;
@@ -252,7 +252,7 @@
 
 .v2-booking__calendar-day--today {
   font-weight: var(--weight-bold);
-  border: 1px solid var(--stitch-outline-variant);
+  border: var(--line-thin) solid var(--stitch-outline-variant);
 }
 
 .v2-booking__calendar-day--selected {
@@ -279,7 +279,7 @@
 .v2-booking__slot {
   width: 100%;
   padding: var(--space-md) var(--space-md);
-  border: 1px solid var(--stitch-outline-variant);
+  border: var(--line-thin) solid var(--stitch-outline-variant);
   background: transparent;
   color: var(--stitch-dark-bg);
   font: var(--font-body);
@@ -298,7 +298,7 @@
 }
 
 .v2-booking__slot--selected {
-  border-width: 2px;
+  border-width: var(--line-thick);
   border-color: var(--stitch-dark-bg);
   background: var(--stitch-dark-bg);
   color: var(--text-inverse);
@@ -333,7 +333,7 @@
 
 .v2-booking__submit:hover {
   background: var(--color-teal-700);
-  transform: translateY(-1px);
+  transform: translateY(var(--hover-lift-sm));
   box-shadow: var(--shadow-xl);
 }
 

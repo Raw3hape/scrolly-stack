@@ -56,7 +56,11 @@
   --tracking-wider:  0.1em;
   --tracking-widest: 0.15em;
 
+  /* === Font Size — Micro === */
+  --font-size-micro: 0.625rem;                                    /* 10px — badges, role labels, KPI labels */
+
   /* === Font Weight === */
+  --weight-light:     300;
   --weight-normal:    400;
   --weight-medium:    500;
   --weight-semibold:  600;

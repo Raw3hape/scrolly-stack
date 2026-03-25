@@ -28,7 +28,7 @@
 .interactive-grid__cell {
   position: relative;
   aspect-ratio: 1;
-  border: 1px solid transparent;
+  border: var(--line-thin) solid transparent;
   border-radius: var(--radius-xs, 2px);
   transition: border-color var(--duration-slow) var(--ease-out),
               background-color var(--duration-slow) var(--ease-out);
@@ -47,7 +47,7 @@
 
 /* Hover state on the grid container triggers cell visibility */
 .interactive-grid:hover .interactive-grid__cell {
-  border-color: rgba(255, 255, 255, 0.06);
+  border-color: var(--glass-white-6);
 }
 
 /* Cells near cursor glow subtly — handled via inline style opacity from JS */

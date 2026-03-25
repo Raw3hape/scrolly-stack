@@ -40,7 +40,7 @@
   z-index: 0;
   pointer-events: auto;
   opacity: 0;
-  animation: heroCanvasFadeIn 1.2s var(--ease-out, ease-out) 0.6s both;
+  animation: heroCanvasFadeIn var(--duration-long) var(--ease-out, ease-out) 0.6s both;
 }
 
 @keyframes heroCanvasFadeIn {
@@ -104,13 +104,14 @@
 /* ── Badge pill (FOR ROOFING FOUNDERS) ── */
 .v2-hero__badge {
   display: inline-block;
-  padding: var(--space-2xs) var(--space-md);
+  padding: var(--space-xs) var(--space-lg);
   background: var(--color-gold-100);
   color: var(--color-gold-900);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-family: var(--font-family);
-  font-weight: 700;
-  letter-spacing: var(--tracking-wide);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
   border-radius: var(--radius-full);
   margin-bottom: var(--space-xl);
 }
@@ -130,6 +131,58 @@
   }
 }
 
+/* ── Left-aligned layout variant ── */
+.v2-hero--left {
+  align-items: flex-start;
+  text-align: left;
+  max-width: var(--content-max, 1200px);
+  padding: calc(var(--space-2xl) + var(--space-md)) var(--container-padding) var(--space-xl);
+}
+
+.v2-hero--left .v2-hero__heading {
+  max-width: 900px;
+}
+
+.v2-hero--left .v2-hero__subtext {
+  max-width: 600px;
+  color: var(--text-primary);
+  opacity: 0.7;
+}
+
+.v2-hero--left .v2-hero__actions {
+  align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  .v2-hero--left .v2-hero__actions {
+    justify-content: flex-start;
+  }
+}
+
+.v2-hero--left .v2-hero__trust-pills {
+  justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+  .v2-hero--left {
+    align-items: flex-start;
+    text-align: left;
+    padding: var(--space-2xl) var(--container-padding) var(--space-lg);
+  }
+
+  .v2-hero--left .v2-hero__heading {
+    max-width: none;
+  }
+
+  .v2-hero--left .v2-hero__subtext {
+    max-width: none;
+  }
+
+  .v2-hero--left .v2-hero__trust-pills {
+    justify-content: flex-start;
+  }
+}
+
 /* ── Trust badge ── */
 .v2-hero__trust {
   display: inline-flex;
@@ -143,6 +196,84 @@
 .v2-hero__trust-icon {
   color: var(--stitch-dark-accent);
   flex-shrink: 0;
+}
+
+/* ── Trust badge pills (multiple) ── */
+.v2-hero__trust-pills {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+}
+
+.v2-hero__trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-primary);
+  opacity: 0.55;
+  white-space: nowrap;
+  cursor: default;
+  transition: opacity var(--transition-fast);
+}
+
+.v2-hero__trust-pill:hover {
+  opacity: 0.85;
+}
+
+/* Checkmark icon */
+.v2-hero__trust-pill-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--accent-brand);
+}
+
+/* ── Staggered pill entrance ── */
+.v2-hero__trust-pill {
+  opacity: 0;
+  animation: heroIntroUp var(--intro-duration) var(--intro-ease) both;
+}
+
+.v2-hero__trust-pill:nth-child(1) {
+  animation-delay: calc(var(--intro-stagger) * 4);
+}
+.v2-hero__trust-pill:nth-child(2) {
+  animation-delay: calc(var(--intro-stagger) * 5);
+}
+.v2-hero__trust-pill:nth-child(3) {
+  animation-delay: calc(var(--intro-stagger) * 6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-hero__trust-pills,
+  .v2-hero__trust-pill {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .v2-hero__trust-pills {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .v2-hero__trust-pill {
+    font-size: var(--font-size-xs);
+  }
 }
 
 /* ── Background glow ── */
@@ -160,9 +291,9 @@
   border-radius: var(--radius-full);
   transform: translate(25%, -50%);
   pointer-events: none;
-  filter: blur(80px);
+  filter: var(--blur-xl);
   opacity: 0;
-  transition: opacity 1.5s ease-out;
+  transition: opacity var(--duration-longer) var(--ease-out);
 }
 
 [data-visible] .v2-hero__glow {
@@ -260,7 +391,7 @@
 /* Italic + light second line (e.g. "Structure.") */
 .v2-hero__heading-accent {
   font-style: italic;
-  font-weight: 300;
+  font-weight: var(--weight-light);
 }
 
 .v2-hero--editorial .v2-hero__subtext {
@@ -485,7 +616,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: flex-end;
-  border-right: 2px solid var(--anchor-900-alpha-20);
+  border-right: var(--line-thick) solid var(--anchor-900-alpha-20);
   padding: var(--space-sm) var(--space-md);
 }
 
@@ -516,7 +647,7 @@
 
   .v2-hero__stat-block {
     border-right: none;
-    border-left: 2px solid var(--anchor-900-alpha-20);
+    border-left: var(--line-thick) solid var(--anchor-900-alpha-20);
     align-items: flex-start;
   }
 }

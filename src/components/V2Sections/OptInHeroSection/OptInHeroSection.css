@@ -230,6 +230,15 @@
   background: var(--color-sand-25);
 }
 
+.v2-optin__input:focus-visible {
+  outline: none;
+  border-color: var(--color-teal-500);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-teal-500) 15%, transparent),
+    var(--shadow-sm);
+  background: var(--color-sand-25);
+}
+
 /* === Submit Button (solid bg — matches CTA section, no gradient flicker) === */
 .v2-optin__submit-wrap {
   margin-top: var(--space-md);
@@ -271,7 +280,7 @@
 }
 
 .v2-optin__submit:active {
-  transform: translateY(0) scale(0.98);
+  transform: translateY(0) scale(var(--active-scale-sm));
 }
 
 .v2-optin__submit:focus-visible {

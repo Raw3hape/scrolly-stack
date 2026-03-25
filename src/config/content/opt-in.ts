@@ -8,9 +8,9 @@ import { footerContent } from './shared';
 export const optInContent: PageContent = {
   slug: 'opt-in',
   metadata: {
-    title: 'Free Report \u2014 8 Things PE Has Wrong | Foundation Projects',
+    title: '8 Things Private Equity Has Wrong About The Roofing Industry | Foundation Projects',
     description:
-      'Download our free report revealing what brokers & PE firms don\u2019t understand about the $60B roofing industry \u2014 and why it\u2019s costing owners millions.',
+      'What brokers & private equity firms don\u2019t understand about this $60B industry\u2014 and why it\u2019s costing owners (and investors!) millions. Free instant download.',
   },
   sections: [
     // \u2500\u2500 S1: Opt-In Hero (3D Book + Form) \u2500\u2500
@@ -18,11 +18,11 @@ export const optInContent: PageContent = {
       type: 'opt-in-hero',
       id: 'optin-hero',
       surface: 'base',
-      overline: 'Foundation Insights Series',
+      overline: 'FREE, INSTANT DOWNLOAD',
       heading:
-        'FREE, INSTANT DOWNLOAD: What brokers & PE firms don\u2019t understand about this $60B industry.',
+        '8 Things Private Equity Has Wrong About The Roofing Industry',
       subtext:
-        'The roofing sector is being aggressively targeted by outside capital. Most founders are leaving millions on the table because they follow the wrong playbook.',
+        'What brokers & private equity firms don\u2019t understand about this $60B industry\u2014 and why it\u2019s costing owners (and investors!) millions.',
       book: {
         title: '8 Things Private Equity Has Wrong',
         subtitle: 'Foundation Projects Architecture',
@@ -44,13 +44,13 @@ export const optInContent: PageContent = {
           },
           {
             name: 'email',
-            label: 'Work Email',
+            label: 'Email',
             placeholder: 'jane@company.com',
             type: 'email',
             required: true,
           },
         ],
-        submitLabel: 'Get Instant Access \u2014 FREE',
+        submitLabel: 'Get Instant Access - FREE',
         disclaimer:
           'Your data is secure. Architectural integrity in everything we do.',
       },

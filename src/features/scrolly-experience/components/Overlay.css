@@ -13,11 +13,11 @@
   --timeline-icon-size: var(--icon-md); /* Default icon inside dot              */
   --timeline-icon-size-active: var(--icon-lg); /* Active icon size              */
 
-  /* === Component-level font sizes (scoped — not in global typography.css) === */
-  --step-font-title:          2.5rem;   /* 40px  — desktop step title           */
-  --step-font-title-tablet:   2rem;     /* 32px  — tablet step title            */
-  --step-font-title-mobile:   1.5rem;   /* 24px  — mobile step title            */
-  --step-font-cta:            0.9rem;   /* 14.4px — step CTA label              */
+  /* === Component-level font sizes (mapped to global design tokens) === */
+  --step-font-title:          var(--font-size-3xl);   /* desktop step title     */
+  --step-font-title-tablet:   var(--font-size-2xl);   /* tablet step title      */
+  --step-font-title-mobile:   var(--font-size-xl);    /* mobile step title      */
+  --step-font-cta:            var(--font-size-sm);    /* step CTA label         */
 
   padding: 0; /* Padding handled by parent container */
   padding-bottom: 0;
@@ -277,7 +277,7 @@
   font-family: var(--font-family-serif);
   font-size: var(--step-font-title);
   color: var(--text-primary);
-  font-weight: 400;
+  font-weight: var(--weight-normal);
   letter-spacing: -0.02em;
   line-height: var(--leading-tight);
 }
@@ -467,7 +467,7 @@
     background: var(--glass-card-bg);
     /* Light blur — 8px is ~50% cheaper than 16px while still frosting over
      * the live WebGL canvas. Cards are GPU-promoted (will-change + contain). */
-    backdrop-filter: saturate(120%) blur(8px);
+    backdrop-filter: saturate(120%) var(--blur-sm);
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
     /* Stronger, very soft diffused shadows */

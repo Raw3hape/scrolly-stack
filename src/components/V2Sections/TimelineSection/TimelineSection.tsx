@@ -214,7 +214,6 @@ export default function TimelineSection({ data }: Props) {
       {/* Header */}
       <div className="v2-timeline__header">
         <h2 className="v2-timeline__heading px-layer--fg">{data.heading}</h2>
-        <div className="v2-timeline__divider px-layer--bg" aria-hidden="true" />
       </div>
 
       {/* Timeline body */}
@@ -273,12 +272,14 @@ export default function TimelineSection({ data }: Props) {
                 >
                   <h4 className="v2-timeline__title">{step.title}</h4>
                 </div>
-                <div
-                  className="v2-timeline__reveal-item v2-timeline__reveal-item--text"
-                  data-revealed={isActive || undefined}
-                >
-                  <p className="v2-timeline__text">{step.text}</p>
-                </div>
+                {step.text && (
+                  <div
+                    className="v2-timeline__reveal-item v2-timeline__reveal-item--text"
+                    data-revealed={isActive || undefined}
+                  >
+                    <p className="v2-timeline__text">{step.text}</p>
+                  </div>
+                )}
               </div>
 
               {/* KPI card side */}

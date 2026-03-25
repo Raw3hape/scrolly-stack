@@ -8,6 +8,7 @@
 :root {
   /* === Border Radius === */
   --radius-none: 0;
+  --radius-xs:   2px;
   --radius-sm:   4px;
   --radius-md:   8px;
   --radius-lg:   12px;
@@ -87,13 +88,50 @@
   --focus-outline-width: 2px;
   --focus-outline-offset: 3px;
 
+  /* === Interaction transforms === */
+  /* Hover lift — vertical translation on hover */
+  --hover-lift-sm:  -1px;   /* LinkButton, StepsSection, ScheduleBooking */
+  --hover-lift-md:  -2px;   /* BenefitsGrid, BentoSection, stitch CTA default */
+  --hover-lift-lg:  -4px;   /* CardsSection, MissionSection */
+
+  /* Active press — scale on click/tap */
+  --active-scale:       0.97;   /* Default press scale (Header, CtaSection) */
+  --active-scale-sm:    0.98;   /* Subtle press (LinkButton, OptInHero) */
+  --active-scale-lg:    0.96;   /* Deeper press (Footer) */
+
+  /* Hover scale — subtle grow on hover */
+  --hover-scale-sm:     1.02;   /* LinkButton, ScheduleBooking slots */
+  --hover-scale-md:     1.03;   /* CtaSection secondary */
+  --hover-scale-lg:     1.05;   /* Feature icons */
+
+  /* === Backdrop blur scale === */
+  --blur-xs:   blur(4px);    /* TestimonialCarousel card blur */
+  --blur-sm:   blur(8px);    /* Overlay mobile step */
+  --blur-md:   blur(12px);   /* Header default, BenefitsGrid, CtaSection */
+  --blur-lg:   blur(16px);   /* Header scrolled, HoverTooltip */
+  /* --glass-blur: blur(32px) already defined above */
+  --blur-xl:   blur(80px);   /* HeroSection glow */
+
+  /* === Opacity scale (semantic) === */
+  --opacity-subtle:     0.05;   /* Decorative backgrounds */
+  --opacity-faint:      0.12;   /* Grid canvas, mesh background */
+  --opacity-muted:      0.35;   /* Dimmed siblings, inactive steps */
+  --opacity-secondary:  0.55;   /* Decorative icons, secondary content */
+  --opacity-tertiary:   0.7;    /* Body text secondary, captions */
+  --opacity-hover:      0.85;   /* Hover brightness */
+
+  /* === Button size tokens === */
+  --btn-padding-sm:  var(--space-xs) var(--space-md);     /* StepsSection CTA */
+  --btn-padding-md:  0.75rem 1.5rem;                       /* Default (= current --btn-padding) */
+  --btn-padding-lg:  var(--space-md) var(--space-2xl);     /* CtaSection, OptInHero */
+
   /* === Timeline interactive tokens === */
   --timeline-dot-size: 1.125rem;
   --timeline-dot-ring: 0 0 0 0.5rem var(--stitch-surface-container-low);
   --timeline-dot-ring-active: 0 0 0 0.5rem rgba(229, 173, 107, 0.25);
   --timeline-reveal-x: 30px;
   --timeline-reveal-duration: 0.65s;
-  --timeline-reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --timeline-reveal-ease: var(--ease-out);
   --timeline-line-color: var(--stitch-outline-variant);
   --timeline-line-active-from: var(--color-gold-300);
   --timeline-line-active-to: var(--color-teal-500);
@@ -102,7 +140,7 @@
   /* === Bento grid animation tokens === */
   --bento-reveal-y: 30px;
   --bento-reveal-duration: 0.7s;
-  --bento-reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --bento-reveal-ease: var(--ease-out);
   --bento-stagger-step: 120ms;
   --bento-counter-duration: 1.2s;
   --bento-mesh-duration: 20s;

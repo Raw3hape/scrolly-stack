@@ -18,9 +18,9 @@ export const scheduleContent: PageContent = {
       type: 'schedule-hero',
       id: 'schedule-hero',
       surface: 'base',
-      heading: 'Your Next Step Is To Book A Call',
+      heading: 'Our Next Step Is To Book A Call',
       subtext:
-        'If you\u2019re serious about cashing in on a $60B industry \u2014 booking a call is the right choice.',
+        'If you\u2019re serious about cashing in on a $60B industry \u2014 booking a call with our team is the right choice.',
       smsBadge: {
         text: 'Schedule a call below or text',
         keyword: 'ROOF',

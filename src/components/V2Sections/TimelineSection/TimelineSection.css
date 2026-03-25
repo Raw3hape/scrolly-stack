@@ -118,26 +118,37 @@
   }
 }
 
-/* ── Sequential stagger reveal items ── */
+/* ── Sequential stagger reveal items — parallax-layered ── */
 .v2-timeline__reveal-item {
   opacity: 0;
-  transform: translateY(var(--space-md));
-  transition:
-    opacity  var(--timeline-reveal-duration) var(--timeline-reveal-ease),
-    transform var(--timeline-reveal-duration) var(--timeline-reveal-ease);
+  will-change: transform, opacity;
 }
 
-/* Stagger delays: number → title → text */
+/* Number: deep layer — most travel, slow ease */
 .v2-timeline__reveal-item--number {
+  transform: translateY(clamp(2.5rem, 5vw, 4rem));
+  transition:
+    opacity  var(--reveal-duration-number) var(--reveal-easing),
+    transform var(--reveal-duration-number) var(--reveal-easing);
   transition-delay: 0s;
 }
 
+/* Title: mid layer — medium travel, slightly faster */
 .v2-timeline__reveal-item--title {
-  transition-delay: 0.12s;
+  transform: translateY(clamp(1.5rem, 3vw, 2.5rem));
+  transition:
+    opacity  var(--reveal-duration-title) var(--reveal-easing),
+    transform var(--reveal-duration-title) var(--reveal-easing);
+  transition-delay: var(--reveal-delay-title);
 }
 
+/* Text: surface layer — least travel, quickest */
 .v2-timeline__reveal-item--text {
-  transition-delay: 0.24s;
+  transform: translateY(clamp(1rem, 2vw, 1.5rem));
+  transition:
+    opacity  var(--reveal-duration-text) var(--reveal-easing),
+    transform var(--reveal-duration-text) var(--reveal-easing);
+  transition-delay: var(--reveal-delay-text);
 }
 
 /* Revealed state */
@@ -190,39 +201,40 @@
   position: relative;
 }
 
-/* ── KPI card — reveal animation ── */
+/* ── KPI card — accent-layer parallax reveal ── */
 .v2-timeline__kpi-card {
   background: var(--stitch-surface-container-low);
   padding: clamp(var(--space-lg), 3vw, var(--space-xl));
   border-radius: var(--radius-lg);
-  border: 1px solid var(--silver-alpha-8);
+  border: var(--line-thin) solid var(--silver-alpha-8);
   position: relative;
   overflow: hidden;
+  will-change: transform, opacity;
 
-  /* Reveal: start hidden, slide from direction */
+  /* Reveal: start hidden, slide from direction + scale down */
   opacity: 0;
-  transform: translateX(var(--timeline-reveal-x));
+  transform: translateX(var(--timeline-reveal-x)) scale(0.94);
   transition:
-    opacity   var(--timeline-reveal-duration) var(--timeline-reveal-ease),
-    transform var(--timeline-reveal-duration) var(--timeline-reveal-ease),
+    opacity   0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow var(--transition-fast);
-  /* KPI card appears after text (stagger after content items) */
-  transition-delay: 0.36s, 0.36s, 0s;
+  /* KPI card appears after content items */
+  transition-delay: 0.35s, 0.35s, 0s;
 }
 
 /* Direction: if from left, slide from left */
 .v2-timeline__kpi-card[data-reveal-from="left"] {
-  transform: translateX(calc(var(--timeline-reveal-x) * -1));
+  transform: translateX(calc(var(--timeline-reveal-x) * -1)) scale(0.94);
 }
 
 .v2-timeline__kpi-card[data-reveal-from="right"] {
-  transform: translateX(var(--timeline-reveal-x));
+  transform: translateX(var(--timeline-reveal-x)) scale(0.94);
 }
 
 /* Revealed state */
 .v2-timeline__kpi-card[data-revealed] {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
 }
 
 /* Subtle shimmer border on reveal — pseudo-element */
@@ -231,7 +243,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid transparent;
+  border: var(--line-thin) solid transparent;
   background: linear-gradient(
     135deg,
     var(--gold-300-alpha-20) 0%,

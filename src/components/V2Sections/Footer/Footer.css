@@ -94,6 +94,11 @@
   opacity: 0.8;
 }
 
+.footer__logo-link:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
+}
+
 .footer__logo {
   width: auto;
   height: 32px;
@@ -140,6 +145,11 @@
   }
 }
 
+.footer__links a:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
+}
+
 /* --- Subscribe column --- */
 .footer__subscribe-col {
   display: flex;
@@ -163,7 +173,7 @@
   flex: 1;
   padding: var(--space-sm) var(--space-md);
   background: var(--glass-white-8);
-  border: 1px solid var(--glass-white-15);
+  border: var(--line-thin) solid var(--glass-white-15);
   border-right: none;
   border-radius: var(--radius-sm) 0 0 var(--radius-sm);
   color: var(--stitch-dark-text);
@@ -184,13 +194,18 @@
   border-color: var(--stitch-dark-accent);
 }
 
+.footer__subscribe-input:focus-visible {
+  background: var(--glass-white-12);
+  border-color: var(--stitch-dark-accent);
+}
+
 .footer__subscribe-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-sm) var(--space-md);
   background: var(--color-gold-500);
-  border: 1px solid var(--color-gold-500);
+  border: var(--line-thin) solid var(--color-gold-500);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--stitch-dark-bg);
   cursor: pointer;
@@ -209,7 +224,12 @@
 }
 
 .footer__subscribe-btn:active {
-  transform: scale(0.96);
+  transform: scale(var(--active-scale-lg));
+}
+
+.footer__subscribe-btn:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
 }
 
 /* --- Bottom bar --- */
@@ -219,7 +239,7 @@
   justify-content: space-between;
   margin-top: var(--space-2xl);
   padding-top: var(--space-lg);
-  border-top: 1px solid var(--glass-white-10);
+  border-top: var(--line-thin) solid var(--glass-white-10);
   max-width: var(--container-max);
   margin-left: auto;
   margin-right: auto;

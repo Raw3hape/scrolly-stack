@@ -13,19 +13,23 @@ export const roofersContent: PageContent = {
       'Discover how Foundation Projects helps roofing company owners achieve a premium exit through our public-market strategy.',
   },
   sections: [
-    // ── S1: Hero (centered — Stitch: badge + heading + trust badge) ──
+    // ── S1: Hero (centered — Stitch: badge + heading + trust badges) ──
     {
       type: 'hero',
       id: 'roofers-hero',
       surface: 'base',
-      layout: 'center',
+      layout: 'left',
       badge: 'FOR ROOFING FOUNDERS',
       heading:
         'Here\u2019s How You Can Get a Bigger Exit From Your Roofing Company',
       subtext:
-        '3-step process proven to get 7\u00d7\u201310\u00d7 what PE would pay.',
+        'We take roofing companies through a 3-step process proven to get you 7x\u201310x what a Private Equity firm would have paid you.',
       buttonLabel: 'Book A Call',
-      trustBadge: 'No upfront costs. 30-minute fit assessment.',
+      trustBadges: [
+        'Get A Bigger Exit',
+        'Stay In The Deal',
+        'We Only Get Paid When You Do',
+      ],
       backgroundGlow: true,
       backgroundCanvas: false, // hidden — set to true to re-enable 3D grid
     },
@@ -36,7 +40,7 @@ export const roofersContent: PageContent = {
       id: 'roofers-problem',
       surface: 'low',
       heading: 'Don\u2019t Leave Money On The Table When You Exit',
-      text: 'Brokers and Private Equity firms look for distress or high-volume/low-margin operations. They want to buy your legacy for the lowest possible multiple. We take a different approach: we build architectural integrity into your business before the exit.',
+      text: 'Brokers take 20% to list you. PE firms offer 3x and lock you in before you\u2019re ready. And if you try to sell on your own, you\u2019re looking at 12\u201318 months of due diligence and cleanup. Every path leaves money on the table \u2014 and most of it ends up in someone else\u2019s pocket.',
       image: {
         url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRoMJRRV0WMKNLuCiYV-djrerCmLe5gN4_7VnxcvKF2ygW7PLbi4sEe2LV_osyIVkx2s9x6il66jg_6xsZ2o0mvWbv5vwiPSHMWROJ76cK8ZQDksUHG67FkgEHliOLYDnPBuzzXVCBoVSCH_dtZUjPsSuLKNKfa57seVH9jAuBMSv07Xq3Ks6-h1kfZasfZ_ln3aP7-FVIfMmundePpt88oJ2m7WcUCbH36Sm_OrAbGJ4gZOOZ5RIaZG0yc64yRvWF19xr3Zrn9vBB',
         quote: '\u201CThe traditional exit model is broken for independent roofers.\u201D',
@@ -54,57 +58,56 @@ export const roofersContent: PageContent = {
       id: 'roofers-process',
       surface: 'base',
       variant: 'cards',
-      heading: 'The 3-Step Process',
+      heading: 'Here\u2019s How It Works',
       steps: [
         {
           number: '01',
           title: 'Book A 30 Minute Call',
-          text: 'We start with a high-level fit assessment. If we\u2019re aligned, we sign a standard NDA and provide a Letter of Intent (LOI) within 7 days.',
+          text: 'First, we figure out if we\u2019re a good fit. We\u2019ll look at your roofing business, talk through your goals, and if it makes sense for both sides, we sign an NDA, agree on a Letter of Intent, and set your entry valuation.\n\nYou don\u2019t owe us anything at this stage. No money changes hands \u2014 just clarity.',
           icon: 'clock',
         },
         {
           number: '02',
           title: 'We Scale Your Business',
-          text: 'This is where the magic happens. We inject proprietary AI tools, systematize your operations, and optimize your roofing crew management to drive EBITDA.',
+          text: 'Once you\u2019re in, we come in and help fix and build the things that make a company worth more \u2014 better systems, cleaner operations, AI tools that save time, and training for your team.\n\nYou keep running your business. We just make it worth a lot more.',
           icon: 'cog',
         },
         {
           number: '03',
           title: 'Get A Big Exit',
-          text: 'We roll your company into our larger platform. By combining companies and going public, you keep majority value at an institutional multiple (7\u00d7\u201310\u00d7).',
+          text: 'The companies combine and we take it public. You keep the majority of what your company is worth. We take 20% of the value we helped create \u2014 nothing until then.\n\nOther companies give you 3X and sell at 10X. We only get paid when you do.',
           icon: 'building',
         },
       ],
     },
 
-    // ── S4: Benefits Grid — "Scale Without The Stress" (dark glass cards) ──
+    // ── S4: Benefits Grid — "Let's Get You The Exit You Deserve" (dark glass cards) ──
     {
       type: 'benefits-grid',
       id: 'roofers-benefits',
       surface: 'dark',
-      heading: 'Scale Without The Stress',
-      text: 'Foundation Projects isn\u2019t just an acquirer; we are an architectural partner for your legacy. We build the systems so you can focus on the craft.',
-      ctaLabel: 'Learn About Our Systems',
+      heading: 'Let\u2019s Get You The Exit You Deserve',
+      text: 'When you work with us, here\u2019s what happens:',
       cards: [
         {
           icon: 'lock',
-          title: 'Stop Cold Emails',
-          text: 'We handle the institutional lead gen so you can stop dealing with spammy brokers.',
+          title: 'No More Lowball Offers',
+          text: 'You stop fielding cold emails from brokers and PE firms trying to buy your business for less than what it\u2019s worth.',
         },
         {
           icon: 'cog',
           title: 'Business Runs Better',
-          text: 'Automate the boring parts of roofing management with our proprietary software suite.',
+          text: 'Your business runs better than it ever has \u2014 and is more attractive when you exit.',
         },
         {
           icon: 'arrow-up',
           title: 'Fast-Growing Platform',
-          text: 'Join an elite network of roofing founders all moving toward a massive collective liquidity event.',
+          text: 'You\u2019re part of a platform that\u2019s growing fast and worth a lot more than any single company.',
         },
         {
           icon: 'shield',
-          title: 'Keep Your Legacy',
-          text: 'We preserve your brand and culture while providing the institutional backing you need.',
+          title: 'Cash Out at 7\u201310x',
+          text: 'You go public and cash out at 7\u201310x what a PE firm would have paid you. You kept the upside and got the exit you deserve.',
         },
       ],
     },
@@ -115,9 +118,9 @@ export const roofersContent: PageContent = {
       id: 'roofers-cta',
       surface: 'base',
       overline: 'Ready For Your Exit?',
-      heading: 'Your Big Exit Starts With A 30-Minute Call.',
+      heading: 'Your Big Exit Starts With A 30-Minute Call. Book Your Call Today.',
       microcopy:
-        'No obligations. We\u2019ll show you exactly how we\u2019re valuing roofing companies in today\u2019s market.',
+        'We\u2019ll learn about your business, share how the platform works, and tell you honestly whether we think it\u2019s a good match.',
       buttonLabel: 'Book A Call',
     },
   ],

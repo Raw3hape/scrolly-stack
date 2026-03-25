@@ -41,9 +41,9 @@
 .v2-step {
   position: relative;
   cursor: pointer;
-  padding: var(--space-lg);
+  padding: var(--space-xl) var(--space-lg);
   border-radius: var(--radius-lg);
-  border: 1px solid transparent;
+  border: var(--line-thin) solid transparent;
   opacity: 0.45;
   transform: translateY(var(--space-sm));
   transition: opacity var(--transition-smooth),
@@ -158,6 +158,23 @@
   color: var(--text-muted);
 }
 
+/* === Footnote === */
+.v2-step__footnote {
+  font: var(--font-body-sm, var(--font-body));
+  font-style: italic;
+  color: var(--text-subtle);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-md);
+  opacity: 0.7;
+  transition: color var(--transition-smooth),
+              opacity var(--transition-smooth);
+}
+
+.v2-step--active .v2-step__footnote {
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
 /* === Progress bar === */
 .v2-step__bar {
   height: var(--border-width-bar, 4px);
@@ -172,7 +189,7 @@
   width: 0%;
   background: var(--accent-brand, var(--text-primary));
   border-radius: var(--radius-full);
-  transition: width 0.8s var(--ease-out);
+  transition: width var(--duration-slower) var(--ease-out);
 }
 
 /* === CTA button (appears on current step) === */
@@ -186,7 +203,7 @@
   font-weight: var(--btn-font-weight, 600);
   color: var(--accent-brand);
   background: transparent;
-  border: 1px solid var(--accent-brand);
+  border: var(--line-thin) solid var(--accent-brand);
   border-radius: var(--btn-radius);
   text-decoration: none;
   cursor: pointer;
@@ -199,7 +216,7 @@
 .v2-step__cta:hover {
   background: var(--accent-brand);
   color: var(--text-inverse);
-  transform: translateY(-1px);
+  transform: translateY(var(--hover-lift-sm));
 }
 
 .v2-step__cta:focus-visible {

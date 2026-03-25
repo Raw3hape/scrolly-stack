@@ -117,7 +117,7 @@
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-sm);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   margin-top: 0.125rem;
 }
 
@@ -131,7 +131,7 @@
 
 .v2-split__bullet-text {
   font: var(--font-body);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   color: var(--text-primary);
   line-height: var(--leading-relaxed);
 }

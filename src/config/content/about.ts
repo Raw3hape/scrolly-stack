@@ -21,7 +21,8 @@ export const aboutContent: PageContent = {
       heading:
         'We\u2019re A Team Of Roofing Industry Professionals On A Mission To Get Owners Like You A Big Exit',
       subtext:
-        'We know what your company is worth. We built Foundation Projects to avoid brokers and PE taking advantage.',
+        'We\u2019ve spent years inside this industry. We know what your company is worth. And we built Foundation Projects because we got tired of watching good roofing owners like you get taken advantage of by brokers and private equity firms.',
+      buttonLabel: 'Book A Call',
       imageUrl:
         'https://lh3.googleusercontent.com/aida-public/AB6AXuBX2APLOJ_83bZdQwQ0rn9FyZ0Bfw21mUceg6Oj-5orhoFeDrTp5mX_EoSFUXZ2geGn2hVLnZpT0L1fs2lxrtSKSD65UXYjmCTzPL4Z_OBQLnuCibAFXfAzxlIQQ-5xGfYWf72uEOoCG6ttQRdRwlWdqDKobT8LQOgEfd8sAvmm1i6j-OwLXXSifdv6_Fzy8dAVgXG_vzEOzQ3IICFAtgpBawFy-Ab_en3WxHSWSAxwHnG8-s87aIWCp8k6A-U_Mb3LapV41dabzV7u',
     },
@@ -31,11 +32,12 @@ export const aboutContent: PageContent = {
       surface: 'dark',
       chapterLabel: 'Chapter I',
       chapterSubtitle: 'The Trap',
-      heading: 'The \u2018PE Trap\u2019 Costing Owners Millions',
+      heading:
+        'Too Many Roofing Company Owners Get Taken Advantage Of When They Exit',
       card: {
-        title: 'The 3\u00d7 vs 10\u00d7 Flip',
-        text: 'Too many owners get taken advantage of when they exit. Private Equity firms buy your legacy at a 3\u00d7 multiple, only to bundle it and flip it for 10\u00d7 within twenty-four months. You built the value; they keep the profit.',
-        footnote: 'The standard broker model is broken for roofers.',
+        title: 'The 3× vs 10× Flip',
+        text: 'You\u2019d spend 10, 15, 20 years building a roofing business with strong revenue, loyal crews, happy customers\u2014 and then a PE firm shows up and offers you 3x. Take it or leave it. Most owners take it. Then watched the buyer flip it for 10x a few years later.',
+        footnote: 'That\u2019s not a bad deal. That\u2019s a bad system.',
       },
       backgroundUrl: '/images/cinematic-roofing-bg.jpg',
     },
@@ -45,24 +47,24 @@ export const aboutContent: PageContent = {
       surface: 'base',
       layout: 'vertical',
       chapterLabel: 'Chapter II',
-      heading: '\u2018So We Built a Better One\u2019',
+      heading: 'So We Built a Better One',
       headingAccent:
-        'We aren\u2019t brokers looking for a quick commission. We are builders creating a platform for public exit. By aggregating industry-leading roofing firms, we allow you to participate in the real upside.',
+        'Foundation Projects is a platform that brings the best roofing companies together and takes them public. Instead of selling to a buyer who captures all the upside, you stay in the deal \u2014 and get paid when the platform goes public at 7\u201310x.',
       steps: [
         {
           icon: 'building',
           title: 'Public Market Liquidity',
-          text: 'Exit at institutional multiples, not local fire-sale prices.',
+          text: 'Exit at 7\u201310x multiples through a public offering \u2014 not a local fire-sale price from a PE firm.',
         },
         {
           icon: 'shield',
           title: 'Legacy Protection',
-          text: 'Your team remains, your name stays, your culture thrives.',
+          text: 'Your team stays, your name stays, your culture stays. You built it \u2014 you keep it.',
         },
         {
           icon: 'target',
-          title: 'Architectural Integrity',
-          text: 'We focus on quality and structure, ensuring long-term value creation.',
+          title: 'Operational Excellence',
+          text: 'We help tighten your operations and grow revenue, so your company is worth more before you ever exit.',
         },
       ],
       quote: {
@@ -75,10 +77,10 @@ export const aboutContent: PageContent = {
       type: 'team',
       id: 'team',
       surface: 'high',
-      chapterLabel: 'The Curators',
-      heading: 'The Curators',
+      chapterLabel: 'Our Team',
+      heading: 'Our Team Doesn\u2019t Get Paid Until You Do',
       subtext:
-        'Founded and led by veterans who have spent decades on rooftops, in boardrooms, and at the closing table.',
+        'Meet our team of roofing industry professionals who care about your business (almost) as much as you do.',
       members: [
         {
           name: 'Marcus Thorne',
@@ -117,6 +119,18 @@ export const aboutContent: PageContent = {
           bio: 'Grew a regional roofing company from $5M to $35M in 4 years.',
         },
       ],
+    },
+    {
+      type: 'cinematic',
+      id: 'results',
+      surface: 'dark',
+      heading:
+        'Now, Owners Like You Get A Better Roofing Company AND The Exit They Deserve',
+      card: {
+        title: 'Better Business. Bigger Exit.',
+        text: 'The first owners who joined the platform didn\u2019t just get a better exit. Their businesses got better, too \u2014 meaning they were worth more. We helped them tighten their operations, grow revenue, and found the owners who had been fielding lowball offers were suddenly sitting on a roofing company that was inherently worth a lot more.',
+      },
+      backgroundUrl: '/images/cinematic-roofing-bg.jpg',
     },
     {
       type: 'testimonial',
@@ -159,12 +173,10 @@ export const aboutContent: PageContent = {
       id: 'about-cta',
       surface: 'dark',
       overline: 'Join Us',
-      heading: 'Building the platform that takes roofing public.',
+      heading: 'We\u2019re Building the Platform That Takes Roofing Public',
       microcopy:
-        'Don\u2019t leave your legacy to chance or predatory brokers. Let\u2019s see what your company is actually worth in a public environment.',
+        'Foundation Projects is actively assembling a group of best-in-class roofing companies with one destination in mind. The window is open. And the owners who get in now will be the ones who look back and say they got in at the right time.',
       buttonLabel: 'Book A Call',
-      secondaryButtonLabel: 'View Our Process',
-      secondaryHref: '/how-it-works/roofers',
     },
   ],
   footer: footerContent,

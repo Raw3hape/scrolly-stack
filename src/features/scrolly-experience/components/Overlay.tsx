@@ -123,7 +123,7 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
         role="banner"
         style={{ opacity: heroOpacity }}
       >
-        <p className="hero__eyebrow">Opportunity</p>
+        <p className="hero__eyebrow">{heroContent.eyebrow}</p>
 
         <h1 className="hero__headline">
           {heroContent.headline}{' '}

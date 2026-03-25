@@ -15,8 +15,8 @@
   /* Frosted glass — always on for legibility over scrolling content.
      Do NOT add -webkit-backdrop-filter manually — LightningCSS (Turbopack)
      auto-prefixes and removes the standard property if it sees both. */
-  background: rgba(254, 249, 240, 0.55);
-  backdrop-filter: blur(12px);
+  background: var(--stitch-glass-header-bg);
+  backdrop-filter: var(--blur-md);
   transition:
     transform var(--transition-base),
     background var(--transition-base),
@@ -24,8 +24,8 @@
 }
 
 .header--scrolled {
-  background: rgba(254, 249, 240, 0.7);
-  backdrop-filter: blur(16px);
+  background: var(--glass-header-scrolled);
+  backdrop-filter: var(--blur-lg);
   box-shadow: var(--shadow-sm);
 }
 
@@ -51,6 +51,11 @@
   text-decoration: none;
   display: flex;
   align-items: center;
+}
+
+.header__brand:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .header__logo {
@@ -94,6 +99,11 @@
   }
 }
 
+.header__link:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
+}
+
 /* === CTA + Actions === */
 .header__actions {
   display: flex;
@@ -104,17 +114,24 @@
 .header__cta {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 0.4em;
   background: var(--stitch-dark-bg);
   color: var(--text-inverse);
-  padding: var(--space-sm) var(--space-xl);
-  border-radius: var(--btn-radius);
+  padding: 0.55em 1.4em;
+  border-radius: var(--radius-md);
   font: var(--font-button);
+  letter-spacing: 0.01em;
   text-decoration: none;
   transition:
     background var(--transition-fast),
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
+}
+
+.header__cta span[aria-hidden] {
+  font-size: 0.8em;
+  opacity: 0.55;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
 
 @media (hover: hover) {
@@ -123,17 +140,27 @@
     transform: var(--stitch-cta-hover-lift);
     box-shadow: var(--stitch-cta-hover-shadow);
   }
+
+  .header__cta:hover span[aria-hidden] {
+    opacity: 0.85;
+    transform: translateX(2px);
+  }
 }
 
 .header__cta:active {
-  transform: scale(0.97);
+  transform: scale(var(--active-scale));
+}
+
+.header__cta:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
 }
 
 /* === Burger (mobile only) === */
 .header__burger {
   display: none;
   flex-direction: column;
-  gap: 5px;
+  gap: var(--space-xs);
   width: var(--space-lg);
   background: none;
   border: none;
@@ -141,10 +168,15 @@
   padding: var(--space-xs);
 }
 
+.header__burger:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
+}
+
 .header__burger-line {
   display: block;
   width: 100%;
-  height: 2px;
+  height: var(--line-thick);
   background: var(--text-primary);
   border-radius: var(--radius-full);
   transition: transform var(--transition-fast), opacity var(--transition-fast);
@@ -167,7 +199,7 @@
 .header__overlay {
   position: fixed;
   inset: 0;
-  z-index: calc(var(--z-header, 1000) - 1);
+  z-index: calc(var(--z-drawer-backdrop, 1100) - 1);
   background: var(--overlay-hidden);
   pointer-events: none;
   transition: background var(--transition-base);
@@ -186,7 +218,7 @@
   width: min(85vw, 24rem);
   height: 100vh;
   height: 100dvh; /* iOS Safari: accounts for collapsing URL bar */
-  z-index: var(--z-header, 1000);
+  z-index: var(--z-drawer, 1200);
   background: var(--surface-base);
   transform: translateX(100%);
   transition: transform var(--transition-smooth);
@@ -220,13 +252,18 @@
   color: var(--text-primary);
   text-decoration: none;
   padding: var(--space-sm) 0;
-  border-bottom: 1px solid var(--border-default);
+  border-bottom: var(--line-thin) solid var(--border-default);
   transition: color var(--transition-fast);
   font-style: italic;
 }
 
 .drawer__link:hover {
   color: var(--stitch-dark-accent);
+}
+
+.drawer__link:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .drawer__cta {
@@ -251,6 +288,11 @@
   background: var(--stitch-cta-hover-bg);
   transform: var(--stitch-cta-hover-lift);
   box-shadow: var(--stitch-cta-hover-shadow);
+}
+
+.drawer__cta:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .drawer__microcopy {

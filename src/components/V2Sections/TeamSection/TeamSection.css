@@ -39,7 +39,7 @@
   width: 3rem;
   height: 3rem;
   border-radius: var(--radius-full);
-  border: 1px solid var(--stitch-section-border);
+  border: var(--line-thin) solid var(--stitch-section-border);
   background: transparent;
   color: var(--text-primary);
   cursor: pointer;
@@ -55,6 +55,11 @@
 .v2-team-arrow:hover {
   background: var(--stitch-dark-bg);
   color: var(--text-inverse);
+}
+
+.v2-team-arrow:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .v2-team-arrow--hidden {
@@ -104,7 +109,7 @@
   aspect-ratio: 3 / 4;
   overflow: hidden;
   margin-bottom: var(--space-lg);
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   background: var(--surface-elevated);
 }
 
@@ -136,16 +141,16 @@
 
 /* Left-border info block */
 .v2-team-card__info {
-  border-left: 1px solid var(--stitch-section-border);
+  border-left: var(--line-thin) solid var(--stitch-section-border);
   padding-left: var(--space-lg);
 }
 
 .v2-team-card__role {
   display: block;
-  font-size: 0.625rem;
-  font-weight: 700;
+  font-size: var(--font-size-micro);
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: var(--tracking-extra-wide);
   color: var(--color-teal-500);
   margin-bottom: var(--space-xs);
 }

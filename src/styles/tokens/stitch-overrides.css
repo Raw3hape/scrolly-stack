@@ -56,6 +56,7 @@
   --glass-bg:              rgba(254, 249, 240, 0.45);
   --glass-bg-scrolled:     rgba(254, 249, 240, 0.55);
   --glass-bg-sticky:       rgba(254, 249, 240, 0.65);
+  --glass-header-scrolled: rgba(254, 249, 240, 0.7);
   --glass-border:          1px solid rgba(254, 249, 240, 0.35);
 
   /* === Dark section tokens (for bg-primary-container sections) === */

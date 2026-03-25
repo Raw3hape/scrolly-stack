@@ -15,18 +15,25 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
+import { palette } from '@/config/palette';
 import './BlueprintGrid.css';
 
 // =============================================================================
 // CONFIG — All tunable parameters
 // =============================================================================
 
+/** Parse a hex color string (e.g. '#103740') into { r, g, b } */
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const n = parseInt(hex.slice(1), 16);
+  return { r: (n >> 16) & 0xff, g: (n >> 8) & 0xff, b: n & 0xff };
+}
+
 const CFG = {
   /** Grid cell size (CSS px) */
   cellSize: 40,
 
   // --- Visual ---
-  color: { r: 16, g: 55, b: 64 },   // brand teal #103740
+  color: hexToRgb(palette.anchor900),   // brand teal
   lineAlpha: 0.06,
   lineWidth: 0.5,
   dotRadius: 1.6,
@@ -44,14 +51,14 @@ const CFG = {
   tileInset: 0.25,          // tile inset ratio (0.25 = 25% of cell, centered)
   tilePeakAlpha: 0.14,      // max tile opacity at cursor center
   tileColors: [
-    '#103740',   // Anchor deep teal
-    '#1b6969',   // Teal 500
-    '#297373',   // Systems teal
-    '#3E8C59',   // Growth green
-    '#D79344',   // Value gold
-    '#8cd3d2',   // Light teal 300
-    '#E5AD6B',   // Gold 300
-    '#004f50',   // Dark teal
+    palette.anchor900,       // Anchor deep teal
+    '#1b6969',               // Teal 500 (no exact palette match)
+    palette.teal500,         // Systems teal
+    palette.green500,        // Growth green
+    palette.gold500,         // Value gold
+    '#8cd3d2',               // Light teal (no exact palette match)
+    palette.gold300,         // Gold 300
+    '#004f50',               // Dark teal (no exact palette match)
   ],
 
   maxDpr: 2,

@@ -15,7 +15,8 @@
 .v2-cards-header__subtext {
   font: var(--font-body-lg);
   color: var(--text-muted);
-  max-width: 40rem;
+  opacity: 0.7;
+  max-width: 64rem;
   margin: 0 auto;
 }
 
@@ -31,7 +32,7 @@
   padding: clamp(var(--space-lg), 3vw, var(--space-xl));
   background: var(--stitch-surface-container-low, var(--surface-raised));
   border-radius: var(--radius-lg);
-  border: 1px solid var(--border-subtle, transparent);
+  border: var(--line-thin) solid var(--border-subtle, transparent);
   transition:
     opacity       var(--transition-smooth),
     filter        var(--transition-smooth),
@@ -50,8 +51,13 @@
 .v2-cards-grid .v2-card:hover {
   opacity: 1;
   filter: blur(0);
-  transform: translateY(-4px);
+  transform: translateY(var(--hover-lift-lg));
   box-shadow: var(--shadow-md);
+}
+
+.v2-card:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
 }
 
 .v2-card__icon {
@@ -69,6 +75,7 @@
 .v2-card__text {
   font: var(--font-body);
   color: var(--text-muted);
+  opacity: 0.7;
   line-height: var(--leading-relaxed);
 }
 

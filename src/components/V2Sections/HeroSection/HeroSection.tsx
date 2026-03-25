@@ -19,13 +19,20 @@ interface Props {
 
 export default function HeroSection({ data }: Props) {
   const isEditorial = data.layout === 'editorial';
+  const isLeft = data.layout === 'left';
+
+  const layoutClass = isEditorial
+    ? ' v2-hero--editorial'
+    : isLeft
+      ? ' v2-hero--left'
+      : '';
 
   return (
     <div className={`v2-container${data.backgroundCanvas ? ' v2-container--has-canvas' : ''}`}>
       {/* Decorative 3D grid background — temporarily hidden */}
       {/* {data.backgroundCanvas && <HeroGridLoader />} — uses shared HeroGridCanvas */}
 
-      <div className={`v2-hero${isEditorial ? ' v2-hero--editorial' : ''}`}>
+      <div className={`v2-hero${layoutClass}`}>
         {/* Editorial: grid wrapper for vertical centering */}
         {isEditorial ? (
           <>
@@ -47,6 +54,13 @@ export default function HeroSection({ data }: Props) {
                 </h1>
                 {data.subtext && (
                   <p className="v2-hero__subtext px-layer--fg" data-px-delay="1">{data.subtext}</p>
+                )}
+                {data.buttonLabel && (
+                  <div className="v2-hero__actions px-layer--fg" data-px-delay="2">
+                    <LinkButton href={ctaConfig.href} variant="primary" arrow>
+                      {data.buttonLabel}
+                    </LinkButton>
+                  </div>
                 )}
               </div>
 
@@ -82,7 +96,7 @@ export default function HeroSection({ data }: Props) {
             </div>
           </>
         ) : (
-          /* Default centered layout */
+          /* Default centered / left layout */
           <div>
             {data.badge && (
               <span className="v2-hero__badge">{data.badge}</span>
@@ -95,7 +109,7 @@ export default function HeroSection({ data }: Props) {
               <LinkButton href={ctaConfig.href} variant="primary" arrow>
                 {data.buttonLabel ?? ctaConfig.label}
               </LinkButton>
-              {data.trustBadge && (
+              {data.trustBadge && !data.trustBadges && (
                 <span className="v2-hero__trust">
                   <svg className="v2-hero__trust-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
@@ -104,6 +118,18 @@ export default function HeroSection({ data }: Props) {
                 </span>
               )}
             </div>
+            {data.trustBadges && (
+              <div className="v2-hero__trust-pills">
+                {data.trustBadges.map((label) => (
+                  <span key={label} className="v2-hero__trust-pill">
+                    <svg className="v2-hero__trust-pill-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    {label}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

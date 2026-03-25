@@ -14,6 +14,7 @@ import { ctaConfig } from '../nav';
 // =============================================================================
 
 export const heroContent = {
+  eyebrow: 'Get A Big Exit From Your Roofing Company',
   headline: 'We\'re building a roofing company that goes public — and we want yours',
   headlineAccent: 'in it.',
   subheadline:
@@ -21,7 +22,7 @@ export const heroContent = {
   ctaLabel: 'Book A Call',
   ctaHref: ctaConfig.href,
   ctaAriaLabel: 'Book a call to discuss your roofing business exit',
-  statusText: 'Free 15-min call · NDA on day one',
+  statusText: 'Free 30-min call · NDA on day one',
 } as const;
 
 // =============================================================================
@@ -63,7 +64,7 @@ export const noscriptContent = {
 export const problemStakesContent = {
   heading: 'Most Roofing Companies Sell For Less Than They\'re Worth.',
   problem:
-    'You get 10 emails a week from people offering to buy your business. Brokers want 20% to list you. PE firms want to lock you in before you\'re ready. And if you try to go it alone, you\'re spending 12–18 months on due diligence, cleanup, and systems you should have built years ago.',
+    'You get 10 emails a week from people offering to buy your business. Brokers want 20% to list you. PE firms want to lock you in before you\'re ready. And if you try to go it alone, you\'re spending 12-18 months on due diligence, cleanup, and systems you should have built years ago.',
   solution:
     'Foundation Projects is assembling a platform of best-in-class roofing companies — not to flip them to private equity, but to take them public.',
   ctaLabel: ctaConfig.label,
@@ -96,7 +97,7 @@ export const homeHowItWorks = {
       title: 'Get A Big Exit',
       description:
         'The companies combine and we take it public. You keep the majority of what your company is worth. We take 20% of the value we helped create — nothing until then.',
-      footnote: 'Other companies give you 3× and sell at 10×. We only get paid when you do.',
+      footnote: 'Other companies give you 3X and sell at 10X. We only get paid when you do.',
     },
   ],
 } as const;

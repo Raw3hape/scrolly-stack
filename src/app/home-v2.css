@@ -31,18 +31,19 @@
 
 /* Eyebrow — "Trust Badge" chip from Stitch Design System */
 .stitch-theme .hero__eyebrow {
+  --eyebrow-bg: rgba(255, 220, 188, 0.55);
   display: inline-block;
   width: fit-content;
-  background: rgba(255, 220, 188, 0.55);
-  color: #5a3a10;
+  background: var(--eyebrow-bg);
+  color: var(--color-gold-900);
   padding: 0.25rem 0.75rem;
   border-radius: 6px;
   font-family: var(--font-family);
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-lg);
 }
 
 /* Headline — oversized Newsreader serif, "Architectural Editorial" impact */
@@ -52,8 +53,8 @@
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  color: #103740;
-  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
 }
 
 /* Accent inherits headline color — no gradient */
@@ -69,7 +70,7 @@
 .stitch-theme .hero__subheadline {
   font-family: var(--font-family);
   font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem);
-  color: #41484a;
+  color: var(--stitch-outline);
   line-height: 1.6;
   margin-bottom: 2.5rem;
   max-width: 460px;
@@ -79,24 +80,24 @@
 .stitch-theme .hero__cta-wrapper {
   flex-direction: row;
   align-items: center;
-  gap: 1.5rem;
+  gap: var(--space-lg);
 }
 
 /* Button — primary_container (#103740), DEFAULT radius (10px) */
 .stitch-theme .hero__cta-button {
-  background: #103740;
-  color: #ffffff;
+  background: var(--stitch-dark-bg);
+  color: var(--color-white);
   padding: 0.875rem 1.75rem;
-  border-radius: 10px;
+  border-radius: var(--btn-radius);
   font-family: var(--font-family);
-  font-size: 0.9375rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   letter-spacing: 0.01em;
   box-shadow: none;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  transition: background 200ms ease-out, transform 200ms ease-out;
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
 .stitch-theme .hero__cta-button::before {
@@ -112,18 +113,19 @@
 /* Status line — Inter semibold, inline next to button */
 .stitch-theme .hero__status {
   font-family: var(--font-family);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
-  color: #103740;
+  color: var(--text-primary);
 }
 
 /* Status dot → small gold circle (not verified badge) */
 .stitch-theme .hero__status-dot {
+  --status-dot-glow: 0 0 0 3px rgba(255, 184, 106, 0.25);
   width: 0.5rem;
   height: 0.5rem;
-  background: #ffb86a;
+  background: var(--color-gold-300);
   border-radius: 50%;
-  box-shadow: 0 0 0 3px rgba(255, 184, 106, 0.25);
+  box-shadow: var(--status-dot-glow);
 }
 
 /* === Mobile Overrides (all phones + small tablets) === */
@@ -147,9 +149,9 @@
 
   /* Subheadline — tighter, full-width */
   .stitch-theme .hero__subheadline {
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
     line-height: 1.5;
-    margin-bottom: 1.25rem;
+    margin-bottom: var(--space-md);
     max-width: 100%;
   }
 
@@ -163,14 +165,14 @@
 
   /* CTA button — compact, "Book A Call →" in one line */
   .stitch-theme .hero__cta-button {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.875rem;
+    padding: var(--btn-padding);
+    font-size: var(--font-size-sm);
     white-space: nowrap;
   }
 
   /* Status text — slightly smaller */
   .stitch-theme .hero__status {
-    font-size: 0.8125rem;
+    font-size: var(--font-size-sm);
   }
 
   /* Status dot — prevent squishing inside flex container */
@@ -191,4 +193,56 @@
     align-items: flex-start;
     gap: 0.75rem;
   }
+}
+
+/* ============================================================================
+ * MISSION BLOCK — Compact quote card (Homepage only)
+ *
+ * The glassmorphism quote card stretches to full column height by default.
+ * On homepage the quote text is short, so shrink card to content size.
+ * ========================================================================== */
+
+#mission-block .v2-mission__quote-card {
+  align-self: center;
+  min-height: auto;
+}
+
+/* ============================================================================
+ * VALUE PROPS TIMELINE — Compact KPI cards (Homepage only)
+ *
+ * Scoped via #value-props so Investors page timeline is untouched.
+ * Cards are secondary: smaller, thinner, less visual weight.
+ * ========================================================================== */
+
+/* Force enough vertical space so steps activate sequentially on scroll */
+#value-props .v2-timeline__step {
+  margin-bottom: clamp(8rem, 18vw, 14rem);
+}
+
+#value-props .v2-timeline__kpi-card {
+  padding: var(--space-md);
+  opacity: 0.8;
+}
+
+#value-props .v2-timeline__kpi-card[data-revealed] {
+  opacity: 0.8;
+}
+
+#value-props .v2-timeline__kpi-icon svg {
+  width: var(--icon-md, 1.25rem);
+  height: var(--icon-md, 1.25rem);
+}
+
+#value-props .v2-timeline__kpi-label {
+  font-size: var(--font-size-micro);
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: 0.125rem;
+}
+
+#value-props .v2-timeline__kpi-value {
+  font: var(--font-body);
+  font-family: var(--font-family-serif);
+  font-weight: 400;
+  font-size: var(--font-size-base);
+  line-height: 1.35;
 }

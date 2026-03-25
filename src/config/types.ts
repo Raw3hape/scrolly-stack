@@ -97,7 +97,7 @@ export interface MissionSection extends SectionBase {
   backgroundUrl?: string;
 }
 
-/** Numbered steps (e.g. "The Path To Permanent Capital") */
+/** Numbered steps (e.g. "Here's How It Works") */
 export interface StepsSection extends SectionBase {
   type: 'steps';
   heading: string;
@@ -112,10 +112,13 @@ export interface StepsSection extends SectionBase {
     icon?: V2Icon;
     /** Optional CTA label shown when this step is active */
     ctaLabel?: string;
+    /** Optional footnote displayed below the description (muted, smaller text) */
+    footnote?: string;
   }>;
   /** Shared CTA href for all steps. Falls back to ctaConfig.href */
   ctaHref?: string;
 }
+
 
 /** Call-to-action block */
 export interface CtaSection extends SectionBase {
@@ -123,6 +126,10 @@ export interface CtaSection extends SectionBase {
   /** Small uppercase overline above heading (e.g. "READY TO BUILD THE EXIT?") */
   overline?: string;
   heading: string;
+  /** Accent-colored portion appended after heading (rendered in gold/orange) */
+  headingAccent?: string;
+  /** When true, hide decorative background (BlueprintGrid, arch lines, frame) */
+  minimal?: boolean;
   /** Microcopy below the button (e.g. "No commitments...") */
   microcopy?: string;
   /** CTA button label. href comes from nav.ts ctaConfig */
@@ -154,8 +161,8 @@ export interface HeroSection extends SectionBase {
   heading: string;
   subtext?: string;
   buttonLabel?: string;
-  /** Layout variant: 'center' (default) or 'editorial' (left text + right image) */
-  layout?: 'center' | 'editorial';
+  /** Layout variant: 'center' (default), 'left' (left-aligned), or 'editorial' (left text + right image) */
+  layout?: 'center' | 'left' | 'editorial';
   /** Decorative image URL for editorial layout (right column) */
   imageUrl?: string;
   /** Small uppercase overline label above heading (e.g. "Investment Framework") */
@@ -169,6 +176,8 @@ export interface HeroSection extends SectionBase {
   badge?: string;
   /** Trust indicator below CTA (e.g. "No upfront costs. 30-minute fit assessment.") */
   trustBadge?: string;
+  /** Multiple trust-badge pills rendered as a row below the CTA */
+  trustBadges?: string[];
   /** Decorative radial gradient glow (top-right corner) */
   backgroundGlow?: boolean;
   /** Decorative 3D grid canvas behind content (responsive, hover proximity effect) */
@@ -219,7 +228,7 @@ export interface TimelineSection extends SectionBase {
   steps: Array<{
     number: string;
     title: string;
-    text: string;
+    text?: string;
     /** Material icon name or V2Icon for the KPI card */
     icon: V2Icon;
     /** KPI focus label */

@@ -10,16 +10,16 @@
   --tooltip-accent-width: 3px;
   --tooltip-accent-height: var(--icon-sm);
 
-  /* Component-level font sizes (scoped — not in global typography.css) */
-  --tooltip-font-title:   1rem;     /* 16px   */
-  --tooltip-font-subhead: 0.85rem;  /* 13.6px */
-  --tooltip-font-bullet:  0.8rem;   /* 12.8px */
+  /* Component-level font sizes (mapped to global design tokens) */
+  --tooltip-font-title:   var(--font-size-base);  /* 16px   */
+  --tooltip-font-subhead: 0.85rem;                /* 13.6px — intentional, between tokens */
+  --tooltip-font-bullet:  var(--font-size-sm);    /* 12.8px */
   position: fixed;
   z-index: var(--z-tooltip);
   pointer-events: none;
   
   /* Frosted glass effect */
-  backdrop-filter: blur(16px);
+  backdrop-filter: var(--blur-lg);
   background: var(--glass-card-bg);
   border: var(--glass-card-border);
   box-shadow: 

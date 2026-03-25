@@ -47,7 +47,7 @@
 }
 
 .v2-cta__arch-col {
-  border-right: 1px solid var(--stitch-dark-text, var(--color-white));
+  border-right: var(--line-thin) solid var(--stitch-dark-text, var(--color-white));
   height: 100%;
 }
 
@@ -63,7 +63,7 @@
   position: absolute;
   inset: var(--space-lg);
   z-index: 0;
-  border: 1px solid var(--glass-white-10);
+  border: var(--line-thin) solid var(--glass-white-10);
   border-radius: var(--radius-lg, 0.75rem);
   pointer-events: none;
 }
@@ -92,7 +92,7 @@
 .v2-cta__heading {
   font-family: var(--font-family-serif);
   font-size: var(--font-size-display);
-  font-weight: 400;
+  font-weight: var(--weight-normal);
   font-style: italic;
   line-height: var(--leading-tight);
   color: var(--text-primary);
@@ -128,7 +128,7 @@
 }
 
 .v2-cta__button:active {
-  transform: scale(0.97);
+  transform: scale(var(--active-scale));
 }
 
 /* 4. Buttons row — flex wrap for primary + secondary */
@@ -142,15 +142,21 @@
 /* Secondary ghost button */
 .v2-cta__button--secondary {
   background: var(--glass-white-10);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-white-20);
+  backdrop-filter: var(--blur-md);
+  border: var(--line-thin) solid var(--glass-white-20);
   color: var(--text-inverse);
   box-shadow: none;
 }
 
 .v2-cta__button--secondary:hover {
   background: var(--glass-white-20);
-  transform: scale(1.03);
+  transform: scale(var(--hover-scale-md));
+}
+
+/* Heading accent — gold/orange variant (e.g. "It Won't Stay Open Forever.") */
+.v2-cta__heading--accent {
+  color: var(--stitch-dark-accent, var(--color-gold-300));
+  margin-top: calc(-1 * var(--space-md));
 }
 
 /* 5. Microcopy — subtle text below heading, above buttons */
@@ -158,7 +164,7 @@
   font: var(--font-body);
   color: var(--text-muted);
   margin-bottom: var(--space-xl);
-  max-width: 36ch;
+  max-width: 60ch;
 }
 
 /* === Dark variant overrides (when parent section has v2-section--dark) === */
@@ -184,7 +190,7 @@
 .v2-section--dark .v2-cta__button--secondary {
   background: var(--glass-white-8);
   color: var(--stitch-surface, var(--color-sand-warm));
-  border: 1px solid var(--glass-white-20);
+  border: var(--line-thin) solid var(--glass-white-20);
   box-shadow: none;
 }
 

@@ -106,10 +106,10 @@
   /* LightningCSS auto-adds -webkit- prefix. Do NOT add manually
      or it strips the standard property, breaking Chromium. */
   background: var(--glass-white-6);
-  backdrop-filter: blur(32px) saturate(140%) brightness(1.1);
+  backdrop-filter: var(--glass-blur) saturate(140%) brightness(1.1);
   border-radius: var(--radius-xl);
   padding: clamp(var(--space-lg), 3vw, var(--space-xl));
-  border: 1px solid var(--glass-white-12);
+  border: var(--line-thin) solid var(--glass-white-12);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -192,7 +192,7 @@
   display: block;
   font: var(--font-overline);
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: var(--tracking-ultra-wide);
   color: var(--text-muted);
   opacity: 0.3;
   margin-bottom: var(--space-sm);
@@ -221,8 +221,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0;
-  border-top: 1px solid var(--stitch-section-border);
-  border-bottom: 1px solid var(--stitch-section-border);
+  border-top: var(--line-thin) solid var(--stitch-section-border);
+  border-bottom: var(--line-thin) solid var(--stitch-section-border);
 }
 
 .v2-mission--vertical__item {
@@ -235,11 +235,11 @@
 }
 
 .v2-mission--vertical__item:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--hover-lift-lg));
 }
 
 .v2-mission--vertical__item--bordered {
-  border-right: 1px solid var(--stitch-section-border);
+  border-right: var(--line-thin) solid var(--stitch-section-border);
 }
 
 .v2-mission--vertical__item-icon {
@@ -311,7 +311,7 @@
 .v2-mission--vertical__quote-label {
   font: var(--font-overline);
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: var(--tracking-ultra-wide);
   color: var(--stitch-dark-accent);
   position: relative;
   z-index: 1;
@@ -325,7 +325,7 @@
 
   .v2-mission--vertical__item:last-child {
     grid-column: 1 / -1;
-    border-top: 1px solid var(--stitch-section-border);
+    border-top: var(--line-thin) solid var(--stitch-section-border);
   }
 
   .v2-mission--vertical__item--bordered:last-child {
@@ -340,7 +340,7 @@
 
   .v2-mission--vertical__item--bordered {
     border-right: none;
-    border-bottom: 1px solid var(--stitch-section-border);
+    border-bottom: var(--line-thin) solid var(--stitch-section-border);
   }
 
   .v2-mission--vertical__item:last-child {

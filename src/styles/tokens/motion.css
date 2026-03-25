@@ -40,7 +40,7 @@
 
   /* === Hero Intro Animation === */
   --intro-duration:     1.2s;
-  --intro-ease:         cubic-bezier(0.16, 1, 0.3, 1);   /* smooth ease-out  */
+  --intro-ease:         var(--ease-out);                  /* smooth ease-out  */
   --intro-rise:         clamp(2rem, 6vh, 5rem);           /* vertical travel   */
   --intro-stagger:      120ms;                            /* delay per child   */
 
@@ -51,6 +51,18 @@
   --expand-scale-bg:     1.25;                         /* bg zoom to compensate for scale     */
   --expand-speed:        0.5;                          /* <1 = slower expansion, 1 = normal   */
   --expand-pull-up:      clamp(-6rem, -10vw, -3rem);   /* pull section up to overlap hero     */
+
+  /* === Timeline reveal stagger === */
+  --reveal-duration-number:  0.9s;     /* TimelineSection number entrance */
+  --reveal-duration-title:   0.75s;    /* TimelineSection title entrance */
+  --reveal-duration-text:    0.65s;    /* TimelineSection text entrance */
+  --reveal-delay-title:      0.15s;    /* Title stagger delay */
+  --reveal-delay-text:       0.28s;    /* Text stagger delay */
+  --reveal-easing:           var(--ease-out);  /* Shared reveal easing */
+
+  /* === Longer durations (not covered by base scale) === */
+  --duration-long:     1.2s;    /* Hero intro, canvas fadeIn */
+  --duration-longer:   1.5s;    /* Hero glow transition */
 }
 
 /* === Accessibility: Reduced Motion === */

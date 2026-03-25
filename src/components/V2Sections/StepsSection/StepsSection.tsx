@@ -190,6 +190,9 @@ export default function StepsSection({ data }: Props) {
 
               <h3 className="v2-step__title">{step.title}</h3>
               <p className="v2-step__text">{step.text}</p>
+              {step.footnote && (
+                <p className="v2-step__footnote">{step.footnote}</p>
+              )}
 
               {/* Progress bar */}
               <div className="v2-step__bar" aria-hidden="true">

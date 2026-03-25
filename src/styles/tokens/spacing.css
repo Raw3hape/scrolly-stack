@@ -57,6 +57,10 @@
   --dot-status: 8px;  /* Status indicator dots                        */
   --scrollbar-width: 8px;
 
+  /* === Letter Spacing — Extended === */
+  --tracking-extra-wide: 0.2em;   /* Team roles, decorative labels          */
+  --tracking-ultra-wide: 0.3em;   /* Chapter/section labels                 */
+
   /* === Breakpoints (reference only — NOT usable in @media queries) === */
   /* --bp-sm:      480px   — Small mobile                               */
   /* --bp-md:      768px   — Tablet / mobile-desktop threshold          */

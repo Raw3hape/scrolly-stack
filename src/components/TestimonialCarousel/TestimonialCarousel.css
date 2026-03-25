@@ -92,7 +92,7 @@
   width: 3rem;
   height: 3rem;
   border-radius: var(--radius-full);
-  border: 1px solid var(--stitch-section-border);
+  border: var(--line-thin) solid var(--stitch-section-border);
   background: transparent;
   color: var(--text-primary);
   cursor: pointer;
@@ -138,7 +138,7 @@
   position: relative;
   opacity: 0;
   transform: translateY(var(--space-lg)) scale(0.97);
-  filter: blur(4px);
+  filter: var(--blur-xs);
   pointer-events: none;
   transition:
     opacity 700ms var(--ease-out),
@@ -237,8 +237,8 @@
 /* Trust badge */
 .v2-testimonial__badge {
   margin-left: auto;
-  font-size: 0.6875rem;
-  font-weight: 700;
+  font-size: var(--font-size-xs);
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: var(--tracking-widest);
   background: var(--color-gold-100);
@@ -452,7 +452,7 @@
 }
 
 .v2-optin-test__verified-text {
-  font-size: 10px;
+  font-size: var(--font-size-micro);
   font-weight: var(--weight-bold);
   text-transform: uppercase;
   letter-spacing: var(--tracking-widest);
@@ -505,7 +505,7 @@
 }
 
 .v2-optin-test__company {
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
 }
 

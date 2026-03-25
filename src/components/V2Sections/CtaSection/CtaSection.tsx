@@ -28,20 +28,24 @@ interface Props {
 }
 
 export default function CtaSection({ data }: Props) {
-  return (
-    <div className="v2-cta__wrapper">
-      {/* Interactive architectural grid background */}
-      <BlueprintGrid />
+  const showDecor = !data.minimal;
 
-      {/* Decorative 12-column architectural lines (Stitch fidelity) */}
-      <div className="v2-cta__arch-lines" aria-hidden="true">
-        {Array.from({ length: 12 }, (_, i) => (
-          <div key={i} className="v2-cta__arch-col" />
-        ))}
-      </div>
+  return (
+    <div className={`v2-cta__wrapper${data.minimal ? ' v2-cta--minimal' : ''}`}>
+      {/* Interactive architectural grid background */}
+      {showDecor && <BlueprintGrid />}
+
+      {/* Decorative 12-column architectural lines */}
+      {showDecor && (
+        <div className="v2-cta__arch-lines" aria-hidden="true">
+          {Array.from({ length: 12 }, (_, i) => (
+            <div key={i} className="v2-cta__arch-col" />
+          ))}
+        </div>
+      )}
 
       {/* Inner decorative frame border */}
-      <div className="v2-cta__inner-frame" aria-hidden="true" />
+      {showDecor && <div className="v2-cta__inner-frame" aria-hidden="true" />}
 
       <div className="v2-container v2-cta__layout">
         {data.overline && (
@@ -60,6 +64,15 @@ export default function CtaSection({ data }: Props) {
           className="v2-cta__heading"
           completionFactor={0.55}
         />
+
+        {data.headingAccent && (
+          <ScrollTypewriter
+            text={data.headingAccent}
+            as="h2"
+            className="v2-cta__heading v2-cta__heading--accent"
+            completionFactor={0.45}
+          />
+        )}
 
         {data.microcopy && (
           <p

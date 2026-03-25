@@ -31,7 +31,7 @@
 
 .v2-trust__badge-text {
   font: var(--font-overline);
-  font-size: 0.625rem;
+  font-size: var(--font-size-micro);
   text-transform: uppercase;
   letter-spacing: var(--tracking-tight);
   color: var(--color-gold-900);

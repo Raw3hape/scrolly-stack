@@ -34,14 +34,14 @@
 }
 
 .link-button--primary:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(var(--hover-lift-md)) scale(var(--hover-scale-sm));
   box-shadow:
     var(--shadow-lg),
     var(--glow-primary);
 }
 
 .link-button--primary:active {
-  transform: translateY(0) scale(0.98);
+  transform: translateY(0) scale(var(--active-scale-sm));
 }
 
 /* Shimmer effect */
@@ -69,13 +69,13 @@
 .link-button--secondary {
   color: var(--text-primary);
   background: transparent;
-  border: 1px solid var(--border-default);
+  border: var(--line-thin) solid var(--border-default);
 }
 
 .link-button--secondary:hover {
   border-color: var(--accent-brand);
   color: var(--accent-brand);
-  transform: translateY(-1px);
+  transform: translateY(var(--hover-lift-sm));
 }
 
 /* === Ghost (text-only) === */
