@@ -45,25 +45,32 @@ Foundation Projects is a marketing website for a roofing business consulting com
 - Pages: `src/app/[route]/page.tsx`
 - Features: `src/features/[name]/` with barrel `index.ts`
 - Shared UI: `src/components/[Name]/Name.tsx`
+- Section components: `src/components/V2Sections/[Name]/Name.tsx` — data-driven via `SectionRenderer`
 - Config: `src/config/`
+- Page content: `src/config/content/[page].ts` — one file per page, barrel at `index.ts`
+- Section types: `src/config/types.ts` — discriminated union of 19 section types
+- Navigation: `src/config/nav.ts` — routes, nav links, CTA config
 - Tokens: `src/styles/tokens/`
 
 ### Data Flow
+- **Page content:** `src/config/content/[page].ts` → `page.tsx` → `SectionRenderer` (switch by `section.type`) → section component
+- **Section types:** `src/config/types.ts` — discriminated union, add new type here first
+- **Navigation:** `src/config/nav.ts` — `routes`, `navLinks`, `ctaConfig`, `brandConfig`
+- **3D scene:** `src/features/scrolly-experience/config.ts` (geometry), `data.ts` (blocks), `types.ts` (LayerData union)
 - `currentStep` = block `.id` (NOT array index) — see `features/scrolly-experience/types.ts`
-- Navigation config: `src/config/nav.ts`
-- Site config: `src/config/site.ts`
-- 3D scene config: `src/features/scrolly-experience/config.ts`
-- Content data: `src/features/scrolly-experience/data.ts`
-- Type definitions: `src/features/scrolly-experience/types.ts` (single source of truth)
 
 ## Common Tasks
 
-### Adding a new page
-1. Create `src/app/page-name/page.tsx`
-2. Add `metadata` export for SEO
-3. Use `<section className="section">` + `<div className="container">` for layout
-4. Add nav link in `src/config/nav.ts`
-5. Run `npm run build` to verify
+### Adding a new page (data-driven)
+1. Add section type interface to `src/config/types.ts` (if new section type needed)
+2. Add the type to the `Section` union in `src/config/types.ts`
+3. Create section component in `src/components/V2Sections/[Name]/Name.tsx` + `Name.css`
+4. Add `case` to `src/components/V2Sections/SectionRenderer.tsx`
+5. Create content file `src/config/content/[page].ts` with page sections array
+6. Add re-export to `src/config/content/index.ts`
+7. Create `src/app/page-name/page.tsx` — import content, map sections via `<SectionRenderer>`
+8. Add route to `src/config/nav.ts`
+9. Run `npm run typecheck && npm run lint` to verify
 
 ### Changing brand colors/fonts
 1. Edit `src/styles/tokens/colors.css` — palette hex values + semantic tokens
