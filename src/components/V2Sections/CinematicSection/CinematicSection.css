@@ -175,6 +175,13 @@
   }
 }
 
+/* ── Landscape phones: prevent overly tall section ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .v2-cinematic {
+    min-height: auto;
+  }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .v2-cinematic__bg-photo {

@@ -157,7 +157,7 @@
   font: var(--font-h2);
   font-family: var(--font-family-serif);
   line-height: var(--leading-tight);
-  max-width: 20ch;
+  max-width: min(20ch, 100%);
 }
 
 .v2-bento__feature-body {
@@ -220,9 +220,15 @@
     box-shadow  var(--transition-fast);
 }
 
-.v2-bento__highlight:hover {
-  transform: translateY(var(--hover-lift-md));
-  box-shadow: var(--bento-highlight-glow);
+@media (hover: hover) {
+  .v2-bento__highlight:hover {
+    transform: translateY(var(--hover-lift-md));
+    box-shadow: var(--bento-highlight-glow);
+  }
+}
+
+.v2-bento__highlight:active {
+  transform: translateY(-1px);
 }
 
 @media (min-width: 768px) {
@@ -265,7 +271,7 @@
 .v2-bento__highlight-context {
   font: var(--font-body-sm);
   color: var(--text-muted);
-  max-width: 20ch;
+  max-width: min(20ch, 100%);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -306,15 +312,21 @@
   transition: opacity var(--transition-fast);
 }
 
-.v2-bento__link-card:hover {
-  background: var(--stitch-surface-dim);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+@media (hover: hover) {
+  .v2-bento__link-card:hover {
+    background: var(--stitch-surface-dim);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .v2-bento__link-card:hover::after {
+    opacity: 1;
+    animation: bento-shimmer 1s ease forwards;
+  }
 }
 
-.v2-bento__link-card:hover::after {
-  opacity: 1;
-  animation: bento-shimmer 1s ease forwards;
+.v2-bento__link-card:active {
+  transform: translateY(-1px);
 }
 
 .v2-bento__link-card:focus-visible {
@@ -364,10 +376,12 @@
     color        var(--transition-fast);
 }
 
-.v2-bento__link-card:hover .v2-bento__link-arrow {
-  background: var(--color-teal-500);
-  color: var(--text-inverse);
-  transform: translate(0.15rem, -0.15rem);
+@media (hover: hover) {
+  .v2-bento__link-card:hover .v2-bento__link-arrow {
+    background: var(--color-teal-500);
+    color: var(--text-inverse);
+    transform: translate(0.15rem, -0.15rem);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -401,10 +415,16 @@
     border-color var(--transition-fast);
 }
 
-.v2-bento__stat:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-teal-300);
+@media (hover: hover) {
+  .v2-bento__stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-teal-300);
+  }
+}
+
+.v2-bento__stat:active {
+  transform: translateY(-1px);
 }
 
 /* Decorative accent bar at top */
@@ -420,8 +440,10 @@
   transition: opacity var(--transition-base);
 }
 
-.v2-bento__stat:hover .v2-bento__stat-accent {
-  opacity: 1;
+@media (hover: hover) {
+  .v2-bento__stat:hover .v2-bento__stat-accent {
+    opacity: 1;
+  }
 }
 
 .v2-bento__stat-value {

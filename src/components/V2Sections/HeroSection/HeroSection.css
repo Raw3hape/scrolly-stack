@@ -464,7 +464,7 @@
 /* ── Scroll Indicator ── */
 .v2-hero__scroll-hint {
   position: absolute;
-  bottom: var(--space-lg);
+  bottom: calc(var(--space-lg) + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   display: flex;

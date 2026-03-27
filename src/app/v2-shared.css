@@ -138,6 +138,15 @@
   padding: 0 var(--container-padding);
 }
 
+/* Landscape notched devices: text content respects safe-area insets.
+   Applied to .v2-container (not .v2-section) so 3D canvases are unaffected. */
+@media (orientation: landscape) and (max-width: 1024px) {
+  .v2-container {
+    padding-left: max(var(--container-padding), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--container-padding), env(safe-area-inset-right, 0px));
+  }
+}
+
 /* === V2 sections wrapper (behind sticky 3D canvas) === */
 .v2-sections {
   position: relative;

@@ -114,7 +114,7 @@
   border-radius: var(--radius-xl);
   border: var(--line-thin) solid var(--stitch-outline-variant);
   box-shadow: var(--shadow-xl);
-  min-height: 600px;
+  min-height: clamp(300px, 80vh, 600px);
   display: flex;
   flex-direction: column;
 }
@@ -181,8 +181,8 @@
 }
 
 .v2-booking__calendar-arrow {
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -238,6 +238,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .v2-booking__calendar-day:hover:not(.v2-booking__calendar-day--disabled):not(.v2-booking__calendar-day--selected) {
@@ -287,6 +289,7 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   text-align: center;
+  min-height: 44px;
   transition: border-color var(--transition-base), background var(--transition-base),
     color var(--transition-base), box-shadow var(--transition-base),
     transform var(--transition-base);
@@ -350,7 +353,7 @@
 /* === External Embed === */
 .v2-booking__embed {
   width: 100%;
-  min-height: 600px;
+  min-height: clamp(300px, 80vh, 600px);
   border: none;
   border-radius: var(--radius-lg);
 }

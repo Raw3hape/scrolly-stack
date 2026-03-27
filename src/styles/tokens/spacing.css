@@ -73,3 +73,16 @@
   /* --bp-md:      768px   — Tablet / mobile-desktop threshold          */
   /* --bp-lg:      1024px  — Desktop / tablet-desktop threshold         */
 }
+
+/* Large screens: widen container so content doesn't feel narrow */
+@media (min-width: 1601px) {
+  :root {
+    --container-max: 1600px;
+  }
+}
+
+@media (min-width: 2001px) {
+  :root {
+    --container-max: 1800px;
+  }
+}

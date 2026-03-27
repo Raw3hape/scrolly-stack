@@ -66,14 +66,21 @@
     filter  var(--transition-base);
 }
 
-/* Hover: highlight individual partner */
-.v2-trust__partners:hover .v2-trust__partner {
-  opacity: 0.5;
+/* Hover: highlight individual partner (guarded for pointer devices) */
+@media (hover: hover) {
+  .v2-trust__partners:hover .v2-trust__partner {
+    opacity: 0.5;
+  }
+
+  .v2-trust__partners .v2-trust__partner:hover {
+    opacity: 1;
+    filter: none;
+  }
 }
 
-.v2-trust__partners .v2-trust__partner:hover {
-  opacity: 1;
-  filter: none;
+/* Touch fallback — brief tap feedback */
+.v2-trust__partner:active {
+  opacity: 0.7;
 }
 
 /* ── Mobile ── */
