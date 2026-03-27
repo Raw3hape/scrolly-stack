@@ -3,7 +3,6 @@
  */
 
 import type { PageContent } from '../types';
-import { footerContent } from './shared';
 
 export const investorsContent: PageContent = {
   slug: 'how-it-works/investors',
@@ -133,5 +132,4 @@ export const investorsContent: PageContent = {
       buttonLabel: 'Book A Call',
     },
   ],
-  footer: footerContent,
 };

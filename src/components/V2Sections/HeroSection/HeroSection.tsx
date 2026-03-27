@@ -11,10 +11,12 @@
 import type { HeroSection as HeroSectionData } from '@/config/types';
 import { ctaConfig } from '@/config/nav';
 import LinkButton from '@/components/LinkButton/LinkButton';
-import HeroPyramid3DLoader from '@/features/scrolly-experience/components/HeroPyramid3DLoader';
-import HeroRubiksCube3DLoader from '@/features/scrolly-experience/components/HeroRubiksCube3DLoader';
-import HeroExplodedGrid3DLoader from '@/features/scrolly-experience/components/HeroExplodedGrid3DLoader';
-import HeroAscendingBlocks3DLoader from '@/features/scrolly-experience/components/HeroAscendingBlocks3DLoader';
+import {
+  HeroAscendingBlocks3DLoader,
+  HeroExplodedGrid3DLoader,
+  HeroPyramid3DLoader,
+  HeroRubiksCube3DLoader,
+} from '@/features/scrolly-experience';
 import './HeroSection.css';
 
 const HERO_3D_MAP = {

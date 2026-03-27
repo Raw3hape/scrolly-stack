@@ -3,7 +3,6 @@
  */
 
 import type { PageContent } from '../types';
-import { footerContent } from './shared';
 
 export const roofersContent: PageContent = {
   slug: 'how-it-works/roofers',
@@ -124,5 +123,4 @@ export const roofersContent: PageContent = {
       buttonLabel: 'Book A Call',
     },
   ],
-  footer: footerContent,
 };

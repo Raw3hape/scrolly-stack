@@ -64,7 +64,7 @@ export default function Header() {
 
   return (
     <>
-      <header className={headerClasses}>
+      <header data-layout="header" className={headerClasses}>
         <div className="header__inner">
           {/* Brand */}
           <Link href={routes.home} className="header__brand" onClick={close}>

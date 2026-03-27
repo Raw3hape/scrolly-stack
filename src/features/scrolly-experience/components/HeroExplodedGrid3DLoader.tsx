@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
+import { PAGE_READY_EVENT } from '@/config/dom-contracts';
 
 const HeroExplodedGrid3D = dynamic(
   () => import('./HeroExplodedGrid3D'),
@@ -17,7 +18,7 @@ export default function HeroExplodedGrid3DLoader({ className }: { className?: st
 
   const handleReady = useCallback(() => {
     setReady(true);
-    window.dispatchEvent(new Event('page:ready'));
+    window.dispatchEvent(new Event(PAGE_READY_EVENT));
   }, []);
 
   return (

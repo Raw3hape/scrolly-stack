@@ -3,7 +3,6 @@
  */
 
 import type { PageContent } from '../types';
-import { footerContent } from './shared';
 
 export const scheduleContent: PageContent = {
   slug: 'schedule',
@@ -95,5 +94,4 @@ export const scheduleContent: PageContent = {
       buttonLabel: 'Book A Call',
     },
   ],
-  footer: footerContent,
 };

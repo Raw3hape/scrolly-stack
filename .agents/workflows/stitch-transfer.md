@@ -1,146 +1,69 @@
 ---
-description: How to transfer a Stitch screen design into the /v2/ namespace with pixel-accurate fidelity
+description: Port a Stitch screen into the current data-driven page architecture
 ---
 
-# Stitch → V2 Transfer Workflow
+# Stitch Transfer
 
-// turbo-all
+Use this workflow when the user asks to recreate a Stitch screen inside this repo.
 
-> **Use this workflow when the user says:** "перенеси экран X из Stitch", "stitch transfer", "/stitch-transfer"
->
-> **Stitch Project ID:** `16766495084079469855` (Foundation Projects - Site Map & Content PRD)
+## First principles
 
----
+- Target the current architecture, not the old `/v2/*` namespace.
+- Prefer existing section types and section components.
+- Keep business copy intact unless the user explicitly asks to rewrite it.
+- Treat Stitch as a visual/content source, not as HTML to paste into the app.
 
-## Phase 1: EXTRACT — Pull design data from Stitch MCP
+## Canonical implementation path
 
-1. **Get screen metadata** — call `mcp_stitch_get_screen` with the target screen ID from the project. Note the `title`, `width`, `height`, and `htmlCode.downloadUrl`.
+`Stitch source` → `section mapping` → `src/config/content/[page].ts` → `SectionRenderer` → optional new `V2Sections` component
 
-2. **Download the HTML source** — call `read_url_content` on the `htmlCode.downloadUrl` to get the full generated HTML/CSS. Save to `/tmp/stitch-screen-{slug}.html` for reference.
+## Steps
 
-3. **Capture visual reference** — call `read_url_content` on the `screenshot.downloadUrl` to get the visual. Note this is the **ground truth** for how the design should look.
+1. Get the Stitch source of truth:
+   - screenshot
+   - exported HTML/CSS if available
+   - screen title and intended route
+2. Break the screen into sections and map each section to:
+   - an existing section type in `src/config/types.ts`, or
+   - a new section type only if reuse is not realistic
+3. Decide whether this is:
+   - a new page
+   - an update to an existing page content file
+   - a homepage-below-the-scrolly update
+4. Add or update page data in `src/config/content/[page].ts`.
+5. Re-export from `src/config/content/index.ts` if it is a new content file.
+6. If a new visual section is required:
+   - add the type to `src/config/types.ts`
+   - create `src/components/V2Sections/[Name]/[Name].tsx`
+   - create the co-located CSS file
+   - add the renderer case in `SectionRenderer.tsx`
+7. Create or update the route in `src/app/**/page.tsx` using the standard data-driven pattern.
+8. Update `src/config/nav.ts` if the route, nav label, or CTA target changes.
+9. Map all styling to existing tokens first. If a value is truly missing:
+   - add a semantic token in `colors.css`, `spacing.css`, `motion.css`, `effects.css`, or `z-index.css`
+   - use `stitch-overrides.css` only for global Stitch-theme deltas
+10. Verify with:
 
-4. **Extract the Stitch Design System** — the project's `designMd` field contains the full design specification. Parse the following into a structured analysis:
-   - Color palette with hex values
-   - Typography rules (fonts, sizes, weights, spacing)
-   - Surface hierarchy (Level 0/1/2)
-   - Component patterns (buttons, cards, inputs)
-   - Do's and Don'ts
+```bash
+npm run typecheck
+npm run lint
+```
 
-## Phase 2: ANALYZE — Decompose screen into components
+## Home page rule
 
-5. **Parse HTML structure** — from the downloaded HTML, identify:
-   - All `<section>` blocks (numbered S1, S2, …)
-   - Navigation/header pattern
-   - Footer pattern
-   - Repeating component patterns (cards, steps, lists)
-   - Images/assets used
+Homepage hero is owned by:
 
-6. **Create Section Map** — document each section:
-   ```
-   S1: Hero — [description, key elements]
-   S2: Problem Statement — [3 cards layout]
-   S3: Mission Block — [dark bg, quote card]
-   ...
-   ```
+`src/app/page.tsx` → `HomeV2Client` → `ScrollyLoader` → `ScrollyExperience`
 
-7. **Identify reusable components** — mark sections that share patterns across screens.
+If the Stitch screen is for home:
 
-## Phase 3: MAP — Token mapping from Stitch → Project tokens
+- by default, port only the sections below the 3D scrolly intro
+- change the scrolly hero itself only if the user explicitly asks for that
 
-8. **Color mapping** — for every color value found in Stitch HTML/CSS:
-   ```
-   Stitch: #fef9f0 → Token: var(--surface-base) [via stitch-overrides.css]
-   Stitch: #103740 → Token: var(--stitch-dark-bg)
-   Stitch: #ffb86a → Token: var(--stitch-dark-accent)
-   ```
-   
-   If no matching token exists → **ADD IT FIRST** to `src/styles/tokens/stitch-overrides.css`, then reference.
+## Deprecated
 
-9. **Typography mapping** — map every font-size/weight/family from Stitch:
-   ```
-   Stitch: Newsreader 48px → Token: var(--font-h1) + var(--font-family-serif)
-   Stitch: Inter 16px/1.6 → Token: var(--font-body) + var(--leading-relaxed)
-   ```
-
-10. **Spacing mapping** — map all padding/margin/gap values:
-    ```
-    Stitch: 64px → Token: var(--space-2xl)
-    Stitch: 24px → Token: var(--space-lg)
-    ```
-
-11. **Check zero-hardcode compliance** — verify the mapping leaves ZERO:
-    - `rgba(...)` values → use tokens
-    - `#hex` values → use tokens
-    - Hardcoded `font-size` → use font tokens
-    - Hardcoded `transition` → use transition tokens
-
-## Phase 4: IMPLEMENT — Write production code
-
-12. **Create/update the page file** — `src/app/v2/{page-name}/page.tsx`:
-    - Server Component by default
-    - Export `metadata` with title + description
-    - Use `<section className="v2-section v2-section--{variant}">` pattern
-    - All CTA `href` values from `nav-v2.ts` config
-
-13. **Create co-located CSS** — `src/app/v2/{page-name}/{page-name}.css`:
-    - BEM naming: `.v2-{page}__{element}--{modifier}`
-    - ONLY token references (no hardcoded values)
-    - Include responsive breakpoints: 768px, 1024px, 1440px
-    - Add entrance animations with `@keyframes` + IntersectionObserver classes
-
-14. **Create Client component if needed** — `{PageName}Client.tsx`:
-    - Only if interactive elements (forms, animations, observers) are needed
-    - Mark `'use client'` at top
-    - Keep logic minimal — presentational component
-
-15. **Update nav-v2.ts** — add route if not already present.
-
-16. **Replace placeholder content** — no emoji icons, no `href="#"`, no lorem ipsum.
-
-## Phase 5: VERIFY — Compare Stitch vs Implementation
-
-17. **Lint check:**
-    ```bash
-    npm run lint
-    ```
-
-18. **Type check:**
-    ```bash
-    npm run typecheck
-    ```
-
-19. **Build check:**
-    ```bash
-    npm run build
-    ```
-
-20. **Visual comparison** — open `http://localhost:3000/v2/{page-name}` in browser and compare with Stitch screenshot. Check:
-    - [ ] Overall layout matches
-    - [ ] Colors match (use DevTools color picker on both)
-    - [ ] Typography matches (font family, size, weight, line-height)
-    - [ ] Spacing matches (padding, margins, gaps)
-    - [ ] Responsive at 768px (mobile)
-    - [ ] Responsive at 1024px (tablet)
-    - [ ] All links point to correct /v2/* routes
-    - [ ] No hardcoded values in CSS (grep for `rgba\(`, `#[0-9a-f]`, `px` without `var`)
-
-21. **Hardcode audit** — run this grep to catch violations:
-    ```bash
-    grep -nE 'rgba\(|#[0-9a-fA-F]{3,8}[;\s]' src/app/v2/{page-name}/*.css | grep -v '/\*'
-    ```
-
-22. **Update master tracker** — mark the screen as transferred in `.agents/stitch-transfer-tracker.md`
-
----
-
-## Master Tracker Location
-
-The state of all transfers is tracked in:
-`.agents/stitch-transfer-tracker.md`
-
-This file contains:
-- All Stitch screens with IDs
-- Transfer status per screen (not started / in progress / done / verified)
-- Token coverage percentage
-- Visual comparison results
+- Do not create pages under `src/app/v2/...`.
+- Do not refer to `nav-v2.ts`; use `src/config/nav.ts`.
+- Do not paste raw Stitch HTML into route files.
+- Do not treat `src/config/content/home.ts` as the current home page source.
+- Do not implement new scrolly content through `src/features/scrolly-experience/data.ts`.

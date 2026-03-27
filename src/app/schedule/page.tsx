@@ -16,7 +16,7 @@ export const metadata: Metadata = {
  */
 export default function SchedulePage() {
   return (
-    <div className="v2-content-wrapper">
+    <div className="v2-content-wrapper" data-content-wrapper>
       {scheduleContent.sections.map((section) => (
         <SectionRenderer key={section.id} section={section} />
       ))}

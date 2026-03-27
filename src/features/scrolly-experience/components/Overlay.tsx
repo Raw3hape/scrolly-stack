@@ -134,7 +134,7 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
           {heroContent.subheadline}
         </p>
 
-        <div className="hero__cta-wrapper">
+        <div className="hero__cta-wrapper" data-hero-cta>
           <a
             href={heroContent.ctaHref}
             className="hero__cta-button"

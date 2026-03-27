@@ -36,7 +36,8 @@
   width: fit-content;
   background: var(--eyebrow-bg);
   color: var(--color-gold-900);
-  padding: 0.25rem 0.75rem;
+  --_eyebrow-padding: 0.25rem 0.75rem;
+  padding: var(--_eyebrow-padding);
   border-radius: 6px;
   font-family: var(--font-family);
   font-size: var(--font-size-xs);
@@ -72,7 +73,8 @@
   font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.25rem);
   color: var(--stitch-outline);
   line-height: 1.6;
-  margin-bottom: 2.5rem;
+  --_hero-cta-gap: 2.5rem;
+  margin-bottom: var(--_hero-cta-gap);
   max-width: 460px;
 }
 
@@ -88,7 +90,8 @@
 .stitch-theme .hero__cta-button {
   background: var(--stitch-dark-bg);
   color: var(--color-white);
-  padding: 0.875rem 1.75rem;
+  --_btn-padding-hero: 0.875rem 1.75rem;
+  padding: var(--_btn-padding-hero);
   border-radius: var(--btn-radius);
   font-family: var(--font-family);
   font-size: var(--font-size-base);
@@ -97,7 +100,8 @@
   box-shadow: none;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  --_btn-icon-gap: 0.5rem;
+  gap: var(--_btn-icon-gap);
   white-space: nowrap;
   transition: background var(--transition-fast), transform var(--transition-fast);
 }
@@ -146,7 +150,8 @@
    * ~42px desktop → 24-32px mobile = ~4 lines instead of 6-7 */
   .stitch-theme .hero__headline {
     font-size: clamp(1.5rem, 1.2rem + 2vw, 2rem);
-    margin-bottom: 0.75rem;
+    --_headline-mb-mobile: 0.75rem;
+    margin-bottom: var(--_headline-mb-mobile);
   }
 
   /* Subheadline — tighter, full-width */
@@ -161,7 +166,8 @@
   .stitch-theme .hero__cta-wrapper {
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
+    --_cta-gap-mobile: 1rem;
+    gap: var(--_cta-gap-mobile);
     flex-wrap: wrap;
   }
 
@@ -193,7 +199,8 @@
   .stitch-theme .hero__cta-wrapper {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    --_cta-gap-small: 0.75rem;
+    gap: var(--_cta-gap-small);
   }
 }
 

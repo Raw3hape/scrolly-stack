@@ -33,6 +33,7 @@ import {
 import { animation } from '../config';
 import { computeMaxIsoZoom } from '../utils/computeMaxIsoZoom';
 import type { StackProps } from '../types';
+import { SELECTOR_HEADER, SELECTOR_CTA_WRAPPER } from '@/config/dom-contracts';
 
 // Re-export types for consumers that imported them from Stack
 export type { MosaicBlockDataMap, MosaicBlockDatum };
@@ -154,7 +155,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     const measure = () => {
       // Measure REAL header height from DOM — CSS token is inaccurate on mobile
       // (--header-height-mobile = 64px, actual Header ≈ 90px due to padding)
-      const headerEl = document.querySelector('.header');
+      const headerEl = document.querySelector(SELECTOR_HEADER);
       const h = headerEl
         ? headerEl.getBoundingClientRect().height
         : 72; // fallback
@@ -175,7 +176,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
       // Use last content element (.hero__cta-wrapper) as the boundary.
       // Cube will center in the space between contentBottom and viewport bottom.
       if (isMobileViewport) {
-        const ctaEl = document.querySelector('.hero__cta-wrapper');
+        const ctaEl = document.querySelector(SELECTOR_CTA_WRAPPER);
         if (ctaEl) {
           const ctaRect = ctaEl.getBoundingClientRect();
           // Only cache when hero is near viewport — stale negative values
@@ -220,7 +221,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
         rafId = null;
         // Only measure when hero is near viewport top
         if (window.scrollY > window.innerHeight * 0.5) return;
-        const ctaEl = document.querySelector('.hero__cta-wrapper');
+        const ctaEl = document.querySelector(SELECTOR_CTA_WRAPPER);
         if (!ctaEl) return;
         const ctaRect = ctaEl.getBoundingClientRect();
         if (ctaRect.bottom > 0 && ctaRect.top < window.innerHeight) {

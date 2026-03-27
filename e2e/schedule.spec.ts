@@ -312,7 +312,7 @@ for (const vp of VIEWPORTS) {
         await page.waitForTimeout(300);
 
         const booking = page.locator('.v2-booking');
-        const bookingBox = await booking.boundingBox();
+        await booking.boundingBox();
         const sidebar = page.locator('.v2-booking__sidebar');
         const sidebarBox = await sidebar.boundingBox();
         const widget = page.locator('.v2-booking__widget');

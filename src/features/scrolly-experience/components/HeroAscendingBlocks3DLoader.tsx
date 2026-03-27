@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
+import { PAGE_READY_EVENT } from '@/config/dom-contracts';
 
 const HeroAscendingBlocks3D = dynamic(
   () => import('./HeroAscendingBlocks3D'),
@@ -17,7 +18,7 @@ export default function HeroAscendingBlocks3DLoader({ className }: { className?:
 
   const handleReady = useCallback(() => {
     setReady(true);
-    window.dispatchEvent(new Event('page:ready'));
+    window.dispatchEvent(new Event(PAGE_READY_EVENT));
   }, []);
 
   return (

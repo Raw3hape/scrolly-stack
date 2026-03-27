@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function HowItWorksInvestorsPage() {
   return (
-    <div className="v2-content-wrapper">
+    <div className="v2-content-wrapper" data-content-wrapper>
       {investorsContent.sections.map((section) => (
         <SectionRenderer key={section.id} section={section} />
       ))}

@@ -11,7 +11,7 @@ const ROUTES = [
   { path: '/', title: 'Foundation Projects', hasH1: false },
   { path: '/about', title: 'About', hasH1: true },
   { path: '/how-it-works/roofers', title: 'Roofers', hasH1: true },
-  { path: '/how-it-works/investors', title: 'Investors', hasH1: true },
+  { path: '/how-it-works/investors', title: 'Invest', hasH1: true },
   { path: '/schedule', title: 'Schedule', hasH1: true },
 ];
 
@@ -46,13 +46,13 @@ test('404 page renders for unknown routes', async ({ page }) => {
 });
 
 test('/v2 redirects to /', async ({ page }) => {
-  const response = await page.goto('/v2', { waitUntil: 'domcontentloaded' });
+  await page.goto('/v2', { waitUntil: 'domcontentloaded' });
   expect(page.url()).toContain('localhost:3000');
   // After redirect, should be at root
   expect(new URL(page.url()).pathname).toBe('/');
 });
 
-test('/v1-archive loads (noindex)', async ({ page }) => {
+test('/v1-archive is not publicly routable', async ({ page }) => {
   const response = await page.goto('/v1-archive', { waitUntil: 'domcontentloaded' });
-  expect(response?.status()).toBe(200);
+  expect(response?.status()).toBe(404);
 });

@@ -28,7 +28,6 @@ export default async function OGImage() {
         }}
       >
         {/* Logo icon */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={iconDataUri}
           width={160}

@@ -14,7 +14,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
-import ScrollyLoader from '@/features/scrolly-experience/ScrollyLoader';
+import { ScrollyLoader } from '@/features/scrolly-experience';
 import TransitionLoader from '@/components/TransitionLoader/TransitionLoader';
 
 interface HomeV2ClientProps {
@@ -71,7 +71,7 @@ export default function HomeV2Client({ variantId = 'v6-exact-flipped', children 
       {/* Content wrapper — sits above the sticky parallax footer (z=0).
           Solid background prevents the dark footer from peeking through
           any gaps between the scrolly experience and the sections below. */}
-      <div className="v2-content-wrapper">
+      <div className="v2-content-wrapper" data-content-wrapper>
         {/* 3D Cube replaces Stitch Hero section */}
         <ScrollyLoader variantId={variantId} onReady={handleSceneReady} />
 
@@ -83,4 +83,3 @@ export default function HomeV2Client({ variantId = 'v6-exact-flipped', children 
     </>
   );
 }
-

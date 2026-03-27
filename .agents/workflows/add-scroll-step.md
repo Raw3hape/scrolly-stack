@@ -1,48 +1,67 @@
 ---
-description: How to add a new step/block to the 3D scrolly-experience
+description: Add or update a block in the current scrolly variant system
 ---
 
 # Add a Scroll Step
 
-Use this workflow when adding a new block to the 3D scrollytelling experience on the homepage.
+Use this workflow when changing the homepage 3D stack.
+
+## Canonical path
+
+1. Find the active variant from `src/app/page.tsx` and `src/app/HomeV2Client.tsx`.
+2. Edit the real variant source in `src/features/scrolly-experience/variants/`.
+
+Current home default:
+
+- `HomeV2Client` passes `variantId="v6-exact-flipped"`
+- `v6-exact-flipped.ts` is derived from `v4-exact.ts`
+- Structural block changes usually belong in `v4-exact.ts`, not in the deprecated `data.ts` shim
 
 ## Steps
 
-1. **Open the data file**: `src/features/scrolly-experience/data.ts`
+1. Identify the target variant file.
+2. If that variant spreads another variant, edit the source variant that owns the `layers` data.
+3. Add or update the block inside the correct `LayerData` entry.
+4. Keep the block shape aligned with `src/features/scrolly-experience/types.ts`:
 
-2. **Add a new block to the appropriate layer** in the `layers` array:
-   - Layer A (level 'A'): `layout: 'grid'` — needs `gridPosition: [row, col]`
-   - Layer B (level 'B'): `layout: 'row'` — auto-positioned by column
-   - Layer C (level 'C'): `layout: 'full'` — stacked vertically
+```ts
+{
+  id: 12,
+  slug: 'example',
+  label: 'Example',
+  tooltipTitle: 'Example Title',
+  tooltipSubhead: 'Example subhead',
+  bullets: [],
+  description: 'Optional long copy',
+  color: palette.anchor500,
+  gradientColorB: palette.anchor300,
+  activeColor: palette.anchor700,
+  activeGradientColorB: palette.anchor500,
+  textColor: palette.sand100,
+  icon: icons.example,
+}
+```
 
-3. **Block data shape** (see `types.ts` → `RawBlockData`):
-   ```ts
-   {
-     id: <next sequential number>,
-     label: 'Block Name',
-     tooltipTitle: 'Card Title',
-     tooltipSubhead: 'Subtitle text',
-     bullets: ['Feature 1', 'Feature 2', 'Feature 3'],
-     color: '#hexcolor',            // inactive state
-     gradientColorB: '#hexcolor',   // gradient end
-     activeColor: '#hexcolor',      // active state
-     activeGradientColorB: '#hex',  // active gradient end
-     textColor: '#ffffff',
-     icon: 'M3 3v18h18V3H3z...',   // SVG path string (not a file reference)
-   }
-   ```
+5. For `layout: 'grid'` blocks, also set `gridPosition`.
+6. Ensure every block `id` is unique within the variant.
+7. If you add a brand-new variant, register it in `src/features/scrolly-experience/variants/registry.ts`.
+8. Verify:
 
-4. **Verify the `id` is unique** — `currentStep` uses block `.id`, not array index
+```bash
+npm run typecheck
+npm run lint
+npm run dev
+```
 
-5. **Check types compile**: `npm run typecheck`
+## Important notes
 
-6. **Check the layout**: `npm run dev` → scroll through all steps to verify positioning
+- `currentStep` tracks real block IDs, not array indexes.
+- IDs do not need to be sequential from `0`; they do need to be unique and stable.
+- `HERO_STEP` is the only sentinel step value and lives in `src/features/scrolly-experience/utils/stepNavigation.ts`.
+- New 3D data belongs in `variants/`, not `src/features/scrolly-experience/data.ts`.
 
-7. **Run build**: `npm run build` to ensure no SSR issues
+## Deprecated
 
-## Important Notes
-
-- **Never modify `types.ts` without checking** — `LayerData` is a discriminated union, adding new layout types requires updating the union
-- **Color palette**: Follow the existing pattern — soft pastels, no greens. See palette comment in `data.ts`
-- **IDs must be sequential** from 0 for the `currentStep` tracking to work correctly
-- All files in `scrolly-experience/` are **client-only** — no server imports allowed
+- Do not edit `src/features/scrolly-experience/data.ts` for new work unless the task is explicitly about backward compatibility.
+- Do not assume the active home variant is `classic`.
+- Do not rely on array order as the public step identity.

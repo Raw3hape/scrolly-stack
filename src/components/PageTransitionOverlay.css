@@ -1,0 +1,15 @@
+/* PageTransitionOverlay — lightweight SPA navigation fade */
+
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-transition);
+  background: var(--color-sand-100);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.page-transition-overlay--visible {
+  opacity: 1;
+  pointer-events: auto;
+}

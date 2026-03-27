@@ -9,6 +9,11 @@
  * to restore its own background and padding inside the expand wrapper.
  * ========================================================================== */
 
+/* ── Stagger token ── */
+.v2-benefits {
+  --benefits-stagger: 150ms;
+}
+
 /* ── Expand integration ── */
 
 /* Override --expand transparent bg: keep the dark background on the section itself */
@@ -155,8 +160,8 @@
   opacity: 0;
   transform: translateY(var(--space-md));
   transition:
-    opacity var(--duration-base, 0.5s) var(--ease-out, ease-out) 0.3s,
-    transform var(--duration-base, 0.5s) var(--ease-out, ease-out) 0.3s,
+    opacity var(--duration-base, 0.5s) var(--ease-out, ease-out) calc(var(--benefits-stagger) * 2),
+    transform var(--duration-base, 0.5s) var(--ease-out, ease-out) calc(var(--benefits-stagger) * 2),
     filter var(--transition-fast);
 }
 
@@ -180,10 +185,10 @@
   transform: translateY(0) scale(1);
 }
 
-[data-visible] .v2-benefits__card:nth-child(1) { transition-delay: 0.15s; }
-[data-visible] .v2-benefits__card:nth-child(2) { transition-delay: 0.3s; }
-[data-visible] .v2-benefits__card:nth-child(3) { transition-delay: 0.45s; }
-[data-visible] .v2-benefits__card:nth-child(4) { transition-delay: 0.6s; }
+[data-visible] .v2-benefits__card:nth-child(1) { transition-delay: calc(var(--benefits-stagger) * 1); }
+[data-visible] .v2-benefits__card:nth-child(2) { transition-delay: calc(var(--benefits-stagger) * 2); }
+[data-visible] .v2-benefits__card:nth-child(3) { transition-delay: calc(var(--benefits-stagger) * 3); }
+[data-visible] .v2-benefits__card:nth-child(4) { transition-delay: calc(var(--benefits-stagger) * 4); }
 
 /* Icon: subtle glow on card hover */
 .v2-benefits__card:hover .v2-benefits__card-icon {

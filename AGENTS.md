@@ -43,20 +43,23 @@ Foundation Projects is a marketing website for a roofing business consulting com
 
 ### File Structure
 - Pages: `src/app/[route]/page.tsx`
+- Home route wrapper: `src/app/page.tsx` → `src/app/HomeV2Client.tsx`
 - Features: `src/features/[name]/` with barrel `index.ts`
 - Shared UI: `src/components/[Name]/Name.tsx`
 - Section components: `src/components/V2Sections/[Name]/Name.tsx` — data-driven via `SectionRenderer`
 - Config: `src/config/`
 - Page content: `src/config/content/[page].ts` — one file per page, barrel at `index.ts`
+- Home page source: `src/config/content/home-page.ts` (`src/config/content/home.ts` is legacy)
 - Section types: `src/config/types.ts` — discriminated union of 19 section types
 - Navigation: `src/config/nav.ts` — routes, nav links, CTA config
 - Tokens: `src/styles/tokens/`
 
 ### Data Flow
 - **Page content:** `src/config/content/[page].ts` → `page.tsx` → `SectionRenderer` (switch by `section.type`) → section component
+- **Home page:** `src/app/page.tsx` → `HomeV2Client` → `homeContent.sections` → `SectionRenderer`
 - **Section types:** `src/config/types.ts` — discriminated union, add new type here first
 - **Navigation:** `src/config/nav.ts` — `routes`, `navLinks`, `ctaConfig`, `brandConfig`
-- **3D scene:** `src/features/scrolly-experience/config.ts` (geometry), `data.ts` (blocks), `types.ts` (LayerData union)
+- **3D scene:** `src/features/scrolly-experience/config.ts` (geometry), `variants/` (active block data), `types.ts` (LayerData union)
 - `currentStep` = block `.id` (NOT array index) — see `features/scrolly-experience/types.ts`
 
 ## Common Tasks
@@ -76,15 +79,16 @@ Foundation Projects is a marketing website for a roofing business consulting com
 1. Edit `src/styles/tokens/colors.css` — palette hex values + semantic tokens
 2. Edit `src/styles/tokens/effects.css` — shadows, glass, glow (rgba values)
 3. For fonts: update `next/font` imports in `src/app/layout.tsx`
-4. 3D block colors: edit `src/features/scrolly-experience/data.ts` (15 blocks × 4 colors)
+4. 3D block colors: edit the active variant file in `src/features/scrolly-experience/variants/`
 5. **See `DESIGN_SYSTEM.md`** for full rebrand checklist and token reference
 
 ### Modifying the 3D experience
 1. All 3D code lives in `src/features/scrolly-experience/`
 2. Scene config: `config.ts` (geometry, lighting, animations)
-3. Block data: `data.ts` (content, colors, layout)
+3. Block data: `variants/` (content, colors, layout)
 4. Types: `types.ts` — `LayerData` is a discriminated union (`GridLayer | RowLayer | FullLayer`)
-5. **Remember:** everything in this folder is client-only
+5. `data.ts` is deprecated compatibility-only; new work belongs in `variants/`
+6. **Remember:** everything in this folder is client-only
 
 ## Architecture Diagram
 
@@ -93,8 +97,9 @@ app/layout.tsx (Server)
 ├── Header (Client — scroll listeners)
 ├── <main>
 │   ├── app/page.tsx (Server)
-│   │   └── ScrollyLoader (Client wrapper, dynamic ssr:false)
-│   │       └── ScrollyExperience
+│   │   └── HomeV2Client (Client)
+│   │       └── ScrollyLoader (Client wrapper, dynamic ssr:false)
+│   │           └── ScrollyExperience
 │   │           ├── Overlay (text, IntersectionObserver)
 │   │           └── Scene (Canvas, R3F, Three.js)
 │   │               └── Stack → Layer → Block
@@ -102,5 +107,5 @@ app/layout.tsx (Server)
 │   ├── app/about/page.tsx (Server)
 │   ├── app/how-it-works/*/page.tsx (Server)
 │   └── ...
-└── Footer (Server)
+└── Footer (Client)
 ```

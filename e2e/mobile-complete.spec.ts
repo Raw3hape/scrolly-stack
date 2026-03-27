@@ -16,7 +16,6 @@ import { test, expect } from '@playwright/test';
 
 /** Whether the current viewport is mobile-sized */
 function isMobile(width: number) { return width <= 768; }
-function isSmallPhone(width: number) { return width <= 480; }
 
 // All pages to validate
 const ALL_PAGES = [

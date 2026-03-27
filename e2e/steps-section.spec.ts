@@ -65,7 +65,6 @@ test.describe('StepsSection — Home Page', () => {
 
   test('steps are inactive before scrolling to section', async ({ page }) => {
     // At the top of the page, steps should NOT be active
-    const active = page.locator(`${STEPS_SELECTOR} .v2-step--active`);
     // Could be 0 or some could be active depending on page layout
     // Just verify section exists
     const section = page.locator(STEPS_SELECTOR);
@@ -81,7 +80,6 @@ test.describe('StepsSection — Home Page', () => {
     await page.evaluate((y) => window.scrollTo({ top: y + 400, behavior: 'instant' }), box.y);
     await page.waitForTimeout(300);
 
-    const steps = section.locator('.v2-step');
     // At least some steps should be active after scrolling past
     const activeCount = await section.locator('.v2-step--active').count();
     expect(activeCount).toBeGreaterThan(0);

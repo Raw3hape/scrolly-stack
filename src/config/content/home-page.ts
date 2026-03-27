@@ -1,9 +1,99 @@
 /**
- * Home Page Page Content — Foundation Projects
+ * Home Page Source Of Truth — Foundation Projects
+ *
+ * Homepage copy currently has two rendering surfaces:
+ * - `homeContent.sections`: server-rendered V2 sections below the scrolly hero
+ * - `homeScrollyOverlayContent`: client-only hero/step overlay used by the scrolly experience
+ *
+ * Keep both surfaces in this file so homepage edits stay coordinated.
  */
 
 import type { PageContent } from '../types';
-import { footerContent } from './shared';
+import { ctaConfig } from '../nav';
+
+export const heroContent = {
+  eyebrow: 'Get A Big Exit From Your Roofing Company',
+  headline: 'We\'re building a roofing company that goes public — and we want yours',
+  headlineAccent: 'in it.',
+  subheadline:
+    'You did the hard work to grow your business. You shouldn\'t have to hand it to a broker or a PE firm to finally get the exit you deserve. With us, you won\'t have to.',
+  ctaLabel: 'Book A Call',
+  ctaHref: ctaConfig.href,
+  ctaAriaLabel: 'Book a call to discuss your roofing business exit',
+  statusText: 'Free 30-min call · NDA on day one',
+} as const;
+
+export const stepCta = {
+  label: 'See if I qualify',
+  arrowText: '→',
+  ariaLabel: (stepTitle: string) => `Learn more about ${stepTitle}`,
+} as const;
+
+export const noscriptContent = {
+  headline: `${heroContent.headline} ${heroContent.headlineAccent}`,
+  description: heroContent.subheadline,
+  ctaLabel: heroContent.ctaLabel,
+  ctaHref: heroContent.ctaHref,
+} as const;
+
+export const homeValueProps = [
+  'Get A Bigger Exit',
+  'Stay In The Deal',
+  'We Only Get Paid When You Do',
+] as const;
+
+export const problemStakesContent = {
+  heading: 'Most Roofing Companies Sell For Less Than They’re Worth',
+  problem:
+    'You get 10 emails a week from people offering to buy your business. Brokers want 20% to list you. PE firms want to lock you in before you’re ready. And if you try to go it alone, you’re spending 12-18 months on due diligence, cleanup, and systems you should have built years ago.',
+  solution:
+    'Foundation Projects is assembling a platform of best-in-class roofing companies — not to flip them to private equity, but to take them public.',
+  ctaLabel: ctaConfig.label,
+  ctaHref: ctaConfig.href,
+} as const;
+
+export const homeHowItWorks = {
+  heading: 'Here’s How It Works',
+  steps: [
+    {
+      number: 1,
+      title: 'Book A 30 Minute Call',
+      description:
+        'First, we figure out if we’re a good fit. We’ll look at your roofing business, talk through your goals, and if it makes sense for both sides, we sign an NDA, agree on a Letter of Intent, and set your entry valuation.',
+      footnote: 'You don’t owe us anything at this stage. No money changes hands — just clarity.',
+    },
+    {
+      number: 2,
+      title: 'We Scale Your Business',
+      description:
+        'Once you’re in, we come in and help fix and build the things that make a company worth more — like better systems, cleaner operations, AI tools that save time, and training for your team.',
+      footnote: 'You keep running your business. We just make it worth a lot more.',
+    },
+    {
+      number: 3,
+      title: 'Get A Big Exit',
+      description:
+        'The companies combine and we take it public. You keep the majority of what your company is worth. We take 20% of the value we helped create — nothing until then.',
+      footnote: 'Other companies give you 3X and sell at 10X. We only get paid when you do.',
+    },
+  ],
+} as const;
+
+export const stakesContent = {
+  body: 'You’ve spent years building your business. The window to get a return on that business is open.',
+  accent: 'It won’t stay open forever.',
+  detail:
+    'The roofing industry is consolidating right now. The first platforms are already forming. Owners who get in early will lock in better valuations and a bigger share of what the platform is worth when it goes public. Owners who wait will be selling into a crowded market with fewer buyers and less leverage.',
+} as const;
+
+export const homeFinalCta = {
+  heading: 'Your Big Exit Starts With A 30-Minute Call.',
+  subheading: 'Book Your Call Today.',
+  body:
+    'We’ll learn about your business, share how the platform works, and tell you honestly whether we think it’s a good match.',
+  ctaLabel: ctaConfig.label,
+  ctaHref: ctaConfig.href,
+} as const;
 
 export const homeContent: PageContent = {
   slug: 'home',
@@ -22,21 +112,21 @@ export const homeContent: PageContent = {
       steps: [
         {
           number: '01.',
-          title: 'Get A Bigger Exit',
+          title: homeValueProps[0],
           icon: 'chart-bar',
           kpiLabel: 'Your Advantage',
           kpiValue: 'Public-Market Multiples vs. PE Discount',
         },
         {
           number: '02.',
-          title: 'Stay In The Deal',
+          title: homeValueProps[1],
           icon: 'shield',
           kpiLabel: 'Your Advantage',
           kpiValue: 'Ownership Continuity & Equity Retention',
         },
         {
           number: '03.',
-          title: 'We Only Get Paid When You Do',
+          title: homeValueProps[2],
           icon: 'dollar',
           kpiLabel: 'Your Advantage',
           kpiValue: 'Aligned Incentives & Zero Upfront Cost',
@@ -50,9 +140,8 @@ export const homeContent: PageContent = {
       id: 'problem-statement',
       surface: 'base',
       flush: true,
-      heading: 'Most Roofing Companies Sell For Less Than They\u2019re Worth',
-      subtext:
-        'You get 10 emails a week from people offering to buy your business. Brokers want 20\u0025 to list you. PE firms want to lock you in before you\u2019re ready. And if you try to go it alone, you\u2019re spending 12-18 months on due diligence, cleanup, and systems you should have built years ago.',
+      heading: problemStakesContent.heading,
+      subtext: problemStakesContent.problem,
       cards: [
         {
           icon: 'chart-bar',
@@ -77,22 +166,22 @@ export const homeContent: PageContent = {
       type: 'mission',
       id: 'mission-block',
       surface: 'dark',
-      heading: 'Foundation Projects is assembling a platform of best-in-class roofing companies \u2014',
+      heading: 'Foundation Projects is assembling a platform of best-in-class roofing companies —',
       headingAccent: 'not to flip them to private equity, but to take them public.',
       steps: [
         {
           icon: 'shield',
           title: 'Aligned Partnership',
-          text: 'We don\u2019t buy your company to change your culture. We partner with you to build the systems, operations, and scale that make your business worth more.',
+          text: 'We don’t buy your company to change your culture. We partner with you to build the systems, operations, and scale that make your business worth more.',
         },
         {
           icon: 'arrow-up',
           title: 'Public Market Path',
-          text: 'By combining high-performing roofing companies into one platform, we unlock the valuations only available on the public exchange \u2014 and you keep the majority.',
+          text: 'By combining high-performing roofing companies into one platform, we unlock the valuations only available on the public exchange — and you keep the majority.',
         },
       ],
       quote: {
-        text: '\u201COur Promise\u201D',
+        text: '“Our Promise”',
         body: 'You keep running your business. We just make it worth a lot more.',
         label: 'Our Philosophy',
       },
@@ -104,28 +193,28 @@ export const homeContent: PageContent = {
       type: 'steps',
       id: 'path-to-capital',
       surface: 'low',
-      heading: 'Here\u2019s How It Works',
+      heading: homeHowItWorks.heading,
       steps: [
         {
           number: '01',
-          title: 'Book A 30 Minute Call',
-          text: 'First, we figure out if we\u2019re a good fit. We\u2019ll look at your roofing business, talk through your goals, and if it makes sense for both sides, we sign an NDA, agree on a Letter of Intent, and set your entry valuation.',
-          footnote: 'You don\u2019t owe us anything at this stage. No money changes hands \u2014 just clarity.',
+          title: homeHowItWorks.steps[0].title,
+          text: homeHowItWorks.steps[0].description,
+          footnote: homeHowItWorks.steps[0].footnote,
           icon: 'clock',
           ctaLabel: 'Book A Call',
         },
         {
           number: '02',
-          title: 'We Scale Your Business',
-          text: 'Once you\u2019re in, we come in and help fix and build the things that make a company worth more \u2014 like better systems, cleaner operations, AI tools that save time, and training for your team.',
-          footnote: 'You keep running your business. We just make it worth a lot more.',
+          title: homeHowItWorks.steps[1].title,
+          text: homeHowItWorks.steps[1].description,
+          footnote: homeHowItWorks.steps[1].footnote,
           icon: 'arrow-up',
         },
         {
           number: '03',
-          title: 'Get A Big Exit',
-          text: 'The companies combine and we take it public. You keep the majority of what your company is worth. We take 20\u0025 of the value we helped create \u2014 nothing until then.',
-          footnote: 'Other companies give you 3X and sell at 10X. We only get paid when you do.',
+          title: homeHowItWorks.steps[2].title,
+          text: homeHowItWorks.steps[2].description,
+          footnote: homeHowItWorks.steps[2].footnote,
           icon: 'dollar',
           ctaLabel: 'Book A Call',
         },
@@ -137,9 +226,9 @@ export const homeContent: PageContent = {
       type: 'urgency',
       id: 'urgency',
       surface: 'base',
-      heading: 'You\u2019ve spent years building your business. The window to get a return on that business is open.',
-      headingAccent: 'It won\u2019t stay open forever.',
-      text: 'The roofing industry is consolidating right now. The first platforms are already forming. Owners who get in early will lock in better valuations and a bigger share of what the platform is worth when it goes public. Owners who wait will be selling into a crowded market with fewer buyers and less leverage.',
+      heading: stakesContent.body,
+      headingAccent: stakesContent.accent,
+      text: stakesContent.detail,
       ctaLabel: 'Book A Call',
       image: '/images/urgency-building.png',
     },
@@ -149,10 +238,24 @@ export const homeContent: PageContent = {
       type: 'cta',
       id: 'final-cta',
       surface: 'base',
-      heading: 'Your Big Exit Starts With A 30-Minute Call. Book Your Call Today.',
-      microcopy: 'We\u2019ll learn about your business, share how the platform works, and tell you honestly whether we think it\u2019s a good match.',
-      buttonLabel: 'Book A Call',
+      heading: `${homeFinalCta.heading} ${homeFinalCta.subheading}`,
+      microcopy: homeFinalCta.body,
+      buttonLabel: homeFinalCta.ctaLabel,
     },
   ],
-  footer: footerContent,
 };
+
+export const homeScrollyOverlayContent = {
+  hero: heroContent,
+  stepCta,
+  noscript: noscriptContent,
+} as const;
+
+/**
+ * Canonical homepage bundle for agents and future refactors.
+ * Prefer importing from `home-page.ts`; `home.ts` remains a compatibility shim.
+ */
+export const homePageSourceOfTruth = {
+  page: homeContent,
+  overlay: homeScrollyOverlayContent,
+} as const;

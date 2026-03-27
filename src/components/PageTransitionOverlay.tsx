@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { HERO_3D_ROUTES } from '@/config/content';
+import { PAGE_READY_EVENT } from '@/config/dom-contracts';
+import './PageTransitionOverlay.css';
 
 /** Max time to wait for page:ready before forcing dismiss */
 const READY_TIMEOUT_MS = 3_000;
@@ -55,23 +57,16 @@ export default function PageTransitionOverlay() {
   // Listen for page:ready custom event from Hero3DLoaders
   useEffect(() => {
     const handler = () => dismiss();
-    window.addEventListener('page:ready', handler);
-    return () => window.removeEventListener('page:ready', handler);
+    window.addEventListener(PAGE_READY_EVENT, handler);
+    return () => window.removeEventListener(PAGE_READY_EVENT, handler);
   }, [dismiss]);
 
   if (!mounted) return null;
 
   return (
     <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 9999,
-        background: 'var(--color-sand-100)',
-        opacity: visible ? 1 : 0,
-        transition: `opacity ${FADE_MS}ms ease-in-out`,
-        pointerEvents: visible ? 'auto' : 'none',
-      }}
+      className={`page-transition-overlay${visible ? ' page-transition-overlay--visible' : ''}`}
+      style={{ transition: `opacity ${FADE_MS}ms ease-in-out` }}
       aria-hidden
     />
   );

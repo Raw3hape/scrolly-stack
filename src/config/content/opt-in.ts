@@ -3,7 +3,6 @@
  */
 
 import type { PageContent } from '../types';
-import { footerContent } from './shared';
 
 export const optInContent: PageContent = {
   slug: 'opt-in',
@@ -164,5 +163,4 @@ export const optInContent: PageContent = {
       buttonLabel: 'Book A Call',
     },
   ],
-  footer: footerContent,
 };

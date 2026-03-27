@@ -18,6 +18,7 @@ import Image from 'next/image';
 import type { FooterContent } from '@/config/types';
 import { brandConfig, routes } from '@/config/nav';
 import { siteConfig } from '@/config/site';
+import { SELECTOR_CONTENT_WRAPPER } from '@/config/dom-contracts';
 import './Footer.css';
 
 interface Props {
@@ -36,7 +37,7 @@ export default function Footer({ data }: Props) {
     const el = footerRef.current;
     if (!el) return;
 
-    const wrapper = document.querySelector('.v2-content-wrapper');
+    const wrapper = document.querySelector(SELECTOR_CONTENT_WRAPPER);
     if (!wrapper) {
       el.style.setProperty('--footer-reveal', '1');
       return;

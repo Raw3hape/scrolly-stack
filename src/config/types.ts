@@ -491,6 +491,4 @@ export interface PageContent {
   };
   /** Ordered array of sections — rendered top to bottom */
   sections: Section[];
-  /** Footer content (shared across pages but customizable per-page) */
-  footer?: FooterContent;
 }

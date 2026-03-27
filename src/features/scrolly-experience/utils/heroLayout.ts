@@ -14,6 +14,7 @@
  */
 
 import { BREAKPOINTS } from '@/config/breakpoints';
+import { SELECTOR_HERO_VARIANTS, SELECTOR_HERO_SPLIT, SELECTOR_HERO_BASE } from '@/config/dom-contracts';
 
 export interface HeroLayout {
   /** Text column width as fraction of container (0–1) */
@@ -105,7 +106,7 @@ export interface HeroTextMeasurement {
  * Same DOM-measurement approach as Stack.tsx (lines 154–190).
  */
 export function measureTextCenter(canvasContainer: HTMLElement): HeroTextMeasurement | null {
-  const hero = canvasContainer.closest('.v2-hero--left, .v2-hero--editorial, .v2-hero');
+  const hero = canvasContainer.closest(SELECTOR_HERO_VARIANTS);
   if (!hero) return null;
 
   const textEl = hero.querySelector('[data-hero-text]') as HTMLElement | null;
@@ -148,9 +149,9 @@ export function computeModelYOffset(
  * to the container while the canvas renders a wider area.
  */
 export function measureContainerContentWidth(canvasContainer: HTMLElement): number | null {
-  const split = canvasContainer.closest('.v2-hero__split');
+  const split = canvasContainer.closest(SELECTOR_HERO_SPLIT);
   if (split) return (split as HTMLElement).clientWidth;
-  const hero = canvasContainer.closest('.v2-hero');
+  const hero = canvasContainer.closest(SELECTOR_HERO_BASE);
   if (hero) return (hero as HTMLElement).clientWidth;
   return null;
 }

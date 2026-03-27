@@ -6,7 +6,19 @@
 
 export { footerContent } from './shared';
 export { aboutContent } from './about';
-export { homeContent } from './home-page';
+export {
+  heroContent,
+  homeContent,
+  homeFinalCta,
+  homeHowItWorks,
+  homePageSourceOfTruth,
+  homeScrollyOverlayContent,
+  homeValueProps,
+  noscriptContent,
+  problemStakesContent,
+  stakesContent,
+  stepCta,
+} from './home-page';
 export { roofersContent } from './roofers';
 export { investorsContent } from './investors';
 export { optInContent } from './opt-in';

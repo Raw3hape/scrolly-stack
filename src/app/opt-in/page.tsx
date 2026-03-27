@@ -15,7 +15,7 @@ export const metadata: Metadata = {
  */
 export default function OptInPage() {
   return (
-    <div className="v2-content-wrapper">
+    <div className="v2-content-wrapper" data-content-wrapper>
       {optInContent.sections.map((section) => (
         <SectionRenderer key={section.id} section={section} />
       ))}

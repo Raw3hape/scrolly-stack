@@ -3,7 +3,6 @@
  */
 
 import type { PageContent } from '../types';
-import { footerContent } from './shared';
 
 export const aboutContent: PageContent = {
   slug: 'about',
@@ -179,5 +178,4 @@ export const aboutContent: PageContent = {
       buttonLabel: 'Book A Call',
     },
   ],
-  footer: footerContent,
 };

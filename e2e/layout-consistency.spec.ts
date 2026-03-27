@@ -105,7 +105,6 @@ test.describe('Text wrapping', () => {
     // If headline is very tall relative to its width, it means bad wrapping
     // (each word on its own line → very tall, narrow block)
     if (box && text) {
-      const wordsPerLine = text.split(/\s+/).length;
       // At minimum, the width should accommodate at least 2 words
       expect(box.width).toBeGreaterThanOrEqual(150);
     }

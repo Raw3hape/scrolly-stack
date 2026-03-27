@@ -6,5 +6,5 @@
  * grid layout, so the transition from loading → loaded is seamless.
  */
 export default function OptInLoading() {
-  return <div className="v2-content-wrapper" />;
+  return <div className="v2-content-wrapper" data-content-wrapper />;
 }
