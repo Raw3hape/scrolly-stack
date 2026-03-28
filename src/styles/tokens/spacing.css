@@ -36,7 +36,7 @@
   --hero-3d-gap-ratio: 0.04;     /* safe gap between text and 3D model (fraction of container) */
   --hero-3d-fill: 0.80;          /* model fills 80% of available space */
   --hero-3d-fill-animated: 0.70; /* animated models with hover scaling need extra room */
-  --hero-3d-fill-mobile: 0.85;   /* fill factor in stacked mobile layout */
+  --hero-3d-fill-mobile: 0.55;   /* fill factor in stacked mobile layout */
   --content-max-width: 520px;
   --card-max-width: 460px;
   /* Hero layout is content-aware: hero fills full viewport (100dvh - header),
