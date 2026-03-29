@@ -87,8 +87,8 @@ export default function MissionSection({ data }: Props) {
             src={data.backgroundUrl}
             alt=""
             fill
-            sizes="100vw"
-            quality={85}
+            sizes="(max-width: 1440px) 100vw, 1440px"
+            quality={75}
           />
           <div className="v2-mission__bg-overlay" />
         </div>
