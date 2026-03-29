@@ -106,6 +106,7 @@
 
 /* Photo wrapper */
 .v2-team-card__photo-wrap {
+  position: relative;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   margin-bottom: var(--space-lg);
