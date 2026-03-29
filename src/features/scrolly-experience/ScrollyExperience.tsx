@@ -27,9 +27,10 @@ import './ScrollyExperience.css';
 interface ScrollyExperienceProps {
   variantId?: string;
   onReady?: () => void;
+  sceneReady?: boolean;
 }
 
-export default function ScrollyExperience({ variantId, onReady }: ScrollyExperienceProps) {
+export default function ScrollyExperience({ variantId, onReady, sceneReady }: ScrollyExperienceProps) {
   const [currentStep, setStep] = useState(HERO_STEP);
   const mosaicTriggerRef = useRef<HTMLDivElement>(null);
   const { mosaic: mosaicProgress, exit: exitProgress } = useScrollProgress(mosaicTriggerRef);
@@ -78,7 +79,7 @@ export default function ScrollyExperience({ variantId, onReady }: ScrollyExperie
         />
       </div>
       <div
-        className={`col-visual ${isInteractive ? 'col-visual--interactive' : ''} ${isPriorityFrame ? 'col-visual--priority' : ''}`}
+        className={`col-visual ${sceneReady ? 'col-visual--ready' : ''} ${isInteractive ? 'col-visual--interactive' : ''} ${isPriorityFrame ? 'col-visual--priority' : ''}`}
         style={exitStyle}
       >
         <Scene

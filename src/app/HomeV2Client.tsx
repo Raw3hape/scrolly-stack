@@ -15,7 +15,6 @@
 
 import { useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
 import { ScrollyLoader } from '@/features/scrolly-experience';
-import TransitionLoader from '@/components/TransitionLoader/TransitionLoader';
 
 interface HomeV2ClientProps {
   /** Variant ID for the 3D cube (default: v4-exact) */
@@ -25,7 +24,7 @@ interface HomeV2ClientProps {
 }
 
 /** Max time to wait for WebGL ready signal before forcing loader dismiss */
-const READY_TIMEOUT_MS = 8_000;
+const READY_TIMEOUT_MS = 4_000;
 
 /** Module-level flag — skip branded loader on SPA return visits */
 let hasLoadedOnce = false;
@@ -65,15 +64,12 @@ export default function HomeV2Client({ variantId = 'v6-exact-flipped', children 
 
   return (
     <>
-      {/* TransitionLoader covers everything until scene is ready */}
-      <TransitionLoader visible={!sceneReady} />
-
       {/* Content wrapper — sits above the sticky parallax footer (z=0).
           Solid background prevents the dark footer from peeking through
           any gaps between the scrolly experience and the sections below. */}
       <div className="v2-content-wrapper" data-content-wrapper>
-        {/* 3D Cube replaces Stitch Hero section */}
-        <ScrollyLoader variantId={variantId} onReady={handleSceneReady} />
+        {/* 3D Cube replaces Stitch Hero section — canvas fades in when ready */}
+        <ScrollyLoader variantId={variantId} onReady={handleSceneReady} sceneReady={sceneReady} />
 
         {/* Stitch sections below the cube — positioned above sticky canvas */}
         <div className="v2-sections">

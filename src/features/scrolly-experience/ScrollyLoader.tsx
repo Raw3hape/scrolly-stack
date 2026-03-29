@@ -29,8 +29,9 @@ const ScrollyExperience = dynamic(
 interface ScrollyLoaderProps {
   variantId?: string;
   onReady?: () => void;
+  sceneReady?: boolean;
 }
 
-export default function ScrollyLoader({ variantId, onReady }: ScrollyLoaderProps) {
-  return <ScrollyExperience variantId={variantId} onReady={onReady} />;
+export default function ScrollyLoader({ variantId, onReady, sceneReady }: ScrollyLoaderProps) {
+  return <ScrollyExperience variantId={variantId} onReady={onReady} sceneReady={sceneReady} />;
 }

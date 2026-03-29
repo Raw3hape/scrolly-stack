@@ -64,6 +64,16 @@
      The R3F Canvas itself is transparent (alpha: true), so without this,
      section--under-canvas content would bleed through between grid tiles. */
   background: var(--surface-base);
+  /* Start invisible — fade in when 3D is ready. This allows hero text
+     and page content to be visible immediately while Three.js loads,
+     preventing PSI mobile timeout (was 5-8s blank screen). */
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+}
+
+/* 3D scene loaded — reveal canvas with smooth fade-in */
+.col-visual--ready {
+  opacity: 1;
 }
 
 /* When mosaic is settled, enable pointer events for tile hover/click */
