@@ -7,7 +7,8 @@
 
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { MathUtils } from 'three';
+import type { Group } from 'three';
 import { animation, mosaic as mosaicConfig } from '../../config';
 import { smoothProgress } from '../../utils/easings';
 
@@ -25,7 +26,7 @@ export default function MouseParallaxGroup({
   isHero = false,
   mosaicProgress = 0,
 }: MouseParallaxGroupProps) {
-  const groupRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<Group>(null);
   const currentRotation = useRef({ x: 0, y: 0 });
 
   // Detect touch device once (no mouse → no parallax needed)
@@ -50,13 +51,13 @@ export default function MouseParallaxGroup({
     const targetX = -mouseRef.current.y * intensity;
     const targetY = mouseRef.current.x * intensity;
 
-    currentRotation.current.x = THREE.MathUtils.damp(
+    currentRotation.current.x = MathUtils.damp(
       currentRotation.current.x,
       targetX,
       animation.parallax.damping,
       delta,
     );
-    currentRotation.current.y = THREE.MathUtils.damp(
+    currentRotation.current.y = MathUtils.damp(
       currentRotation.current.y,
       targetY,
       animation.parallax.damping,

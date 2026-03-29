@@ -12,6 +12,10 @@ import TrustSection from './TrustSection/TrustSection';
 import BenefitsGridSection from './BenefitsGridSection/BenefitsGridSection';
 import ScheduleHeroSection from './ScheduleHeroSection/ScheduleHeroSection';
 import ScheduleQuoteSection from './ScheduleQuoteSection/ScheduleQuoteSection';
+import CardsSection from './CardsSection/CardsSection';
+import MissionSection from './MissionSection/MissionSection';
+import UrgencySection from './UrgencySection/UrgencySection';
+import CtaSection from './CtaSection/CtaSection';
 
 /** Server-safe section type identifiers */
 const SERVER_TYPES = new Set([
@@ -21,6 +25,10 @@ const SERVER_TYPES = new Set([
   'benefits-grid',
   'schedule-hero',
   'schedule-quote',
+  'cards',
+  'mission',
+  'urgency',
+  'cta',
 ]);
 
 /** Type guard: returns true if the section type can be rendered on the server */
@@ -36,6 +44,10 @@ export default function ServerSectionRenderer({ section }: { section: Section })
     case 'benefits-grid':   return <BenefitsGridSection data={section} />;
     case 'schedule-hero':   return <ScheduleHeroSection data={section} />;
     case 'schedule-quote':  return <ScheduleQuoteSection data={section} />;
+    case 'cards':           return <CardsSection data={section} />;
+    case 'mission':         return <MissionSection data={section} />;
+    case 'urgency':         return <UrgencySection data={section} />;
+    case 'cta':             return <CtaSection data={section} />;
     default:                return null;
   }
 }

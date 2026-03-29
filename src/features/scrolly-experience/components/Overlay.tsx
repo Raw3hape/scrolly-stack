@@ -6,7 +6,7 @@
  * Includes mosaic trigger zone for the grid transition.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useVariant } from '../VariantContext';
 import { heroContent, stepCta } from '@/config/content/home';
 import { BREAKPOINTS } from '@/config/breakpoints';
@@ -24,33 +24,40 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
     : (steps as StepData[]);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const heroRef = useRef<HTMLElement>(null);
-  const [heroOpacity, setHeroOpacity] = useState(1);
 
-  // Scroll-based hero fade for mobile
+  // Scroll-based hero fade for mobile — direct DOM manipulation (no React re-renders)
   useEffect(() => {
     const isMobile = window.innerWidth < BREAKPOINTS.md;
     if (!isMobile) return;
+    const el = heroRef.current;
+    if (!el) return;
+
+    let rafId: number | null = null;
 
     const handleScroll = () => {
-      const vh = window.innerHeight;
-      const fadeStart = vh * 0.06;  // ~40px on 667px, ~56px on 926px
-      const fadeEnd = vh * 0.45;    // ~300px on 667px, ~380px on 844px (matches larger hero zone)
-      const y = window.scrollY;
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const vh = window.innerHeight;
+        const fadeStart = vh * 0.06;
+        const fadeEnd = vh * 0.45;
+        const y = window.scrollY;
 
-      if (y <= fadeStart) {
-        setHeroOpacity(1);
-      } else if (y >= fadeEnd) {
-        setHeroOpacity(0);
-      } else {
-        const progress = (y - fadeStart) / (fadeEnd - fadeStart);
-        setHeroOpacity(1 - progress);
-      }
+        let opacity = 1;
+        if (y >= fadeEnd) opacity = 0;
+        else if (y > fadeStart) opacity = 1 - (y - fadeStart) / (fadeEnd - fadeStart);
+
+        el.style.opacity = String(opacity);
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // Step tracking via IntersectionObserver — zero layout recalc during scroll.
@@ -121,7 +128,7 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
         data-step-id="hero"
         className="hero"
         role="banner"
-        style={{ opacity: heroOpacity }}
+        style={{ opacity: 1 }}
       >
         <p className="hero__eyebrow">{heroContent.eyebrow}</p>
 

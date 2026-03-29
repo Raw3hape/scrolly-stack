@@ -12,7 +12,7 @@
  * - Scroll-synced inner content parallax (--footer-reveal CSS var)
  */
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { FooterContent } from '@/config/types';
@@ -28,44 +28,45 @@ interface Props {
 export default function Footer({ data }: Props) {
   const footerRef = useRef<HTMLElement>(null);
 
-  /**
-   * Drive --footer-reveal (0→1) based on how much of the footer is
-   * "uncovered" by the content wrapper above. Tied to the scroll
-   * position of the .v2-content-wrapper's bottom edge.
-   */
-  const updateReveal = useCallback(() => {
+  useEffect(() => {
     const el = footerRef.current;
     if (!el) return;
 
+    // Cache wrapper reference once — avoid querySelector on every scroll frame
     const wrapper = document.querySelector(SELECTOR_CONTENT_WRAPPER);
-    if (!wrapper) {
-      el.style.setProperty('--footer-reveal', '1');
-      return;
-    }
+    let rafId: number | null = null;
 
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const footerHeight = el.offsetHeight;
-
-    // wrapperBottom starts at vh (footer fully covered) and decreases
-    // as user scrolls. When wrapperBottom = vh - footerHeight, footer
-    // is fully revealed. Normalize by footerHeight so progress always
-    // reaches 1.0 regardless of viewport size.
-    const progress = footerHeight > 0
-      ? Math.max(0, Math.min(1, (vh - wrapperRect.bottom) / footerHeight))
-      : 1;
-    el.style.setProperty('--footer-reveal', String(progress));
-  }, []);
-
-  useEffect(() => {
-    updateReveal();
-    window.addEventListener('scroll', updateReveal, { passive: true });
-    window.addEventListener('resize', updateReveal, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', updateReveal);
-      window.removeEventListener('resize', updateReveal);
+    const updateReveal = () => {
+      if (!wrapper) {
+        el.style.setProperty('--footer-reveal', '1');
+        return;
+      }
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const footerHeight = el.offsetHeight;
+      const progress = footerHeight > 0
+        ? Math.max(0, Math.min(1, (vh - wrapperRect.bottom) / footerHeight))
+        : 1;
+      el.style.setProperty('--footer-reveal', String(progress));
     };
-  }, [updateReveal]);
+
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        updateReveal();
+        rafId = null;
+      });
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, []);
 
   return (
     <footer className="footer" ref={footerRef}>

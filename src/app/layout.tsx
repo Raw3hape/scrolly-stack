@@ -78,13 +78,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${newsreader.variable} ${inter.variable}`}>
-      <body className="stitch-theme">
-        {/* Reset scroll on reload — disable browser scroll restoration */}
+      <head>
+        {/* Reset scroll on reload — in <head> to avoid blocking body parsing */}
         <script
           dangerouslySetInnerHTML={{
             __html: `history.scrollRestoration='manual';window.scrollTo(0,0);`,
           }}
         />
+      </head>
+      <body className="stitch-theme">
         <a href="#main" className="skip-link">
           Skip to content
         </a>

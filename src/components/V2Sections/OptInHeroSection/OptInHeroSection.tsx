@@ -19,7 +19,7 @@ import V2Icon from '../V2Icon/V2Icon';
 import './OptInHeroSection.css';
 
 const FreebieBook3D = dynamic(
-  () => import('@/features/scrolly-experience').then((module) => module.FreebieBook3D),
+  () => import('@/features/scrolly-experience/heroes').then((module) => module.FreebieBook3D),
   {
     ssr: false,
     loading: () => (

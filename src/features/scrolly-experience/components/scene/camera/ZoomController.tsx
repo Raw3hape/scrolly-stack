@@ -11,7 +11,7 @@
 
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { MathUtils } from 'three';
 import { mosaic as mosaicConfig } from '../../../config';
 import { lerp, smoothProgress } from '../../../utils/easings';
 
@@ -34,7 +34,7 @@ export default function ZoomController({ targetZoom, mosaicProgress = 0 }: ZoomC
     );
 
     // 1. Always compute damped zoom (frame-rate independent damp)
-    dampedZoomRef.current = THREE.MathUtils.damp(
+    dampedZoomRef.current = MathUtils.damp(
       dampedZoomRef.current,
       targetZoom,
       UNIFIED_LAMBDA,

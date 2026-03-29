@@ -23,10 +23,11 @@ import { useRef, useCallback, useState, useEffect, useMemo } from 'react';
 import { animated, useSpring } from '@react-spring/three';
 import { useThree, useFrame } from '@react-three/fiber';
 import { RoundedBox, Text } from '@react-three/drei';
-import * as THREE from 'three';
+import type { Group } from 'three';
 import { geometry, animation, labels } from '../config';
 import { easeOutQuart, lerp } from '../utils/easings';
 import GradientShadowMaterial from './GradientShadowMaterial';
+import { useTiltBatch } from '../hooks/useTiltBatch';
 import type { BlockProps, BlockLabelProps, MousePosition } from '../types';
 
 const AnimatedGroup = animated.group;
@@ -37,11 +38,6 @@ const TILT_FALLOFF = animation.hover?.tilt?.proximityFalloff ?? 0.25;
 const TILT_PROX_MAX = animation.hover?.tilt?.proximityMax ?? 0.7;
 const TILT_LERP = animation.hover?.tilt?.lerpSpeed ?? 0.12;
 const TILT_RESET_LERP = animation.hover?.tilt?.resetLerpSpeed ?? 0.08;
-const TILT_MOBILE_BP = animation.hover?.tilt?.mobileBreakpoint ?? 768;
-
-/** Shared plane for raycaster intersection (y = 0.15, top of blocks) */
-const TILT_PLANE = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.15);
-const _planeIntersect = new THREE.Vector3();
 
 /** Label Component for block text */
 function BlockLabel({ text, dimensions, color = labels.color, opacity = 1, labelFontSize, labelMaxWidth }: BlockLabelProps) {
@@ -125,79 +121,51 @@ export default function Block({
   // Uses raycaster plane intersection to get cursor world position,
   // then computes direction + distance for each block in useFrame.
   // ========================================================================
-  const tiltGroupRef = useRef<THREE.Group>(null);
+  const tiltGroupRef = useRef<Group>(null);
   /** Current interpolated tilt angles (lerped toward target each frame) */
   const tiltCurrentRef = useRef({ x: 0, z: 0 });
-  /** Whether tilt is enabled (disabled on mobile) */
-  const tiltEnabledRef = useRef(true);
 
-  // Check mobile breakpoint once
-  useEffect(() => {
-    const check = () => {
-      tiltEnabledRef.current = window.innerWidth >= TILT_MOBILE_BP;
-    };
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
+  // Read batched cursor position from Stack (one raycaster per frame instead of 19)
+  const tiltBatch = useTiltBatch();
 
   // Animate tilt smoothly each frame — PROXIMITY WAVE
-  useFrame((state) => {
+  // Raycaster computation is batched in Stack — we only do distance+lerp math here
+  useFrame(() => {
     if (!tiltGroupRef.current) return;
 
     let targetX = 0;
     let targetZ = 0;
 
-    // Only compute tilt when mosaic is settled and tilt is enabled
-    if (isMosaicSettled && tiltEnabledRef.current) {
-      // Project mouse NDC to world-space plane at block top height
-      state.raycaster.setFromCamera(state.pointer, state.camera);
-      const hit = state.raycaster.ray.intersectPlane(TILT_PLANE, _planeIntersect);
+    const hit = tiltBatch.cursorWorldPos;
+    if (isMosaicSettled && hit) {
+      // Block's current world position (from spring)
+      const pos = springPosition.get();
+      const blockX = pos[0];
+      const blockZ = pos[2];
 
-      if (hit) {
-        // Block's current world position (from spring)
-        const pos = springPosition.get();
-        const blockX = pos[0];
-        const blockZ = pos[2];
+      const dx = hit.x - blockX;
+      const dz = hit.z - blockZ;
+      const dist = Math.sqrt(dx * dx + dz * dz);
+      const intensity = 1 / (1 + Math.pow(dist * TILT_FALLOFF, 2));
+      const len = dist || 1;
+      const dirX = dx / len;
+      const dirZ = dz / len;
 
-        // Direction from block center to cursor
-        const dx = hit.x - blockX;
-        const dz = hit.z - blockZ;
+      const effectiveIntensity = isHovered
+        ? intensity
+        : intensity * TILT_PROX_MAX;
 
-        // Distance from cursor to block center
-        const dist = Math.sqrt(dx * dx + dz * dz);
-
-        // Falloff: intensity = 1 / (1 + (dist * falloff)²)
-        // At dist=0: intensity=1, at dist=4 (with falloff=0.25): intensity=0.5
-        const intensity = 1 / (1 + Math.pow(dist * TILT_FALLOFF, 2));
-
-        // Normalize direction (avoid division by zero)
-        const len = dist || 1;
-        const dirX = dx / len;
-        const dirZ = dz / len;
-
-        // Tilt TOWARD cursor (press down): block tilts in the direction of the cursor
-        // rotX = forward/back tilt controlled by Z-direction
-        // rotZ = left/right tilt controlled by X-direction  
-        const effectiveIntensity = isHovered
-          ? intensity  // Full effect on hovered block
-          : intensity * TILT_PROX_MAX;  // Capped for neighbors
-
-        targetX = dirZ * effectiveIntensity;   // Z direction → X rotation
-        targetZ = -dirX * effectiveIntensity;  // X direction → Z rotation (inverted)
-      }
+      targetX = dirZ * effectiveIntensity;
+      targetZ = -dirX * effectiveIntensity;
     }
 
     const current = tiltCurrentRef.current;
-
-    // Choose lerp speed: faster convergence when active, slower return
     const isActive = targetX !== 0 || targetZ !== 0;
     const speed = isActive ? TILT_LERP : TILT_RESET_LERP;
 
     current.x += (targetX - current.x) * speed;
     current.z += (targetZ - current.z) * speed;
 
-    // Snap to zero when close enough
     if (Math.abs(current.x) < 0.0001 && Math.abs(current.z) < 0.0001 && !isActive) {
       current.x = 0;
       current.z = 0;
@@ -206,7 +174,6 @@ export default function Block({
     const rotX = current.x * TILT_MAX;
     const rotZ = current.z * TILT_MAX;
 
-    // Only update when there's meaningful change
     const prevRotX = tiltGroupRef.current.rotation.x;
     const prevRotZ = tiltGroupRef.current.rotation.z;
     if (Math.abs(rotX - prevRotX) > 0.00001 || Math.abs(rotZ - prevRotZ) > 0.00001) {

@@ -14,7 +14,8 @@
 import { Suspense, useState, useEffect, useCallback, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
-import * as THREE from 'three';
+import { VSMShadowMap, PCFSoftShadowMap, ACESFilmicToneMapping, AgXToneMapping } from 'three';
+import type { ShadowMapType } from 'three';
 import { getIOSGpuOverrides } from '../utils/iosGpuProfile';
 import Stack from './Stack';
 import HoverTooltip from './HoverTooltip';
@@ -24,6 +25,8 @@ import Effects from './scene/Effects';
 import MouseParallaxGroup from './scene/MouseParallaxGroup';
 import { CameraRig, ZoomController, useResponsiveZoom } from './scene/camera';
 import { animation, lighting, render } from '../config';
+
+const SHADOW_MAP_TYPES: Record<string, ShadowMapType> = { VSMShadowMap, PCFSoftShadowMap };
 import { useVariant } from '../VariantContext';
 import useAdaptiveFinalZoom from '../hooks/useAdaptiveFinalZoom';
 import { isHeroStep, getStepElementId } from '../utils/stepNavigation';
@@ -133,7 +136,7 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
   return (
     <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
       <Canvas
-        shadows={{ type: THREE[(iosOverrides?.shadowMapType ?? render.shadowMapType) as keyof typeof THREE] as THREE.ShadowMapType }}
+        shadows={{ type: SHADOW_MAP_TYPES[iosOverrides?.shadowMapType ?? render.shadowMapType] }}
         dpr={activeDpr as [number, number]}
         orthographic
         camera={{
@@ -141,13 +144,14 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
           position: animation.camera.positions.hero as [number, number, number],
           fov: 25,
         }}
+        frameloop="demand"
         style={{ width: '100%', height: '100%', background: 'transparent' }}
         gl={{
           antialias: true,
           alpha: true,
           toneMapping: iosOverrides
-            ? THREE.ACESFilmicToneMapping
-            : THREE.AgXToneMapping,
+            ? ACESFilmicToneMapping
+            : AgXToneMapping,
           ...(iosOverrides ? { powerPreference: iosOverrides.powerPreference } : {}),
         }}
         onCreated={({ gl }) => {
