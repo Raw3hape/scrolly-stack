@@ -10,6 +10,7 @@
 'use client';
 
 import { useRef, useState, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 import type { TeamSection as TeamSectionData } from '@/config/types';
 import './TeamSection.css';
 
@@ -115,12 +116,12 @@ export default function TeamSection({ data }: Props) {
             {/* Photo or fallback initials */}
             <div className="v2-team-card__photo-wrap">
               {member.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   className="v2-team-card__photo"
                   src={member.imageUrl}
                   alt={member.name}
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 768px) 50vw, 280px"
                 />
               ) : (
                 <div className="v2-team-card__avatar" aria-hidden="true">

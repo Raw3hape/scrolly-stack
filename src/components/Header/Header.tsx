@@ -10,7 +10,7 @@
 
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -19,27 +19,30 @@ import './Header.css';
 
 export default function Header() {
   const pathname = usePathname();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   const lastScrollY = useRef(0);
-
-  const handleScroll = useCallback(() => {
-    const y = window.scrollY;
-    setIsScrolled(y > 40);
-
-    if (y > lastScrollY.current && y > 200) {
-      setIsHidden(true);
-    } else {
-      setIsHidden(false);
-    }
-    lastScrollY.current = y;
-  }, []);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (rafRef.current !== null) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = null;
+        const el = headerRef.current;
+        if (!el) return;
+        const y = window.scrollY;
+        el.classList.toggle('header--scrolled', y > 40);
+        el.classList.toggle('header--hidden', y > lastScrollY.current && y > 200);
+        lastScrollY.current = y;
+      });
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : '';
@@ -54,17 +57,11 @@ export default function Header() {
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
-  const headerClasses = [
-    'header',
-    isScrolled ? 'header--scrolled' : '',
-    isHidden ? 'header--hidden' : '',
-  ].filter(Boolean).join(' ');
-
   const close = () => setIsMenuOpen(false);
 
   return (
     <>
-      <header data-layout="header" className={headerClasses}>
+      <header ref={headerRef} data-layout="header" className="header">
         <div className="header__inner">
           {/* Brand */}
           <Link href={routes.home} className="header__brand" onClick={close}>

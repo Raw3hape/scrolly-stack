@@ -7,20 +7,19 @@
 
 'use client';
 
+import dynamic from 'next/dynamic';
 import type { Section } from '@/config/types';
-import CardsSection from './CardsSection/CardsSection';
-import MissionSection from './MissionSection/MissionSection';
-import StepsSection from './StepsSection/StepsSection';
-import CtaSection from './CtaSection/CtaSection';
-import UrgencySection from './UrgencySection/UrgencySection';
-import HeroSection from './HeroSection/HeroSection';
-import TeamSection from './TeamSection/TeamSection';
-import TestimonialSection from './TestimonialSection/TestimonialSection';
-import TimelineSection from './TimelineSection/TimelineSection';
-import BentoSection from './BentoSection/BentoSection';
-import OptInHeroSection from './OptInHeroSection/OptInHeroSection';
-import OptInTestimonialsSection from './OptInTestimonialsSection/OptInTestimonialsSection';
-import ScheduleBookingSection from './ScheduleBookingSection/ScheduleBookingSection';
+
+// Dynamic imports for code splitting — each section loads its own chunk
+const StepsSection = dynamic(() => import('./StepsSection/StepsSection'));
+const HeroSection = dynamic(() => import('./HeroSection/HeroSection'));
+const TeamSection = dynamic(() => import('./TeamSection/TeamSection'));
+const TestimonialSection = dynamic(() => import('./TestimonialSection/TestimonialSection'));
+const TimelineSection = dynamic(() => import('./TimelineSection/TimelineSection'));
+const BentoSection = dynamic(() => import('./BentoSection/BentoSection'));
+const OptInHeroSection = dynamic(() => import('./OptInHeroSection/OptInHeroSection'));
+const OptInTestimonialsSection = dynamic(() => import('./OptInTestimonialsSection/OptInTestimonialsSection'));
+const ScheduleBookingSection = dynamic(() => import('./ScheduleBookingSection/ScheduleBookingSection'));
 
 function assertNever(value: never): never {
   throw new Error(`Unhandled section type: ${JSON.stringify(value)}`);
@@ -28,11 +27,7 @@ function assertNever(value: never): never {
 
 export default function ClientSectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
-    case 'cards':               return <CardsSection data={section} />;
-    case 'mission':             return <MissionSection data={section} />;
     case 'steps':               return <StepsSection data={section} />;
-    case 'cta':                 return <CtaSection data={section} />;
-    case 'urgency':             return <UrgencySection data={section} />;
     case 'hero':                return <HeroSection data={section} />;
     case 'team':                return <TeamSection data={section} />;
     case 'testimonial':         return <TestimonialSection data={section} />;
@@ -48,6 +43,10 @@ export default function ClientSectionRenderer({ section }: { section: Section })
     case 'benefits-grid':
     case 'schedule-hero':
     case 'schedule-quote':
+    case 'cards':
+    case 'mission':
+    case 'urgency':
+    case 'cta':
       return null;
     default:
       return assertNever(section);

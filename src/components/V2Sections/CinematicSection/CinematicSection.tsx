@@ -11,6 +11,7 @@
  * Data-driven: receives all content via props from content.ts.
  */
 
+import Image from 'next/image';
 import type { CinematicSection as CinematicSectionData } from '@/config/types';
 import './CinematicSection.css';
 
@@ -23,12 +24,13 @@ export default function CinematicSection({ data }: Props) {
     <div className="v2-cinematic">
       {/* Background layer: photo + teal overlay */}
       <div className="v2-cinematic__bg" aria-hidden="true">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           className="v2-cinematic__bg-photo"
           src={data.backgroundUrl}
           alt=""
-          loading="lazy"
+          fill
+          sizes="100vw"
+          quality={85}
         />
         <div className="v2-cinematic__bg-overlay" />
       </div>

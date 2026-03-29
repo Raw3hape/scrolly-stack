@@ -13,7 +13,8 @@
 
 import { useMemo, useRef, useLayoutEffect, useState } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { MathUtils, Plane, Vector3 } from 'three';
+import type { Group } from 'three';
 import Layer from './Layer';
 import { useVariant } from '../VariantContext';
 import { isHeroStep } from '../utils/stepNavigation';
@@ -32,11 +33,18 @@ import {
 } from '../utils/easings';
 import { animation } from '../config';
 import { computeMaxIsoZoom } from '../utils/computeMaxIsoZoom';
+import { TiltBatchContext } from '../hooks/useTiltBatch';
+import type { TiltBatchData } from '../hooks/useTiltBatch';
 import type { StackProps } from '../types';
 import { SELECTOR_HEADER, SELECTOR_CTA_WRAPPER } from '@/config/dom-contracts';
 
 // Re-export types for consumers that imported them from Stack
 export type { MosaicBlockDataMap, MosaicBlockDatum };
+
+// Shared tilt plane for raycaster intersection (y = 0.15, top of blocks)
+const TILT_PLANE = new Plane(new Vector3(0, 1, 0), -0.15);
+const _planeIntersect = new Vector3();
+const TILT_MOBILE_BP = animation.hover?.tilt?.mobileBreakpoint ?? 768;
 
 // =============================================================================
 // ISOMETRIC CROSS-AXIS CORRECTION — derived from camera config, zero hardcode
@@ -261,7 +269,28 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   // so reversing scroll always returns to the exact same coordinates.
   // ========================================================================
   const { size } = useThree();
-  const groupRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<Group>(null);
+
+  // =========================================================================
+  // BATCHED TILT — one raycaster per frame, shared with all Blocks via context
+  // Before: 19 blocks × raycaster.setFromCamera() = 19 identical computations/frame
+  // After: 1 computation/frame, blocks only do distance+lerp math
+  // =========================================================================
+  const tiltBatchRef = useRef<TiltBatchData>({ cursorWorldPos: null });
+  const isMosaicSettledForTilt = mosaicProgress >= 1;
+
+  useFrame((state) => {
+    const isTiltEnabled = typeof window !== 'undefined' && window.innerWidth >= TILT_MOBILE_BP;
+    if (isMosaicSettledForTilt && isTiltEnabled) {
+      state.raycaster.setFromCamera(state.pointer, state.camera);
+      const hit = state.raycaster.ray.intersectPlane(TILT_PLANE, _planeIntersect);
+      tiltBatchRef.current.cursorWorldPos = hit
+        ? { x: _planeIntersect.x, y: _planeIntersect.y, z: _planeIntersect.z }
+        : null;
+    } else {
+      tiltBatchRef.current.cursorWorldPos = null;
+    }
+  });
 
   // ========================================================================
   // DAMPED SCENE OFFSET
@@ -292,7 +321,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   useFrame((_, delta) => {
     if (!groupRef.current) return;
 
-    const d = THREE.MathUtils.damp;
+    const d = MathUtils.damp;
 
     const transitionProgress = smoothProgress(
       mosaicProgress,
@@ -375,6 +404,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   });
 
   return (
+    <TiltBatchContext.Provider value={tiltBatchRef.current}>
     <group ref={groupRef}>
       {layerPositions.map(({ layer, baseY }, index) => {
         const totalLayers = layerPositions.length;
@@ -411,5 +441,6 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
         );
       })}
     </group>
+    </TiltBatchContext.Provider>
   );
 }

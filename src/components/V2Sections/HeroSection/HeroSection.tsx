@@ -8,6 +8,7 @@
  * Data-driven: receives all content via props from content.ts.
  */
 
+import Image from 'next/image';
 import type { HeroSection as HeroSectionData } from '@/config/types';
 import { ctaConfig } from '@/config/nav';
 import LinkButton from '@/components/LinkButton/LinkButton';
@@ -16,7 +17,7 @@ import {
   HeroExplodedGrid3DLoader,
   HeroPyramid3DLoader,
   HeroRubiksCube3DLoader,
-} from '@/features/scrolly-experience';
+} from '@/features/scrolly-experience/heroes';
 import './HeroSection.css';
 
 const HERO_3D_MAP = {
@@ -76,12 +77,13 @@ export default function HeroSection({ data }: Props) {
               {!Hero3D && data.imageUrl ? (
                 <div className="v2-hero__image-col">
                   <div className="v2-hero__image-wrapper">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       className="v2-hero__image"
                       src={data.imageUrl}
                       alt="Modern architectural detail of a premium roof line"
-                      loading="eager"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      priority
                     />
                   </div>
                 </div>

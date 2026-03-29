@@ -167,10 +167,10 @@ export const lighting = {
     position: [5, 14, 5],     // Higher angle for better shadow projection
     intensity: 2.4,           // Compensate for lower ambient
     castShadow: true,
-    shadowMapSize: 2048,      // Balanced resolution for performance
+    shadowMapSize: 1024,      // Optimized: indistinguishable at orthographic zoom levels
     shadowBias: -0.0002,      // Fine-tuned bias
     shadowRadius: 20,         // Higher = softer blurred edges
-    blurSamples: 25,          // Number of VSM blur samples
+    blurSamples: 16,          // Optimized: visually identical softness with fewer texture reads
     shadowCamera: {
       far: 60,
       left: -15,

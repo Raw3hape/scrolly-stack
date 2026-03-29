@@ -10,6 +10,7 @@
  * Data-driven: receives all content via props from content.ts.
  */
 
+import Image from 'next/image';
 import type { MissionSection as MissionSectionData } from '@/config/types';
 import V2Icon from '../V2Icon/V2Icon';
 import ScrollTypewriter from '@/components/ScrollTypewriter/ScrollTypewriter';
@@ -81,12 +82,13 @@ export default function MissionSection({ data }: Props) {
       {/* Optional background layer — cinematic mode */}
       {data.backgroundUrl && (
         <div className="v2-mission__bg" aria-hidden="true">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             className="v2-mission__bg-photo"
             src={data.backgroundUrl}
             alt=""
-            loading="lazy"
+            fill
+            sizes="100vw"
+            quality={85}
           />
           <div className="v2-mission__bg-overlay" />
         </div>

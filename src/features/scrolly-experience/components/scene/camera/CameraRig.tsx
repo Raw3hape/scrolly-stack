@@ -25,7 +25,7 @@
 
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { Vector3, MathUtils } from 'three';
 import { animation, mosaic as mosaicConfig } from '../../../config';
 import { smoothProgress } from '../../../utils/easings';
 
@@ -39,25 +39,25 @@ interface CameraRigProps {
 
 export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps) {
   // Damped state (persists between frames for smooth hero↔iso transitions)
-  const dampedPosRef = useRef(new THREE.Vector3(...(animation.camera.positions.hero as [number, number, number])));
-  const dampedUpRef = useRef(new THREE.Vector3(...(animation.camera.upVectors.hero as [number, number, number])));
+  const dampedPosRef = useRef(new Vector3(...(animation.camera.positions.hero as [number, number, number])));
+  const dampedUpRef = useRef(new Vector3(...(animation.camera.upVectors.hero as [number, number, number])));
 
   // Scratch vectors for intermediate calculations (no GC)
-  const basePosRef = useRef(new THREE.Vector3());
-  const baseUpRef = useRef(new THREE.Vector3());
-  const instantPosRef = useRef(new THREE.Vector3());
-  const instantUpRef = useRef(new THREE.Vector3());
-  const isoPosRef = useRef(new THREE.Vector3());
-  const isoUpRef = useRef(new THREE.Vector3());
-  const mosaicPosRef = useRef(new THREE.Vector3());
-  const mosaicUpRef = useRef(new THREE.Vector3());
+  const basePosRef = useRef(new Vector3());
+  const baseUpRef = useRef(new Vector3());
+  const instantPosRef = useRef(new Vector3());
+  const instantUpRef = useRef(new Vector3());
+  const isoPosRef = useRef(new Vector3());
+  const isoUpRef = useRef(new Vector3());
+  const mosaicPosRef = useRef(new Vector3());
+  const mosaicUpRef = useRef(new Vector3());
 
 
   // Track previous camera position for conditional invalidate
-  const prevCamPosRef = useRef(new THREE.Vector3());
+  const prevCamPosRef = useRef(new Vector3());
 
   useFrame((state, delta) => {
-    const d = THREE.MathUtils.damp;
+    const d = MathUtils.damp;
 
     const transitionProgress = smoothProgress(
       mosaicProgress,

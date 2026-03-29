@@ -7,7 +7,8 @@
 
 import { useMemo, useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import { Color, MeshPhysicalMaterial } from 'three';
+import type { MeshPhysicalMaterial as MeshPhysicalMaterialType } from 'three';
 import { animation, materials } from '../config';
 import { palette } from '@/config/palette';
 import { getIOSGpuOverrides } from '../utils/iosGpuProfile';
@@ -25,7 +26,7 @@ export default function GradientShadowMaterial({
 }: GradientShadowMaterialProps) {
   // Shader type not exported by @types/three, define inline
   const shaderRef = useRef<{ uniforms: Record<string, { value: unknown }> } | null>(null);
-  const materialRef = useRef<THREE.MeshPhysicalMaterial | null>(null);
+  const materialRef = useRef<MeshPhysicalMaterialType | null>(null);
   const currentHoverRef = useRef(0);
   const targetHoverRef = useRef(0);
   const currentSaturationRef = useRef(1.0);
@@ -37,14 +38,14 @@ export default function GradientShadowMaterial({
   const materialKey = isActive ? 'gradient-active' : 'gradient-normal';
 
   const material = useMemo(() => {
-    const colA = new THREE.Color(colorA);
-    const colB = new THREE.Color(colorB);
+    const colA = new Color(colorA);
+    const colB = new Color(colorB);
 
     // iOS: disable expensive shader features that hit compilation limits
     const iosOverrides = getIOSGpuOverrides();
     const iosMat = iosOverrides?.materialOverrides;
 
-    const mat = new THREE.MeshPhysicalMaterial({
+    const mat = new MeshPhysicalMaterial({
       color: palette.white,
       roughness: isActive ? materials.active.roughness : materials.block.roughness,
       metalness: isActive ? materials.active.metalness : materials.block.metalness,
@@ -60,7 +61,7 @@ export default function GradientShadowMaterial({
       // Sheen (velvet highlight)
       sheen: iosMat ? iosMat.sheen : materials.physical.sheen,
       sheenRoughness: materials.physical.sheenRoughness,
-      sheenColor: new THREE.Color(materials.physical.sheenColor),
+      sheenColor: new Color(materials.physical.sheenColor),
     });
 
     mat.customProgramCacheKey = () => materialKey;
@@ -171,8 +172,8 @@ export default function GradientShadowMaterial({
   // Update uniform colors when props change (no shader recompilation needed)
   useEffect(() => {
     if (shaderRef.current) {
-      (shaderRef.current.uniforms.uColorA.value as THREE.Color).set(colorA);
-      (shaderRef.current.uniforms.uColorB.value as THREE.Color).set(colorB);
+      (shaderRef.current.uniforms.uColorA.value as Color).set(colorA);
+      (shaderRef.current.uniforms.uColorB.value as Color).set(colorB);
     }
   }, [colorA, colorB]);
 
