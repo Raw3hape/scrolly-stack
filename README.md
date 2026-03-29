@@ -32,7 +32,7 @@ npm run dev
 
 ### Standard pages
 
-Data lives in `src/config/content/*.ts`, is re-exported from `src/config/content/index.ts`, and is rendered by route files in `src/app/**/page.tsx` through `src/components/V2Sections/SectionRenderer.tsx`.
+Data lives in `src/config/content/*.ts`, is re-exported from `src/config/content/index.ts`, and is rendered by route files in `src/app/**/page.tsx` through `SectionRenderer.tsx` which dispatches to `ServerSectionRenderer` (server-safe sections) or `ClientSectionRenderer` (interactive sections with dynamic imports for code splitting).
 
 Route pattern:
 
@@ -63,6 +63,8 @@ Home is the only special route:
 
 `src/app/page.tsx` → `src/app/HomeV2Client.tsx` → `src/features/scrolly-experience/ScrollyLoader.tsx` → `ScrollyExperience`
 
+The 3D canvas starts with `opacity: 0` and fades in when the scene is ready (or after a 4s timeout). No fullscreen loader — text content is visible immediately.
+
 Everything below the 3D intro is still data-driven via `homeContent.sections`.
 
 ### Navigation and CTAs
@@ -75,6 +77,7 @@ Everything below the 3D intro is still data-driven via `homeContent.sections`.
 
 - Live 3D code is in `src/features/scrolly-experience/`
 - Variants live in `src/features/scrolly-experience/variants/`
+- Hero 3D components are in `src/features/scrolly-experience/heroes.ts` (separate entry point for code splitting)
 - The default home variant is selected via `variantId` on `HomeV2Client`
 
 ## Project Structure
@@ -92,7 +95,7 @@ src/
 │   └── schedule/page.tsx
 ├── components/
 │   ├── Header/
-│   └── V2Sections/
+│   └── V2Sections/         # SectionRenderer → ServerSectionRenderer | ClientSectionRenderer
 ├── config/
 │   ├── nav.ts
 │   ├── types.ts

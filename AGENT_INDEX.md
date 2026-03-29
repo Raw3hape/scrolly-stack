@@ -15,7 +15,7 @@ Use this file as a fast machine-readable-ish index before editing code.
 - Add/update a standard marketing page:
   - `src/config/content/[page].ts`
   - `src/app/**/page.tsx`
-  - `src/components/V2Sections/SectionRenderer.tsx` (only if new section type)
+  - `src/components/V2Sections/ServerSectionRenderer.tsx` (server-safe) or `ClientSectionRenderer.tsx` (needs hooks/browser APIs)
 - Homepage content:
   - `src/config/content/home-page.ts` (canonical)
   - `src/config/content/home.ts` (compatibility re-export only)
@@ -25,7 +25,7 @@ Use this file as a fast machine-readable-ish index before editing code.
 
 ## Public API boundaries
 
-- Import 3D feature from `@/features/scrolly-experience` barrel when outside the feature folder.
+- Import 3D feature from `@/features/scrolly-experience` barrel (core: `ScrollyExperience`, `ScrollyLoader`) or `@/features/scrolly-experience/heroes` (hero 3D components — separate entry point for code splitting).
 - Do not import `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing` outside `src/features/scrolly-experience/`.
 
 ## Shared hotspots (merge-conflict risk)
@@ -33,6 +33,8 @@ Use this file as a fast machine-readable-ish index before editing code.
 - `src/config/nav.ts`
 - `src/config/types.ts`
 - `src/components/V2Sections/SectionRenderer.tsx`
+- `src/components/V2Sections/ServerSectionRenderer.tsx`
+- `src/components/V2Sections/ClientSectionRenderer.tsx`
 - `src/config/content/index.ts`
 
 ## Deprecated / do-not-start-here

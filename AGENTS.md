@@ -43,10 +43,10 @@ Foundation Projects is a marketing website for a roofing business consulting com
 
 ### File Structure
 - Pages: `src/app/[route]/page.tsx`
-- Home route wrapper: `src/app/page.tsx` → `src/app/HomeV2Client.tsx`
+- Home route wrapper: `src/app/page.tsx` → `src/app/HomeV2Client.tsx` (canvas fade-in, no fullscreen loader)
 - Features: `src/features/[name]/` with barrel `index.ts`
 - Shared UI: `src/components/[Name]/Name.tsx`
-- Section components: `src/components/V2Sections/[Name]/Name.tsx` — data-driven via `SectionRenderer`
+- Section components: `src/components/V2Sections/[Name]/Name.tsx` — data-driven via `SectionRenderer` → `ServerSectionRenderer` | `ClientSectionRenderer` (dynamic imports)
 - Config: `src/config/`
 - Page content: `src/config/content/[page].ts` — one file per page, barrel at `index.ts`
 - Home page source: `src/config/content/home-page.ts` (`src/config/content/home.ts` is legacy)
@@ -55,7 +55,9 @@ Foundation Projects is a marketing website for a roofing business consulting com
 - Tokens: `src/styles/tokens/`
 
 ### Data Flow
-- **Page content:** `src/config/content/[page].ts` → `page.tsx` → `SectionRenderer` (switch by `section.type`) → section component
+- **Page content:** `src/config/content/[page].ts` → `page.tsx` → `SectionRenderer` → `ServerSectionRenderer` (server-safe sections) or `ClientSectionRenderer` (interactive sections, dynamic imports)
+- **Server sections:** split, cinematic, trust, benefits-grid, schedule-hero, schedule-quote, cards, mission, urgency, cta
+- **Client sections:** steps, hero, team, testimonial, timeline, bento, opt-in-hero, opt-in-testimonials, schedule-booking
 - **Home page:** `src/app/page.tsx` → `HomeV2Client` → `homeContent.sections` → `SectionRenderer`
 - **Section types:** `src/config/types.ts` — discriminated union, add new type here first
 - **Navigation:** `src/config/nav.ts` — `routes`, `navLinks`, `ctaConfig`, `brandConfig`
@@ -68,7 +70,7 @@ Foundation Projects is a marketing website for a roofing business consulting com
 1. Add section type interface to `src/config/types.ts` (if new section type needed)
 2. Add the type to the `Section` union in `src/config/types.ts`
 3. Create section component in `src/components/V2Sections/[Name]/Name.tsx` + `Name.css`
-4. Add `case` to `src/components/V2Sections/SectionRenderer.tsx`
+4. Add `case` to `ServerSectionRenderer.tsx` (if server-safe) or `ClientSectionRenderer.tsx` (if needs hooks/browser APIs)
 5. Create content file `src/config/content/[page].ts` with page sections array
 6. Add re-export to `src/config/content/index.ts`
 7. Create `src/app/page-name/page.tsx` — import content, map sections via `<SectionRenderer>`
@@ -88,7 +90,9 @@ Foundation Projects is a marketing website for a roofing business consulting com
 3. Block data: `variants/` (content, colors, layout)
 4. Types: `types.ts` — `LayerData` is a discriminated union (`GridLayer | RowLayer | FullLayer`)
 5. `data.ts` is deprecated compatibility-only; new work belongs in `variants/`
-6. **Remember:** everything in this folder is client-only
+6. Barrel `index.ts` exports only `ScrollyExperience` + `ScrollyLoader`; hero 3D components are in `heroes.ts` (separate entry point for code splitting)
+7. `useTiltBatch` hook — batched raycasting (one raycaster per frame for all blocks instead of 19)
+8. **Remember:** everything in this folder is client-only
 
 ## Architecture Diagram
 
@@ -97,12 +101,12 @@ app/layout.tsx (Server)
 ├── Header (Client — scroll listeners)
 ├── <main>
 │   ├── app/page.tsx (Server)
-│   │   └── HomeV2Client (Client)
+│   │   └── HomeV2Client (Client, canvas fade-in)
 │   │       └── ScrollyLoader (Client wrapper, dynamic ssr:false)
 │   │           └── ScrollyExperience
 │   │           ├── Overlay (text, IntersectionObserver)
 │   │           └── Scene (Canvas, R3F, Three.js)
-│   │               └── Stack → Layer → Block
+│   │               └── Stack (TiltBatchProvider) → Layer → Block
 │   │
 │   ├── app/about/page.tsx (Server)
 │   ├── app/how-it-works/*/page.tsx (Server)
