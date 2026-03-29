@@ -7,6 +7,20 @@ const nextConfig: NextConfig = {
   // Disable the floating "N" dev indicator in bottom-left corner
   devIndicators: false,
 
+  // Tree-shake drei barrel re-exports (transforms to direct file imports)
+  experimental: {
+    optimizePackageImports: ['@react-three/drei'],
+  },
+
+  // Production tree-shaking for three.js (mirrors turbopack.resolveAlias below)
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      three: require.resolve('three/src/Three.js'),
+    };
+    return config;
+  },
+
   // Image optimization: serve AVIF/WebP at same visual quality
   images: {
     formats: ['image/avif', 'image/webp'],
