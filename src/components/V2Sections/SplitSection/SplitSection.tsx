@@ -12,6 +12,7 @@
  * Data-driven: receives all content via props from content.ts.
  */
 
+import Image from 'next/image';
 import type { SplitSection as SplitSectionData } from '@/config/types';
 import './SplitSection.css';
 
@@ -26,12 +27,13 @@ export default function SplitSection({ data }: Props) {
         {/* Image column */}
         <div className="v2-split__image-col px-layer--bg" data-px-from="left">
           <div className="v2-split__image-wrapper">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               className="v2-split__image"
               src={data.image.url}
-              alt=""
-              loading="lazy"
+              alt={data.heading}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              quality={85}
             />
             <div className="v2-split__image-overlay" aria-hidden="true" />
             {data.image.quote && (

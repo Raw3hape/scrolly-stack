@@ -12,6 +12,7 @@
 'use client';
 
 import { useRef, useCallback, useEffect } from 'react';
+import Image from 'next/image';
 import useCarousel from '@/hooks/useCarousel';
 import './TestimonialCarousel.css';
 
@@ -189,11 +190,12 @@ function StandardCarousel({
                 <div className="v2-testimonial__attribution">
                   {t.avatarUrl && (
                     <div className="v2-testimonial__avatar-wrap">
-                      <img
+                      <Image
                         className="v2-testimonial__avatar"
                         src={t.avatarUrl}
                         alt={t.author}
-                        loading="lazy"
+                        width={48}
+                        height={48}
                       />
                     </div>
                   )}

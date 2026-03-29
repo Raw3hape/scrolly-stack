@@ -4,6 +4,7 @@
  * Server component — purely presentational.
  */
 
+import Image from 'next/image';
 import type { ScheduleQuoteSection as ScheduleQuoteSectionData } from '@/config/types';
 import './ScheduleQuoteSection.css';
 
@@ -43,7 +44,7 @@ export default function ScheduleQuoteSection({ data }: Props) {
         <div className="v2-schedule-quote__author px-layer--fg" data-px-delay="2">
           {data.avatarUrl && (
             <div className="v2-schedule-quote__avatar">
-              <img src={data.avatarUrl} alt={data.author} />
+              <Image src={data.avatarUrl} alt={data.author} width={48} height={48} />
             </div>
           )}
           <div>
