@@ -11,7 +11,7 @@
  * to prevent user dragging during the transition.
  */
 
-import { Suspense, useState, useEffect, useCallback, useRef } from 'react';
+import { Suspense, lazy, useState, useEffect, useCallback, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { VSMShadowMap, PCFSoftShadowMap, ACESFilmicToneMapping, AgXToneMapping } from 'three';
@@ -21,7 +21,7 @@ import Stack from './Stack';
 import HoverTooltip from './HoverTooltip';
 import SceneLoader from './scene/SceneLoader';
 import Lights from './scene/Lights';
-import Effects from './scene/Effects';
+const Effects = lazy(() => import('./scene/Effects'));
 import MouseParallaxGroup from './scene/MouseParallaxGroup';
 import { CameraRig, ZoomController, useResponsiveZoom } from './scene/camera';
 import { animation, lighting, render } from '../config';
@@ -173,7 +173,7 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
         <Lights />
 
         <Environment
-          preset={lighting.environment.preset as 'studio' | 'city' | 'sunset' | 'dawn' | 'night' | 'warehouse' | 'forest' | 'apartment' | 'lobby' | 'park'}
+          files="/envmaps/venice_sunset_1k.hdr"
           environmentIntensity={lighting.environment.intensity}
         />
 
@@ -193,7 +193,9 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
           <ReadySignal onReady={onReady} />
         </Suspense>
 
-        <Effects mosaicProgress={mosaicProgress} />
+        <Suspense fallback={null}>
+          <Effects mosaicProgress={mosaicProgress} />
+        </Suspense>
       </Canvas>
 
       <HoverTooltip
