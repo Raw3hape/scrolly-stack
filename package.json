@@ -13,7 +13,8 @@
     "typecheck:e2e": "tsc -p tsconfig.e2e.json --noEmit",
     "test:e2e": "playwright test",
     "test:e2e:smoke": "playwright test --project=desktop-1440 e2e/pages.spec.ts e2e/navigation.spec.ts",
-    "check:palette": "node scripts/check-palette-sync.mjs"
+    "check:palette": "node scripts/check-palette-sync.mjs",
+    "postinstall": "node scripts/patch-troika-worker.mjs"
   },
   "dependencies": {
     "@react-spring/three": "^10.0.3",
