@@ -65,6 +65,7 @@ export interface VariantContextValue {
   geometry: ResolvedGeometry;
   mosaicConfig: ResolvedMosaic;
   scrollDirection: 'down' | 'up';
+  buildMode: 'instant' | 'progressive';
 }
 
 const VariantContext = createContext<VariantContextValue | null>(null);
@@ -141,6 +142,7 @@ export function VariantProvider({ variantId, children }: VariantProviderProps) {
       geometry: resolvedGeometry,
       mosaicConfig: resolvedMosaic,
       scrollDirection: variant.scrollDirection ?? 'down',
+      buildMode: variant.buildMode ?? 'instant',
     };
   }, [variantId]);
 

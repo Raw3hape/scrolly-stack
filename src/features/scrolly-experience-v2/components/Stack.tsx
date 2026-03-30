@@ -11,7 +11,7 @@
  * All values driven by config.ts — zero hardcode.
  */
 
-import { useMemo, useRef, useLayoutEffect, useState } from 'react';
+import { useMemo, useRef, useLayoutEffect, useState, createContext, useContext } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { MathUtils, Plane, Vector3 } from 'three';
 import type { Group } from 'three';
@@ -40,6 +40,18 @@ import { SELECTOR_HEADER, SELECTOR_CTA_WRAPPER } from '@/config/dom-contracts';
 
 // Re-export types for consumers that imported them from Stack
 export type { MosaicBlockDataMap, MosaicBlockDatum };
+
+// =============================================================================
+// BUILD OFFSET CONTEXT — shares per-block Y offsets from Stack's useFrame to Block's useFrame
+// Stack updates these imperatively at 60fps; Block reads them imperatively at 60fps.
+// =============================================================================
+
+const defaultBuildOffsetRef = { current: {} as Record<number, number> };
+export const BuildOffsetContext = createContext<React.RefObject<Record<number, number>>>(defaultBuildOffsetRef);
+
+export function useBuildOffset() {
+  return useContext(BuildOffsetContext);
+}
 
 // Shared tilt plane for raycaster intersection (y = 0.15, top of blocks)
 const TILT_PLANE = new Plane(new Vector3(0, 1, 0), -0.15);
@@ -90,12 +102,13 @@ const ISO_PROJECTION = (() => {
  * VARIANT-SAFE + SCROLL-DIRECTION-SAFE.
  * Hero always shows the TOP layer (index 0) because the camera is top-down,
  * so only the topmost layer is visible regardless of scroll direction.
+ *
+ * Non-progressive mode only.
  */
 function calculateLayerOpacity(
   layerIndex: number,
   _totalLayers: number,
   currentStep: number,
-  _scrollDirection: 'down' | 'up',
 ): number {
   if (isHeroStep(currentStep)) {
     return layerIndex === 0 ? 1 : 0;
@@ -103,12 +116,41 @@ function calculateLayerOpacity(
   return 1;
 }
 
+/**
+ * Compute which blocks should be visible based on the current step.
+ * Progressive mode: blocks appear one by one in layer order.
+ * Returns a Set of visible block IDs.
+ */
+function getVisibleBlockIds(
+  currentStep: number,
+  layers: { blocks: { id: number }[] }[],
+  buildMode: 'instant' | 'progressive',
+): Set<number> {
+  if (buildMode !== 'progressive') {
+    const all = new Set<number>();
+    layers.forEach(l => l.blocks.forEach(b => all.add(b.id)));
+    return all;
+  }
+  if (isHeroStep(currentStep)) {
+    return new Set(layers[0]?.blocks.slice(0, 1).map(b => b.id) ?? []);
+  }
+  const visible = new Set<number>();
+  for (const layer of layers) {
+    for (const block of layer.blocks) {
+      visible.add(block.id);
+      if (block.id === currentStep) return visible;
+    }
+  }
+  return visible;
+}
+
 // =============================================================================
 // STACK COMPONENT
 // =============================================================================
 
 export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlockHover }: StackProps) {
-  const { layers, steps, geometry: geo, mosaicConfig, scrollDirection } = useVariant();
+  const { layers, steps, geometry: geo, mosaicConfig, scrollDirection, buildMode } = useVariant();
+  const isProgressive = buildMode === 'progressive';
 
   // Adaptive mosaic zoom — viewport-derived, matches Scene.tsx's camera zoom
   const totalBlocks = layers.reduce((sum, layer) => sum + layer.blocks.length, 0);
@@ -123,14 +165,19 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     aboveLiftSign,
     blocksNotYetSeenAbove,
     isRevealed,
-  } = useBlockState(currentStep, mosaicProgress, layers, steps, scrollDirection);
+  } = useBlockState(currentStep, mosaicProgress, layers, steps, scrollDirection, buildMode);
 
   // =========================================================================
   // LAYOUT — layer positions and all blocks
   // =========================================================================
+  const visibleBlockIds = useMemo(
+    () => getVisibleBlockIds(currentStep, layers, buildMode),
+    [currentStep, layers, buildMode],
+  );
+
   const layerPositions = useMemo(
-    () => calculateLayerPositions(layers, geo),
-    [layers, geo],
+    () => calculateLayerPositions(layers, geo, isProgressive),
+    [layers, geo, isProgressive],
   );
 
   const allBlocks = useMemo(
@@ -258,6 +305,28 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     settleThreshold,
   );
 
+  // =========================================================================
+  // PROGRESSIVE BUILD — per-block drop-in offset and dynamic centering
+  //
+  // buildOffsetMap: block ID → Y offset. Updated imperatively in useFrame.
+  // Block.tsx reads via BuildOffsetContext for 60fps position updates.
+  //
+  // buildCenterOffsetY: shifts the entire group so visible blocks are centered.
+  // =========================================================================
+  const buildOffsetMapRef = useRef<Record<number, number>>({});
+  const buildVelocityMapRef = useRef<Record<number, number>>({});
+  const buildCenterRef = useRef(0);
+
+  // Initialize per-block offsets if empty
+  if (isProgressive && Object.keys(buildOffsetMapRef.current).length === 0) {
+    for (const layer of layers) {
+      for (const block of layer.blocks) {
+        buildOffsetMapRef.current[block.id] = visibleBlockIds.has(block.id) ? 0 : animation.build.dropHeight;
+        buildVelocityMapRef.current[block.id] = 0;
+      }
+    }
+  }
+
   // ========================================================================
   // SCENE OFFSET — emulates "right column" in 3D space
   //
@@ -318,7 +387,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   /** Must match CameraRig & ZoomController UNIFIED_LAMBDA for synchronized motion */
   const OFFSET_LAMBDA = 4;
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     if (!groupRef.current) return;
 
     const d = MathUtils.damp;
@@ -336,6 +405,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     const isHeroView = isHeroStep(currentStep);
     const isMobile = size.width < animation.zoom.mobileBreakpoint;
     const maxIso = maxIsoZoomRef.current || animation.zoom.desktop;
+    // Progressive mode: always use isometric zoom (no hero zoom)
     const targetZoom = isHeroView
       ? (isMobile ? animation.zoom.heroMobile : animation.zoom.heroDesktop)
       : (isMobile ? animation.zoom.mobile : Math.min(animation.zoom.desktop, maxIso));
@@ -349,6 +419,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     // 2. Hero blend: damped transition synced with camera damping.
     //    Iso camera: +Z = up-left on screen. Hero camera: +Z = down on screen.
     //    Blending prevents Z-offset from having wrong semantics during transition.
+    //    Progressive mode: never apply hero blend (camera stays isometric).
     const heroTarget = (isMobile && isHeroView) ? 1 : 0;
 
     // 3. Header + visual-zone compensation.
@@ -389,6 +460,73 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     heroBlendRef.current = d(heroBlendRef.current, heroTarget, OFFSET_LAMBDA, delta);
     dampedOffsetZRef.current = targetOffsetZ;
 
+    // ── Progressive build: per-BLOCK drop-in offset + dynamic centering ──
+    // Spring physics per block ID. Block.tsx reads offsets via BuildOffsetContext.
+    if (isProgressive) {
+      const clampedDelta = Math.min(delta, 0.033);
+      let needsInvalidate = false;
+
+      for (const layer of layers) {
+        for (const block of layer.blocks) {
+          const id = block.id;
+          const isVisible = visibleBlockIds.has(id);
+          const target = isVisible ? 0 : animation.build.dropHeight;
+          const current = buildOffsetMapRef.current[id] ?? animation.build.dropHeight;
+          const vel = buildVelocityMapRef.current[id] ?? 0;
+          const displacement = current - target;
+
+          // Softer spring for exit (floating up) — slower, more graceful
+          const isExiting = !isVisible && current < target;
+          const stiffness = isExiting ? 60 : animation.build.stiffness;
+          const dampingCoeff = isExiting ? 10 : animation.build.damping;
+
+          const springForce = -stiffness * displacement;
+          const dampForce = -dampingCoeff * vel;
+          const acceleration = springForce + dampForce;
+
+          const newVel = vel + acceleration * clampedDelta;
+          const newPos = current + newVel * clampedDelta;
+
+          if (Math.abs(displacement) < 0.001 && Math.abs(newVel) < 0.01) {
+            buildOffsetMapRef.current[id] = target;
+            buildVelocityMapRef.current[id] = 0;
+          } else {
+            buildOffsetMapRef.current[id] = newPos;
+            buildVelocityMapRef.current[id] = newVel;
+            needsInvalidate = true;
+          }
+        }
+      }
+
+      // Dynamic centering: compute center of visible blocks' layers
+      const buildLambda = 5;
+      const prevCenter = buildCenterRef.current;
+      // Find the range of layers that have at least one visible block
+      let minY = Infinity;
+      let maxY = -Infinity;
+      for (let i = 0; i < layerPositions.length; i++) {
+        const hasVisible = layerPositions[i].layer.blocks.some(b => visibleBlockIds.has(b.id));
+        if (hasVisible) {
+          const y = layerPositions[i].baseY;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+        }
+      }
+      if (minY !== Infinity) {
+        const visibleCenter = (minY + maxY) / 2;
+        buildCenterRef.current = d(buildCenterRef.current, -visibleCenter, buildLambda, delta);
+      } else {
+        buildCenterRef.current = d(buildCenterRef.current, 0, buildLambda, delta);
+      }
+      if (Math.abs(buildCenterRef.current - prevCenter) > 0.0001) {
+        needsInvalidate = true;
+      }
+
+      if (needsInvalidate) {
+        state.invalidate();
+      }
+    }
+
     // During mosaic transition, lerp towards center (0, mosaicY, 0).
     // Apply header compensation to mosaicY so the grid is centered in the
     // visible area below the fixed header — same principle as headerCompY above.
@@ -397,7 +535,8 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     const mosaicZoom = adaptiveFinalZoom;
     const mosaicHeaderCompY = -(headerPxRef.current / (2 * mosaicZoom * ISO_PROJECTION.screenYPerWorldY));
     const mosaicTargetY = mosaicConfig.sceneOffset.mosaicY + mosaicHeaderCompY;
-    const finalY = lerp(dampedOffsetYRef.current, mosaicTargetY, transitionProgress);
+    const buildCenterY = isProgressive ? buildCenterRef.current : 0;
+    const finalY = lerp(dampedOffsetYRef.current + buildCenterY, mosaicTargetY, transitionProgress);
     const finalZ = lerp(dampedOffsetZRef.current, 0, transitionProgress);
 
     groupRef.current.position.set(finalX, finalY, finalZ);
@@ -405,19 +544,29 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
 
   return (
     <TiltBatchContext.Provider value={tiltBatchRef.current}>
+    <BuildOffsetContext.Provider value={buildOffsetMapRef}>
     <group ref={groupRef}>
       {layerPositions.map(({ layer, baseY }, index) => {
         const totalLayers = layerPositions.length;
-        const opacity = calculateLayerOpacity(index, totalLayers, currentStep, scrollDirection);
 
-        // Stagger: 'down' reveals top→bottom, 'up' reveals bottom→top
-        const staggerDelay = isRevealed
-          ? (scrollDirection === 'up'
-              ? (totalLayers - 1 - index) * 100  // bottom layers first
-              : index * 100)                      // top layers first
-          : (scrollDirection === 'up'
-              ? index * 100                        // top layers fade last
-              : (totalLayers - 1 - index) * 100);  // bottom layers fade last
+        // Progressive: per-block opacity via visibleBlockIds (passed to Layer).
+        // Instant: per-layer opacity via calculateLayerOpacity.
+        const layerOpacity = isProgressive
+          ? 1 // Layer always renders; per-block visibility handled inside
+          : calculateLayerOpacity(index, totalLayers, currentStep);
+
+        let staggerDelay: number;
+        if (isProgressive) {
+          staggerDelay = 0;
+        } else {
+          staggerDelay = isRevealed
+            ? (scrollDirection === 'up'
+                ? (totalLayers - 1 - index) * 100
+                : index * 100)
+            : (scrollDirection === 'up'
+                ? index * 100
+                : (totalLayers - 1 - index) * 100);
+        }
 
         return (
           <Layer
@@ -430,17 +579,19 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
             allBlocksNotYetSeenAbove={blocksNotYetSeenAbove}
             onBlockClick={onBlockClick}
             onBlockHover={onBlockHover}
-            opacity={opacity}
+            opacity={layerOpacity}
             staggerDelay={staggerDelay}
             isRevealed={isRevealed}
             mosaicProgress={mosaicProgress}
             mosaicBlockData={mosaicBlockData}
             labelFontSize={adaptedMosaic.labelFontSize}
             labelMaxWidth={adaptedMosaic.labelMaxWidth}
+            visibleBlockIds={visibleBlockIds}
           />
         );
       })}
     </group>
+    </BuildOffsetContext.Provider>
     </TiltBatchContext.Provider>
   );
 }

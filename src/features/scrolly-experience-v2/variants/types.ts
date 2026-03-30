@@ -52,4 +52,11 @@ export interface StackVariant {
    * - 'up': start at bottom layer, scroll reveals upward toward top
    */
   scrollDirection?: 'down' | 'up';
+
+  /**
+   * Build mode for the stack visualization.
+   * - 'instant' (default): All layers visible at once (current behavior)
+   * - 'progressive': Layers appear one at a time during scroll, building bottom-up
+   */
+  buildMode?: 'instant' | 'progressive';
 }

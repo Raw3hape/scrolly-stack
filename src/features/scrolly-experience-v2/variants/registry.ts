@@ -15,8 +15,9 @@ import { reverseVariant } from './v3-reverse';
 import { exactVariant } from './v4-exact';
 import { exactDownVariant } from './v5-exact-down';
 import { exactFlippedVariant } from './v6-exact-flipped';
+import { progressiveVariant } from './v7-progressive';
 
-export const DEFAULT_VARIANT_ID = 'v6-exact-flipped';
+export const DEFAULT_VARIANT_ID = 'v7-progressive';
 
 const registry = new Map<string, StackVariant>([
   [classicVariant.id, classicVariant],
@@ -25,6 +26,7 @@ const registry = new Map<string, StackVariant>([
   [exactVariant.id, exactVariant],
   [exactDownVariant.id, exactDownVariant],
   [exactFlippedVariant.id, exactFlippedVariant],
+  [progressiveVariant.id, progressiveVariant],
 ]);
 
 /**

@@ -11,7 +11,7 @@ import '../home-v2.css';
  */
 export default function HomeV2Page() {
   return (
-    <HomeV2PageClient variantId="v6-exact-flipped">
+    <HomeV2PageClient variantId="v7-progressive">
       {homeContent.sections.map((section) => (
         <SectionRenderer key={section.id} section={section} />
       ))}

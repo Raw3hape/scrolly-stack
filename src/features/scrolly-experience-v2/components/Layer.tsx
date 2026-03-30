@@ -4,6 +4,9 @@
  * Renders a layer of blocks based on layout configuration.
  * Uses layout utilities for position calculations.
  * Passes through mosaic data to blocks when transitioning.
+ *
+ * PROGRESSIVE MODE: Per-block opacity is controlled by visibleBlockIds.
+ * buildOffsetY is applied imperatively by Block.tsx via BuildOffsetContext.
  */
 
 import Block from './Block';
@@ -12,6 +15,13 @@ import { useVariant } from '../VariantContext';
 import { animation } from '../config';
 import type { LayerProps, ComputedBlock } from '../types';
 import type { MosaicBlockDataMap } from './Stack';
+
+interface LayerExtraProps {
+  mosaicBlockData?: MosaicBlockDataMap;
+  aboveLiftSign?: number;
+  /** Set of block IDs that should be visible (progressive mode) */
+  visibleBlockIds?: Set<number>;
+}
 
 export default function Layer({
   layer,
@@ -29,19 +39,32 @@ export default function Layer({
   allBlocksNotYetSeenAbove = [],
   labelFontSize,
   labelMaxWidth,
-}: Omit<LayerProps, 'mosaicBlockData'> & { mosaicBlockData?: MosaicBlockDataMap; aboveLiftSign?: number }) {
-  const { geometry } = useVariant();
+  visibleBlockIds,
+}: Omit<LayerProps, 'mosaicBlockData'> & LayerExtraProps) {
+  const { geometry, buildMode } = useVariant();
   const blocks: ComputedBlock[] = calculateBlockPositions(layer, baseY, geometry);
+  const disableSlide = buildMode === 'progressive';
+  const isProgressive = buildMode === 'progressive';
+
+  // Progressive mode: Layer is always visible — each Block controls its own
+  // visibility via visible={false} on its buildGroupRef. This allows exit
+  // animations to play (block flies up) without the parent cutting them off.
+  // Instant mode: Layer controls visibility at layer level.
+  const isLayerVisible = isProgressive ? true : (opacity > 0 || mosaicProgress > 0);
 
   return (
-    <group>
+    <group visible={isLayerVisible}>
       {blocks.map((block, blockIndex) => {
         const isActive = currentStep === block.id;
         const isAboveActive = allBlocksAboveActive.includes(block.id);
         const isNotYetSeenAbove = allBlocksNotYetSeenAbove.includes(block.id);
         const blockStagger = staggerDelay + (blockIndex * 30);
 
-        // Get mosaic data for this specific block (Record lookup, not Map.get)
+        // Per-block opacity: progressive mode checks visibleBlockIds
+        const blockOpacity = isProgressive
+          ? (visibleBlockIds?.has(block.id) ? 1 : 0)
+          : opacity;
+
         const blockMosaic = mosaicBlockData?.[block.id];
 
         return (
@@ -64,7 +87,7 @@ export default function Layer({
             onHoverChange={onBlockHover}
             blockData={block}
             blockId={block.id}
-            opacity={opacity}
+            opacity={blockOpacity}
             staggerDelay={blockStagger}
             isRevealed={isRevealed}
             mosaicProgress={mosaicProgress}
@@ -72,6 +95,7 @@ export default function Layer({
             mosaicDimensions={blockMosaic?.dimensions}
             labelFontSize={labelFontSize}
             labelMaxWidth={labelMaxWidth}
+            disableSlide={disableSlide}
           />
         );
       })}

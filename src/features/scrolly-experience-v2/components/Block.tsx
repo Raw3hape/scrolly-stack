@@ -28,6 +28,7 @@ import { geometry, animation, labels } from '../config';
 import { easeOutQuart, lerp } from '../utils/easings';
 import GradientShadowMaterial from './GradientShadowMaterial';
 import { useTiltBatch } from '../hooks/useTiltBatch';
+import { useBuildOffset } from './Stack';
 import type { BlockProps, BlockLabelProps, MousePosition } from '../types';
 
 const AnimatedGroup = animated.group;
@@ -96,10 +97,15 @@ export default function Block({
   isNotYetSeenAbove = false,
   labelFontSize,
   labelMaxWidth,
-}: BlockProps) {
+  disableSlide = false,
+}: BlockProps & { disableSlide?: boolean }) {
   const meshRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const invalidate = useThree((s) => s.invalidate);
+
+  // Build offset: read per-block Y offset from Stack's spring physics (imperative, 60fps)
+  const buildOffsetMap = useBuildOffset();
+  const buildGroupRef = useRef<Group>(null);
 
   const [baseX, baseY, baseZ] = position;
   const [slideX, slideZ] = slideDirection;
@@ -180,13 +186,31 @@ export default function Block({
       tiltGroupRef.current.rotation.set(rotX, 0, rotZ);
       invalidate();
     }
+
+    // IMPERATIVE: Apply per-block build offset (drop-in animation).
+    // Read from shared context ref — updated by Stack.tsx at 60fps.
+    if (buildGroupRef.current && blockId !== undefined) {
+      const offsetY = buildOffsetMap.current[blockId] ?? 0;
+      if (Math.abs(buildGroupRef.current.position.y - offsetY) > 0.0001) {
+        buildGroupRef.current.position.y = offsetY;
+        invalidate();
+      }
+    }
   });
 
   // Bootstrap: kick the first frame when spring targets change.
+  // Also kick mid-stagger so the frame loop doesn't stall during delay.
   useEffect(() => {
     invalidate();
+    // During stagger delay, spring hasn't started so onChange doesn't fire.
+    // Kick invalidation partway through to bridge the gap.
+    if (staggerDelay > 0) {
+      const mid = setTimeout(() => invalidate(), staggerDelay * 0.5);
+      const end = setTimeout(() => invalidate(), staggerDelay);
+      return () => { clearTimeout(mid); clearTimeout(end); };
+    }
   }, [isActive, isAboveActive, opacity, isRevealed, baseX, baseY, baseZ,
-      mosaicProgress, invalidate]);
+      mosaicProgress, invalidate, staggerDelay]);
 
   const getTargetPosition = (): [number, number, number] => {
     if (isMosaicActive) {
@@ -204,16 +228,18 @@ export default function Block({
     let targetY = baseY;
     let targetZ = baseZ;
 
-    if (isActive) {
-      targetX = baseX + slideX * animation.active.slideDistance;
-      targetZ = baseZ + slideZ * animation.active.slideDistance;
-      targetY = baseY + animation.active.liftHeight;
-    } else if (isAboveActive) {
-      targetY = baseY + animation.aboveActive.liftHeight * aboveLiftSign;
-    } else if (isNotYetSeenAbove) {
-      // Reverse only: layers above active haven't been seen yet but occlude it.
-      // Lift them UP so the active block is visible.
-      targetY = baseY + animation.aboveActive.liftHeight;
+    if (!disableSlide) {
+      if (isActive) {
+        targetX = baseX + slideX * animation.active.slideDistance;
+        targetZ = baseZ + slideZ * animation.active.slideDistance;
+        targetY = baseY + animation.active.liftHeight;
+      } else if (isAboveActive) {
+        targetY = baseY + animation.aboveActive.liftHeight * aboveLiftSign;
+      } else if (isNotYetSeenAbove) {
+        // Reverse only: layers above active haven't been seen yet but occlude it.
+        // Lift them UP so the active block is visible.
+        targetY = baseY + animation.aboveActive.liftHeight;
+      }
     }
 
     return [targetX, targetY, targetZ];
@@ -321,24 +347,31 @@ export default function Block({
     }
   }, [onClick, blockId]);
 
+  // Color reveal: ENTRY = spring 0→1. EXIT = spring 1→0 (smooth fade out).
+  // Exit fade runs simultaneously with buildOffsetY fly-up animation.
   const { springColorReveal } = useSpring({
-    springColorReveal: opacity,
+    springColorReveal: opacity > 0 ? 1 : 0,
     config: {
-      tension: isRevealed ? animation.spring.tension : animation.spring.tension * 0.6,
-      friction: isRevealed ? animation.spring.friction : animation.spring.friction * 1.4,
+      // Exit: softer spring for graceful fade
+      tension: opacity > 0 ? animation.spring.tension : 80,
+      friction: opacity > 0 ? animation.spring.friction : 16,
       mass: animation.spring.mass,
     },
-    delay: isRevealed ? 0 : staggerDelay,
+    delay: (isRevealed && opacity > 0) ? 0 : staggerDelay,
     onChange: () => invalidate(),
   });
 
-  // Labels stay visible through the entire mosaic morph.
-  // Only the initial reveal is animated (opacity ramp from data-driven stagger).
+  // Labels
   const revealFactor = Math.max(0, Math.min(1, (opacity - 0.3) / 0.5));
   const labelOpacity = revealFactor;
   const showLabel = !!label && labelOpacity > 0.01;
 
+  // Visible while entering, steady, or exiting (spring still > 0 = still fading out)
+  const currentReveal = springColorReveal.get();
+  const isBlockVisible = opacity > 0 || currentReveal > 0.02 || mosaicProgress > 0;
+
   return (
+    <group ref={buildGroupRef} visible={isBlockVisible}>
     <AnimatedGroup
       position={springPosition}
       scale={springScale}
@@ -383,5 +416,6 @@ export default function Block({
         )}
       </group>
     </AnimatedGroup>
+    </group>
   );
 }

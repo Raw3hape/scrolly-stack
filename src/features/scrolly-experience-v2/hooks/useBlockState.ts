@@ -96,6 +96,7 @@ export function useBlockState(
   layers: LayerData[],
   steps: StepData[],
   scrollDirection: 'down' | 'up',
+  buildMode: 'instant' | 'progressive' = 'instant',
 ): BlockStateResult {
   // When mosaicProgress > 0, ALL blocks must return to their base positions
   // (no slide, no lift) BEFORE the Bezier arc begins. Setting effectiveStep
@@ -127,8 +128,9 @@ export function useBlockState(
     return ids;
   }, [scrollDirection, currentStep, layers]);
 
-  // Keep real step — blocks stay visible during mosaic
-  const isRevealed = !isHeroStep(currentStep);
+  // Keep real step — blocks stay visible during mosaic.
+  // Progressive mode: always revealed (layers animate in individually via opacity).
+  const isRevealed = buildMode === 'progressive' ? true : !isHeroStep(currentStep);
 
   return {
     effectiveStep,

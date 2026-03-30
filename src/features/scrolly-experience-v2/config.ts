@@ -111,6 +111,14 @@ export const animation = {
   viewport: {
     resizeDebounceMs: 150,
   },
+
+  // Progressive build mode — layer entrance animation (spring physics)
+  // Creates "crane lowering" feel: accelerates as it drops, slight bounce on landing
+  build: {
+    dropHeight: 2.5,     // World units above target Y where layer starts
+    stiffness: 120,      // Spring stiffness (higher = faster drop, snappier)
+    damping: 14,         // Damping (lower = more bounce on landing)
+  },
 };
 
 

@@ -26,7 +26,7 @@ const READY_TIMEOUT_MS = 4_000;
 /** Module-level flag — skip branded loader on SPA return visits */
 let hasLoadedOnce = false;
 
-export default function HomeV2PageClient({ variantId = 'v6-exact-flipped', children }: HomeV2PageClientProps) {
+export default function HomeV2PageClient({ variantId = 'v7-progressive', children }: HomeV2PageClientProps) {
   const [sceneReady, setSceneReady] = useState(hasLoadedOnce);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 

@@ -47,6 +47,8 @@ export default function GradientShadowMaterial({
 
     const mat = new MeshPhysicalMaterial({
       color: palette.white,
+      transparent: true,
+      depthWrite: true,       // Dynamically toggled in useFrame when fading
       roughness: isActive ? materials.active.roughness : materials.block.roughness,
       metalness: isActive ? materials.active.metalness : materials.block.metalness,
       envMapIntensity: isActive ? materials.active.envMapIntensity : materials.block.envMapIntensity,
@@ -149,9 +151,6 @@ export default function GradientShadowMaterial({
         baseColor = mix(baseColor, uColorA, uIsHovered * 0.25);
         baseColor *= (1.0 + uIsHovered * 0.1);
 
-        vec3 hiddenColor = vec3(0.949, 0.929, 0.894);
-        baseColor = mix(hiddenColor, baseColor, uColorReveal);
-
         baseColor = adjustSaturation(baseColor, uSaturationBoost);
 
         // Fresnel rim light — subtle glow at edges
@@ -160,7 +159,9 @@ export default function GradientShadowMaterial({
 
         baseColor = min(baseColor, vec3(1.0));
 
-        vec4 diffuseColor = vec4(baseColor, 1.0);
+        // Alpha = colorReveal: blocks fade from invisible (0) to fully opaque (1).
+        // No hiddenColor — blocks are truly transparent when not revealed.
+        vec4 diffuseColor = vec4(baseColor, uColorReveal);
         `
       );
     };
@@ -228,6 +229,15 @@ export default function GradientShadowMaterial({
         if (Math.abs(val - prev) > 0.001) {
           shaderRef.current.uniforms.uColorReveal.value = val;
           state.invalidate();
+        }
+
+        // Dynamic depthWrite: ON when fully opaque, OFF when fading.
+        // Prevents semi-transparent blocks from clipping each other via depth buffer.
+        if (materialRef.current) {
+          const shouldWriteDepth = val > 0.99;
+          if (materialRef.current.depthWrite !== shouldWriteDepth) {
+            materialRef.current.depthWrite = shouldWriteDepth;
+          }
         }
       }
     }

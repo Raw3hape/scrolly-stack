@@ -46,6 +46,7 @@ export type MosaicBlockDataMap = Record<number, MosaicBlockDatum>;
 export function calculateLayerPositions(
   layers: LayerData[],
   geo: ResolvedGeometry,
+  stackFromBottom = false,
 ): Array<{ layer: LayerData; baseY: number }> {
   let totalHeight = 0;
   layers.forEach((layer) => {
@@ -53,11 +54,22 @@ export function calculateLayerPositions(
   });
 
   const positions: Array<{ layer: LayerData; baseY: number }> = [];
-  let currentY = totalHeight / 2;
 
-  for (const layer of layers) {
-    positions.push({ layer, baseY: currentY });
-    currentY -= getLayerHeight(layer, geo);
+  if (stackFromBottom) {
+    // layers[0] at the bottom (lowest Y), layers[N] at the top
+    let currentY = -totalHeight / 2;
+    for (const layer of layers) {
+      const h = getLayerHeight(layer, geo);
+      positions.push({ layer, baseY: currentY + h / 2 });
+      currentY += h;
+    }
+  } else {
+    // Default: layers[0] at the top (highest Y)
+    let currentY = totalHeight / 2;
+    for (const layer of layers) {
+      positions.push({ layer, baseY: currentY });
+      currentY -= getLayerHeight(layer, geo);
+    }
   }
 
   return positions;
