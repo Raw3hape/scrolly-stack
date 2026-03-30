@@ -126,7 +126,7 @@ export function useBlockState(
       }
     });
     return ids;
-  }, [scrollDirection, currentStep, layers]);
+  }, [scrollDirection, effectiveStep, layers]);
 
   // Keep real step — blocks stay visible during mosaic.
   // Progressive mode: always revealed (layers animate in individually via opacity).

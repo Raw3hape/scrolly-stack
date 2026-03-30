@@ -52,7 +52,7 @@ export default [
   {
     // Prevent Three.js imports outside the scrolly-experience feature.
     files: ['src/**/*.{ts,tsx}'],
-    ignores: ['src/features/scrolly-experience/**'],
+    ignores: ['src/features/scrolly-experience/**', 'src/features/scrolly-experience-v2/**'],
     rules: {
       'no-restricted-imports': ['error', {
         paths: [
