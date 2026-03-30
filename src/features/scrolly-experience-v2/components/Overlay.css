@@ -27,6 +27,7 @@
 
 /* === Hero Section === */
 .hero {
+  position: relative;
   min-height: calc(100vh - var(--header-height, 72px));
   display: flex;
   flex-direction: column;
@@ -156,7 +157,97 @@
   box-shadow: var(--status-success-glow);
 }
 
+/* === Marketing Tagline — centered under the cube === */
+.hero__tagline {
+  position: fixed;
+  bottom: var(--space-2xl);
+  /* Cube center X = content-width + half of remaining viewport.
+     Mirrors Stack.tsx: screenCenterX = contentWidth + (100vw - contentWidth) / 2 */
+  left: calc(var(--content-width, 45%) + (100vw - var(--content-width, 45%)) / 2);
+  transform: translateX(-50%);
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  font-style: italic;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: var(--z-content);
+  margin: 0;
+  white-space: nowrap;
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
 
+.hero__tagline--dismissed {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+}
+
+/* === Scroll Hint — frosted glass card centered on the 3D cube === */
+@keyframes scrollHintIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.scroll-hint {
+  position: fixed;
+  /* Center of the cube area: right half of viewport */
+  top: 50%;
+  left: calc(var(--content-width, 45%) + (100vw - var(--content-width, 45%)) / 2);
+  transform: translate(-50%, -50%);
+
+  /* Glassmorphism — matches HoverTooltip */
+  backdrop-filter: var(--blur-lg);
+  background: var(--glass-card-bg);
+  border: var(--glass-card-border);
+  box-shadow:
+    var(--glass-card-shadow),
+    var(--inset-highlight);
+  border-radius: var(--radius-xl);
+  padding: var(--space-sm) var(--space-lg);
+
+  /* Typography */
+  font-size: var(--font-size-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  white-space: nowrap;
+
+  /* Layout */
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  pointer-events: none;
+  z-index: var(--z-content);
+
+  /* Intro animation, then hand off to transition for scroll toggle */
+  opacity: 0;
+  animation: scrollHintIn var(--intro-duration) var(--intro-ease)
+    calc(var(--intro-stagger) * 5) both;
+  /* Smooth bi-directional transition (fade out on scroll, fade back at top) */
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+/* Scrolled away — fade out; removed when back at top — fades back in */
+.scroll-hint--dismissed {
+  animation: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.96);
+}
+
+.scroll-hint__icon {
+  font-size: var(--font-size-base);
+  opacity: 0.6;
+}
 
 /* === Steps Section - Timeline Style === */
 .steps-container {
@@ -387,6 +478,9 @@
 }
 
 /* === Responsive === */
+/* Tablet: no scroll-hint override needed — --content-width is updated
+   to 50% in ScrollyExperience.css, so the calc() auto-adjusts to 75vw */
+
 @media (max-width: 768px) {
   .overlay {
     padding-bottom: 0;
@@ -419,6 +513,14 @@
     font-size: var(--font-size-base);
     margin-bottom: var(--space-md);
     line-height: 1.5;
+  }
+
+  .scroll-hint {
+    display: none;
+  }
+
+  .hero__tagline {
+    display: none;
   }
 
   .steps-container {
@@ -531,5 +633,9 @@
 
   .step {
     min-height: max(70vh, 280px);
+  }
+
+  .scroll-hint {
+    display: none;
   }
 }

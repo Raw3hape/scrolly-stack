@@ -24,6 +24,7 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
     : (steps as StepData[]);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const heroRef = useRef<HTMLElement>(null);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
 
   // Scroll-based hero fade for mobile — direct DOM manipulation (no React re-renders)
   useEffect(() => {
@@ -48,6 +49,41 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
         else if (y > fadeStart) opacity = 1 - (y - fadeStart) / (fadeEnd - fadeStart);
 
         el.style.opacity = String(opacity);
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // Scroll hint + tagline: fade out on scroll, fade back in at top
+  const taglineRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const hint = scrollHintRef.current;
+    const tagline = taglineRef.current;
+    if (!hint && !tagline) return;
+
+    let rafId: number | null = null;
+
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const y = window.scrollY;
+        const isAtTop = y < 10;
+
+        if (hint) {
+          hint.classList.toggle('scroll-hint--dismissed', !isAtTop);
+        }
+        if (tagline) {
+          tagline.classList.toggle('hero__tagline--dismissed', !isAtTop);
+        }
       });
     };
 
@@ -155,7 +191,17 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
             {heroContent.statusText}
           </p>
         </div>
+
       </header>
+
+      {/* Scroll hint — glass card on the cube, dismisses on scroll */}
+      <div ref={scrollHintRef} className="scroll-hint" aria-hidden="true">
+        <span className="scroll-hint__icon" aria-hidden="true">&#8595;</span>
+        {heroContent.scrollHint}
+      </div>
+
+      {/* Tagline — centered under the cube */}
+      <p ref={taglineRef} className="hero__tagline">{heroContent.tagline}</p>
 
       {/* STEPS SECTION */}
       <div className="steps-container" role="region" aria-label="Business transformation steps">

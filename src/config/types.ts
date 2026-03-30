@@ -183,7 +183,7 @@ export interface HeroSection extends SectionBase {
   /** Decorative 3D grid canvas behind content (responsive, hover proximity effect) */
   backgroundCanvas?: boolean;
   /** 3D model to render in the hero's right column */
-  hero3dModel?: 'pyramid' | 'rubiks-cube' | 'exploded-grid' | 'ascending-blocks';
+  hero3dModel?: 'pyramid' | 'exploded-grid' | 'ascending-blocks';
 }
 
 /** Team member grid (About page) */

@@ -16,13 +16,11 @@ import {
   HeroAscendingBlocks3DLoader,
   HeroExplodedGrid3DLoader,
   HeroPyramid3DLoader,
-  HeroRubiksCube3DLoader,
 } from '@/features/scrolly-experience/heroes';
 import './HeroSection.css';
 
 const HERO_3D_MAP = {
   'pyramid': HeroPyramid3DLoader,
-  'rubiks-cube': HeroRubiksCube3DLoader,
   'exploded-grid': HeroExplodedGrid3DLoader,
   'ascending-blocks': HeroAscendingBlocks3DLoader,
 } as const;

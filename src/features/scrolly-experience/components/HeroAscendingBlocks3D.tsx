@@ -4,7 +4,7 @@
  * 5×5 = 25 rounded columns with a diagonal height gradient.
  * On hover a sine wave propagates across the grid.
  *
- * Architecture mirrors HeroRubiksCube3D.tsx:
+ * Architecture:
  *   PresentationControls (outer)
  *     └─ MouseParallaxGroup (inner)
  *          └─ AscendingBlocksModel (frustum-scaled)

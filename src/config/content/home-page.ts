@@ -21,6 +21,8 @@ export const heroContent = {
   ctaHref: ctaConfig.href,
   ctaAriaLabel: 'Book a call to discuss your roofing business exit',
   statusText: 'Free 30-min call · NDA on day one',
+  scrollHint: 'Scroll to unstack the value',
+  tagline: 'Not a roll-up. A stack-up.',
 } as const;
 
 export const stepCta = {

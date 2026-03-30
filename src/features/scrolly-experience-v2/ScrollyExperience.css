@@ -93,8 +93,12 @@
    ============================================================================= */
 
 @media (max-width: 1024px) {
+  .layout-container {
+    --content-width: 50%;
+  }
+
   .col-content {
-    width: 50%;
+    width: var(--content-width);
     padding-left: var(--space-xl);
     padding-right: var(--space-lg);
   }

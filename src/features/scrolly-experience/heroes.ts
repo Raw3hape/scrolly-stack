@@ -9,4 +9,3 @@ export { default as FreebieBook3D } from './components/FreebieBook3D';
 export { default as HeroAscendingBlocks3DLoader } from './components/HeroAscendingBlocks3DLoader';
 export { default as HeroExplodedGrid3DLoader } from './components/HeroExplodedGrid3DLoader';
 export { default as HeroPyramid3DLoader } from './components/HeroPyramid3DLoader';
-export { default as HeroRubiksCube3DLoader } from './components/HeroRubiksCube3DLoader';
