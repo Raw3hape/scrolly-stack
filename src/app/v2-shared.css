@@ -166,6 +166,8 @@
   position: relative;
   z-index: var(--z-content);
   background: var(--surface-base);
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 /* ============================================================================
