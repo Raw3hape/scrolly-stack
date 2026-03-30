@@ -12,7 +12,7 @@
  */
 
 import { Suspense, lazy, useState, useEffect, useCallback, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { VSMShadowMap, PCFSoftShadowMap, ACESFilmicToneMapping, AgXToneMapping } from 'three';
 import type { ShadowMapType } from 'three';
@@ -37,21 +37,27 @@ import type { SceneProps, RawBlockData, MousePosition } from '../types';
 // MAIN SCENE COMPONENT
 // =============================================================================
 
-/** Fires onReady after the first fully-rendered frame (shaders compiled, env loaded) */
+/** Fires onReady after the first fully-rendered frames (shaders compiled, env loaded).
+ *  Uses rAF + invalidate() instead of useFrame so it works with frameloop="demand". */
 function ReadySignal({ onReady }: { onReady?: () => void }) {
   const firedRef = useRef(false);
-  // Wait 2 frames to ensure shaders are compiled and first render is complete
-  const frameCountRef = useRef(0);
+  const invalidate = useThree((s) => s.invalidate);
 
-  useFrame(() => {
+  useEffect(() => {
     if (firedRef.current || !onReady) return;
-    frameCountRef.current += 1;
-    // Wait 3 frames: frame 1 = geometry, frame 2 = shaders compiled, frame 3 = stable
-    if (frameCountRef.current >= 3) {
-      firedRef.current = true;
-      onReady();
-    }
-  });
+    let count = 0;
+    const tick = () => {
+      count++;
+      invalidate(); // Force R3F to render a frame in demand mode
+      if (count >= 3) {
+        firedRef.current = true;
+        onReady();
+      } else {
+        requestAnimationFrame(tick);
+      }
+    };
+    requestAnimationFrame(tick);
+  }, [onReady, invalidate]);
 
   return null;
 }
@@ -154,11 +160,23 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
             : AgXToneMapping,
           ...(iosOverrides ? { powerPreference: iosOverrides.powerPreference } : {}),
         }}
-        onCreated={({ gl }) => {
+        onCreated={(state) => {
+          // Precompile all shaders asynchronously — eliminates first-frame stutter
+          // (especially noticeable on mobile GPUs). Falls back to sync invalidate
+          // if compileAsync is unavailable (Three.js < v158).
+          if (state.gl.compileAsync) {
+            state.gl.compileAsync(state.scene, state.camera).then(() => {
+              state.invalidate();
+            });
+          } else {
+            state.invalidate();
+            requestAnimationFrame(() => state.invalidate());
+          }
+
           // WebGL context-loss safety net — if iOS kills the context
           // (memory pressure, background tab), dismiss the loader so the
           // user isn't stuck on a frozen loading screen.
-          const canvas = gl.domElement;
+          const canvas = state.gl.domElement;
           const handleContextLost = (e: Event) => {
             e.preventDefault();
             console.warn('[ScrollyStack] WebGL context lost — dismissing loader');
@@ -172,10 +190,12 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
 
         <Lights />
 
-        <Environment
-          files="/envmaps/venice_sunset_1k.hdr"
-          environmentIntensity={lighting.environment.intensity}
-        />
+        <Suspense fallback={null}>
+          <Environment
+            files="/envmaps/venice_sunset_256.hdr"
+            environmentIntensity={lighting.environment.intensity}
+          />
+        </Suspense>
 
         <Suspense fallback={<SceneLoader />}>
           <MouseParallaxGroup

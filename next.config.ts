@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      three: require.resolve('three/src/Three.js'),
+      'three$': require.resolve('three/src/Three.js'),
     };
     return config;
   },

@@ -12,7 +12,7 @@
 
 'use client';
 
-import { useRef, useCallback, useEffect, useMemo } from 'react';
+import { Suspense, useRef, useCallback, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, PresentationControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -317,10 +317,18 @@ export default function HeroExplodedGrid3D({ className, onReady }: HeroExplodedG
       <Canvas
         orthographic
         camera={{ zoom: 65, position: [100, 100, 100], near: 0.1, far: 500 }}
-        onCreated={({ camera, gl }) => {
-          camera.lookAt(0, 0, 0);
-          requestAnimationFrame(() => onReady?.());
-          const canvas = gl.domElement;
+        onCreated={(state) => {
+          state.camera.lookAt(0, 0, 0);
+          if (state.gl.compileAsync) {
+            state.gl.compileAsync(state.scene, state.camera).then(() => {
+              state.invalidate();
+              onReady?.();
+            });
+          } else {
+            state.invalidate();
+            requestAnimationFrame(() => onReady?.());
+          }
+          const canvas = state.gl.domElement;
           canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); onReady?.(); });
         }}
         dpr={[1, 2]}
@@ -335,7 +343,9 @@ export default function HeroExplodedGrid3D({ className, onReady }: HeroExplodedG
         <directionalLight position={[5, 14, 5]} intensity={2.4} color="#ffffff" />
         <directionalLight position={[-6, 12, -6]} intensity={0.1} color="#e8ddd0" />
         <directionalLight position={[0, -6, 0]} intensity={0.05} color="#ffffff" />
-        <Environment preset="sunset" environmentIntensity={0.35} />
+        <Suspense fallback={null}>
+          <Environment files="/envmaps/venice_sunset_256.hdr" environmentIntensity={0.35} />
+        </Suspense>
         <ViewportOffsetGroup layoutRef={layoutRef} textMeasureRef={textMeasureRef} containerWidthRef={containerWidthRef}>
           <PresentationControls
             global={false}

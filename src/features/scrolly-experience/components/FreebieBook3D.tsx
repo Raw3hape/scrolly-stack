@@ -19,7 +19,7 @@
 
 'use client';
 
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { Suspense, useRef, useState, useCallback, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import {
   Environment,
@@ -349,9 +349,16 @@ export default function FreebieBook3D({ title, subtitle, className }: FreebieBoo
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [handleMouseMove]);
 
-  const handleCreated = useCallback(() => {
-    // Delay slightly so the first frame renders before fade-in starts
-    requestAnimationFrame(() => setReady(true));
+  const handleCreated = useCallback((state: { gl: any; scene: any; camera: any; invalidate: () => void }) => {
+    if (state.gl.compileAsync) {
+      state.gl.compileAsync(state.scene, state.camera).then(() => {
+        state.invalidate();
+        setReady(true);
+      });
+    } else {
+      state.invalidate();
+      requestAnimationFrame(() => setReady(true));
+    }
   }, []);
 
   return (
@@ -375,7 +382,9 @@ export default function FreebieBook3D({ title, subtitle, className }: FreebieBoo
         <directionalLight position={[5, 14, 5]} intensity={2.4} color="#ffffff" />
         <directionalLight position={[-6, 12, -6]} intensity={0.1} color="#e8ddd0" />
         <directionalLight position={[0, -6, 0]} intensity={0.05} color="#ffffff" />
-        <Environment preset="sunset" environmentIntensity={0.35} />
+        <Suspense fallback={null}>
+          <Environment files="/envmaps/venice_sunset_256.hdr" environmentIntensity={0.35} />
+        </Suspense>
         <BookModel title={title} subtitle={subtitle} />
       </Canvas>
     </div>

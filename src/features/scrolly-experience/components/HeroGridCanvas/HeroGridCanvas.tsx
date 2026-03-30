@@ -18,7 +18,7 @@
 
 'use client';
 
-import { useRef, useMemo, useEffect, useState } from 'react';
+import { Suspense, useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { RoundedBox, Environment } from '@react-three/drei';
 import * as THREE from 'three';
@@ -374,10 +374,12 @@ export default function HeroGridCanvas({ config }: HeroGridCanvasProps) {
           />
         )}
         {config.lighting.envPreset && (
-          <Environment
-            preset={config.lighting.envPreset}
-            environmentIntensity={config.lighting.envIntensity ?? 0.2}
-          />
+          <Suspense fallback={null}>
+            <Environment
+              files="/envmaps/venice_sunset_256.hdr"
+              environmentIntensity={config.lighting.envIntensity ?? 0.2}
+            />
+          </Suspense>
         )}
 
         <ResponsiveZoom config={config} bpIndex={bpIndex} />

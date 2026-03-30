@@ -77,7 +77,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${newsreader.variable} ${inter.variable}`}>
+    <html lang="en" className={`${newsreader.variable} ${inter.variable}`} style={{ background: '#fef9f0' }}>
       <head>
         {/* Reset scroll on reload — in <head> to avoid blocking body parsing */}
         <script
@@ -85,8 +85,11 @@ export default function RootLayout({
             __html: `history.scrollRestoration='manual';window.scrollTo(0,0);`,
           }}
         />
+        {/* Preload 3D assets — start downloading before JS evaluates */}
+        <link rel="preload" href="/envmaps/venice_sunset_256.hdr" as="fetch" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/Inter-Regular.woff" as="font" type="font/woff" crossOrigin="anonymous" />
       </head>
-      <body className="stitch-theme">
+      <body className="stitch-theme" style={{ background: '#fef9f0' }}>
         <a href="#main" className="skip-link">
           Skip to content
         </a>
