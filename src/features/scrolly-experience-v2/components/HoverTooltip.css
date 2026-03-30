@@ -1,0 +1,106 @@
+/* ===================================
+   HoverTooltip Component Styles
+   Frosted glass popup for 3D layer hover
+   =================================== */
+
+.hover-tooltip {
+  /* Component-level tokens */
+  --tooltip-max-width: 280px;
+  --tooltip-min-width: 180px;
+  --tooltip-accent-width: 3px;
+  --tooltip-accent-height: var(--icon-sm);
+
+  /* Component-level font sizes (mapped to global design tokens) */
+  --tooltip-font-title:   var(--font-size-base);  /* 16px   */
+  --tooltip-font-subhead: 0.85rem;                /* 13.6px — intentional, between tokens */
+  --tooltip-font-bullet:  var(--font-size-sm);    /* 12.8px */
+  position: fixed;
+  z-index: var(--z-tooltip);
+  pointer-events: none;
+  
+  /* Frosted glass effect */
+  backdrop-filter: var(--blur-lg);
+  background: var(--glass-card-bg);
+  border: var(--glass-card-border);
+  box-shadow: 
+    var(--tooltip-shadow),
+    var(--inset-highlight);
+  
+  /* Shape */
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  max-width: var(--tooltip-max-width);
+  min-width: var(--tooltip-min-width);
+  
+  /* Smooth transitions */
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  transition: 
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.hover-tooltip--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.hover-tooltip--hiding {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+  transition: 
+    opacity var(--transition-micro),
+    transform var(--transition-micro);
+}
+
+/* Title with accent bar */
+.hover-tooltip__title {
+  font-size: var(--tooltip-font-title);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-xs) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  letter-spacing: var(--tracking-tight);
+}
+
+.hover-tooltip__accent-bar {
+  width: var(--tooltip-accent-width);
+  height: var(--tooltip-accent-height);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+/* Subhead */
+.hover-tooltip__subhead {
+  font-size: var(--tooltip-font-subhead);
+  font-weight: var(--weight-semibold);
+  margin: 0 0 var(--space-sm) 0;
+  opacity: 0.9;
+}
+
+/* Bullets list */
+.hover-tooltip__bullets {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: var(--tooltip-font-bullet);
+  color: var(--text-secondary);
+  line-height: var(--leading-normal);
+}
+
+.hover-tooltip__bullets li {
+  margin-bottom: var(--space-xs);
+}
+
+.hover-tooltip__bullets li::marker {
+  color: inherit;
+  opacity: 0.5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hover-tooltip {
+    display: none; /* Hide on touch devices */
+  }
+}

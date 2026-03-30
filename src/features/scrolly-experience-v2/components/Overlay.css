@@ -1,0 +1,535 @@
+/* ===================================
+   Overlay Component Styles
+   Uses CSS variables from index.css
+   =================================== */
+
+/* === Container === */
+.overlay {
+  /* === Component-level tokens (timeline system) === */
+  --timeline-gutter: 72px;         /* Left padding for timeline area            */
+  --timeline-line-offset: 24px;    /* Center of dots from left edge             */
+  --timeline-dot-size: 44px;       /* Default dot dimensions                    */
+  --timeline-dot-size-active: 52px;/* Active dot dimensions                     */
+  --timeline-icon-size: var(--icon-md); /* Default icon inside dot              */
+  --timeline-icon-size-active: var(--icon-lg); /* Active icon size              */
+
+  /* === Component-level font sizes (mapped to global design tokens) === */
+  --step-font-title:          var(--font-size-3xl);   /* desktop step title     */
+  --step-font-title-tablet:   var(--font-size-2xl);   /* tablet step title      */
+  --step-font-title-mobile:   var(--font-size-xl);    /* mobile step title      */
+  --step-font-cta:            var(--font-size-sm);    /* step CTA label         */
+
+  padding: 0; /* Padding handled by parent container */
+  padding-bottom: 0;
+  font-family: var(--font-family);
+  width: 100%;
+}
+
+/* === Hero Section === */
+.hero {
+  min-height: calc(100vh - var(--header-height, 72px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: var(--content-max-width, 520px);
+}
+
+/* Eyebrow (Small label above headline) */
+.hero__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-lg);
+  font-weight: var(--weight-bold);
+}
+
+/* Headline */
+.hero__headline {
+  font: var(--font-display);
+  margin-bottom: var(--space-lg);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+}
+
+/* Highlighted words in headline */
+.hero__headline-accent {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: inherit;
+}
+
+/* Subheadline */
+.hero__subheadline {
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2xl);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--weight-normal);
+}
+
+/* CTA container */
+.hero__cta-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+/* Primary CTA Button - Modern Gradient */
+.hero__cta-button {
+  padding: var(--btn-padding, 0.75rem 1.5rem);
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: var(--btn-radius, 10px);
+  font-size: var(--font-size-base);
+  font-weight: var(--btn-font-weight, 600);
+  cursor: pointer;
+  box-shadow: 
+    var(--shadow-md),
+    var(--btn-shadow-primary);
+  transition: 
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer effect on button */
+.hero__cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--shimmer-color),
+    transparent
+  );
+  transition: left var(--transition-shimmer);
+}
+
+@media (hover: hover) {
+  .hero__cta-button:hover::before {
+    left: 100%;
+  }
+
+  .hero__cta-button:hover {
+    transform: translateY(calc(-1 * var(--line-thick))) scale(1.02);
+    box-shadow: 
+      var(--shadow-lg),
+      var(--glow-primary);
+  }
+}
+
+.hero__cta-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.hero__cta-button:focus-visible {
+  outline: var(--focus-outline-width) solid var(--accent-brand);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* Fear reducer / Status line */
+.hero__status {
+  font-size: var(--font-size-sm);
+  color: var(--text-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: var(--weight-medium);
+}
+
+.hero__status-dot {
+  width: var(--dot-status);
+  height: var(--dot-status);
+  background-color: var(--status-success);
+  border-radius: var(--radius-full);
+  box-shadow: var(--status-success-glow);
+}
+
+
+
+/* === Steps Section - Timeline Style === */
+.steps-container {
+  position: relative;
+  padding-left: var(--timeline-gutter);
+}
+
+/* Timeline vertical line - positioned to align with center of larger dots */
+.timeline-line {
+  position: absolute;
+  left: var(--timeline-line-offset);
+  top: 0;
+  bottom: 0;
+  width: var(--line-thin);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--text-subtle) 5%,
+    var(--text-subtle) 95%,
+    transparent 100%
+  );
+  opacity: 0.3;
+  /* Mobile override bumps visibility — see @media block below */
+}
+
+.step {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  position: relative;
+  /* Much gentler opacity falloff - stays readable longer */
+  opacity: calc(1 - (var(--step-distance, 0) * 0.12));
+  transition: opacity var(--transition-smooth);
+}
+
+.step--active {
+  opacity: 1;
+}
+
+/* === Step Content (no card background) === */
+.step-content {
+  max-width: var(--card-max-width, 420px);
+  width: 100%;
+  transition: all var(--transition-smooth);
+  padding: var(--space-lg) 0;
+}
+
+.step-content--active {
+  opacity: 1;
+  /* Removed translateX to prevent shifting the dot off the line */
+}
+
+.step-content--inactive {
+  opacity: 0.7;  /* Much more readable when inactive */
+  filter: blur(0.25px);  /* Very subtle blur */
+}
+
+/* Title row — grid with fixed dot column so title text always aligns
+   with subhead / description / CTA below it. */
+.step-content__title-row {
+  display: grid;
+  grid-template-columns: var(--timeline-gutter) 1fr;
+  align-items: center;
+  margin-left: calc(-1 * var(--timeline-gutter));
+}
+
+/* Timeline square with icon inside — centered on the timeline line
+   via place-self + left offset. Size changes (active/inactive)
+   don't shift the title text because the grid column is fixed-width. */
+.timeline-dot {
+  width: var(--timeline-dot-size);
+  height: var(--timeline-dot-size);
+  border-radius: var(--radius-md);
+  border: var(--dot-border);
+  box-shadow:
+    var(--dot-shadow),
+    var(--inset-highlight-subtle);
+  transition: all var(--transition-base);
+  position: relative;
+  z-index: var(--z-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Center dot on the timeline line, not in the grid cell center */
+  place-self: center;
+  left: calc(var(--timeline-line-offset) - var(--timeline-gutter) / 2);
+}
+
+/* Icon inside the square */
+.timeline-dot__icon {
+  width: var(--timeline-icon-size);
+  height: var(--timeline-icon-size);
+  transition: all var(--transition-base);
+  filter: var(--dot-icon-shadow);
+}
+
+.timeline-dot--active {
+  width: var(--timeline-dot-size-active);
+  height: var(--timeline-dot-size-active);
+  border-radius: var(--btn-radius);
+  border-color: var(--dot-border-active);
+  box-shadow: 
+    var(--dot-ring-active), 
+    0 0 25px var(--step-color),
+    var(--dot-shadow-active);
+}
+
+.timeline-dot--active .timeline-dot__icon {
+  width: var(--timeline-icon-size-active);
+  height: var(--timeline-icon-size-active);
+  filter: var(--dot-icon-shadow-active);
+}
+
+/* Title - Large and prominent */
+.step-content__title {
+  margin: 0;
+  font-family: var(--font-family-serif);
+  font-size: var(--step-font-title);
+  color: var(--text-primary);
+  font-weight: var(--weight-normal);
+  letter-spacing: -0.02em;
+  line-height: var(--leading-tight);
+}
+
+/* Subhead */
+.step-content__subhead {
+  margin: var(--space-sm) 0 var(--space-lg) 0;
+  font-weight: var(--weight-semibold);
+  font-size: var(--font-size-lg);
+  filter: saturate(1.2) brightness(0.85);
+}
+
+/* Description reveal — uses grid rows for smooth height animation */
+.step-content__description-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--duration-slow) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out);
+}
+
+.step-content__description-wrapper--open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--duration-slow) var(--ease-out),
+    opacity var(--duration-slow) var(--ease-out) var(--duration-instant);
+}
+
+.step-content__description-inner {
+  overflow: hidden;
+}
+
+.step-content__description {
+  margin: 0;
+  padding-top: var(--space-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--weight-normal);
+}
+
+/* Mini CTA */
+.step-content__cta {
+  margin-top: var(--space-lg);
+  font-size: var(--step-font-cta);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  transition: all var(--transition-base);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.step-content__cta--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.step-content__cta-arrow {
+  transition: transform var(--transition-fast);
+}
+
+@media (hover: hover) {
+  .step-content__cta:hover .step-content__cta-arrow {
+    transform: translateX(4px);
+  }
+}
+
+/* === Loading State === */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-base);
+  z-index: var(--z-loading);
+}
+
+.loading-spinner {
+  width: var(--icon-xl);
+  height: var(--icon-xl);
+  border: 3px solid var(--border-default);
+  border-top-color: var(--accent-brand);
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: var(--space-md);
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .overlay {
+    padding-bottom: 0;
+  }
+
+  .hero {
+    /* Fill viewport below header. Text at top (flex-start), cube in remaining space.
+     * Steps start below fold. Layout thrashing fix (P1) ensures smooth scrolling. */
+    min-height: calc(100svh - var(--header-height-mobile));
+    padding-top: 0;
+    padding-bottom: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Opacity controlled by JS based on scroll */
+    transition: opacity var(--transition-micro);
+  }
+
+  .hero__eyebrow {
+    display: none;
+  }
+
+  .hero__headline {
+    font: var(--font-h2);
+    font-size: clamp(1.875rem, 1.3rem + 2.8vw, 2.75rem);
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero__subheadline {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+  }
+
+  .steps-container {
+    --timeline-gutter: 56px;
+    --timeline-line-offset: 18px;
+    /* Transparent — 3D cube (fixed behind at z-50) shows through
+     * between frosted-glass step cards. */
+    background: transparent;
+    /* Extend edge-to-edge despite parent padding (needed for timeline) */
+    margin-left: calc(-1 * var(--space-lg));
+    margin-right: calc(-1 * var(--space-lg));
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+    /* Hero fills full viewport → steps always start below fold.
+     * Only needs breathing room for visual separation. */
+    padding-top: var(--space-2xl);
+  }
+
+
+
+  /* Timeline line: boosted visibility over 3D scene */
+  .timeline-line {
+    opacity: 0.5;
+    width: 2px;
+    box-shadow: 0 0 6px rgba(242, 237, 228, 0.4);
+  }
+
+  .step {
+    min-height: max(82vh, 560px); /* 1.5× of previous (55vh→82vh) — more breathing room between cards */
+    padding-top: var(--space-2xl);
+    padding-bottom: calc(var(--space-3xl) * 1.5);
+    /* Always 100% opacity on mobile - no fade effect */
+    opacity: 1 !important;
+  }
+  
+  .step-content--inactive {
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  /* Frosted glass background for step content on mobile.
+   * backdrop-filter now blurs the live WebGL canvas — GPU compositing
+   * hints ensure each card is promoted to its own layer. */
+  .step-content {
+    max-width: 100%;
+    background: var(--glass-card-bg);
+    /* Light blur — 8px is ~50% cheaper than 16px while still frosting over
+     * the live WebGL canvas. Cards are GPU-promoted (will-change + contain). */
+    backdrop-filter: saturate(120%) var(--blur-sm);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    /* Stronger, very soft diffused shadows */
+    box-shadow: 
+      var(--glass-card-shadow),
+      var(--inset-highlight-strong);
+    border: var(--glass-card-border);
+    /* Perf: GPU layer promotion for compositing + blur */
+    will-change: transform;
+    contain: layout style paint;
+  }
+
+  .step-content__title-row {
+    margin-left: calc(-1 * var(--timeline-gutter));
+    position: relative;
+    left: calc(-1 * var(--space-lg));
+    /* Expand first column to cover card padding so dot stays on timeline */
+    grid-template-columns: calc(var(--timeline-gutter) + var(--space-lg)) 1fr;
+  }
+
+  .timeline-dot {
+    --timeline-dot-size: 32px;
+    /* Recalculate center offset with the wider column */
+    left: calc(var(--timeline-line-offset) - (var(--timeline-gutter) + var(--space-lg)) / 2);
+  }
+
+  .timeline-dot--active {
+    --timeline-dot-size-active: 38px;
+  }
+
+  .timeline-dot__icon {
+    --timeline-icon-size: var(--icon-xs);
+  }
+
+  .timeline-dot--active .timeline-dot__icon {
+    --timeline-icon-size-active: 18px;
+  }
+
+  .step-content {
+    max-width: 100%;
+  }
+
+  .step-content__title {
+    font-size: var(--step-font-title-mobile);
+  }
+
+  /* On mobile all steps are visible as cards — description always open */
+  .step-content__description-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* === Landscape phones — prevent huge empty hero/step areas === */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
+  }
+
+  .step {
+    min-height: max(70vh, 280px);
+  }
+}

@@ -8,6 +8,7 @@
 /** Route definitions */
 export const routes = {
   home: '/',
+  homeV2: '/home-v2',
   about: '/about',
   howItWorksRoofers: '/how-it-works/roofers',
   howItWorksInvestors: '/how-it-works/investors',
@@ -18,6 +19,7 @@ export const routes = {
 /** Header navigation links — matches Stitch header exactly */
 export const navLinks = [
   { label: 'Home', href: routes.home },
+  { label: 'Home V2', href: routes.homeV2 },
   { label: 'About', href: routes.about },
   { label: 'Roofers', href: routes.howItWorksRoofers },
   { label: 'Investors', href: routes.howItWorksInvestors },
