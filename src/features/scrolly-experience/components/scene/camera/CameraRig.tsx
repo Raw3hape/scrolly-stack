@@ -30,7 +30,7 @@ import { animation, mosaic as mosaicConfig } from '../../../config';
 import { smoothProgress } from '../../../utils/easings';
 
 /** Shared lambda — must match ZoomController for synchronized motion */
-const UNIFIED_LAMBDA = 4;
+const UNIFIED_LAMBDA = 6;
 
 interface CameraRigProps {
   isHero: boolean;

@@ -16,7 +16,7 @@ import { useMemo } from 'react';
 import { getLayerHeight, calculateBlockPositions } from '../utils/layoutUtils';
 import type { ResolvedGeometry } from '../VariantContext';
 import { precomputeTrajectories, type BlockTrajectory } from '../utils/mosaicLayout';
-import { easeInOutCubic, lerpV3, quadraticBezierV3 } from '../utils/easings';
+import { easeOutCubic, lerpV3, quadraticBezierV3 } from '../utils/easings';
 import type { LayerData, ComputedBlock } from '../types';
 import type { AdaptiveMosaicResult } from './useAdaptiveMosaic';
 
@@ -99,7 +99,7 @@ function interpolateMosaicPositions(
   trajectories: BlockTrajectory[],
   allBlocks: ComputedBlock[],
 ): MosaicBlockDataMap {
-  const t = easeInOutCubic(progress);
+  const t = easeOutCubic(progress);
   const result: MosaicBlockDataMap = {};
 
   for (let i = 0; i < trajectories.length; i++) {
@@ -156,11 +156,12 @@ export function useMosaicTransition(
   const mosaicBlockData = useMemo((): MosaicBlockDataMap | undefined => {
     if (mosaicProgress <= 0) return undefined;
 
-    // Remap: during settle phase (0→threshold), use a compressed progress
-    // so blocks begin moving toward their arc start instead of snapping.
+    // Quadratic ramp: during settle phase (0→threshold), progress is compressed
+    // so blocks ease into their arc flight instead of jumping at full velocity.
+    // At halfway (0.09): normalised=0.5, remapped = 0.25 × 0.18 = 0.045 (half speed)
     const remapped =
       mosaicProgress <= settleThreshold
-        ? (mosaicProgress / settleThreshold) * settleThreshold // slow ramp in
+        ? Math.pow(mosaicProgress / settleThreshold, 2) * settleThreshold
         : mosaicProgress;
 
     return interpolateMosaicPositions(remapped, trajectories, allBlocks);

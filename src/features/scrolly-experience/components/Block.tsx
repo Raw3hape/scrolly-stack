@@ -25,7 +25,7 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { RoundedBox, Text } from '@react-three/drei';
 import type { Group } from 'three';
 import { geometry, animation, labels } from '../config';
-import { easeOutQuart, lerp } from '../utils/easings';
+import { easeOutCubic, lerp } from '../utils/easings';
 import GradientShadowMaterial from './GradientShadowMaterial';
 import { useTiltBatch } from '../hooks/useTiltBatch';
 import type { BlockProps, BlockLabelProps, MousePosition } from '../types';
@@ -203,14 +203,16 @@ export default function Block({
   ]);
 
   // SMOOTH BLEND: During settle phase (0→0.18), fade out active animations
-  // (lift/slide) gradually instead of snapping to base position.
+  // (lift/slide) with easeOut curve matching scale/position easing.
+  // Prevents the "sinking" artifact from linear fade vs easeOut scale.
   const SETTLE_THRESHOLD = 0.18;
-  const activeBlend =
+  const rawBlend =
     mosaicProgress <= 0
       ? 1
       : mosaicProgress >= SETTLE_THRESHOLD
         ? 0
         : 1 - mosaicProgress / SETTLE_THRESHOLD;
+  const activeBlend = rawBlend * rawBlend; // quadratic easeOut shape
 
   const getTargetPosition = (): [number, number, number] => {
     if (isMosaicActive) {
@@ -241,18 +243,14 @@ export default function Block({
   };
 
   // ========================================================================
-  // CLOSE PHASE: During early mosaic (0 → 0.25), keep springs active so
-  // blocks animate smoothly back to base. Only switch to immediate (= direct
-  // scroll-driven positions, no physics) once blocks have fully settled.
+  // MOSAIC POSITION: immediate as soon as mosaic is active — the quadratic
+  // settle ramp in useMosaicTransition already provides smooth easing, so
+  // springs aren't needed as a bridge. This eliminates the velocity
+  // discontinuity that occurred at the old IMMEDIATE_THRESHOLD boundary.
   // ========================================================================
-  // Raised from 0.25 → 0.40 so springs have more time to settle before
-  // switching to direct scroll-driven positions. Prevents the abrupt motion
-  // feel change at 25% that was visible on slow scroll.
-  const IMMEDIATE_THRESHOLD = 0.4;
-
   const { springPosition } = useSpring({
     springPosition: getTargetPosition(),
-    immediate: !!isMosaicActive && mosaicProgress > IMMEDIATE_THRESHOLD,
+    immediate: !!isMosaicActive,
     config: springConfig,
     onChange: () => invalidate(),
   });
@@ -276,7 +274,7 @@ export default function Block({
 
   // Scale to achieve desired visual size during mosaic
   // STABILITY FIX: interpolate by mosaicProgress (was binary jump [1,1,1] → target)
-  // easeOutQuart: fast start (no deadzone) → smooth deceleration = physically natural
+  // easeOutCubic: fast start (no deadzone) → smooth deceleration = physically natural
   const dimensionScale = useMemo((): [number, number, number] => {
     if (!mosaicDimensions || mosaicProgress <= 0) return [1, 1, 1];
     const target: [number, number, number] = [
@@ -284,14 +282,14 @@ export default function Block({
       mosaicDimensions[1] / dimensions[1],
       mosaicDimensions[2] / dimensions[2],
     ];
-    const t = easeOutQuart(mosaicProgress);
+    const t = easeOutCubic(mosaicProgress);
     return [1 + (target[0] - 1) * t, 1 + (target[1] - 1) * t, 1 + (target[2] - 1) * t];
   }, [mosaicDimensions, mosaicProgress, dimensions]);
 
   // Labels + tilt use VISUAL dimensions (not geometry args) for correct positioning.
   // Smoothly interpolate between stack and mosaic dimensions so labels don't
   // jump when mosaic starts (was binary before, masked by the old fade-out).
-  const progressT = easeOutQuart(mosaicProgress);
+  const progressT = easeOutCubic(mosaicProgress);
   const visualDimensions: [number, number, number] =
     isMosaicActive && mosaicDimensions
       ? [

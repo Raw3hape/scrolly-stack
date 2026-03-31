@@ -17,6 +17,11 @@ export function easeOutQuad(t: number): number {
   return 1 - (1 - t) * (1 - t);
 }
 
+/** Ease Out Cubic — smooth deceleration (primary morph easing) */
+export function easeOutCubic(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
+}
+
 /** Ease Out Quart — strong deceleration */
 export function easeOutQuart(t: number): number {
   return 1 - Math.pow(1 - t, 4);

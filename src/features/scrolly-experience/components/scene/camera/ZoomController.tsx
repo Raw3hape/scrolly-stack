@@ -16,7 +16,7 @@ import { mosaic as mosaicConfig } from '../../../config';
 import { lerp, smoothProgress } from '../../../utils/easings';
 
 /** Must match CameraRig.UNIFIED_LAMBDA for synchronized motion */
-const UNIFIED_LAMBDA = 4;
+const UNIFIED_LAMBDA = 6;
 
 interface ZoomControllerProps {
   targetZoom: number;
