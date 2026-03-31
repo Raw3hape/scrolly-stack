@@ -7,14 +7,19 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint src e2e playwright.config.ts --max-warnings=0",
+    "lint": "eslint src e2e playwright.config.ts vitest.config.ts --max-warnings=0",
     "typecheck": "npm run typecheck:app && npm run typecheck:e2e",
     "typecheck:app": "tsc -p tsconfig.typecheck.json --noEmit",
     "typecheck:e2e": "tsc -p tsconfig.e2e.json --noEmit",
     "test:e2e": "playwright test",
     "test:e2e:smoke": "playwright test --project=desktop-1440 e2e/pages.spec.ts e2e/navigation.spec.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "check:palette": "node scripts/check-palette-sync.mjs",
-    "postinstall": "node scripts/patch-troika-worker.mjs"
+    "postinstall": "node scripts/patch-troika-worker.mjs",
+    "prepare": "husky"
   },
   "dependencies": {
     "@react-spring/three": "^10.0.3",
@@ -37,16 +42,30 @@
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.58.2",
-    "@typescript-eslint/parser": "^8.57.1",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-
+    "@typescript-eslint/parser": "^8.57.1",
+    "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.1.6",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",
-
     "globals": "^16.5.0",
-    "typescript": "^5.9.3"
+    "husky": "^9.1.7",
+    "jsdom": "^29.0.1",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,mjs}": [
+      "eslint --fix --max-warnings=0",
+      "prettier --write"
+    ],
+    "*.{css,json,md}": [
+      "prettier --write"
+    ]
   }
 }

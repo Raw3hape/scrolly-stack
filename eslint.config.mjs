@@ -1,13 +1,11 @@
 import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
+import prettierConfig from 'eslint-config-prettier';
 import globals from 'globals';
 
-export default [
+const config = [
   ...nextCoreWebVitals,
   {
-    ignores: [
-      'backup/**',
-      'dist/**',
-    ],
+    ignores: ['backup/**', 'dist/**'],
   },
   {
     files: ['src/**/*.{ts,tsx}', 'e2e/**/*.ts', 'playwright.config.ts'],
@@ -39,10 +37,7 @@ export default [
     },
   },
   {
-    files: [
-      'src/features/scrolly-experience/hooks/useBlockState.ts',
-      'src/hooks/useParallax.ts',
-    ],
+    files: ['src/features/scrolly-experience/hooks/useBlockState.ts', 'src/hooks/useParallax.ts'],
     rules: {
       // Both hooks have intentional dependency shaping today; keep the rule active
       // everywhere else and leave these two as explicit follow-up debt.
@@ -54,30 +49,35 @@ export default [
     files: ['src/**/*.{ts,tsx}'],
     ignores: ['src/features/scrolly-experience/**', 'src/features/scrolly-experience-v2/**'],
     rules: {
-      'no-restricted-imports': ['error', {
-        paths: [
-          {
-            name: 'three',
-            message:
-              'Three.js imports are only allowed in src/features/scrolly-experience/ (client-only zone).',
-          },
-          {
-            name: '@react-three/fiber',
-            message:
-              'R3F imports are only allowed in src/features/scrolly-experience/.',
-          },
-          {
-            name: '@react-three/drei',
-            message:
-              'drei imports are only allowed in src/features/scrolly-experience/.',
-          },
-          {
-            name: '@react-three/postprocessing',
-            message:
-              'postprocessing imports are only allowed in src/features/scrolly-experience/.',
-          },
-        ],
-      }],
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'three',
+              message:
+                'Three.js imports are only allowed in src/features/scrolly-experience/ (client-only zone).',
+            },
+            {
+              name: '@react-three/fiber',
+              message: 'R3F imports are only allowed in src/features/scrolly-experience/.',
+            },
+            {
+              name: '@react-three/drei',
+              message: 'drei imports are only allowed in src/features/scrolly-experience/.',
+            },
+            {
+              name: '@react-three/postprocessing',
+              message:
+                'postprocessing imports are only allowed in src/features/scrolly-experience/.',
+            },
+          ],
+        },
+      ],
     },
   },
+  // Prettier must be last — disables formatting rules that conflict with Prettier.
+  prettierConfig,
 ];
+
+export default config;
