@@ -22,31 +22,34 @@ import {
 } from '../src/config/content/home';
 
 // Extract roofers process steps from V2 content for assertions
-const roofersProcessSection = roofersContent.sections.find(s => s.id === 'roofers-process');
-const roofersSteps = roofersProcessSection && 'steps' in roofersProcessSection
-  ? (roofersProcessSection as { steps: Array<{ title: string }> }).steps
-  : [];
+const roofersProcessSection = roofersContent.sections.find((s) => s.id === 'roofers-process');
+const roofersSteps =
+  roofersProcessSection && 'steps' in roofersProcessSection
+    ? (roofersProcessSection as { steps: Array<{ title: string }> }).steps
+    : [];
 
 // Extract V2 schedule hero heading
-const scheduleHeroSection = scheduleContent.sections.find(s => s.id === 'schedule-hero');
-const scheduleHeading = scheduleHeroSection && 'heading' in scheduleHeroSection
-  ? (scheduleHeroSection as { heading: string }).heading
-  : '';
+const scheduleHeroSection = scheduleContent.sections.find((s) => s.id === 'schedule-hero');
+const scheduleHeading =
+  scheduleHeroSection && 'heading' in scheduleHeroSection
+    ? (scheduleHeroSection as { heading: string }).heading
+    : '';
 
 // Extract V2 opt-in content for assertions
-const optInHeroSection = optInContent.sections.find(s => s.id === 'optin-hero');
-const optInHero = optInHeroSection && 'form' in optInHeroSection
-  ? (optInHeroSection as {
-      overline: string;
-      heading: string;
-      book: { title: string; subtitle: string; coverUrl: string };
-      trustBadge: { text: string; metric: string };
-      form: {
-        fields: Array<{ name: string; placeholder: string }>;
-        submitLabel: string;
-      };
-    })
-  : null;
+const optInHeroSection = optInContent.sections.find((s) => s.id === 'optin-hero');
+const optInHero =
+  optInHeroSection && 'form' in optInHeroSection
+    ? (optInHeroSection as {
+        overline: string;
+        heading: string;
+        book: { title: string; subtitle: string; coverUrl: string };
+        trustBadge: { text: string; metric: string };
+        form: {
+          fields: Array<{ name: string; placeholder: string }>;
+          submitLabel: string;
+        };
+      })
+    : null;
 
 // ===========================================================================
 // HOME PAGE — ALL SECTIONS
@@ -120,9 +123,7 @@ test.describe('Home Page — All Sections', () => {
   test('step cards have correct titles', async ({ page }) => {
     for (let i = 0; i < homeHowItWorks.steps.length; i++) {
       const card = page.locator('.step-card').nth(i);
-      await expect(card.locator('.step-card__title')).toContainText(
-        homeHowItWorks.steps[i].title
-      );
+      await expect(card.locator('.step-card__title')).toContainText(homeHowItWorks.steps[i].title);
     }
   });
 
@@ -285,7 +286,7 @@ test.describe('About Page — V2 Sections', () => {
     const card = page.locator('.v2-team-card').first();
     await card.hover();
     const transition = await card.evaluate((el) =>
-      window.getComputedStyle(el).getPropertyValue('transition')
+      window.getComputedStyle(el).getPropertyValue('transition'),
     );
     expect(transition).toContain('transform');
   });
@@ -617,7 +618,7 @@ test.describe('Investors Page — V2 Sections', () => {
   // --- No console errors ---
   test('page has no console errors', async ({ page }) => {
     const errors: string[] = [];
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       if (msg.type() === 'error') errors.push(msg.text());
     });
     await page.goto('/how-it-works/investors', { waitUntil: 'load' });
@@ -652,9 +653,7 @@ test.describe('Investors Page — Mobile Layout', () => {
     });
     await page.waitForTimeout(300);
     const step = page.locator('.v2-timeline__step').first();
-    const gridCols = await step.evaluate(el =>
-      window.getComputedStyle(el).gridTemplateColumns
-    );
+    const gridCols = await step.evaluate((el) => window.getComputedStyle(el).gridTemplateColumns);
     // On mobile, single column
     expect(gridCols.split(' ').length).toBeLessThanOrEqual(1);
   });
@@ -666,9 +665,7 @@ test.describe('Investors Page — Mobile Layout', () => {
     });
     await page.waitForTimeout(300);
     const grid = page.locator('.v2-bento');
-    const gridCols = await grid.evaluate(el =>
-      window.getComputedStyle(el).gridTemplateColumns
-    );
+    const gridCols = await grid.evaluate((el) => window.getComputedStyle(el).gridTemplateColumns);
     expect(gridCols.split(' ').length).toBe(1);
   });
 });
@@ -696,9 +693,7 @@ test.describe('Schedule Page', () => {
   });
 
   test('Calendly placeholder is visible', async ({ page }) => {
-    await expect(page.locator('.placeholder-box')).toContainText(
-      'Calendly Widget — Coming Soon'
-    );
+    await expect(page.locator('.placeholder-box')).toContainText('Calendly Widget — Coming Soon');
   });
 });
 
@@ -742,7 +737,7 @@ test.describe('Opt-In Page — All Sections', () => {
     await expect(input).toBeVisible();
     await expect(input).toHaveAttribute(
       'placeholder',
-      optInHero?.form.fields.find(f => f.name === 'firstName')?.placeholder ?? ''
+      optInHero?.form.fields.find((f) => f.name === 'firstName')?.placeholder ?? '',
     );
   });
 
@@ -752,7 +747,7 @@ test.describe('Opt-In Page — All Sections', () => {
     await expect(input).toHaveAttribute('type', 'email');
     await expect(input).toHaveAttribute(
       'placeholder',
-      optInHero?.form.fields.find(f => f.name === 'email')?.placeholder ?? ''
+      optInHero?.form.fields.find((f) => f.name === 'email')?.placeholder ?? '',
     );
   });
 
@@ -815,7 +810,6 @@ test.describe('Footer — Navigation Links', () => {
 // ===========================================================================
 
 test.describe('CTA Buttons — All Pages', () => {
-
   // Roofers uses V2 CTA component
   test('Roofers page V2 CTA button has correct href', async ({ page }) => {
     await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
@@ -893,9 +887,7 @@ test.describe('Layout & Spacing', () => {
   test('V2 step cards have non-zero padding', async ({ page }) => {
     await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
     const card = page.locator('.v2-step').first();
-    const padding = await card.evaluate(
-      (el) => window.getComputedStyle(el).paddingTop
-    );
+    const padding = await card.evaluate((el) => window.getComputedStyle(el).paddingTop);
     expect(parseInt(padding)).toBeGreaterThan(0);
   });
 
@@ -908,27 +900,21 @@ test.describe('Layout & Spacing', () => {
   test('V2 hero heading has correct font family', async ({ page }) => {
     await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
     const heading = page.locator('.v2-hero__heading');
-    const fontFamily = await heading.evaluate(
-      (el) => window.getComputedStyle(el).fontFamily
-    );
+    const fontFamily = await heading.evaluate((el) => window.getComputedStyle(el).fontFamily);
     expect(fontFamily).toBeTruthy();
   });
 
   test('V2 team cards have border-radius', async ({ page }) => {
     await page.goto('/about', { waitUntil: 'domcontentloaded' });
     const card = page.locator('.v2-team-card').first();
-    const radius = await card.evaluate(
-      (el) => window.getComputedStyle(el).borderRadius
-    );
+    const radius = await card.evaluate((el) => window.getComputedStyle(el).borderRadius);
     expect(parseInt(radius)).toBeGreaterThan(0);
   });
 
   test('opt-in badge has pill shape (full border-radius)', async ({ page }) => {
     await page.goto('/3b-opt-in', { waitUntil: 'domcontentloaded' });
     const badge = page.locator('.opt-in__badge');
-    const radius = await badge.evaluate(
-      (el) => window.getComputedStyle(el).borderRadius
-    );
+    const radius = await badge.evaluate((el) => window.getComputedStyle(el).borderRadius);
     expect(parseInt(radius)).toBeGreaterThan(100);
   });
 });

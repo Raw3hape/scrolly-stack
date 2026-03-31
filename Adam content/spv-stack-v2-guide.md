@@ -19,12 +19,15 @@ When rendering the scroll animation or building the tile layers, treat position 
 There are three layout types used in this stack. Each entry in the array includes a `layout` field that declares which type applies.
 
 ### `single`
+
 One tile occupying its own row. This is the standard layout used for the majority of the stack. The tile fields (`tile_label`, `id`, `heading`, `copy`) sit directly on the object.
 
 ### `triple`
+
 Three tiles sharing a single row. This occurs at **position 4** (Systems · Playbooks · Training). The three tiles are contained in a `blocks` array within the position object. Each block has its own `tile_label`, `id`, `heading`, and `copy`.
 
 ### `crown`
+
 Four tiles sharing the top row of the stack. This occurs at **position 14** and represents the summit of the stack. Like the triple, the four tiles are contained in a `blocks` array. The crown tiles are: Exit Plan · Robotics · Growth · IPO.
 
 ---
@@ -33,33 +36,33 @@ Four tiles sharing the top row of the stack. This occurs at **position 14** and 
 
 Each tile — whether standalone or inside a `blocks` array — uses the following fields:
 
-| Field | Display Location | Length |
-|---|---|---|
-| `tile_label` | Face of the cube tile | 1–2 words |
-| `id` | Left panel label when tile is active/expanded | 2–3 words |
-| `heading` | Subheadline in the expanded content panel | Short phrase |
-| `copy` | Body copy in the expanded content panel | 1–3 sentences |
+| Field        | Display Location                              | Length        |
+| ------------ | --------------------------------------------- | ------------- |
+| `tile_label` | Face of the cube tile                         | 1–2 words     |
+| `id`         | Left panel label when tile is active/expanded | 2–3 words     |
+| `heading`    | Subheadline in the expanded content panel     | Short phrase  |
+| `copy`       | Body copy in the expanded content panel       | 1–3 sentences |
 
 ---
 
 ## Full Stack Reference
 
-| Position | Layout | Tile Label(s) | ID |
-|---|---|---|---|
-| 1 — Bottom | Single | Partnership | Partnership Alignment |
-| 2 | Single | People | People & Culture |
-| 3 | Single | Data | Unified Data Model |
-| 4 | **Triple** | Systems · Playbooks · Training | Systems Implementation · Process Playbooks · Training Engine |
-| 5 | Single | Sales | Pod Sales |
-| 6 | Single | Production | Production Frameworks |
-| 7 | Single | Marketing | Marketing Accountability |
-| 8 | Single | Automation | Workflow Automation |
-| 9 | Single | Finance | Finance Ops |
-| 10 | Single | Intelligence | Data Intelligence |
-| 11 | Single | AI Agents | Agentic Workforce |
-| 12 | Single | Procurement | Procurement Leverage |
-| 13 | Single | ESO | Employee Stock Ownership |
-| 14 — Top | **Crown** | Exit Plan · Robotics · Growth · IPO | Exit Planning · Robotics Integration · Growth by Design · IPO |
+| Position   | Layout     | Tile Label(s)                       | ID                                                            |
+| ---------- | ---------- | ----------------------------------- | ------------------------------------------------------------- |
+| 1 — Bottom | Single     | Partnership                         | Partnership Alignment                                         |
+| 2          | Single     | People                              | People & Culture                                              |
+| 3          | Single     | Data                                | Unified Data Model                                            |
+| 4          | **Triple** | Systems · Playbooks · Training      | Systems Implementation · Process Playbooks · Training Engine  |
+| 5          | Single     | Sales                               | Pod Sales                                                     |
+| 6          | Single     | Production                          | Production Frameworks                                         |
+| 7          | Single     | Marketing                           | Marketing Accountability                                      |
+| 8          | Single     | Automation                          | Workflow Automation                                           |
+| 9          | Single     | Finance                             | Finance Ops                                                   |
+| 10         | Single     | Intelligence                        | Data Intelligence                                             |
+| 11         | Single     | AI Agents                           | Agentic Workforce                                             |
+| 12         | Single     | Procurement                         | Procurement Leverage                                          |
+| 13         | Single     | ESO                                 | Employee Stock Ownership                                      |
+| 14 — Top   | **Crown**  | Exit Plan · Robotics · Growth · IPO | Exit Planning · Robotics Integration · Growth by Design · IPO |
 
 ---
 

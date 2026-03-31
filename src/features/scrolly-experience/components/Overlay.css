@@ -6,18 +6,18 @@
 /* === Container === */
 .overlay {
   /* === Component-level tokens (timeline system) === */
-  --timeline-gutter: 72px;         /* Left padding for timeline area            */
-  --timeline-line-offset: 24px;    /* Center of dots from left edge             */
-  --timeline-dot-size: 44px;       /* Default dot dimensions                    */
-  --timeline-dot-size-active: 52px;/* Active dot dimensions                     */
+  --timeline-gutter: 72px; /* Left padding for timeline area            */
+  --timeline-line-offset: 24px; /* Center of dots from left edge             */
+  --timeline-dot-size: 44px; /* Default dot dimensions                    */
+  --timeline-dot-size-active: 52px; /* Active dot dimensions                     */
   --timeline-icon-size: var(--icon-md); /* Default icon inside dot              */
   --timeline-icon-size-active: var(--icon-lg); /* Active icon size              */
 
   /* === Component-level font sizes (mapped to global design tokens) === */
-  --step-font-title:          var(--font-size-3xl);   /* desktop step title     */
-  --step-font-title-tablet:   var(--font-size-2xl);   /* tablet step title      */
-  --step-font-title-mobile:   var(--font-size-xl);    /* mobile step title      */
-  --step-font-cta:            var(--font-size-sm);    /* step CTA label         */
+  --step-font-title: var(--font-size-3xl); /* desktop step title     */
+  --step-font-title-tablet: var(--font-size-2xl); /* tablet step title      */
+  --step-font-title-mobile: var(--font-size-xl); /* mobile step title      */
+  --step-font-cta: var(--font-size-sm); /* step CTA label         */
 
   padding: 0; /* Padding handled by parent container */
   padding-bottom: 0;
@@ -88,10 +88,8 @@
   font-size: var(--font-size-base);
   font-weight: var(--btn-font-weight, 600);
   cursor: pointer;
-  box-shadow: 
-    var(--shadow-md),
-    var(--btn-shadow-primary);
-  transition: 
+  box-shadow: var(--shadow-md), var(--btn-shadow-primary);
+  transition:
     transform var(--transition-fast),
     box-shadow var(--transition-fast),
     background var(--transition-base);
@@ -107,12 +105,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--shimmer-color),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, var(--shimmer-color), transparent);
   transition: left var(--transition-shimmer);
 }
 
@@ -123,9 +116,7 @@
 
   .hero__cta-button:hover {
     transform: translateY(calc(-1 * var(--line-thick))) scale(1.02);
-    box-shadow: 
-      var(--shadow-lg),
-      var(--glow-primary);
+    box-shadow: var(--shadow-lg), var(--glow-primary);
   }
 }
 
@@ -155,8 +146,6 @@
   border-radius: var(--radius-full);
   box-shadow: var(--status-success-glow);
 }
-
-
 
 /* === Steps Section - Timeline Style === */
 .steps-container {
@@ -211,8 +200,8 @@
 }
 
 .step-content--inactive {
-  opacity: 0.7;  /* Much more readable when inactive */
-  filter: blur(0.25px);  /* Very subtle blur */
+  opacity: 0.7; /* Much more readable when inactive */
+  filter: blur(0.25px); /* Very subtle blur */
 }
 
 /* Title row — grid with fixed dot column so title text always aligns
@@ -232,9 +221,7 @@
   height: var(--timeline-dot-size);
   border-radius: var(--radius-md);
   border: var(--dot-border);
-  box-shadow:
-    var(--dot-shadow),
-    var(--inset-highlight-subtle);
+  box-shadow: var(--dot-shadow), var(--inset-highlight-subtle);
   transition: all var(--transition-base);
   position: relative;
   z-index: var(--z-base);
@@ -259,8 +246,8 @@
   height: var(--timeline-dot-size-active);
   border-radius: var(--btn-radius);
   border-color: var(--dot-border-active);
-  box-shadow: 
-    var(--dot-ring-active), 
+  box-shadow:
+    var(--dot-ring-active),
     0 0 25px var(--step-color),
     var(--dot-shadow-active);
 }
@@ -437,8 +424,6 @@
     padding-top: var(--space-2xl);
   }
 
-
-
   /* Timeline line: boosted visibility over 3D scene */
   .timeline-line {
     opacity: 0.5;
@@ -447,13 +432,16 @@
   }
 
   .step {
-    min-height: max(82vh, 560px); /* 1.5× of previous (55vh→82vh) — more breathing room between cards */
+    min-height: max(
+      82vh,
+      560px
+    ); /* 1.5× of previous (55vh→82vh) — more breathing room between cards */
     padding-top: var(--space-2xl);
     padding-bottom: calc(var(--space-3xl) * 1.5);
     /* Always 100% opacity on mobile - no fade effect */
     opacity: 1 !important;
   }
-  
+
   .step-content--inactive {
     opacity: 1 !important;
     filter: none !important;
@@ -471,9 +459,7 @@
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
     /* Stronger, very soft diffused shadows */
-    box-shadow: 
-      var(--glass-card-shadow),
-      var(--inset-highlight-strong);
+    box-shadow: var(--glass-card-shadow), var(--inset-highlight-strong);
     border: var(--glass-card-border);
     /* Perf: GPU layer promotion for compositing + blur */
     will-change: transform;

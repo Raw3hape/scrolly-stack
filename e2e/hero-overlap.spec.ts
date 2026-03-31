@@ -47,39 +47,64 @@ for (const device of IPHONE_VIEWPORTS) {
 
         return {
           viewport: { width: window.innerWidth, height: vh },
-          header: headerRect ? { top: headerRect.top, bottom: headerRect.bottom, height: headerRect.height } : null,
-          hero: heroRect ? { top: heroRect.top, bottom: heroRect.bottom, height: heroRect.height } : null,
-          headline: headlineRect ? { top: headlineRect.top, bottom: headlineRect.bottom, height: headlineRect.height } : null,
-          subheadline: subheadlineRect ? { top: subheadlineRect.top, bottom: subheadlineRect.bottom, height: subheadlineRect.height } : null,
-          cta: ctaRect ? { top: ctaRect.top, bottom: ctaRect.bottom, height: ctaRect.height } : null,
-          canvas: canvasRect ? { top: canvasRect.top, bottom: canvasRect.bottom, height: canvasRect.height } : null,
+          header: headerRect
+            ? { top: headerRect.top, bottom: headerRect.bottom, height: headerRect.height }
+            : null,
+          hero: heroRect
+            ? { top: heroRect.top, bottom: heroRect.bottom, height: heroRect.height }
+            : null,
+          headline: headlineRect
+            ? { top: headlineRect.top, bottom: headlineRect.bottom, height: headlineRect.height }
+            : null,
+          subheadline: subheadlineRect
+            ? {
+                top: subheadlineRect.top,
+                bottom: subheadlineRect.bottom,
+                height: subheadlineRect.height,
+              }
+            : null,
+          cta: ctaRect
+            ? { top: ctaRect.top, bottom: ctaRect.bottom, height: ctaRect.height }
+            : null,
+          canvas: canvasRect
+            ? { top: canvasRect.top, bottom: canvasRect.bottom, height: canvasRect.height }
+            : null,
           // Computed heights
-          heroContentBottom: ctaRect?.bottom ?? subheadlineRect?.bottom ?? headlineRect?.bottom ?? 0,
+          heroContentBottom:
+            ctaRect?.bottom ?? subheadlineRect?.bottom ?? headlineRect?.bottom ?? 0,
           // The visual cube area starts at approximately 65% of viewport from top
           // (visual-height-mobile is 35vh, so cube occupies bottom 35%)
           cubeAreaTop: vh * 0.65,
           // Available space for hero text
-          availableForText: (vh * 0.65) - (headerRect?.bottom ?? 64),
+          availableForText: vh * 0.65 - (headerRect?.bottom ?? 64),
           actualTextHeight: (ctaRect?.bottom ?? 0) - (headlineRect?.top ?? 0),
         };
       });
 
       console.log(`\n📱 ${device.name} (${device.width}×${device.height}):`);
       console.log(`   Header bottom: ${measurements.header?.bottom?.toFixed(0)}px`);
-      console.log(`   Headline: ${measurements.headline?.top?.toFixed(0)}→${measurements.headline?.bottom?.toFixed(0)}px (${measurements.headline?.height?.toFixed(0)}px)`);
-      console.log(`   Subheadline: ${measurements.subheadline?.top?.toFixed(0)}→${measurements.subheadline?.bottom?.toFixed(0)}px (${measurements.subheadline?.height?.toFixed(0)}px)`);
-      console.log(`   CTA: ${measurements.cta?.top?.toFixed(0)}→${measurements.cta?.bottom?.toFixed(0)}px (${measurements.cta?.height?.toFixed(0)}px)`);
+      console.log(
+        `   Headline: ${measurements.headline?.top?.toFixed(0)}→${measurements.headline?.bottom?.toFixed(0)}px (${measurements.headline?.height?.toFixed(0)}px)`,
+      );
+      console.log(
+        `   Subheadline: ${measurements.subheadline?.top?.toFixed(0)}→${measurements.subheadline?.bottom?.toFixed(0)}px (${measurements.subheadline?.height?.toFixed(0)}px)`,
+      );
+      console.log(
+        `   CTA: ${measurements.cta?.top?.toFixed(0)}→${measurements.cta?.bottom?.toFixed(0)}px (${measurements.cta?.height?.toFixed(0)}px)`,
+      );
       console.log(`   Hero content bottom: ${measurements.heroContentBottom.toFixed(0)}px`);
       console.log(`   Cube area top (65% vh): ${measurements.cubeAreaTop.toFixed(0)}px`);
       console.log(`   Available for text: ${measurements.availableForText.toFixed(0)}px`);
       console.log(`   Actual text height: ${measurements.actualTextHeight.toFixed(0)}px`);
-      console.log(`   Overflow: ${(measurements.actualTextHeight - measurements.availableForText).toFixed(0)}px`);
+      console.log(
+        `   Overflow: ${(measurements.actualTextHeight - measurements.availableForText).toFixed(0)}px`,
+      );
 
       // ASSERTION: hero content bottom must be above the cube area top
       // We allow 20px tolerance for visual overlap (cube blocks don't render at exact 45% line)
       expect(
         measurements.heroContentBottom,
-        `Hero content extends to ${measurements.heroContentBottom.toFixed(0)}px but cube area starts at ${measurements.cubeAreaTop.toFixed(0)}px`
+        `Hero content extends to ${measurements.heroContentBottom.toFixed(0)}px but cube area starts at ${measurements.cubeAreaTop.toFixed(0)}px`,
       ).toBeLessThanOrEqual(measurements.cubeAreaTop + 20);
     });
 
@@ -93,7 +118,7 @@ for (const device of IPHONE_VIEWPORTS) {
           { name: 'headline', el: document.querySelector('.hero__headline') },
           { name: 'subheadline', el: document.querySelector('.hero__subheadline') },
           { name: 'cta', el: document.querySelector('.hero__cta-wrapper') },
-        ].filter(e => e.el);
+        ].filter((e) => e.el);
 
         const results: { a: string; b: string; overlapPx: number }[] = [];
 
@@ -103,7 +128,8 @@ for (const device of IPHONE_VIEWPORTS) {
 
           // Check if bottom of A overlaps top of B
           const overlap = rectA.bottom - rectB.top;
-          if (overlap > 2) { // 2px tolerance
+          if (overlap > 2) {
+            // 2px tolerance
             results.push({
               a: elements[i].name,
               b: elements[i + 1].name,
@@ -136,7 +162,7 @@ for (const device of IPHONE_VIEWPORTS) {
 
       expect(
         fits.fits,
-        `CTA bottom (${fits.ctaBottom}px) exceeds viewport (${fits.viewportHeight}px) by ${fits.overflow}px`
+        `CTA bottom (${fits.ctaBottom}px) exceeds viewport (${fits.viewportHeight}px) by ${fits.overflow}px`,
       ).toBe(true);
     });
   });

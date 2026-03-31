@@ -21,60 +21,60 @@
   --font-family: var(--font-inter, sans-serif);
 
   /* === Surface adjustments (warmer cream) === */
-  --surface-base:       #fef9f0;
-  --surface-card:       #ffffff;
+  --surface-base: #fef9f0;
+  --surface-card: #ffffff;
   --surface-card-hover: #f8f3ea;
-  --surface-raised:     #f8f3ea;
-  --surface-elevated:   #f8f3ea;
-  --surface-overlay:    rgba(254, 249, 240, 0.85);
-  --surface-glass:      rgba(254, 249, 240, 0.6);
+  --surface-raised: #f8f3ea;
+  --surface-elevated: #f8f3ea;
+  --surface-overlay: rgba(254, 249, 240, 0.85);
+  --surface-glass: rgba(254, 249, 240, 0.6);
 
   /* Section border (subtle divider — Stitch outline_variant at low opacity) */
   --stitch-section-border: rgba(193, 200, 202, 0.3);
 
   /* Gold badge tokens (trust badges, "Verified Exit") */
-  --color-gold-100:      #ffdcbc;
-  --color-gold-900:      #2c1700;
+  --color-gold-100: #ffdcbc;
+  --color-gold-900: #2c1700;
 
   /* Surface hierarchy from Stitch Material tokens */
-  --stitch-surface:               #fef9f0;
+  --stitch-surface: #fef9f0;
   --stitch-surface-container-low: #f8f3ea;
-  --stitch-surface-container:     #f2ede4;
-  --stitch-surface-container-high:#ece8df;
-  --stitch-surface-dim:           #ded9d1;
+  --stitch-surface-container: #f2ede4;
+  --stitch-surface-container-high: #ece8df;
+  --stitch-surface-dim: #ded9d1;
 
   /* === Color adjustments === */
-  --color-teal-500:   #1b6969;   /* was #297373 — Stitch secondary */
-  --color-teal-700:   #004f50;   /* was #1E5757 — deeper teal from Stitch */
-  --color-teal-300:   #8cd3d2;   /* lighter accent from Stitch */
+  --color-teal-500: #1b6969; /* was #297373 — Stitch secondary */
+  --color-teal-700: #004f50; /* was #1E5757 — deeper teal from Stitch */
+  --color-teal-300: #8cd3d2; /* lighter accent from Stitch */
 
   /* Gold / Tertiary — same intent, slightly adjusted */
-  --color-gold-500:   #d79344;   /* was same — Stitch tertiary_fixed_dim */
-  --color-gold-300:   #ffb86a;   /* Stitch tertiary_fixed_dim */
+  --color-gold-500: #d79344; /* was same — Stitch tertiary_fixed_dim */
+  --color-gold-300: #ffb86a; /* Stitch tertiary_fixed_dim */
 
   /* === Glass adjustments (warmer tone) === */
-  --glass-bg:              rgba(254, 249, 240, 0.45);
-  --glass-bg-scrolled:     rgba(254, 249, 240, 0.55);
-  --glass-bg-sticky:       rgba(254, 249, 240, 0.65);
+  --glass-bg: rgba(254, 249, 240, 0.45);
+  --glass-bg-scrolled: rgba(254, 249, 240, 0.55);
+  --glass-bg-sticky: rgba(254, 249, 240, 0.65);
   --glass-header-scrolled: rgba(254, 249, 240, 0.7);
-  --glass-border:          1px solid rgba(254, 249, 240, 0.35);
+  --glass-border: 1px solid rgba(254, 249, 240, 0.35);
 
   /* === Dark section tokens (for bg-primary-container sections) === */
-  --stitch-dark-bg:         #103740;
-  --stitch-dark-text:       #fff;
+  --stitch-dark-bg: #103740;
+  --stitch-dark-text: #fff;
   --stitch-dark-text-muted: #a7cdd8;
-  --stitch-dark-accent:     #ffb86a;
+  --stitch-dark-accent: #ffb86a;
 
   /* === Additional semantic tokens === */
-  --stitch-outline:         #71787b;
+  --stitch-outline: #71787b;
   --stitch-outline-variant: #c1c8ca;
 
   /* === Glass for dark sections === */
-  --stitch-glass-dark-bg:     rgba(255, 255, 255, 0.05);
+  --stitch-glass-dark-bg: rgba(255, 255, 255, 0.05);
   --stitch-glass-dark-border: 1px solid rgba(255, 255, 255, 0.1);
-  --stitch-glass-header-bg:   rgba(254, 249, 240, 0.55);
-  --overlay-hidden:           rgba(0, 0, 0, 0);
-  --overlay-visible:          rgba(0, 0, 0, 0.4);
+  --stitch-glass-header-bg: rgba(254, 249, 240, 0.55);
+  --overlay-hidden: rgba(0, 0, 0, 0);
+  --overlay-visible: rgba(0, 0, 0, 0.4);
 
   /* === CTA Signature Gradient (primary → primary_container at 135°) === */
   --stitch-cta-gradient: linear-gradient(135deg, #002128, #103740);
@@ -83,12 +83,12 @@
   --stitch-cta-hover-lift: translateY(-2px);
 
   /* === Sizing tokens for v2 sections === */
-  --border-width-accent:   2px;
-  --border-width-bar:      4px;
-  --font-size-display:     clamp(2.5rem, 2rem + 3vw, 5rem);
-  --space-quote-card-min:  28rem;
-  --step-number-opacity:   0.5;
-  --container-narrow:      40rem;
+  --border-width-accent: 2px;
+  --border-width-bar: 4px;
+  --font-size-display: clamp(2.5rem, 2rem + 3vw, 5rem);
+  --space-quote-card-min: 28rem;
+  --step-number-opacity: 0.5;
+  --container-narrow: 40rem;
 
   /* === Cinematic section (fullscreen photo + overlay) === */
   --stitch-cinematic-overlay: rgba(16, 55, 64, 0.3);

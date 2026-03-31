@@ -73,12 +73,7 @@ function AnimatedValue({
 }) {
   const numericTarget = parseFloat(rawValue);
   const hasDecimal = rawValue.includes('.');
-  const animated = useAnimatedCounter(
-    numericTarget,
-    isVisible,
-    1200,
-    hasDecimal ? 1 : 0,
-  );
+  const animated = useAnimatedCounter(numericTarget, isVisible, 1200, hasDecimal ? 1 : 0);
 
   return (
     <span className={className}>
@@ -106,10 +101,7 @@ function StatCard({
   isVisible: boolean;
 }) {
   return (
-    <div
-      className="v2-bento__stat"
-      style={{ '--bento-i': index + 3 } as React.CSSProperties}
-    >
+    <div className="v2-bento__stat" style={{ '--bento-i': index + 3 } as React.CSSProperties}>
       <div className="v2-bento__stat-accent" aria-hidden="true" />
       <AnimatedValue
         rawValue={value}
@@ -149,19 +141,18 @@ export default function BentoSection({ data }: Props) {
 
   return (
     <div className="v2-container">
-      <div
-        ref={gridRef}
-        className="v2-bento"
-        data-visible={isVisible || undefined}
-      >
+      <div ref={gridRef} className="v2-bento" data-visible={isVisible || undefined}>
         {/* ── Feature card ── */}
-        <div
-          className="v2-bento__feature"
-          style={{ '--bento-i': 0 } as React.CSSProperties}
-        >
+        <div className="v2-bento__feature" style={{ '--bento-i': 0 } as React.CSSProperties}>
           <div className="v2-bento__feature-mesh" aria-hidden="true" />
-          <div className="v2-bento__feature-bracket v2-bento__feature-bracket--tl" aria-hidden="true" />
-          <div className="v2-bento__feature-bracket v2-bento__feature-bracket--br" aria-hidden="true" />
+          <div
+            className="v2-bento__feature-bracket v2-bento__feature-bracket--tl"
+            aria-hidden="true"
+          />
+          <div
+            className="v2-bento__feature-bracket v2-bento__feature-bracket--br"
+            aria-hidden="true"
+          />
 
           <div className="v2-bento__feature-content">
             <span className="v2-bento__feature-overline">{data.feature.overline}</span>
@@ -174,7 +165,9 @@ export default function BentoSection({ data }: Props) {
               <ul className="v2-bento__feature-bullets">
                 {data.feature.bullets.map((b) => (
                   <li key={b} className="v2-bento__feature-bullet">
-                    <span className="v2-bento__bullet-check" aria-hidden="true">✓</span>
+                    <span className="v2-bento__bullet-check" aria-hidden="true">
+                      ✓
+                    </span>
                     {b}
                   </li>
                 ))}
@@ -185,10 +178,7 @@ export default function BentoSection({ data }: Props) {
 
         {/* ── Highlight card (gold accent, animated counter) ── */}
         {data.highlight && (
-          <div
-            className="v2-bento__highlight"
-            style={{ '--bento-i': 1 } as React.CSSProperties}
-          >
+          <div className="v2-bento__highlight" style={{ '--bento-i': 1 } as React.CSSProperties}>
             <div className="v2-bento__highlight-glow" aria-hidden="true" />
             <AnimatedValue
               rawValue={data.highlight.value}
@@ -215,7 +205,16 @@ export default function BentoSection({ data }: Props) {
               <p className="v2-bento__link-text">{data.linkCard.text}</p>
             </div>
             <span className="v2-bento__link-arrow" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <line x1="7" y1="17" x2="17" y2="7" />
                 <polyline points="7 7 17 7 17 17" />
               </svg>

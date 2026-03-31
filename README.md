@@ -20,13 +20,13 @@ npm run dev
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start the dev server |
-| `npm run build` | Production build |
-| `npm run start` | Serve the production build |
-| `npm run lint` | ESLint (`--max-warnings=0`) |
-| `npm run typecheck` | `tsc --noEmit` |
+| Command             | Description                 |
+| ------------------- | --------------------------- |
+| `npm run dev`       | Start the dev server        |
+| `npm run build`     | Production build            |
+| `npm run start`     | Serve the production build  |
+| `npm run lint`      | ESLint (`--max-warnings=0`) |
+| `npm run typecheck` | `tsc --noEmit`              |
 
 ## Current Architecture
 

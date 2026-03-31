@@ -53,7 +53,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Partnership Alignment',
         tooltipSubhead: 'Roofer-Centric from the Start',
         bullets: [],
-        description: 'We partner with owners who want an aligned operator, durable wealth building, and a roofer-led public path.',
+        description:
+          'We partner with owners who want an aligned operator, durable wealth building, and a roofer-led public path.',
         icon: icons.partnership,
       },
       // Value / Gold (top-right) — warmth, craft
@@ -71,7 +72,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'People & Culture',
         tooltipSubhead: 'Culture Beats Talent',
         bullets: [],
-        description: 'Map your culture scientifically, reinforce what works, and build a succession bench without blowing up your crew.',
+        description:
+          'Map your culture scientifically, reinforce what works, and build a succession bench without blowing up your crew.',
         icon: icons.people,
       },
       // Systems teal (bottom-left) — process, precision
@@ -89,7 +91,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Unified Data Model',
         tooltipSubhead: 'One Language to Rule',
         bullets: [],
-        description: 'Cleansing old data and creating a unified standard for leads, margin, and lifecycle stages so every scoreboard reads the same across the platform.',
+        description:
+          'Cleansing old data and creating a unified standard for leads, margin, and lifecycle stages so every scoreboard reads the same across the platform.',
         icon: icons.data,
       },
       // Growth green (bottom-right) — results, yield
@@ -107,7 +110,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Systems Implementation',
         tooltipSubhead: 'Lead-to-Review Operating System',
         bullets: [],
-        description: 'Wire the CRM, job management, and accounting into one operating backbone so work completes and records itself once.',
+        description:
+          'Wire the CRM, job management, and accounting into one operating backbone so work completes and records itself once.',
         icon: icons.system,
       },
     ],
@@ -138,7 +142,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Process Playbooks',
         tooltipSubhead: 'Proven Frameworks',
         bullets: [],
-        description: 'Proven operating frameworks, SOPs, and accountability cadences distilled from 500+ roofing engagements, ready to deploy.',
+        description:
+          'Proven operating frameworks, SOPs, and accountability cadences distilled from 500+ roofing engagements, ready to deploy.',
         icon: icons.playbooks,
       },
       {
@@ -154,7 +159,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Training Engine',
         tooltipSubhead: 'Adoption That Sticks',
         bullets: [],
-        description: 'Role-based training, certification tracks, and coaching loops so every crew works to the same standard.',
+        description:
+          'Role-based training, certification tracks, and coaching loops so every crew works to the same standard.',
         icon: icons.training,
       },
       {
@@ -170,7 +176,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Pod Sales',
         tooltipSubhead: 'Close More Roofs',
         bullets: [],
-        description: 'Build hunter-closer pods with SLAs, objection scripts, and pipeline reviews that turn leads into booked revenue.',
+        description:
+          'Build hunter-closer pods with SLAs, objection scripts, and pipeline reviews that turn leads into booked revenue.',
         icon: icons.sales,
       },
     ],
@@ -197,7 +204,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Production Frameworks',
         tooltipSubhead: 'Flawless Installs drive Customer Acquisition',
         bullets: [],
-        description: 'Site supervisors, referral scripts, crew pay plans, and coordination hubs that deliver clean installs and spark new connections.',
+        description:
+          'Site supervisors, referral scripts, crew pay plans, and coordination hubs that deliver clean installs and spark new connections.',
         icon: icons.production,
       },
     ],
@@ -219,7 +227,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Marketing Accountability',
         tooltipSubhead: 'Fuel Demand',
         bullets: [],
-        description: 'See every dollar\'s impact, police agency performance, and scale reviews, referrals, and media as one demand engine.',
+        description:
+          "See every dollar's impact, police agency performance, and scale reviews, referrals, and media as one demand engine.",
         icon: icons.marketing,
       },
     ],
@@ -241,7 +250,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Workflow Automation',
         tooltipSubhead: 'Zero Toggle Tax',
         bullets: [],
-        description: 'Kill duplicate entry, rogue spreadsheets, and "do the thing, then tell the system you did the thing" busywork.',
+        description:
+          'Kill duplicate entry, rogue spreadsheets, and "do the thing, then tell the system you did the thing" busywork.',
         icon: icons.automation,
       },
     ],
@@ -263,7 +273,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Finance Ops',
         tooltipSubhead: 'Never Outgrow Quality or Cashflow',
         bullets: [],
-        description: 'Enterprise-grade controllers, tax strategy, and reporting teams professionalize your books and hand you real-time cash clarity.',
+        description:
+          'Enterprise-grade controllers, tax strategy, and reporting teams professionalize your books and hand you real-time cash clarity.',
         icon: icons.finance,
       },
     ],
@@ -285,7 +296,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Data Intelligence',
         tooltipSubhead: 'Better Data, Better Decisions',
         bullets: [],
-        description: 'Executive-grade dashboards surface opportunities, unlock shareholder value, and show exactly where to push next.',
+        description:
+          'Executive-grade dashboards surface opportunities, unlock shareholder value, and show exactly where to push next.',
         icon: icons.intelligence,
       },
     ],
@@ -307,7 +319,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Agentic Workforce',
         tooltipSubhead: 'Hybrid Human Centric Leverage',
         bullets: [],
-        description: 'AI copilots clear the grunt work—permitting, clicks, reconciliations—so humans stay human and 10× their impact.',
+        description:
+          'AI copilots clear the grunt work—permitting, clicks, reconciliations—so humans stay human and 10× their impact.',
         icon: icons.aiAgents,
       },
     ],
@@ -338,7 +351,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Procurement Leverage',
         tooltipSubhead: 'National Buying Power',
         bullets: [],
-        description: 'Materials, storm response, health plans, payment processing, and shared specialists negotiated once so every partner wins.',
+        description:
+          'Materials, storm response, health plans, payment processing, and shared specialists negotiated once so every partner wins.',
         icon: icons.procurement,
       },
       {
@@ -354,7 +368,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Employee Stock Ownership',
         tooltipSubhead: 'Legacy Protected Growth Insurance',
         bullets: [],
-        description: 'Give your second-row leaders true upside so you can announce the exit proudly and keep the team motivated for decades.',
+        description:
+          'Give your second-row leaders true upside so you can announce the exit proudly and keep the team motivated for decades.',
         icon: icons.eso,
       },
       {
@@ -370,7 +385,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Exit Planning',
         tooltipSubhead: 'IPO Committee',
         bullets: [],
-        description: 'Bankers, auditors, filings, plus founder life-design—sell, stay, or reinvent with a plan so post-exit shock never hits.',
+        description:
+          'Bankers, auditors, filings, plus founder life-design—sell, stay, or reinvent with a plan so post-exit shock never hits.',
         icon: icons.exitReady,
       },
     ],
@@ -397,7 +413,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Robotics Integration',
         tooltipSubhead: 'Human + Machine Future',
         bullets: [],
-        description: 'We\'re the beta lab for VC-backed roof robotics—roofers share the upside, robots learn our playbooks, everyone wins.',
+        description:
+          "We're the beta lab for VC-backed roof robotics—roofers share the upside, robots learn our playbooks, everyone wins.",
         icon: icons.robotics,
       },
     ],
@@ -419,7 +436,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Growth by Design',
         tooltipSubhead: 'Scale With Purpose',
         bullets: [],
-        description: 'Expansion roadmaps, greenfield launches, and knowledge transfer that unlock shareholder value and attract fresh capital.',
+        description:
+          'Expansion roadmaps, greenfield launches, and knowledge transfer that unlock shareholder value and attract fresh capital.',
         icon: icons.growth,
       },
     ],
@@ -441,7 +459,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'IPO',
         tooltipSubhead: 'Ring The Bell',
         bullets: [],
-        description: 'The first roofer-built public company—owners keep 80%, confetti flies, and a brand-new asset class is born.',
+        description:
+          'The first roofer-built public company—owners keep 80%, confetti flies, and a brand-new asset class is born.',
         icon: icons.ipo,
       },
     ],
@@ -455,11 +474,11 @@ export const journeyVariant: StackVariant = {
   layers,
   geometryOverrides: {
     layerHeight: 0.38,
-    gapVertical: 0.30,
+    gapVertical: 0.3,
   },
   mosaicOverrides: {
     cols: 5,
     finalZoom: 65,
-    spanBlocks: { 18: 2 },  // IPO spans 2 columns → fills last row gap
+    spanBlocks: { 18: 2 }, // IPO spans 2 columns → fills last row gap
   },
 };

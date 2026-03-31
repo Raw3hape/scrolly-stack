@@ -33,9 +33,7 @@ export default function useResponsiveZoom(
   const handleResize = useCallback(() => {
     const width = window.innerWidth;
     setBaseZoom(
-      width <= animation.zoom.mobileBreakpoint
-        ? animation.zoom.mobile
-        : animation.zoom.desktop
+      width <= animation.zoom.mobileBreakpoint ? animation.zoom.mobile : animation.zoom.desktop,
     );
   }, []);
 
@@ -66,9 +64,7 @@ export default function useResponsiveZoom(
 
   // Apply adaptive cap: on desktop, limit iso zoom so cube fits below header.
   // On mobile, maxIsoZoom is typically not provided (mobile zoom is already small).
-  const cappedBaseZoom = maxIsoZoom != null
-    ? Math.min(baseZoom, maxIsoZoom)
-    : baseZoom;
+  const cappedBaseZoom = maxIsoZoom != null ? Math.min(baseZoom, maxIsoZoom) : baseZoom;
 
   // Mosaic transition zoom: desktop lerps cappedBaseZoom → finalZoom.
   // On mobile, grid layout uses animation.zoom.mobile — camera stays at baseZoom.
@@ -94,4 +90,3 @@ export default function useResponsiveZoom(
 
   return cappedBaseZoom;
 }
-

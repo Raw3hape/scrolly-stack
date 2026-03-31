@@ -8,71 +8,71 @@
 :root {
   /* === Durations === */
   --duration-instant: 100ms;
-  --duration-fast:    200ms;
-  --duration-base:    300ms;
-  --duration-slow:    500ms;
-  --duration-slower:  800ms;
+  --duration-fast: 200ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 800ms;
 
   /* === Easing Curves === */
-  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
   /* === Composed Transitions === */
-  --transition-micro:  var(--duration-instant) var(--ease-out);
-  --transition-fast:   var(--duration-fast)   var(--ease-out);
-  --transition-base:   var(--duration-base)   var(--ease-in-out);
-  --transition-smooth: var(--duration-slow)   var(--ease-out);
-  --transition-spring: var(--duration-base)   var(--ease-spring);
-  --transition-shimmer: var(--duration-slow)   ease;
+  --transition-micro: var(--duration-instant) var(--ease-out);
+  --transition-fast: var(--duration-fast) var(--ease-out);
+  --transition-base: var(--duration-base) var(--ease-in-out);
+  --transition-smooth: var(--duration-slow) var(--ease-out);
+  --transition-spring: var(--duration-base) var(--ease-spring);
+  --transition-shimmer: var(--duration-slow) ease;
 
   /* === Parallax Layer System === */
-  --parallax-rise-sm:  clamp(2rem, 8vh, 6rem);    /* accent layer */
-  --parallax-rise-md:  clamp(3rem, 12vh, 8rem);   /* foreground layer */
-  --parallax-rise-lg:  clamp(4rem, 20vh, 12rem);  /* background layer */
-  --parallax-speed-bg:     0.4;    /* slow — creates depth           */
-  --parallax-speed-fg:     1.2;    /* base rhythm (slightly fast)    */
-  --parallax-speed-accent: 1.6;    /* dramatic — appears later       */
-  --parallax-stagger-step: 0.12;   /* progress offset between siblings */
-  --parallax-scale-from:   0.94;   /* accent layer scale start       */
-  --parallax-shift-x:  clamp(1.5rem, 8vw, 6rem);  /* horizontal slide */
+  --parallax-rise-sm: clamp(2rem, 8vh, 6rem); /* accent layer */
+  --parallax-rise-md: clamp(3rem, 12vh, 8rem); /* foreground layer */
+  --parallax-rise-lg: clamp(4rem, 20vh, 12rem); /* background layer */
+  --parallax-speed-bg: 0.4; /* slow — creates depth           */
+  --parallax-speed-fg: 1.2; /* base rhythm (slightly fast)    */
+  --parallax-speed-accent: 1.6; /* dramatic — appears later       */
+  --parallax-stagger-step: 0.12; /* progress offset between siblings */
+  --parallax-scale-from: 0.94; /* accent layer scale start       */
+  --parallax-shift-x: clamp(1.5rem, 8vw, 6rem); /* horizontal slide */
 
   /* === Hero Intro Animation === */
-  --intro-duration:     1.2s;
-  --intro-ease:         var(--ease-out);                  /* smooth ease-out  */
-  --intro-rise:         clamp(2rem, 6vh, 5rem);           /* vertical travel   */
-  --intro-stagger:      120ms;                            /* delay per child   */
+  --intro-duration: 1.2s;
+  --intro-ease: var(--ease-out); /* smooth ease-out  */
+  --intro-rise: clamp(2rem, 6vh, 5rem); /* vertical travel   */
+  --intro-stagger: 120ms; /* delay per child   */
 
   /* === Scroll-Expand Card System === */
-  --expand-inset-start:  clamp(3rem, 8vw, 10rem);     /* initial margin from viewport edges  */
-  --expand-radius-start: clamp(24px, 4vw, 48px);      /* initial corner rounding            */
-  --expand-scale-start:  0.55;                         /* initial scale — roughly half size   */
-  --expand-scale-bg:     1.25;                         /* bg zoom to compensate for scale     */
-  --expand-speed:        0.5;                          /* <1 = slower expansion, 1 = normal   */
-  --expand-pull-up:      clamp(-6rem, -10vw, -3rem);   /* pull section up to overlap hero     */
+  --expand-inset-start: clamp(3rem, 8vw, 10rem); /* initial margin from viewport edges  */
+  --expand-radius-start: clamp(24px, 4vw, 48px); /* initial corner rounding            */
+  --expand-scale-start: 0.55; /* initial scale — roughly half size   */
+  --expand-scale-bg: 1.25; /* bg zoom to compensate for scale     */
+  --expand-speed: 0.5; /* <1 = slower expansion, 1 = normal   */
+  --expand-pull-up: clamp(-6rem, -10vw, -3rem); /* pull section up to overlap hero     */
 
   /* === Timeline reveal stagger === */
-  --reveal-duration-number:  0.9s;     /* TimelineSection number entrance */
-  --reveal-duration-title:   0.75s;    /* TimelineSection title entrance */
-  --reveal-duration-text:    0.65s;    /* TimelineSection text entrance */
-  --reveal-delay-title:      0.15s;    /* Title stagger delay */
-  --reveal-delay-text:       0.28s;    /* Text stagger delay */
-  --reveal-easing:           var(--ease-out);  /* Shared reveal easing */
+  --reveal-duration-number: 0.9s; /* TimelineSection number entrance */
+  --reveal-duration-title: 0.75s; /* TimelineSection title entrance */
+  --reveal-duration-text: 0.65s; /* TimelineSection text entrance */
+  --reveal-delay-title: 0.15s; /* Title stagger delay */
+  --reveal-delay-text: 0.28s; /* Text stagger delay */
+  --reveal-easing: var(--ease-out); /* Shared reveal easing */
 
   /* === Longer durations (not covered by base scale) === */
-  --duration-long:     1.2s;    /* Hero intro, canvas fadeIn */
-  --duration-longer:   1.5s;    /* Hero glow transition */
+  --duration-long: 1.2s; /* Hero intro, canvas fadeIn */
+  --duration-longer: 1.5s; /* Hero glow transition */
 }
 
 /* === Accessibility: Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-instant: 0ms;
-    --duration-fast:    0ms;
-    --duration-base:    0ms;
-    --duration-slow:    0ms;
-    --duration-slower:  0ms;
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
   }
 
   *,

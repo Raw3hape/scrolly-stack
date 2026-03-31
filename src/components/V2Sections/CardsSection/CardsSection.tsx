@@ -25,9 +25,7 @@ export default function CardsSection({ data }: Props) {
           className="v2-cards-header__heading"
           completionFactor={0.45}
         />
-        {data.subtext && (
-          <p className="v2-cards-header__subtext">{data.subtext}</p>
-        )}
+        {data.subtext && <p className="v2-cards-header__subtext">{data.subtext}</p>}
       </div>
 
       <div className="v2-cards-grid">
@@ -44,4 +42,3 @@ export default function CardsSection({ data }: Props) {
     </div>
   );
 }
-

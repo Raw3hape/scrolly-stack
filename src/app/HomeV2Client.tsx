@@ -29,7 +29,10 @@ const READY_TIMEOUT_MS = 4_000;
 /** Module-level flag — skip branded loader on SPA return visits */
 let hasLoadedOnce = false;
 
-export default function HomeV2Client({ variantId = 'v6-exact-flipped', children }: HomeV2ClientProps) {
+export default function HomeV2Client({
+  variantId = 'v6-exact-flipped',
+  children,
+}: HomeV2ClientProps) {
   const [sceneReady, setSceneReady] = useState(hasLoadedOnce);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -72,9 +75,7 @@ export default function HomeV2Client({ variantId = 'v6-exact-flipped', children 
         <ScrollyLoader variantId={variantId} onReady={handleSceneReady} sceneReady={sceneReady} />
 
         {/* Stitch sections below the cube — positioned above sticky canvas */}
-        <div className="v2-sections">
-          {children}
-        </div>
+        <div className="v2-sections">{children}</div>
       </div>
     </>
   );

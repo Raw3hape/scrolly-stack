@@ -30,15 +30,19 @@ interface ScrollyExperienceProps {
   sceneReady?: boolean;
 }
 
-export default function ScrollyExperience({ variantId, onReady, sceneReady }: ScrollyExperienceProps) {
+export default function ScrollyExperience({
+  variantId,
+  onReady,
+  sceneReady,
+}: ScrollyExperienceProps) {
   const [currentStep, setStep] = useState(HERO_STEP);
   const mosaicTriggerRef = useRef<HTMLDivElement>(null);
   const { mosaic: mosaicProgress, exit: exitProgress } = useScrollProgress(mosaicTriggerRef);
 
   // Touch detection — stable after mount (capability doesn't change mid-session)
   const isTouchDevice = useMemo(
-    () => typeof window !== 'undefined'
-      && ('ontouchstart' in window || navigator.maxTouchPoints > 0),
+    () =>
+      typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0),
     [],
   );
 
@@ -51,9 +55,8 @@ export default function ScrollyExperience({ variantId, onReady, sceneReady }: Sc
   // On touch devices: keep col-content scrollable even during mosaic hold.
   // Mobile has no tile hover/click — disabling pointer-events only blocks scroll.
   // On desktop: disable content for mosaic tile hover/click interactions.
-  const contentStyle = (isInteractive && !isTouchDevice)
-    ? { pointerEvents: 'none' as const }
-    : undefined;
+  const contentStyle =
+    isInteractive && !isTouchDevice ? { pointerEvents: 'none' as const } : undefined;
 
   // Exit: slide canvas UP + fade out. This physically moves the opaque
   // fixed-position canvas upward, revealing v2-sections beneath (z=49).
@@ -67,39 +70,36 @@ export default function ScrollyExperience({ variantId, onReady, sceneReady }: Sc
 
   return (
     <VariantProvider variantId={variantId}>
-    <div className="layout-container">
-      <div
-        className="col-content"
-        style={contentStyle}
-      >
-        <Overlay
-          currentStep={currentStep}
-          setStep={setStep}
-          mosaicTriggerRef={mosaicTriggerRef}
-        />
-      </div>
-      <div
-        className={`col-visual ${sceneReady ? 'col-visual--ready' : ''} ${isInteractive ? 'col-visual--interactive' : ''} ${isPriorityFrame ? 'col-visual--priority' : ''}`}
-        style={exitStyle}
-      >
-        <Scene
-          currentStep={currentStep}
-          mosaicProgress={mosaicProgress}
-          onBlockClick={() => {}}
-          onReady={onReady}
-        />
-      </div>
-      {process.env.NODE_ENV === 'development' && <FpsCounter />}
+      <div className="layout-container">
+        <div className="col-content" style={contentStyle}>
+          <Overlay
+            currentStep={currentStep}
+            setStep={setStep}
+            mosaicTriggerRef={mosaicTriggerRef}
+          />
+        </div>
+        <div
+          className={`col-visual ${sceneReady ? 'col-visual--ready' : ''} ${isInteractive ? 'col-visual--interactive' : ''} ${isPriorityFrame ? 'col-visual--priority' : ''}`}
+          style={exitStyle}
+        >
+          <Scene
+            currentStep={currentStep}
+            mosaicProgress={mosaicProgress}
+            onBlockClick={() => {}}
+            onReady={onReady}
+          />
+        </div>
+        {process.env.NODE_ENV === 'development' && <FpsCounter />}
 
-      {/* Debug probe for Playwright position-tracking tests (hidden, DOM-only) */}
-      <div
-        id="three-debug"
-        style={{ display: 'none' }}
-        data-mosaic-progress={mosaicProgress}
-        data-current-step={currentStep}
-        data-exit-progress={exitProgress}
-      />
-    </div>
+        {/* Debug probe for Playwright position-tracking tests (hidden, DOM-only) */}
+        <div
+          id="three-debug"
+          style={{ display: 'none' }}
+          data-mosaic-progress={mosaicProgress}
+          data-current-step={currentStep}
+          data-exit-progress={exitProgress}
+        />
+      </div>
     </VariantProvider>
   );
 }

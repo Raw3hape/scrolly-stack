@@ -16,11 +16,7 @@
 
 import { Suspense, useRef, useCallback, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import {
-  Environment,
-  PresentationControls,
-  RoundedBox,
-} from '@react-three/drei';
+import { Environment, PresentationControls, RoundedBox } from '@react-three/drei';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { palette } from '@/config/palette';
@@ -50,10 +46,10 @@ const HALF_SPAN = ((GRID_SIZE - 1) * STRIDE) / 2; // 0.68
 const TOTAL_XZ = (GRID_SIZE - 1) * STRIDE + COL_XZ; // 1.58
 const MIN_H = 0.22;
 const MAX_H = 1.45;
-const MAX_H_PADDED = 1.60;
+const MAX_H_PADDED = 1.6;
 
 // ─── Wave Animation Constants ────────────────────────────────────────────────
-const WAVE_AMP = 0.30;
+const WAVE_AMP = 0.3;
 const WAVE_FREQ = 1.2;
 const WAVE_SPEED = 2.5;
 
@@ -186,7 +182,12 @@ function AscendingBlocksModel({
 
   const layout = layoutRef.current ?? readHeroLayout();
   const xOffset = computeModelXOffset(layout, visibleW);
-  const yOffset = computeModelYOffset(textMeasureRef.current, visibleH, size.height, layout.isMobile);
+  const yOffset = computeModelYOffset(
+    textMeasureRef.current,
+    visibleH,
+    size.height,
+    layout.isMobile,
+  );
   const availableW = computeAvailableWidth(layout, visibleW);
   const fillFactor = layout.isMobile ? layout.fillMobile : layout.fillAnimated;
   const scale = Math.min(
@@ -259,8 +260,12 @@ function AscendingBlocksModel({
               {/* Invisible hitbox covering the full volume */}
               <mesh
                 position={[0, MAX_H_PADDED / 2, 0]}
-                onPointerOver={() => { blocksHovered = true; }}
-                onPointerOut={() => { blocksHovered = false; }}
+                onPointerOver={() => {
+                  blocksHovered = true;
+                }}
+                onPointerOut={() => {
+                  blocksHovered = false;
+                }}
               >
                 <boxGeometry args={[TOTAL_XZ, MAX_H_PADDED, TOTAL_XZ]} />
                 <meshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -268,7 +273,9 @@ function AscendingBlocksModel({
               {columns.map((c) => (
                 <group
                   key={c.index}
-                  ref={(el: THREE.Group | null) => { colRefs.current[c.index] = el; }}
+                  ref={(el: THREE.Group | null) => {
+                    colRefs.current[c.index] = el;
+                  }}
                   position={[c.x, c.baseH / 2, c.z]}
                   scale={[1, c.baseH, 1]}
                 >
@@ -369,7 +376,10 @@ export default function HeroAscendingBlocks3D({ className, onReady }: HeroAscend
             requestAnimationFrame(() => onReady?.());
           }
           const canvas = state.gl.domElement;
-          canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); onReady?.(); });
+          canvas.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            onReady?.();
+          });
         }}
         dpr={[1, 2]}
         gl={{

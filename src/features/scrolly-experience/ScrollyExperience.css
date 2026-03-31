@@ -27,7 +27,6 @@
   padding-top: var(--header-height);
 }
 
-
 /* =============================================================================
    CONTENT COLUMN (Left - Text) — above canvas, below header
    ============================================================================= */
@@ -45,7 +44,6 @@
   );
   padding-right: var(--space-2xl);
 }
-
 
 /* =============================================================================
    VISUAL COLUMN (3D Canvas) — ALWAYS fullscreen fixed, below header
@@ -86,7 +84,6 @@
 .col-visual--priority {
   z-index: calc(var(--z-content) + 1);
 }
-
 
 /* =============================================================================
    RESPONSIVE BREAKPOINTS
@@ -135,7 +132,6 @@
     padding-right: var(--space-md);
   }
 }
-
 
 /* =============================================================================
    MOSAIC TRIGGER ZONE

@@ -110,7 +110,8 @@ test.describe('Timeline Section — Desktop Layout', () => {
       const kpiLeft = kpiBox!.x;
 
       // They should be in separate columns (either content < kpi or kpi < content)
-      const noOverlap = contentRight <= kpiLeft + 5 || kpiBox!.x + kpiBox!.width <= contentBox!.x + 5;
+      const noOverlap =
+        contentRight <= kpiLeft + 5 || kpiBox!.x + kpiBox!.width <= contentBox!.x + 5;
       expect(noOverlap).toBe(true);
     }
   });
@@ -252,9 +253,7 @@ test.describe('Timeline Section — Mobile Layout', () => {
     await scrollToTimeline(page);
 
     const firstStep = page.locator('.v2-timeline__step').first();
-    const borderLeft = await firstStep.evaluate((el) =>
-      getComputedStyle(el).borderLeftStyle,
-    );
+    const borderLeft = await firstStep.evaluate((el) => getComputedStyle(el).borderLeftStyle);
 
     expect(borderLeft).toBe('solid');
   });
@@ -266,9 +265,7 @@ test.describe('Timeline Section — Mobile Layout', () => {
     const activeStep = page.locator('.v2-timeline__step--active').first();
     await expect(activeStep).toBeVisible();
 
-    const borderColor = await activeStep.evaluate((el) =>
-      getComputedStyle(el).borderLeftColor,
-    );
+    const borderColor = await activeStep.evaluate((el) => getComputedStyle(el).borderLeftColor);
 
     // Should not be the default gray — should be gold
     expect(borderColor).not.toBe('rgb(193, 200, 202)');
@@ -319,9 +316,7 @@ test.describe('Timeline Section — Small Mobile (375px)', () => {
     await scrollThroughTimeline(page);
 
     const kpiCard = page.locator('.v2-timeline__kpi-card').first();
-    const padding = await kpiCard.evaluate((el) =>
-      getComputedStyle(el).paddingLeft,
-    );
+    const padding = await kpiCard.evaluate((el) => getComputedStyle(el).paddingLeft);
 
     const paddingNum = parseFloat(padding);
     // Should have at least 12px padding

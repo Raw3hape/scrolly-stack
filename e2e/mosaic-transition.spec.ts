@@ -130,7 +130,7 @@ test.describe('Mosaic Transition', () => {
   test('trigger zone has pointer-events none', async ({ page }) => {
     const triggerZone = page.locator('.mosaic-trigger-zone');
     const pointerEvents = await triggerZone.evaluate(
-      (el) => window.getComputedStyle(el).pointerEvents
+      (el) => window.getComputedStyle(el).pointerEvents,
     );
     expect(pointerEvents).toBe('none');
   });
@@ -168,7 +168,7 @@ test.describe('Mosaic Transition', () => {
     for (let i = 0; i < scrollSteps; i++) {
       await page.evaluate((step) => {
         const totalScroll = document.body.scrollHeight;
-        const targetScroll = totalScroll * (0.5 + (step / 10));
+        const targetScroll = totalScroll * (0.5 + step / 10);
         window.scrollTo(0, targetScroll);
       }, i);
       await page.waitForTimeout(300);
@@ -209,7 +209,7 @@ test.describe('Mosaic Transition', () => {
         !e.includes('THREE.') &&
         !e.includes('WebGL') &&
         !e.includes('Deprecation') &&
-        !e.includes('Failed to load resource')
+        !e.includes('Failed to load resource'),
     );
 
     expect(criticalErrors).toHaveLength(0);

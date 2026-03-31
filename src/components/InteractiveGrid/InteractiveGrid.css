@@ -30,8 +30,9 @@
   aspect-ratio: 1;
   border: var(--line-thin) solid transparent;
   border-radius: var(--radius-xs, 2px);
-  transition: border-color var(--duration-slow) var(--ease-out),
-              background-color var(--duration-slow) var(--ease-out);
+  transition:
+    border-color var(--duration-slow) var(--ease-out),
+    background-color var(--duration-slow) var(--ease-out);
 }
 
 /* Proximity glow — computed via CSS calc from --mouse-x/--mouse-y */

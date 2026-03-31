@@ -58,18 +58,12 @@ export default function HoverTooltip({ hoveredBlock, mousePosition }: HoverToolt
       }}
     >
       <h4 className="hover-tooltip__title">
-        <span
-          className="hover-tooltip__accent-bar"
-          style={{ backgroundColor: color }}
-        />
+        <span className="hover-tooltip__accent-bar" style={{ backgroundColor: color }} />
         {tooltipTitle || 'Layer'}
       </h4>
 
       {tooltipSubhead && (
-        <p
-          className="hover-tooltip__subhead"
-          style={{ color }}
-        >
+        <p className="hover-tooltip__subhead" style={{ color }}>
           {tooltipSubhead}
         </p>
       )}

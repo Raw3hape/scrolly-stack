@@ -33,7 +33,7 @@ const CFG = {
   cellSize: 40,
 
   // --- Visual ---
-  color: hexToRgb(palette.anchor900),   // brand teal
+  color: hexToRgb(palette.anchor900), // brand teal
   lineAlpha: 0.06,
   lineWidth: 0.5,
   dotRadius: 1.6,
@@ -47,18 +47,18 @@ const CFG = {
   glowAlpha: 0.22,
 
   // --- Colored tiles ---
-  tileRadius: 180,          // how far from cursor tiles appear (CSS px)
-  tileInset: 0.25,          // tile inset ratio (0.25 = 25% of cell, centered)
-  tilePeakAlpha: 0.14,      // max tile opacity at cursor center
+  tileRadius: 180, // how far from cursor tiles appear (CSS px)
+  tileInset: 0.25, // tile inset ratio (0.25 = 25% of cell, centered)
+  tilePeakAlpha: 0.14, // max tile opacity at cursor center
   tileColors: [
-    palette.anchor900,       // Anchor deep teal
-    '#1b6969',               // Teal 500 (no exact palette match)
-    palette.teal500,         // Systems teal
-    palette.green500,        // Growth green
-    palette.gold500,         // Value gold
-    '#8cd3d2',               // Light teal (no exact palette match)
-    palette.gold300,         // Gold 300
-    '#004f50',               // Dark teal (no exact palette match)
+    palette.anchor900, // Anchor deep teal
+    '#1b6969', // Teal 500 (no exact palette match)
+    palette.teal500, // Systems teal
+    palette.green500, // Growth green
+    palette.gold500, // Value gold
+    '#8cd3d2', // Light teal (no exact palette match)
+    palette.gold300, // Gold 300
+    '#004f50', // Dark teal (no exact palette match)
   ],
 
   maxDpr: 2,
@@ -124,15 +124,30 @@ export default function BlueprintGrid({ className }: { className?: string }) {
         const i = row * cols + col;
         const x = col * step;
         const y = row * step;
-        ox[i] = x; oy[i] = y;
-        cx[i] = x; cy[i] = y;
+        ox[i] = x;
+        oy[i] = y;
+        cx[i] = x;
+        cy[i] = y;
       }
     }
 
     return {
-      cols, rows, ox, oy, cx, cy, vx, vy, w, h, dpr,
-      mouseX: -9999, mouseY: -9999, mouseActive: false,
-      running: true, animating: false,
+      cols,
+      rows,
+      ox,
+      oy,
+      cx,
+      cy,
+      vx,
+      vy,
+      w,
+      h,
+      dpr,
+      mouseX: -9999,
+      mouseY: -9999,
+      mouseActive: false,
+      running: true,
+      animating: false,
     };
   }, []);
 
@@ -393,15 +408,18 @@ export default function BlueprintGrid({ className }: { className?: string }) {
     rafRef.current = requestAnimationFrame(tick);
   }, [simulate, draw]);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const s = stateRef.current;
-    if (!s) return;
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    s.mouseX = e.clientX - rect.left;
-    s.mouseY = e.clientY - rect.top;
-    s.mouseActive = true;
-    ensureAnimating();
-  }, [ensureAnimating]);
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      const s = stateRef.current;
+      if (!s) return;
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      s.mouseX = e.clientX - rect.left;
+      s.mouseY = e.clientY - rect.top;
+      s.mouseActive = true;
+      ensureAnimating();
+    },
+    [ensureAnimating],
+  );
 
   const handleMouseLeave = useCallback(() => {
     const s = stateRef.current;

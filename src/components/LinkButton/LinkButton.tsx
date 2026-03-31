@@ -25,23 +25,31 @@ export default function LinkButton({
   arrow = false,
   className = '',
 }: LinkButtonProps) {
-  const classes = [
-    'link-button',
-    `link-button--${variant}`,
-    className,
-  ].filter(Boolean).join(' ');
+  const classes = ['link-button', `link-button--${variant}`, className].filter(Boolean).join(' ');
 
   const isExternal = href.startsWith('http');
   const content = (
     <>
       {children}
-      {arrow && <span className="link-button__arrow" aria-hidden="true">→</span>}
+      {arrow && (
+        <span className="link-button__arrow" aria-hidden="true">
+          →
+        </span>
+      )}
     </>
   );
 
   if (isExternal) {
-    return <a href={href} className={classes}>{content}</a>;
+    return (
+      <a href={href} className={classes}>
+        {content}
+      </a>
+    );
   }
 
-  return <Link href={href} className={classes}>{content}</Link>;
+  return (
+    <Link href={href} className={classes}>
+      {content}
+    </Link>
+  );
 }

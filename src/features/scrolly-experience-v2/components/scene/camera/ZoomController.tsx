@@ -53,4 +53,3 @@ export default function ZoomController({ targetZoom, mosaicProgress = 0 }: ZoomC
 
   return null;
 }
-

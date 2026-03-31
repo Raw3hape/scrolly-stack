@@ -4,16 +4,12 @@ import { useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { PAGE_READY_EVENT } from '@/config/dom-contracts';
 
-const HeroExplodedGrid3D = dynamic(
-  () => import('./HeroExplodedGrid3D'),
-  { ssr: false },
-);
+const HeroExplodedGrid3D = dynamic(() => import('./HeroExplodedGrid3D'), { ssr: false });
 
 export default function HeroExplodedGrid3DLoader({ className }: { className?: string }) {
   const [ready, setReady] = useState(false);
   const reducedMotion = useRef(
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
 
   const handleReady = useCallback(() => {

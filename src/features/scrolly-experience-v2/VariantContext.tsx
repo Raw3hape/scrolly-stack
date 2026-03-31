@@ -100,11 +100,11 @@ export function VariantProvider({ variantId, children }: VariantProviderProps) {
     const variant = getVariant(variantId);
 
     // Derive steps from layers (same flatMap as original data.ts)
-    const steps: StepData[] = variant.layers.flatMap(layer =>
-      layer.blocks.map(block => ({
+    const steps: StepData[] = variant.layers.flatMap((layer) =>
+      layer.blocks.map((block) => ({
         ...block,
         level: layer.level,
-      }))
+      })),
     );
 
     // Merge geometry: config.ts defaults + variant overrides
@@ -146,9 +146,5 @@ export function VariantProvider({ variantId, children }: VariantProviderProps) {
     };
   }, [variantId]);
 
-  return (
-    <VariantContext.Provider value={value}>
-      {children}
-    </VariantContext.Provider>
-  );
+  return <VariantContext.Provider value={value}>{children}</VariantContext.Provider>;
 }

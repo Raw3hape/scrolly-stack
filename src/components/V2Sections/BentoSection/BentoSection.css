@@ -27,15 +27,25 @@
 
 /* ─── Gradient mesh rotation for feature card ─── */
 @keyframes bento-mesh-rotate {
-  0%   { transform: rotate(0deg) scale(1.5); }
-  50%  { transform: rotate(180deg) scale(1.8); }
-  100% { transform: rotate(360deg) scale(1.5); }
+  0% {
+    transform: rotate(0deg) scale(1.5);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.8);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.5);
+  }
 }
 
 /* ─── Shimmer sweep for link card ─── */
 @keyframes bento-shimmer {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -216,8 +226,8 @@
   border: var(--line-thin) solid var(--color-gold-300);
   overflow: hidden;
   transition:
-    transform   var(--transition-fast),
-    box-shadow  var(--transition-fast);
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 @media (hover: hover) {
@@ -242,11 +252,7 @@
 .v2-bento__highlight-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at 50% 40%,
-    var(--gold-500-alpha-8) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle at 50% 40%, var(--gold-500-alpha-8) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -292,21 +298,16 @@
   color: inherit;
   overflow: hidden;
   transition:
-    background  var(--transition-base),
-    transform   var(--transition-fast),
-    box-shadow  var(--transition-fast);
+    background var(--transition-base),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .v2-bento__link-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--shimmer-color) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, var(--shimmer-color) 50%, transparent 100%);
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition-fast);
@@ -371,9 +372,9 @@
   color: var(--color-teal-500);
   flex-shrink: 0;
   transition:
-    transform    var(--transition-fast),
-    background   var(--transition-fast),
-    color        var(--transition-fast);
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    color var(--transition-fast);
 }
 
 @media (hover: hover) {
@@ -410,8 +411,8 @@
   border: var(--line-thin) solid var(--border-subtle);
   overflow: hidden;
   transition:
-    transform   var(--transition-fast),
-    box-shadow  var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
     border-color var(--transition-fast);
 }
 

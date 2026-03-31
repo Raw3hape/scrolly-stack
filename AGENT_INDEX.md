@@ -53,4 +53,3 @@ Use this file as a fast machine-readable-ish index before editing code.
   - `npm run check:palette`
 - If you touch navigation/routing smoke paths:
   - `npm run test:e2e:smoke`
-

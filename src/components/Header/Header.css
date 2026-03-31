@@ -140,7 +140,9 @@
 .header__cta span[aria-hidden] {
   font-size: 0.8em;
   opacity: 0.55;
-  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 @media (hover: hover) {
@@ -188,7 +190,9 @@
   height: var(--line-thick);
   background: var(--text-primary);
   border-radius: var(--radius-full);
-  transition: transform var(--transition-fast), opacity var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    opacity var(--transition-fast);
   transform-origin: center;
 }
 

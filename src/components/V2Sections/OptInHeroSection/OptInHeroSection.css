@@ -30,8 +30,12 @@
 }
 
 @keyframes optinIntroFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* === Grid Layout === */
@@ -405,14 +409,14 @@
 
 /* Book column: slide from left */
 .v2-optin__book-col {
-  animation: optinIntroLeft var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 1) both;
+  animation: optinIntroLeft var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 1)
+    both;
 }
 
 /* Trust badge below book: fade in after book */
 .v2-optin__trust {
-  animation: optinIntroFade var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 3) both;
+  animation: optinIntroFade var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 3)
+    both;
 }
 
 /* Overline */
@@ -422,26 +426,26 @@
 
 /* Heading */
 .v2-optin__heading {
-  animation: optinIntroUp var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 1) both;
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 1)
+    both;
 }
 
 /* Subtext */
 .v2-optin__subtext {
-  animation: optinIntroUp var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 2) both;
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 2)
+    both;
 }
 
 /* Form card */
 .v2-optin__form-card {
-  animation: optinIntroUp var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 3) both;
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 3)
+    both;
 }
 
 /* Value props container */
 .v2-optin__props {
-  animation: optinIntroUp var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 4) both;
+  animation: optinIntroUp var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 4)
+    both;
 }
 
 /* Individual value prop items: stagger each by nth-child */

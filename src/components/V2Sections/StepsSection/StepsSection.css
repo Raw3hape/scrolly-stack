@@ -46,11 +46,12 @@
   border: var(--line-thin) solid transparent;
   opacity: 0.45;
   transform: translateY(var(--space-sm));
-  transition: opacity var(--transition-smooth),
-              transform var(--transition-smooth),
-              background var(--transition-smooth),
-              border-color var(--transition-smooth),
-              box-shadow var(--transition-smooth);
+  transition:
+    opacity var(--transition-smooth),
+    transform var(--transition-smooth),
+    background var(--transition-smooth),
+    border-color var(--transition-smooth),
+    box-shadow var(--transition-smooth);
   outline: none;
 }
 
@@ -102,9 +103,10 @@
   background: var(--gradient-subtle);
   color: var(--text-subtle);
   flex-shrink: 0;
-  transition: color var(--transition-smooth),
-              background var(--transition-smooth),
-              transform var(--transition-spring);
+  transition:
+    color var(--transition-smooth),
+    background var(--transition-smooth),
+    transform var(--transition-spring);
 }
 
 .v2-step--active .v2-step__icon {
@@ -123,8 +125,9 @@
   color: var(--text-subtle);
   opacity: var(--step-number-opacity, 0.35);
   line-height: 1;
-  transition: color var(--transition-smooth),
-              opacity var(--transition-smooth);
+  transition:
+    color var(--transition-smooth),
+    opacity var(--transition-smooth);
   user-select: none;
 }
 
@@ -166,8 +169,9 @@
   line-height: var(--leading-relaxed);
   margin-bottom: var(--space-md);
   opacity: 0.7;
-  transition: color var(--transition-smooth),
-              opacity var(--transition-smooth);
+  transition:
+    color var(--transition-smooth),
+    opacity var(--transition-smooth);
 }
 
 .v2-step--active .v2-step__footnote {
@@ -207,9 +211,10 @@
   border-radius: var(--btn-radius);
   text-decoration: none;
   cursor: pointer;
-  transition: background var(--transition-fast),
-              color var(--transition-fast),
-              transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    transform var(--transition-fast);
   animation: stepCtaIn var(--duration-base) var(--ease-out) both;
 }
 
@@ -281,9 +286,10 @@
     height: 10px;
     border-radius: var(--radius-full);
     background: var(--stitch-surface-container-high, var(--border-default));
-    transition: background var(--transition-smooth),
-                box-shadow var(--transition-smooth),
-                transform var(--transition-smooth);
+    transition:
+      background var(--transition-smooth),
+      box-shadow var(--transition-smooth),
+      transform var(--transition-smooth);
     z-index: 1;
   }
 

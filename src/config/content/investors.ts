@@ -19,16 +19,11 @@ export const investorsContent: PageContent = {
       surface: 'base',
       layout: 'left',
       badge: 'FOR INVESTORS',
-      heading:
-        'Invest in the Roofing Companies Going Public',
+      heading: 'Invest in the Roofing Companies Going Public',
       subtext:
         'Roofing is a $60 billion industry that\u2019s never had a serious institutional platform. We\u2019re building it \u2014 and we\u2019re looking for investors who want in early.',
       buttonLabel: 'Book A Call',
-      trustBadges: [
-        'Ground Floor Opportunity',
-        'Recession-Resistant',
-        'Paid At IPO',
-      ],
+      trustBadges: ['Ground Floor Opportunity', 'Recession-Resistant', 'Paid At IPO'],
       backgroundGlow: true,
       hero3dModel: 'ascending-blocks' as const,
     },

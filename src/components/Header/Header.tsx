@@ -46,7 +46,9 @@ export default function Header() {
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isMenuOpen]);
 
   useEffect(() => {
@@ -78,9 +80,8 @@ export default function Header() {
           {/* Desktop Nav */}
           <nav className="header__nav" aria-label="Main navigation">
             {navLinks.map((link) => {
-              const isActive = link.href === '/'
-                ? pathname === '/'
-                : pathname.startsWith(link.href);
+              const isActive =
+                link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
               return (
                 <Link
                   key={link.href}
@@ -122,16 +123,12 @@ export default function Header() {
       />
 
       {/* Mobile drawer */}
-      <nav
-        className={`drawer ${isMenuOpen ? 'drawer--open' : ''}`}
-        aria-label="Mobile navigation"
-      >
+      <nav className={`drawer ${isMenuOpen ? 'drawer--open' : ''}`} aria-label="Mobile navigation">
         <div className="drawer__content">
           <div className="drawer__links">
             {navLinks.map((link) => {
-              const isActive = link.href === '/'
-                ? pathname === '/'
-                : pathname.startsWith(link.href);
+              const isActive =
+                link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
               return (
                 <Link
                   key={link.href}
@@ -148,9 +145,7 @@ export default function Header() {
           <Link href={ctaConfig.href} className="drawer__cta" onClick={close}>
             {ctaConfig.label} <span aria-hidden="true">→</span>
           </Link>
-          {ctaConfig.microcopy && (
-            <span className="drawer__microcopy">{ctaConfig.microcopy}</span>
-          )}
+          {ctaConfig.microcopy && <span className="drawer__microcopy">{ctaConfig.microcopy}</span>}
         </div>
       </nav>
     </>

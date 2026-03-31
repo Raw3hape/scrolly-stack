@@ -41,18 +41,21 @@ const TILT_LERP = animation.hover?.tilt?.lerpSpeed ?? 0.12;
 const TILT_RESET_LERP = animation.hover?.tilt?.resetLerpSpeed ?? 0.08;
 
 /** Label Component for block text */
-function BlockLabel({ text, dimensions, color = labels.color, opacity = 1, labelFontSize, labelMaxWidth }: BlockLabelProps) {
+function BlockLabel({
+  text,
+  dimensions,
+  color = labels.color,
+  opacity = 1,
+  labelFontSize,
+  labelMaxWidth,
+}: BlockLabelProps) {
   const [w, h, d] = dimensions;
 
   if (opacity <= 0) return null;
 
   return (
     <Text
-      position={[
-        -w / 2 + labels.padding.x,
-        h / 2 + labels.padding.y,
-        d / 2 - labels.padding.z,
-      ]}
+      position={[-w / 2 + labels.padding.x, h / 2 + labels.padding.y, d / 2 - labels.padding.z]}
       rotation={[-Math.PI / 2, 0, 0]}
       fontSize={labelFontSize ?? labels.fontSize}
       font={labels.font}
@@ -157,9 +160,7 @@ export default function Block({
       const dirX = dx / len;
       const dirZ = dz / len;
 
-      const effectiveIntensity = isHovered
-        ? intensity
-        : intensity * TILT_PROX_MAX;
+      const effectiveIntensity = isHovered ? intensity : intensity * TILT_PROX_MAX;
 
       targetX = dirZ * effectiveIntensity;
       targetZ = -dirX * effectiveIntensity;
@@ -207,10 +208,23 @@ export default function Block({
     if (staggerDelay > 0) {
       const mid = setTimeout(() => invalidate(), staggerDelay * 0.5);
       const end = setTimeout(() => invalidate(), staggerDelay);
-      return () => { clearTimeout(mid); clearTimeout(end); };
+      return () => {
+        clearTimeout(mid);
+        clearTimeout(end);
+      };
     }
-  }, [isActive, isAboveActive, opacity, isRevealed, baseX, baseY, baseZ,
-      mosaicProgress, invalidate, staggerDelay]);
+  }, [
+    isActive,
+    isAboveActive,
+    opacity,
+    isRevealed,
+    baseX,
+    baseY,
+    baseZ,
+    mosaicProgress,
+    invalidate,
+    staggerDelay,
+  ]);
 
   const getTargetPosition = (): [number, number, number] => {
     if (isMosaicActive) {
@@ -266,7 +280,7 @@ export default function Block({
   });
 
   const { springScale } = useSpring({
-    springScale: isHovered && !isMosaicTransitioning ? (animation.hover?.scale || 1.025) : 1,
+    springScale: isHovered && !isMosaicTransitioning ? animation.hover?.scale || 1.025 : 1,
     config: { tension: 300, friction: 20, mass: 0.5 },
     onChange: () => invalidate(),
   });
@@ -293,59 +307,68 @@ export default function Block({
       mosaicDimensions[2] / dimensions[2],
     ];
     const t = easeOutQuart(mosaicProgress);
-    return [
-      1 + (target[0] - 1) * t,
-      1 + (target[1] - 1) * t,
-      1 + (target[2] - 1) * t,
-    ];
+    return [1 + (target[0] - 1) * t, 1 + (target[1] - 1) * t, 1 + (target[2] - 1) * t];
   }, [mosaicDimensions, mosaicProgress, dimensions]);
 
   // Labels + tilt use VISUAL dimensions (not geometry args) for correct positioning.
   // Smoothly interpolate between stack and mosaic dimensions so labels don't
   // jump when mosaic starts (was binary before, masked by the old fade-out).
   const progressT = easeOutQuart(mosaicProgress);
-  const visualDimensions: [number, number, number] = isMosaicActive && mosaicDimensions
-    ? [
-        lerp(dimensions[0], mosaicDimensions[0], progressT),
-        lerp(dimensions[1], mosaicDimensions[1], progressT),
-        lerp(dimensions[2], mosaicDimensions[2], progressT),
-      ]
-    : dimensions;
+  const visualDimensions: [number, number, number] =
+    isMosaicActive && mosaicDimensions
+      ? [
+          lerp(dimensions[0], mosaicDimensions[0], progressT),
+          lerp(dimensions[1], mosaicDimensions[1], progressT),
+          lerp(dimensions[2], mosaicDimensions[2], progressT),
+        ]
+      : dimensions;
 
   const currentColorA = isActive ? activeColor : color;
-  const currentColorB = isActive
-    ? (activeGradientColorB || activeColor)
-    : (gradientColorB || color);
+  const currentColorB = isActive ? activeGradientColorB || activeColor : gradientColorB || color;
 
-  const handlePointerOver = useCallback((e: { stopPropagation: () => void; clientX?: number; clientY?: number; nativeEvent?: { clientX?: number; clientY?: number } }) => {
-    e.stopPropagation();
-    if (isMosaicTransitioning) return;
-    document.body.style.cursor = 'pointer';
-    setIsHovered(true);
-    if (onHoverChange && blockData) {
-      const mousePos: MousePosition = {
-        x: e.clientX || e.nativeEvent?.clientX || 0,
-        y: e.clientY || e.nativeEvent?.clientY || 0,
-      };
-      onHoverChange(blockData, true, mousePos);
-    }
-  }, [onHoverChange, blockData, isMosaicTransitioning]);
+  const handlePointerOver = useCallback(
+    (e: {
+      stopPropagation: () => void;
+      clientX?: number;
+      clientY?: number;
+      nativeEvent?: { clientX?: number; clientY?: number };
+    }) => {
+      e.stopPropagation();
+      if (isMosaicTransitioning) return;
+      document.body.style.cursor = 'pointer';
+      setIsHovered(true);
+      if (onHoverChange && blockData) {
+        const mousePos: MousePosition = {
+          x: e.clientX || e.nativeEvent?.clientX || 0,
+          y: e.clientY || e.nativeEvent?.clientY || 0,
+        };
+        onHoverChange(blockData, true, mousePos);
+      }
+    },
+    [onHoverChange, blockData, isMosaicTransitioning],
+  );
 
-  const handlePointerOut = useCallback((e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
-    document.body.style.cursor = 'auto';
-    setIsHovered(false);
-    if (onHoverChange) {
-      onHoverChange(null, false, null);
-    }
-  }, [onHoverChange]);
+  const handlePointerOut = useCallback(
+    (e: { stopPropagation: () => void }) => {
+      e.stopPropagation();
+      document.body.style.cursor = 'auto';
+      setIsHovered(false);
+      if (onHoverChange) {
+        onHoverChange(null, false, null);
+      }
+    },
+    [onHoverChange],
+  );
 
-  const handleClick = useCallback((e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
-    if (onClick && blockId !== undefined) {
-      onClick(blockId);
-    }
-  }, [onClick, blockId]);
+  const handleClick = useCallback(
+    (e: { stopPropagation: () => void }) => {
+      e.stopPropagation();
+      if (onClick && blockId !== undefined) {
+        onClick(blockId);
+      }
+    },
+    [onClick, blockId],
+  );
 
   // Color reveal: ENTRY = spring 0→1. EXIT = spring 1→0 (smooth fade out).
   // Exit fade runs simultaneously with buildOffsetY fly-up animation.
@@ -357,7 +380,7 @@ export default function Block({
       friction: opacity > 0 ? animation.spring.friction : 16,
       mass: animation.spring.mass,
     },
-    delay: (isRevealed && opacity > 0) ? 0 : staggerDelay,
+    delay: isRevealed && opacity > 0 ? 0 : staggerDelay,
     onChange: () => invalidate(),
   });
 
@@ -372,50 +395,47 @@ export default function Block({
 
   return (
     <group ref={buildGroupRef} visible={isBlockVisible}>
-    <AnimatedGroup
-      position={springPosition}
-      scale={springScale}
-    >
-      {/* Tilt wrapper — rotation driven by useFrame for 60fps smoothness */}
-      <group ref={tiltGroupRef}>
-        {/* Dimension morph wrapper — scale instead of args change */}
-        <group scale={dimensionScale}>
-          <RoundedBox
-            ref={meshRef}
-            args={geometryArgs}
-            radius={geometry.stack.borderRadius}
-            smoothness={geometry.stack.smoothness}
-            castShadow={opacity > 0.01}
-            receiveShadow={opacity > 0.01}
-            onClick={handleClick}
-            onPointerOver={handlePointerOver}
-            onPointerOut={handlePointerOut}
-          >
-            <GradientShadowMaterial
-              colorA={currentColorA}
-              colorB={currentColorB}
-              isActive={isActive}
-              isHovered={isHovered}
-              isHeroState={!isRevealed}
-              animatedColorReveal={springColorReveal}
-              isMosaicTransitioning={isMosaicTransitioning}
-            />
-          </RoundedBox>
-        </group>
+      <AnimatedGroup position={springPosition} scale={springScale}>
+        {/* Tilt wrapper — rotation driven by useFrame for 60fps smoothness */}
+        <group ref={tiltGroupRef}>
+          {/* Dimension morph wrapper — scale instead of args change */}
+          <group scale={dimensionScale}>
+            <RoundedBox
+              ref={meshRef}
+              args={geometryArgs}
+              radius={geometry.stack.borderRadius}
+              smoothness={geometry.stack.smoothness}
+              castShadow={opacity > 0.01}
+              receiveShadow={opacity > 0.01}
+              onClick={handleClick}
+              onPointerOver={handlePointerOver}
+              onPointerOut={handlePointerOut}
+            >
+              <GradientShadowMaterial
+                colorA={currentColorA}
+                colorB={currentColorB}
+                isActive={isActive}
+                isHovered={isHovered}
+                isHeroState={!isRevealed}
+                animatedColorReveal={springColorReveal}
+                isMosaicTransitioning={isMosaicTransitioning}
+              />
+            </RoundedBox>
+          </group>
 
-        {/* Labels OUTSIDE scale group — use visual dimensions for uniform positioning */}
-        {showLabel && (
-          <BlockLabel
-            text={label}
-            dimensions={visualDimensions}
-            color={textColor}
-            opacity={labelOpacity}
-            labelFontSize={labelFontSize}
-            labelMaxWidth={labelMaxWidth}
-          />
-        )}
-      </group>
-    </AnimatedGroup>
+          {/* Labels OUTSIDE scale group — use visual dimensions for uniform positioning */}
+          {showLabel && (
+            <BlockLabel
+              text={label}
+              dimensions={visualDimensions}
+              color={textColor}
+              opacity={labelOpacity}
+              labelFontSize={labelFontSize}
+              labelMaxWidth={labelMaxWidth}
+            />
+          )}
+        </group>
+      </AnimatedGroup>
     </group>
   );
 }

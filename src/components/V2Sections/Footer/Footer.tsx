@@ -44,9 +44,8 @@ export default function Footer({ data }: Props) {
       const wrapperRect = wrapper.getBoundingClientRect();
       const vh = window.innerHeight;
       const footerHeight = el.offsetHeight;
-      const progress = footerHeight > 0
-        ? Math.max(0, Math.min(1, (vh - wrapperRect.bottom) / footerHeight))
-        : 1;
+      const progress =
+        footerHeight > 0 ? Math.max(0, Math.min(1, (vh - wrapperRect.bottom) / footerHeight)) : 1;
       el.style.setProperty('--footer-reveal', String(progress));
     };
 
@@ -102,14 +101,9 @@ export default function Footer({ data }: Props) {
         {/* Subscribe column — email input */}
         {data.subscribeText && (
           <div className="footer__subscribe-col">
-            <h4 className="footer__col-title">
-              {data.subscribeTitle ?? 'Stay Informed'}
-            </h4>
+            <h4 className="footer__col-title">{data.subscribeTitle ?? 'Stay Informed'}</h4>
             <p className="footer__subscribe-text">{data.subscribeText}</p>
-            <form
-              className="footer__subscribe-form"
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <form className="footer__subscribe-form" onSubmit={(e) => e.preventDefault()}>
               <input
                 type="email"
                 className="footer__subscribe-input"
@@ -117,18 +111,8 @@ export default function Footer({ data }: Props) {
                 aria-label={data.subscribePlaceholder ?? 'Email Address'}
                 required
               />
-              <button
-                type="submit"
-                className="footer__subscribe-btn"
-                aria-label="Subscribe"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  aria-hidden="true"
-                >
+              <button type="submit" className="footer__subscribe-btn" aria-label="Subscribe">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path
                     d="M1 8h14M9 2l6 6-6 6"
                     stroke="currentColor"
@@ -146,9 +130,7 @@ export default function Footer({ data }: Props) {
       {/* Bottom bar */}
       <div className="footer__bottom">
         <p className="footer__copyright">{siteConfig.copyright}</p>
-        {data.copyrightTagline && (
-          <p className="footer__tagline">{data.copyrightTagline}</p>
-        )}
+        {data.copyrightTagline && <p className="footer__tagline">{data.copyrightTagline}</p>}
       </div>
     </footer>
   );

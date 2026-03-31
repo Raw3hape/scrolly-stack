@@ -121,9 +121,7 @@ test.describe('StepsSection — Home Page', () => {
     const activeFills = section.locator('.v2-step--active .v2-step__bar-fill');
     const count = await activeFills.count();
     if (count > 0) {
-      const width = await activeFills.first().evaluate(
-        (el) => getComputedStyle(el).width,
-      );
+      const width = await activeFills.first().evaluate((el) => getComputedStyle(el).width);
       expect(parseInt(width)).toBeGreaterThan(0);
     }
   });
@@ -199,9 +197,7 @@ test.describe('StepsSection — Mobile (390×844)', () => {
 
   test('renders single-column layout', async ({ page }) => {
     const grid = page.locator(`${STEPS_SELECTOR} .v2-steps-grid`);
-    const columns = await grid.evaluate(
-      (el) => getComputedStyle(el).gridTemplateColumns,
-    );
+    const columns = await grid.evaluate((el) => getComputedStyle(el).gridTemplateColumns);
     const colCount = columns.split(' ').filter((v) => v.trim()).length;
     expect(colCount).toBe(1);
   });

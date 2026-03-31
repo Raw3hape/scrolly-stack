@@ -26,7 +26,10 @@ const READY_TIMEOUT_MS = 4_000;
 /** Module-level flag — skip branded loader on SPA return visits */
 let hasLoadedOnce = false;
 
-export default function HomeV2PageClient({ variantId = 'v7-progressive', children }: HomeV2PageClientProps) {
+export default function HomeV2PageClient({
+  variantId = 'v7-progressive',
+  children,
+}: HomeV2PageClientProps) {
   const [sceneReady, setSceneReady] = useState(hasLoadedOnce);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -64,9 +67,7 @@ export default function HomeV2PageClient({ variantId = 'v7-progressive', childre
       <div className="v2-content-wrapper" data-content-wrapper>
         <ScrollyLoader variantId={variantId} onReady={handleSceneReady} sceneReady={sceneReady} />
 
-        <div className="v2-sections">
-          {children}
-        </div>
+        <div className="v2-sections">{children}</div>
       </div>
     </>
   );

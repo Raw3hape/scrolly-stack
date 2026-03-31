@@ -65,11 +65,7 @@ export default function useCarousel({
   // ── Auto-play effect ──
   // Owns the interval. Restarts when paused state changes.
   useEffect(() => {
-    if (
-      autoPlayInterval <= 0 ||
-      prefersReducedMotion.current ||
-      paused
-    ) {
+    if (autoPlayInterval <= 0 || prefersReducedMotion.current || paused) {
       return;
     }
 

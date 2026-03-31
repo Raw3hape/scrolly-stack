@@ -19,16 +19,11 @@ export const roofersContent: PageContent = {
       surface: 'base',
       layout: 'left',
       badge: 'FOR ROOFING FOUNDERS',
-      heading:
-        'Here\u2019s How You Can Get a Bigger Exit From Your Roofing Company',
+      heading: 'Here\u2019s How You Can Get a Bigger Exit From Your Roofing Company',
       subtext:
         'We take roofing companies through a 3-step process proven to get you 7x\u201310x what a Private Equity firm would have paid you.',
       buttonLabel: 'Book A Call',
-      trustBadges: [
-        'Get A Bigger Exit',
-        'Stay In The Deal',
-        'We Only Get Paid When You Do',
-      ],
+      trustBadges: ['Get A Bigger Exit', 'Stay In The Deal', 'We Only Get Paid When You Do'],
       backgroundGlow: true,
       hero3dModel: 'pyramid' as const,
     },
@@ -45,9 +40,18 @@ export const roofersContent: PageContent = {
         quote: '\u201CThe traditional exit model is broken for independent roofers.\u201D',
       },
       bullets: [
-        { icon: 'cancel', text: 'Brokers take huge commissions regardless of your final valuation.' },
-        { icon: 'cancel', text: 'PE firms strip culture and talent to squeeze short-term margins.' },
-        { icon: 'cancel', text: 'Most founders exit at a 3\u00d7\u20134\u00d7 multiple and regret it in 24 months.' },
+        {
+          icon: 'cancel',
+          text: 'Brokers take huge commissions regardless of your final valuation.',
+        },
+        {
+          icon: 'cancel',
+          text: 'PE firms strip culture and talent to squeeze short-term margins.',
+        },
+        {
+          icon: 'cancel',
+          text: 'Most founders exit at a 3\u00d7\u20134\u00d7 multiple and regret it in 24 months.',
+        },
       ],
     },
 

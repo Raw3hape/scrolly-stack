@@ -10,130 +10,142 @@
 
   /* Anchor — #103740 — Trust, Authority, 'The Rock' */
   --color-anchor-900: #103740;
-  --color-anchor-700: #1A4E58;
-  --color-anchor-500: #2A6470;
-  --color-anchor-300: #3E7A88;
+  --color-anchor-700: #1a4e58;
+  --color-anchor-500: #2a6470;
+  --color-anchor-300: #3e7a88;
 
   /* Systems — #297373 — Process, Engineering, 'The Machine' */
-  --color-teal-700:   #1E5757;
-  --color-teal-500:   #297373;
-  --color-teal-300:   #3A8C8C;
-  --color-teal-100:   #D0E8E8;
+  --color-teal-700: #1e5757;
+  --color-teal-500: #297373;
+  --color-teal-300: #3a8c8c;
+  --color-teal-100: #d0e8e8;
 
   /* Growth — #3E8C59 — Results, Dividends, 'The Yield' */
-  --color-green-700:  #2E6B42;
-  --color-green-500:  #3E8C59;
-  --color-green-300:  #5BA374;
+  --color-green-700: #2e6b42;
+  --color-green-500: #3e8c59;
+  --color-green-300: #5ba374;
 
   /* Foundation — #F2EDE4 — Clarity, Canvas, 'No Fluff' */
-  --color-sand-300:   #DDD5C8;
-  --color-sand-200:   #E8E1D6;
-  --color-sand-100:   #F2EDE4;
-  --color-sand-50:    #F7F4EF;
-  --color-sand-25:    #FDFCFA;
+  --color-sand-300: #ddd5c8;
+  --color-sand-200: #e8e1d6;
+  --color-sand-100: #f2ede4;
+  --color-sand-50: #f7f4ef;
+  --color-sand-25: #fdfcfa;
 
   /* Value — #D79344 — Craft, Spark, 'The Second Mile' */
-  --color-gold-700:   #B87A2E;
-  --color-gold-500:   #D79344;
-  --color-gold-300:   #E5AD6B;
+  --color-gold-700: #b87a2e;
+  --color-gold-500: #d79344;
+  --color-gold-300: #e5ad6b;
 
   /* Neutral (for shadows, overlays — brand-neutral) */
-  --color-neutral-900: #1A1A1A;
-  --color-neutral-600: #4A4A4A;
-  --color-neutral-400: #8A8A8A;
+  --color-neutral-900: #1a1a1a;
+  --color-neutral-600: #4a4a4a;
+  --color-neutral-400: #8a8a8a;
 
   /* === Semantic tokens (USE THESE in components) === */
 
   /* Surfaces */
-  --surface-base:       var(--color-sand-100);
-  --surface-card:       var(--color-sand-25);
+  --surface-base: var(--color-sand-100);
+  --surface-card: var(--color-sand-25);
   --surface-card-hover: var(--color-sand-50);
-  --surface-raised:     var(--color-sand-50);  /* Slightly elevated cards/panels */
-  --surface-overlay:    rgba(242, 237, 228, 0.85);
-  --surface-glass:      rgba(242, 237, 228, 0.6);
+  --surface-raised: var(--color-sand-50); /* Slightly elevated cards/panels */
+  --surface-overlay: rgba(242, 237, 228, 0.85);
+  --surface-glass: rgba(242, 237, 228, 0.6);
 
   /* Text */
-  --text-primary:   var(--color-anchor-900);
+  --text-primary: var(--color-anchor-900);
   --text-secondary: var(--color-anchor-700);
-  --text-tertiary:  var(--color-anchor-300);  /* Tertiary labels, loading states */
-  --text-muted:     var(--color-neutral-600);
-  --text-subtle:    var(--color-neutral-400);
-  --text-inverse:   var(--color-sand-25);
+  --text-tertiary: var(--color-anchor-300); /* Tertiary labels, loading states */
+  --text-muted: var(--color-neutral-600);
+  --text-subtle: var(--color-neutral-400);
+  --text-inverse: var(--color-sand-25);
 
   /* Brand */
-  --accent-brand:       var(--color-teal-500);
+  --accent-brand: var(--color-teal-500);
   --accent-brand-hover: var(--color-teal-700);
-  --accent-warm:        var(--color-gold-500);
-  --accent-warm-hover:  var(--color-gold-700);
+  --accent-warm: var(--color-gold-500);
+  --accent-warm-hover: var(--color-gold-700);
 
   /* Borders */
   --border-default: var(--color-sand-300);
-  --border-subtle:  var(--color-sand-200);  /* Softer borders for comparison cards */
-  --border-hover:   var(--color-sand-200);
-  --border-focus:   var(--color-teal-500);
+  --border-subtle: var(--color-sand-200); /* Softer borders for comparison cards */
+  --border-hover: var(--color-sand-200);
+  --border-focus: var(--color-teal-500);
 
   /* Status */
   --status-success: var(--color-green-500);
   --status-warning: var(--color-gold-500);
-  --status-error:   #C25450;
-  --status-info:    var(--color-teal-500);
+  --status-error: #c25450;
+  --status-info: var(--color-teal-500);
 
   /* Gradients */
-  --gradient-primary:       linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-green-500) 100%);
-  --gradient-primary-hover: linear-gradient(135deg, var(--color-teal-700) 0%, var(--color-green-700) 100%);
-  --gradient-warm:          linear-gradient(135deg, var(--color-gold-500) 0%, var(--color-gold-300) 100%);
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--color-teal-500) 0%,
+    var(--color-green-500) 100%
+  );
+  --gradient-primary-hover: linear-gradient(
+    135deg,
+    var(--color-teal-700) 0%,
+    var(--color-green-700) 100%
+  );
+  --gradient-warm: linear-gradient(135deg, var(--color-gold-500) 0%, var(--color-gold-300) 100%);
   /* RESKIN: base = #297373 (teal-500) + #3E8C59 (green-500) */
-  --gradient-subtle:        linear-gradient(135deg, rgba(41, 115, 115, 0.08) 0%, rgba(62, 140, 89, 0.08) 100%);
+  --gradient-subtle: linear-gradient(
+    135deg,
+    rgba(41, 115, 115, 0.08) 0%,
+    rgba(62, 140, 89, 0.08) 100%
+  );
 
   /* --glow-primary → defined in effects.css (single source of truth) */
   /* --glow-primary-intense → defined in effects.css */
 
   /* Utility tokens (kill hardcode in components) */
   /* RESKIN: base = #297373 (teal-500), #3E8C59 (green-500) */
-  --selection-bg:        rgba(41, 115, 115, 0.12);
+  --selection-bg: rgba(41, 115, 115, 0.12);
   --status-success-glow: 0 0 0 2px rgba(62, 140, 89, 0.2);
-  --hover-opacity:       0.85;  /* Brand hover opacity for interactive elements */
+  --hover-opacity: 0.85; /* Brand hover opacity for interactive elements */
 
   /* === Pure white / dark utility === */
-  --color-white:         #ffffff;
-  --color-error:         #ba1a1a;  /* Stitch error red */
+  --color-white: #ffffff;
+  --color-error: #ba1a1a; /* Stitch error red */
 
   /* === Sand palette extended (warm off-whites used in light-mode surfaces) === */
-  --color-sand-warm:     #fef9f0;  /* Warm cream — used in dark-mode headings */
-  --color-gold-100:      #ffdcbc;  /* Lightest gold — used in footnotes, hover accents */
-  --color-gold-900:      #2c1700;  /* Deep brown — text on gold badges */
+  --color-sand-warm: #fef9f0; /* Warm cream — used in dark-mode headings */
+  --color-gold-100: #ffdcbc; /* Lightest gold — used in footnotes, hover accents */
+  --color-gold-900: #2c1700; /* Deep brown — text on gold badges */
 
   /* === Glass-white overlays (white at various opacities) === */
   /* RESKIN: base = #ffffff */
-  --glass-white-5:       rgba(255, 255, 255, 0.05);
-  --glass-white-6:       rgba(255, 255, 255, 0.06);
-  --glass-white-8:       rgba(255, 255, 255, 0.08);
-  --glass-white-10:      rgba(255, 255, 255, 0.10);
-  --glass-white-12:      rgba(255, 255, 255, 0.12);
-  --glass-white-15:      rgba(255, 255, 255, 0.15);
-  --glass-white-20:      rgba(255, 255, 255, 0.20);
-  --glass-white-40:      rgba(255, 255, 255, 0.40);
-  --glass-white-80:      rgba(255, 255, 255, 0.80);
+  --glass-white-5: rgba(255, 255, 255, 0.05);
+  --glass-white-6: rgba(255, 255, 255, 0.06);
+  --glass-white-8: rgba(255, 255, 255, 0.08);
+  --glass-white-10: rgba(255, 255, 255, 0.1);
+  --glass-white-12: rgba(255, 255, 255, 0.12);
+  --glass-white-15: rgba(255, 255, 255, 0.15);
+  --glass-white-20: rgba(255, 255, 255, 0.2);
+  --glass-white-40: rgba(255, 255, 255, 0.4);
+  --glass-white-80: rgba(255, 255, 255, 0.8);
 
   /* === Dark overlays (black at various opacities) === */
   /* RESKIN: base = #000000 */
-  --overlay-dark-5:      rgba(0, 0, 0, 0.05);
-  --overlay-dark-20:     rgba(0, 0, 0, 0.20);
-  --overlay-dark-25:     rgba(0, 0, 0, 0.25);
-  --overlay-dark-50:     rgba(0, 0, 0, 0.50);
-  --overlay-dark-80:     rgba(0, 0, 0, 0.80);
-  --overlay-dark-100:    rgba(0, 0, 0, 1);
+  --overlay-dark-5: rgba(0, 0, 0, 0.05);
+  --overlay-dark-20: rgba(0, 0, 0, 0.2);
+  --overlay-dark-25: rgba(0, 0, 0, 0.25);
+  --overlay-dark-50: rgba(0, 0, 0, 0.5);
+  --overlay-dark-80: rgba(0, 0, 0, 0.8);
+  --overlay-dark-100: rgba(0, 0, 0, 1);
 
   /* === Brand-alpha overlays (anchor/teal/gold with transparency) === */
   /* RESKIN: recalculate rgba when brand colors change */
-  --anchor-900-alpha-20: rgba(16, 55, 64, 0.20);
-  --anchor-900-alpha-30: rgba(16, 55, 64, 0.30);
-  --anchor-900-alpha-80: rgba(16, 55, 64, 0.80);
+  --anchor-900-alpha-20: rgba(16, 55, 64, 0.2);
+  --anchor-900-alpha-30: rgba(16, 55, 64, 0.3);
+  --anchor-900-alpha-80: rgba(16, 55, 64, 0.8);
   --anchor-deep-alpha-92: rgba(10, 40, 48, 0.92);
   --anchor-deep-alpha-75: rgba(12, 45, 52, 0.75);
-  --teal-100-alpha-15:   rgba(168, 239, 238, 0.15);
-  --gold-300-alpha-20:   rgba(229, 173, 107, 0.20);
-  --gold-500-alpha-8:    rgba(215, 147, 68, 0.08);
-  --teal-500-alpha-12:   rgba(41, 115, 115, 0.12);
-  --silver-alpha-8:      rgba(193, 200, 202, 0.08);
+  --teal-100-alpha-15: rgba(168, 239, 238, 0.15);
+  --gold-300-alpha-20: rgba(229, 173, 107, 0.2);
+  --gold-500-alpha-8: rgba(215, 147, 68, 0.08);
+  --teal-500-alpha-12: rgba(41, 115, 115, 0.12);
+  --silver-alpha-8: rgba(193, 200, 202, 0.08);
 }

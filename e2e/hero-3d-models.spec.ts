@@ -59,7 +59,7 @@ for (const page3d of HERO_3D_PAGES) {
           !e.includes('THREE') &&
           !e.includes('ResizeObserver') &&
           !e.includes('passive') &&
-          !e.includes('Deprecation')
+          !e.includes('Deprecation'),
       );
       expect(fatalErrors).toHaveLength(0);
     });
@@ -103,7 +103,7 @@ for (const page3d of HERO_3D_PAGES) {
       expect(canvasBox!.x).toBeGreaterThanOrEqual(heroBox!.x - tolerance);
       expect(canvasBox!.y).toBeGreaterThanOrEqual(heroBox!.y - tolerance);
       expect(canvasBox!.x + canvasBox!.width).toBeLessThanOrEqual(
-        heroBox!.x + heroBox!.width + tolerance
+        heroBox!.x + heroBox!.width + tolerance,
       );
     });
   });

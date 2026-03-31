@@ -30,29 +30,31 @@ function calculateBlocksAboveActive(
 ): number[] {
   if (isHeroStep(currentStep)) return [];
 
-  const activeLayerIndex = layers.findIndex(layer =>
-    layer.blocks.some(block => block.id === currentStep)
+  const activeLayerIndex = layers.findIndex((layer) =>
+    layer.blocks.some((block) => block.id === currentStep),
   );
   if (activeLayerIndex < 0) return [];
 
   const aboveIds: number[] = [];
 
   layers.forEach((layer, layerIndex) => {
-    const isAlreadySeen = scrollDirection === 'up'
-      ? layerIndex > activeLayerIndex   // bottom-to-top: higher index = seen first
-      : layerIndex < activeLayerIndex;  // top-to-bottom: lower index = seen first
+    const isAlreadySeen =
+      scrollDirection === 'up'
+        ? layerIndex > activeLayerIndex // bottom-to-top: higher index = seen first
+        : layerIndex < activeLayerIndex; // top-to-bottom: lower index = seen first
 
     if (isAlreadySeen) {
-      layer.blocks.forEach(block => aboveIds.push(block.id));
+      layer.blocks.forEach((block) => aboveIds.push(block.id));
     } else if (layerIndex === activeLayerIndex) {
       // Use array index (not block ID) to determine reveal order within a layer.
       // Block IDs may not be sequential after reordering (e.g. reversed crown).
-      const activeBlockIndex = layer.blocks.findIndex(b => b.id === currentStep);
+      const activeBlockIndex = layer.blocks.findIndex((b) => b.id === currentStep);
       layer.blocks.forEach((block, blockIndex) => {
         if (block.id !== currentStep) {
-          const isBlockAlreadySeen = scrollDirection === 'up'
-            ? blockIndex > activeBlockIndex
-            : blockIndex < activeBlockIndex;
+          const isBlockAlreadySeen =
+            scrollDirection === 'up'
+              ? blockIndex > activeBlockIndex
+              : blockIndex < activeBlockIndex;
           if (isBlockAlreadySeen) {
             aboveIds.push(block.id);
           }
@@ -68,6 +70,9 @@ function calculateBlocksAboveActive(
 // HOOK
 // =============================================================================
 
+/** Settle threshold — matches mosaicConfig.motion.viewStart */
+const SETTLE_THRESHOLD = 0.18;
+
 export interface BlockStateResult {
   /** Effective step: HERO_STEP when mosaic is active, real step otherwise */
   effectiveStep: number;
@@ -79,6 +84,12 @@ export interface BlockStateResult {
   blocksNotYetSeenAbove: number[];
   /** Whether blocks should be in their revealed (visible) state */
   isRevealed: boolean;
+  /**
+   * Blend factor for active animations (lift/slide) during settle phase.
+   * 1 = full active animations, 0 = no active animations (base position).
+   * Smoothly ramps from 1→0 during 0→settleThreshold instead of snapping.
+   */
+  activeBlend: number;
 }
 
 /**
@@ -97,14 +108,23 @@ export function useBlockState(
   steps: StepData[],
   scrollDirection: 'down' | 'up',
 ): BlockStateResult {
-  // When mosaicProgress > 0, ALL blocks must return to their base positions
-  // (no slide, no lift) BEFORE the Bezier arc begins. Setting effectiveStep
-  // = HERO_STEP makes isActive = false and isAboveActive = [] for every block.
-  const effectiveStep = mosaicProgress > 0 ? HERO_STEP : currentStep;
+  // SMOOTH BLEND: Instead of instantly toggling to HERO_STEP (which drops all
+  // active animations in one frame), keep the real step during the settle phase
+  // and use activeBlend to smoothly fade out lift/slide animations.
+  // Only switch to HERO_STEP once we're past the settle threshold.
+  const effectiveStep = mosaicProgress >= SETTLE_THRESHOLD ? HERO_STEP : currentStep;
+
+  // Blend factor: 1 (full active animations) → 0 (base position) over 0→settleThreshold
+  const activeBlend =
+    mosaicProgress <= 0
+      ? 1
+      : mosaicProgress >= SETTLE_THRESHOLD
+        ? 0
+        : 1 - mosaicProgress / SETTLE_THRESHOLD;
 
   const blocksAboveActive = useMemo(
     () => calculateBlocksAboveActive(effectiveStep, layers, steps, scrollDirection),
-    [effectiveStep, layers, steps, scrollDirection]
+    [effectiveStep, layers, steps, scrollDirection],
   );
 
   // Lift direction: forward(down) = UP (+1), reverse(up) = DOWN (-1)
@@ -114,14 +134,14 @@ export function useBlockState(
   // They must lift UP to make room, mirroring how forward lifts already-seen layers.
   const blocksNotYetSeenAbove = useMemo(() => {
     if (scrollDirection !== 'up' || isHeroStep(effectiveStep)) return [];
-    const activeLayerIndex = layers.findIndex(layer =>
-      layer.blocks.some(block => block.id === effectiveStep)
+    const activeLayerIndex = layers.findIndex((layer) =>
+      layer.blocks.some((block) => block.id === effectiveStep),
     );
     if (activeLayerIndex < 0) return [];
     const ids: number[] = [];
     layers.forEach((layer, idx) => {
       if (idx < activeLayerIndex) {
-        layer.blocks.forEach(b => ids.push(b.id));
+        layer.blocks.forEach((b) => ids.push(b.id));
       }
     });
     return ids;
@@ -136,5 +156,6 @@ export function useBlockState(
     aboveLiftSign,
     blocksNotYetSeenAbove,
     isRevealed,
+    activeBlend,
   };
 }

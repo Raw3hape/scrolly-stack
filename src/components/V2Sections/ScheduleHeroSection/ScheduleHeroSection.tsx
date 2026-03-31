@@ -16,7 +16,9 @@ export default function ScheduleHeroSection({ data }: Props) {
     <div className="v2-container">
       <div className="v2-schedule-hero">
         <h1 className="v2-schedule-hero__heading px-layer--fg">{data.heading}</h1>
-        <p className="v2-schedule-hero__subtext px-layer--fg" data-px-delay="1">{data.subtext}</p>
+        <p className="v2-schedule-hero__subtext px-layer--fg" data-px-delay="1">
+          {data.subtext}
+        </p>
 
         <div className="v2-schedule-hero__badge px-layer--accent" data-px-delay="2">
           <svg
@@ -31,10 +33,8 @@ export default function ScheduleHeroSection({ data }: Props) {
           </svg>
           <span>
             {data.smsBadge.text}{' '}
-            <span className="v2-schedule-hero__badge-keyword">
-              {data.smsBadge.keyword}
-            </span>{' '}
-            to {data.smsBadge.phone} ANYTIME.
+            <span className="v2-schedule-hero__badge-keyword">{data.smsBadge.keyword}</span> to{' '}
+            {data.smsBadge.phone} ANYTIME.
           </span>
         </div>
       </div>

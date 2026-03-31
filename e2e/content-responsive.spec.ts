@@ -28,7 +28,7 @@ for (const viewport of VIEWPORTS) {
     for (const page_ of CONTENT_PAGES) {
       test(`${page_.name} — no horizontal overflow`, async ({ page }) => {
         await page.goto(page_.path, { waitUntil: 'domcontentloaded' });
-        
+
         const bodyWidth = await page.evaluate(() => document.body.scrollWidth);
         const viewportWidth = await page.evaluate(() => window.innerWidth);
         expect(bodyWidth).toBeLessThanOrEqual(viewportWidth + 1); // 1px tolerance
@@ -36,14 +36,14 @@ for (const viewport of VIEWPORTS) {
 
       test(`${page_.name} — h1 is visible`, async ({ page }) => {
         await page.goto(page_.path, { waitUntil: 'domcontentloaded' });
-        
+
         const h1 = page.locator('h1');
         await expect(h1).toBeVisible();
       });
 
       test(`${page_.name} — header is visible`, async ({ page }) => {
         await page.goto(page_.path, { waitUntil: 'domcontentloaded' });
-        
+
         const header = page.locator('header').first();
         await expect(header).toBeVisible();
       });
@@ -52,7 +52,7 @@ for (const viewport of VIEWPORTS) {
         await page.goto(page_.path, { waitUntil: 'domcontentloaded' });
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
         await page.waitForTimeout(300);
-        
+
         const footer = page.locator('footer');
         await expect(footer).toBeVisible();
       });
@@ -61,7 +61,7 @@ for (const viewport of VIEWPORTS) {
     // Specific tests for Roofers V2 step cards layout
     test('Roofers — V2 step cards layout is correct', async ({ page }) => {
       await page.goto('/how-it-works/roofers', { waitUntil: 'domcontentloaded' });
-      
+
       const grid = page.locator('.v2-steps-grid');
       await expect(grid).toBeAttached();
 
@@ -78,7 +78,7 @@ for (const viewport of VIEWPORTS) {
     // Specific tests for About comparison columns
     test('About — comparison columns visible', async ({ page }) => {
       await page.goto('/about', { waitUntil: 'domcontentloaded' });
-      
+
       const comparison = page.locator('.comparison');
       await expect(comparison).toBeVisible();
 
@@ -89,11 +89,11 @@ for (const viewport of VIEWPORTS) {
     // Opt-in form responsive check
     test('Opt-In — form fields visible and usable', async ({ page }) => {
       await page.goto('/3b-opt-in', { waitUntil: 'domcontentloaded' });
-      
+
       const firstName = page.locator('#firstName');
       const email = page.locator('#email');
       const submit = page.locator('.opt-in__submit');
-      
+
       await expect(firstName).toBeVisible();
       await expect(email).toBeVisible();
       await expect(submit).toBeVisible();

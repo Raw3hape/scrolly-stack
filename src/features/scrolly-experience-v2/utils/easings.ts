@@ -24,9 +24,7 @@ export function easeOutQuart(t: number): number {
 
 /** Ease In Out Cubic — smooth S-curve */
 export function easeInOutCubic(t: number): number {
-  return t < 0.5
-    ? 4 * t * t * t
-    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
 /** Ease Out Back — slight overshoot */
@@ -38,9 +36,7 @@ export function easeOutBack(t: number): number {
 
 /** Ease In Out Quint — very smooth */
 export function easeInOutQuint(t: number): number {
-  return t < 0.5
-    ? 16 * t * t * t * t * t
-    : 1 - Math.pow(-2 * t + 2, 5) / 2;
+  return t < 0.5 ? 16 * t * t * t * t * t : 1 - Math.pow(-2 * t + 2, 5) / 2;
 }
 
 /**
@@ -82,11 +78,7 @@ export function lerpV3(
   b: [number, number, number],
   t: number,
 ): [number, number, number] {
-  return [
-    lerp(a[0], b[0], t),
-    lerp(a[1], b[1], t),
-    lerp(a[2], b[2], t),
-  ];
+  return [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
 }
 
 /**

@@ -13,21 +13,19 @@ import { classicVariant } from './variants/classic';
 export const layers: LayerData[] = classicVariant.layers;
 
 /** @deprecated Use useVariant() hook instead */
-export const steps: StepData[] = classicVariant.layers.flatMap(layer =>
-  layer.blocks.map(block => ({
+export const steps: StepData[] = classicVariant.layers.flatMap((layer) =>
+  layer.blocks.map((block) => ({
     ...block,
     level: layer.level,
-  }))
+  })),
 );
 
 /** @deprecated Use useVariant() hook instead */
 export function getStepById(id: number): StepData | undefined {
-  return steps.find(step => step.id === id);
+  return steps.find((step) => step.id === id);
 }
 
 /** @deprecated Use useVariant() hook instead */
 export function getLayerByStepId(id: number): LayerData | undefined {
-  return layers.find(layer =>
-    layer.blocks.some(block => block.id === id)
-  );
+  return layers.find((layer) => layer.blocks.some((block) => block.id === id));
 }

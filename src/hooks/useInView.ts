@@ -22,9 +22,7 @@ interface UseInViewOptions {
   repeat?: boolean;
 }
 
-export default function useInView<T extends HTMLElement>(
-  options: UseInViewOptions = {}
-) {
+export default function useInView<T extends HTMLElement>(options: UseInViewOptions = {}) {
   const { threshold = 0.15, rootMargin = '0px 0px -60px 0px', repeat = false } = options;
   const ref = useRef<T>(null);
 
@@ -41,7 +39,7 @@ export default function useInView<T extends HTMLElement>(
           el.removeAttribute('data-visible');
         }
       },
-      { threshold, rootMargin }
+      { threshold, rootMargin },
     );
 
     observer.observe(el);

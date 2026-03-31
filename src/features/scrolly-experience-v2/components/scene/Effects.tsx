@@ -12,7 +12,6 @@ import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { mosaic as mosaicConfig, postProcessing } from '../../config';
 import { lerp, smoothProgress } from '../../utils/easings';
 
-
 interface EffectsProps {
   mosaicProgress?: number;
 }
@@ -32,11 +31,15 @@ export default function Effects({ mosaicProgress = 0 }: EffectsProps) {
     effects.push(
       <Bloom
         key="bloom"
-        intensity={lerp(postProcessing.bloom.intensity, postProcessing.bloom.intensity * 0.92, transitionProgress)}
+        intensity={lerp(
+          postProcessing.bloom.intensity,
+          postProcessing.bloom.intensity * 0.92,
+          transitionProgress,
+        )}
         luminanceThreshold={postProcessing.bloom.luminanceThreshold}
         luminanceSmoothing={postProcessing.bloom.luminanceSmoothing}
         mipmapBlur={postProcessing.bloom.mipmapBlur}
-      />
+      />,
     );
   }
 
@@ -46,15 +49,11 @@ export default function Effects({ mosaicProgress = 0 }: EffectsProps) {
         key="vignette"
         offset={postProcessing.vignette.offset}
         darkness={postProcessing.vignette.darkness}
-      />
+      />,
     );
   }
 
   if (effects.length === 0) return null;
 
-  return (
-    <EffectComposer multisampling={0}>
-      {effects}
-    </EffectComposer>
-  );
+  return <EffectComposer multisampling={0}>{effects}</EffectComposer>;
 }

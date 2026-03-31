@@ -19,13 +19,10 @@ import { mosaic as mosaicConfig } from '../config';
 
 export interface ScrollProgress {
   mosaic: number; // 0→1: assembly animation
-  exit: number;   // 0→1: grid exits upward
+  exit: number; // 0→1: grid exits upward
 }
 
 const INITIAL: ScrollProgress = { mosaic: 0, exit: 0 };
-
-
-
 
 export default function useScrollProgress(
   triggerRef: RefObject<HTMLDivElement | null>,
@@ -45,19 +42,13 @@ export default function useScrollProgress(
 
     // Zone hasn't entered viewport yet
     if (rect.top >= viewportHeight) {
-      setProgress((prev) =>
-        prev.mosaic === 0 && prev.exit === 0 ? prev : INITIAL,
-      );
+      setProgress((prev) => (prev.mosaic === 0 && prev.exit === 0 ? prev : INITIAL));
       return;
     }
 
     // Zone has fully passed
     if (rect.bottom <= 0) {
-      setProgress((prev) =>
-        prev.mosaic === 1 && prev.exit === 1
-          ? prev
-          : { mosaic: 1, exit: 1 },
-      );
+      setProgress((prev) => (prev.mosaic === 1 && prev.exit === 1 ? prev : { mosaic: 1, exit: 1 }));
       return;
     }
 
@@ -100,10 +91,8 @@ export default function useScrollProgress(
       const eDelta = Math.abs(exit - prev.exit);
 
       // Snap to boundary values
-      const newM =
-        mosaic <= 0 ? 0 : mosaic >= 1 ? 1 : mDelta >= STEP ? mosaic : prev.mosaic;
-      const newE =
-        exit <= 0 ? 0 : exit >= 1 ? 1 : eDelta >= STEP ? exit : prev.exit;
+      const newM = mosaic <= 0 ? 0 : mosaic >= 1 ? 1 : mDelta >= STEP ? mosaic : prev.mosaic;
+      const newE = exit <= 0 ? 0 : exit >= 1 ? 1 : eDelta >= STEP ? exit : prev.exit;
 
       if (newM === prev.mosaic && newE === prev.exit) return prev;
       return { mosaic: newM, exit: newE };

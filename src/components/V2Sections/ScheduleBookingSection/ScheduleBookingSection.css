@@ -52,7 +52,9 @@
   align-items: center;
   justify-content: center;
   color: var(--stitch-dark-bg);
-  transition: background var(--transition-base), transform var(--transition-base);
+  transition:
+    background var(--transition-base),
+    transform var(--transition-base);
 }
 
 .v2-booking__expect-item:hover .v2-booking__expect-icon {
@@ -232,7 +234,9 @@
   color: var(--text-primary);
   border-radius: var(--radius-full);
   cursor: pointer;
-  transition: background var(--transition-base), color var(--transition-base),
+  transition:
+    background var(--transition-base),
+    color var(--transition-base),
     box-shadow var(--transition-base);
   aspect-ratio: 1;
   display: flex;
@@ -242,7 +246,9 @@
   min-height: 44px;
 }
 
-.v2-booking__calendar-day:hover:not(.v2-booking__calendar-day--disabled):not(.v2-booking__calendar-day--selected) {
+.v2-booking__calendar-day:hover:not(.v2-booking__calendar-day--disabled):not(
+    .v2-booking__calendar-day--selected
+  ) {
   background: var(--color-teal-100);
 }
 
@@ -290,8 +296,11 @@
   cursor: pointer;
   text-align: center;
   min-height: 44px;
-  transition: border-color var(--transition-base), background var(--transition-base),
-    color var(--transition-base), box-shadow var(--transition-base),
+  transition:
+    border-color var(--transition-base),
+    background var(--transition-base),
+    color var(--transition-base),
+    box-shadow var(--transition-base),
     transform var(--transition-base);
 }
 
@@ -330,7 +339,9 @@
   border-radius: var(--radius-sm);
   cursor: pointer;
   box-shadow: var(--shadow-lg);
-  transition: background var(--transition-base), transform var(--transition-base),
+  transition:
+    background var(--transition-base),
+    transform var(--transition-base),
     box-shadow var(--transition-base);
 }
 

@@ -40,18 +40,21 @@ const TILT_LERP = animation.hover?.tilt?.lerpSpeed ?? 0.12;
 const TILT_RESET_LERP = animation.hover?.tilt?.resetLerpSpeed ?? 0.08;
 
 /** Label Component for block text */
-function BlockLabel({ text, dimensions, color = labels.color, opacity = 1, labelFontSize, labelMaxWidth }: BlockLabelProps) {
+function BlockLabel({
+  text,
+  dimensions,
+  color = labels.color,
+  opacity = 1,
+  labelFontSize,
+  labelMaxWidth,
+}: BlockLabelProps) {
   const [w, h, d] = dimensions;
 
-  if (opacity <= 0) return null;
-
+  // Always mount Text — avoid WebGL shader recompile and texture atlas upload
+  // that happens on mount/unmount. Use visible + fillOpacity to hide instead.
   return (
     <Text
-      position={[
-        -w / 2 + labels.padding.x,
-        h / 2 + labels.padding.y,
-        d / 2 - labels.padding.z,
-      ]}
+      position={[-w / 2 + labels.padding.x, h / 2 + labels.padding.y, d / 2 - labels.padding.z]}
       rotation={[-Math.PI / 2, 0, 0]}
       fontSize={labelFontSize ?? labels.fontSize}
       font={labels.font}
@@ -59,6 +62,7 @@ function BlockLabel({ text, dimensions, color = labels.color, opacity = 1, label
       anchorY="bottom"
       color={color}
       fillOpacity={opacity}
+      visible={opacity > 0}
       maxWidth={labelMaxWidth ?? labels.maxWidth}
       lineHeight={labels.lineHeight}
       characters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
@@ -133,6 +137,9 @@ export default function Block({
   useFrame(() => {
     if (!tiltGroupRef.current) return;
 
+    // Early return during transition — saves 19 distance calcs per frame
+    if (isMosaicTransitioning) return;
+
     let targetX = 0;
     let targetZ = 0;
 
@@ -151,9 +158,7 @@ export default function Block({
       const dirX = dx / len;
       const dirZ = dz / len;
 
-      const effectiveIntensity = isHovered
-        ? intensity
-        : intensity * TILT_PROX_MAX;
+      const effectiveIntensity = isHovered ? intensity : intensity * TILT_PROX_MAX;
 
       targetX = dirZ * effectiveIntensity;
       targetZ = -dirX * effectiveIntensity;
@@ -185,19 +190,31 @@ export default function Block({
   // Bootstrap: kick the first frame when spring targets change.
   useEffect(() => {
     invalidate();
-  }, [isActive, isAboveActive, opacity, isRevealed, baseX, baseY, baseZ,
-      mosaicProgress, invalidate]);
+  }, [
+    isActive,
+    isAboveActive,
+    opacity,
+    isRevealed,
+    baseX,
+    baseY,
+    baseZ,
+    mosaicProgress,
+    invalidate,
+  ]);
+
+  // SMOOTH BLEND: During settle phase (0→0.18), fade out active animations
+  // (lift/slide) gradually instead of snapping to base position.
+  const SETTLE_THRESHOLD = 0.18;
+  const activeBlend =
+    mosaicProgress <= 0
+      ? 1
+      : mosaicProgress >= SETTLE_THRESHOLD
+        ? 0
+        : 1 - mosaicProgress / SETTLE_THRESHOLD;
 
   const getTargetPosition = (): [number, number, number] => {
     if (isMosaicActive) {
       return mosaicPosition;
-    }
-
-    // Pre-settle phase: mosaic is starting but blocks haven't entered mosaic
-    // mode yet.  Return BASE position so springs smoothly drop any lift/slide
-    // BEFORE the Bezier arc begins — this prevents the visible jerk.
-    if (mosaicProgress > 0) {
-      return [baseX, baseY, baseZ];
     }
 
     let targetX = baseX;
@@ -205,15 +222,13 @@ export default function Block({
     let targetZ = baseZ;
 
     if (isActive) {
-      targetX = baseX + slideX * animation.active.slideDistance;
-      targetZ = baseZ + slideZ * animation.active.slideDistance;
-      targetY = baseY + animation.active.liftHeight;
+      targetX = baseX + slideX * animation.active.slideDistance * activeBlend;
+      targetZ = baseZ + slideZ * animation.active.slideDistance * activeBlend;
+      targetY = baseY + animation.active.liftHeight * activeBlend;
     } else if (isAboveActive) {
-      targetY = baseY + animation.aboveActive.liftHeight * aboveLiftSign;
+      targetY = baseY + animation.aboveActive.liftHeight * aboveLiftSign * activeBlend;
     } else if (isNotYetSeenAbove) {
-      // Reverse only: layers above active haven't been seen yet but occlude it.
-      // Lift them UP so the active block is visible.
-      targetY = baseY + animation.aboveActive.liftHeight;
+      targetY = baseY + animation.aboveActive.liftHeight * activeBlend;
     }
 
     return [targetX, targetY, targetZ];
@@ -230,7 +245,10 @@ export default function Block({
   // blocks animate smoothly back to base. Only switch to immediate (= direct
   // scroll-driven positions, no physics) once blocks have fully settled.
   // ========================================================================
-  const IMMEDIATE_THRESHOLD = 0.25;
+  // Raised from 0.25 → 0.40 so springs have more time to settle before
+  // switching to direct scroll-driven positions. Prevents the abrupt motion
+  // feel change at 25% that was visible on slow scroll.
+  const IMMEDIATE_THRESHOLD = 0.4;
 
   const { springPosition } = useSpring({
     springPosition: getTargetPosition(),
@@ -240,7 +258,7 @@ export default function Block({
   });
 
   const { springScale } = useSpring({
-    springScale: isHovered && !isMosaicTransitioning ? (animation.hover?.scale || 1.025) : 1,
+    springScale: isHovered && !isMosaicTransitioning ? animation.hover?.scale || 1.025 : 1,
     config: { tension: 300, friction: 20, mass: 0.5 },
     onChange: () => invalidate(),
   });
@@ -267,59 +285,68 @@ export default function Block({
       mosaicDimensions[2] / dimensions[2],
     ];
     const t = easeOutQuart(mosaicProgress);
-    return [
-      1 + (target[0] - 1) * t,
-      1 + (target[1] - 1) * t,
-      1 + (target[2] - 1) * t,
-    ];
+    return [1 + (target[0] - 1) * t, 1 + (target[1] - 1) * t, 1 + (target[2] - 1) * t];
   }, [mosaicDimensions, mosaicProgress, dimensions]);
 
   // Labels + tilt use VISUAL dimensions (not geometry args) for correct positioning.
   // Smoothly interpolate between stack and mosaic dimensions so labels don't
   // jump when mosaic starts (was binary before, masked by the old fade-out).
   const progressT = easeOutQuart(mosaicProgress);
-  const visualDimensions: [number, number, number] = isMosaicActive && mosaicDimensions
-    ? [
-        lerp(dimensions[0], mosaicDimensions[0], progressT),
-        lerp(dimensions[1], mosaicDimensions[1], progressT),
-        lerp(dimensions[2], mosaicDimensions[2], progressT),
-      ]
-    : dimensions;
+  const visualDimensions: [number, number, number] =
+    isMosaicActive && mosaicDimensions
+      ? [
+          lerp(dimensions[0], mosaicDimensions[0], progressT),
+          lerp(dimensions[1], mosaicDimensions[1], progressT),
+          lerp(dimensions[2], mosaicDimensions[2], progressT),
+        ]
+      : dimensions;
 
   const currentColorA = isActive ? activeColor : color;
-  const currentColorB = isActive
-    ? (activeGradientColorB || activeColor)
-    : (gradientColorB || color);
+  const currentColorB = isActive ? activeGradientColorB || activeColor : gradientColorB || color;
 
-  const handlePointerOver = useCallback((e: { stopPropagation: () => void; clientX?: number; clientY?: number; nativeEvent?: { clientX?: number; clientY?: number } }) => {
-    e.stopPropagation();
-    if (isMosaicTransitioning) return;
-    document.body.style.cursor = 'pointer';
-    setIsHovered(true);
-    if (onHoverChange && blockData) {
-      const mousePos: MousePosition = {
-        x: e.clientX || e.nativeEvent?.clientX || 0,
-        y: e.clientY || e.nativeEvent?.clientY || 0,
-      };
-      onHoverChange(blockData, true, mousePos);
-    }
-  }, [onHoverChange, blockData, isMosaicTransitioning]);
+  const handlePointerOver = useCallback(
+    (e: {
+      stopPropagation: () => void;
+      clientX?: number;
+      clientY?: number;
+      nativeEvent?: { clientX?: number; clientY?: number };
+    }) => {
+      e.stopPropagation();
+      if (isMosaicTransitioning) return;
+      document.body.style.cursor = 'pointer';
+      setIsHovered(true);
+      if (onHoverChange && blockData) {
+        const mousePos: MousePosition = {
+          x: e.clientX || e.nativeEvent?.clientX || 0,
+          y: e.clientY || e.nativeEvent?.clientY || 0,
+        };
+        onHoverChange(blockData, true, mousePos);
+      }
+    },
+    [onHoverChange, blockData, isMosaicTransitioning],
+  );
 
-  const handlePointerOut = useCallback((e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
-    document.body.style.cursor = 'auto';
-    setIsHovered(false);
-    if (onHoverChange) {
-      onHoverChange(null, false, null);
-    }
-  }, [onHoverChange]);
+  const handlePointerOut = useCallback(
+    (e: { stopPropagation: () => void }) => {
+      e.stopPropagation();
+      document.body.style.cursor = 'auto';
+      setIsHovered(false);
+      if (onHoverChange) {
+        onHoverChange(null, false, null);
+      }
+    },
+    [onHoverChange],
+  );
 
-  const handleClick = useCallback((e: { stopPropagation: () => void }) => {
-    e.stopPropagation();
-    if (onClick && blockId !== undefined) {
-      onClick(blockId);
-    }
-  }, [onClick, blockId]);
+  const handleClick = useCallback(
+    (e: { stopPropagation: () => void }) => {
+      e.stopPropagation();
+      if (onClick && blockId !== undefined) {
+        onClick(blockId);
+      }
+    },
+    [onClick, blockId],
+  );
 
   const { springColorReveal } = useSpring({
     springColorReveal: opacity,
@@ -336,24 +363,22 @@ export default function Block({
   // Only the initial reveal is animated (opacity ramp from data-driven stagger).
   const revealFactor = Math.max(0, Math.min(1, (opacity - 0.3) / 0.5));
   const labelOpacity = revealFactor;
-  const showLabel = !!label && labelOpacity > 0.01;
 
   return (
-    <AnimatedGroup
-      position={springPosition}
-      scale={springScale}
-    >
+    <AnimatedGroup position={springPosition} scale={springScale}>
       {/* Tilt wrapper — rotation driven by useFrame for 60fps smoothness */}
       <group ref={tiltGroupRef}>
         {/* Dimension morph wrapper — scale instead of args change */}
-        <group scale={dimensionScale}>
+        {/* visible gate — skip rendering entirely when invisible,
+             but keep castShadow/receiveShadow stable to avoid shadow map recomputation flicker */}
+        <group scale={dimensionScale} visible={opacity > 0.01}>
           <RoundedBox
             ref={meshRef}
             args={geometryArgs}
             radius={geometry.stack.borderRadius}
             smoothness={geometry.stack.smoothness}
-            castShadow={opacity > 0.01}
-            receiveShadow={opacity > 0.01}
+            castShadow
+            receiveShadow
             onClick={handleClick}
             onPointerOver={handlePointerOver}
             onPointerOut={handlePointerOut}
@@ -370,8 +395,8 @@ export default function Block({
           </RoundedBox>
         </group>
 
-        {/* Labels OUTSIDE scale group — use visual dimensions for uniform positioning */}
-        {showLabel && (
+        {/* Labels OUTSIDE scale group — always mounted to avoid WebGL flicker */}
+        {label && (
           <BlockLabel
             text={label}
             dimensions={visualDimensions}

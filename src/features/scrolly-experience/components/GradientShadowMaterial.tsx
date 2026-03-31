@@ -14,7 +14,6 @@ import { palette } from '@/config/palette';
 import { getIOSGpuOverrides } from '../utils/iosGpuProfile';
 import type { GradientShadowMaterialProps } from '../types';
 
-
 export default function GradientShadowMaterial({
   colorA = palette.sand200,
   colorB = palette.sand100,
@@ -49,7 +48,9 @@ export default function GradientShadowMaterial({
       color: palette.white,
       roughness: isActive ? materials.active.roughness : materials.block.roughness,
       metalness: isActive ? materials.active.metalness : materials.block.metalness,
-      envMapIntensity: isActive ? materials.active.envMapIntensity : materials.block.envMapIntensity,
+      envMapIntensity: isActive
+        ? materials.active.envMapIntensity
+        : materials.block.envMapIntensity,
       // Physical glass effects
       transmission: materials.physical.transmission,
       ior: materials.physical.ior,
@@ -75,7 +76,7 @@ export default function GradientShadowMaterial({
       shader.uniforms.uIsHovered = { value: 0.0 };
       shader.uniforms.uColorReveal = { value: 1.0 };
       shader.uniforms.uSaturationBoost = { value: 1.0 };
-      shader.uniforms.uFresnelPower = { value: 2.5 };  // Rim light falloff
+      shader.uniforms.uFresnelPower = { value: 2.5 }; // Rim light falloff
 
       shader.vertexShader = shader.vertexShader.replace(
         'void main() {',
@@ -90,7 +91,7 @@ export default function GradientShadowMaterial({
           vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
           vec4 worldPos = modelMatrix * vec4(position, 1.0);
           vViewDir = normalize(cameraPosition - worldPos.xyz);
-        `
+        `,
       );
 
       shader.fragmentShader = shader.fragmentShader.replace(
@@ -114,7 +115,7 @@ export default function GradientShadowMaterial({
         }
 
         void main() {
-        `
+        `,
       );
 
       shader.fragmentShader = shader.fragmentShader.replace(
@@ -161,13 +162,16 @@ export default function GradientShadowMaterial({
         baseColor = min(baseColor, vec3(1.0));
 
         vec4 diffuseColor = vec4(baseColor, 1.0);
-        `
+        `,
       );
     };
 
     materialRef.current = mat;
     return mat;
-  }, [colorA, colorB, isActive, materialKey]);
+    // colorA/colorB removed from deps — handled by the useEffect below
+    // which updates uniforms directly without material recreation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActive, materialKey]);
 
   // Update uniform colors when props change (no shader recompilation needed)
   useEffect(() => {

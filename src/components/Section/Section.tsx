@@ -28,22 +28,17 @@ export default function Section({
     compact ? 'section--compact' : '',
     centered ? 'flex-center' : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
-  const containerClasses = [
-    'container',
-    width !== 'default' ? `container--${width}` : '',
-  ].filter(Boolean).join(' ');
+  const containerClasses = ['container', width !== 'default' ? `container--${width}` : '']
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <section
-      className={sectionClasses}
-      style={minHeight ? { minHeight } : undefined}
-    >
-      <div
-        className={containerClasses}
-        style={centered ? { textAlign: 'center' } : undefined}
-      >
+    <section className={sectionClasses} style={minHeight ? { minHeight } : undefined}>
+      <div className={containerClasses} style={centered ? { textAlign: 'center' } : undefined}>
         {children}
       </div>
     </section>

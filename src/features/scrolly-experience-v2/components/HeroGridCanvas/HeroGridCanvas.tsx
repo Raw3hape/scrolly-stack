@@ -29,7 +29,11 @@ import type { HeroGridConfig } from './types';
 // =============================================================================
 
 /** Resolve current breakpoint index and grid dimensions from config. */
-function resolveBreakpoint(config: HeroGridConfig): { cols: number; rows: number; bpIndex: number } {
+function resolveBreakpoint(config: HeroGridConfig): {
+  cols: number;
+  rows: number;
+  bpIndex: number;
+} {
   if (typeof window === 'undefined') {
     return { cols: config.breakpoints[0].cols, rows: config.breakpoints[0].rows, bpIndex: 0 };
   }
@@ -51,8 +55,10 @@ function prefersReducedMotion(): boolean {
 function detectIOS(): boolean {
   if (typeof navigator === 'undefined') return false;
   const ua = navigator.userAgent;
-  return /iPhone|iPod|iPad/.test(ua) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  return (
+    /iPhone|iPod|iPad/.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  );
 }
 
 // =============================================================================
@@ -73,7 +79,12 @@ interface BlockData {
   baseZ: number;
 }
 
-function GridScene({ config, cols, rows, isMobile }: {
+function GridScene({
+  config,
+  cols,
+  rows,
+  isMobile,
+}: {
   config: HeroGridConfig;
   cols: number;
   rows: number;
@@ -114,7 +125,10 @@ function GridScene({ config, cols, rows, isMobile }: {
   const mouseActiveRef = useRef(false);
 
   const reducedMotion = useMemo(() => prefersReducedMotion(), []);
-  const isIOS = useMemo(() => config.render.iosOptimize ? detectIOS() : false, [config.render.iosOptimize]);
+  const isIOS = useMemo(
+    () => (config.render.iosOptimize ? detectIOS() : false),
+    [config.render.iosOptimize],
+  );
 
   // Re-initialize arrays when grid size changes
   useEffect(() => {
@@ -125,9 +139,12 @@ function GridScene({ config, cols, rows, isMobile }: {
 
   // Pre-compute THREE.Color instances
   const colorBase = useMemo(() => new THREE.Color(colors.base), [colors.base]);
-  const colorMid = useMemo(() => colors.mid ? new THREE.Color(colors.mid) : null, [colors.mid]);
+  const colorMid = useMemo(() => (colors.mid ? new THREE.Color(colors.mid) : null), [colors.mid]);
   const colorHover = useMemo(() => new THREE.Color(colors.hover), [colors.hover]);
-  const colorIntense = useMemo(() => colors.hoverIntense ? new THREE.Color(colors.hoverIntense) : null, [colors.hoverIntense]);
+  const colorIntense = useMemo(
+    () => (colors.hoverIntense ? new THREE.Color(colors.hoverIntense) : null),
+    [colors.hoverIntense],
+  );
   const workColor = useMemo(() => new THREE.Color(), []);
 
   // Pointer tracking + animation loop
@@ -169,7 +186,9 @@ function GridScene({ config, cols, rows, isMobile }: {
 
         if (hover.gaussian && hover.gaussianFalloff != null) {
           // Gaussian falloff
-          const influence = Math.exp(-(dist * dist) * hover.gaussianFalloff / (hover.radius * hover.radius));
+          const influence = Math.exp(
+            (-(dist * dist) * hover.gaussianFalloff) / (hover.radius * hover.radius),
+          );
           hoverIntensity = influence;
           targetElevation += influence * hover.maxElevation;
         } else if (dist < hover.radius) {
@@ -238,7 +257,9 @@ function GridScene({ config, cols, rows, isMobile }: {
       {blocks.map((blockData, i) => (
         <RoundedBox
           key={`${blockData.col}-${blockData.row}`}
-          ref={(el: THREE.Mesh | null) => { meshRefs.current[i] = el; }}
+          ref={(el: THREE.Mesh | null) => {
+            meshRefs.current[i] = el;
+          }}
           args={[tile.size, tile.baseHeight, tile.size]}
           radius={tile.borderRadius}
           smoothness={tile.smoothness}
@@ -313,9 +334,7 @@ export default function HeroGridCanvas({ config }: HeroGridCanvasProps) {
   useEffect(() => {
     const handleResize = () => {
       const next = resolveBreakpoint(config);
-      setGridState((prev) =>
-        prev.cols !== next.cols || prev.rows !== next.rows ? next : prev,
-      );
+      setGridState((prev) => (prev.cols !== next.cols || prev.rows !== next.rows ? next : prev));
     };
     window.addEventListener('resize', handleResize);
 

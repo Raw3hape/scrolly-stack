@@ -16,7 +16,8 @@ html {
 }
 
 /* Eliminate 300ms tap delay on mobile for all interactive elements */
-a, button {
+a,
+button {
   touch-action: manipulation;
 }
 
@@ -30,7 +31,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 700;
   line-height: var(--leading-tight);
   text-wrap: balance;
@@ -46,7 +52,9 @@ a {
   text-decoration: none;
 }
 
-img, video, svg {
+img,
+video,
+svg {
   display: block;
   max-width: 100%;
 }

@@ -119,7 +119,6 @@ export interface StepsSection extends SectionBase {
   ctaHref?: string;
 }
 
-
 /** Call-to-action block */
 export interface CtaSection extends SectionBase {
   type: 'cta';

@@ -36,7 +36,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Sales',
         tooltipSubhead: 'Win more jobs',
         bullets: ['Lead handling', 'Follow-up system', 'Conversion tracking'],
-        description: 'Stop relying purely on word-of-mouth. We build a predictable lead-handling and follow-up system that tracks conversions and wins more jobs.',
+        description:
+          'Stop relying purely on word-of-mouth. We build a predictable lead-handling and follow-up system that tracks conversions and wins more jobs.',
         icon: icons.sales,
       },
       {
@@ -53,7 +54,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Operations',
         tooltipSubhead: 'Run jobs clean',
         bullets: ['Schedule crews', 'Track production', 'Quality control'],
-        description: 'Smooth out your production pipeline. From scheduling crews to strict quality control, we help you run jobs clean and on time.',
+        description:
+          'Smooth out your production pipeline. From scheduling crews to strict quality control, we help you run jobs clean and on time.',
         icon: icons.ops,
       },
       {
@@ -70,7 +72,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Finance',
         tooltipSubhead: 'Know your numbers',
         bullets: ['Job costing', 'Cash visibility', 'Profit analysis'],
-        description: 'Gain total financial clarity. We implement precise job costing and profit analysis so you always have real-time cash visibility.',
+        description:
+          'Gain total financial clarity. We implement precise job costing and profit analysis so you always have real-time cash visibility.',
         icon: icons.finance,
       },
       {
@@ -87,7 +90,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Exit',
         tooltipSubhead: 'Exit on your terms',
         bullets: ['Clean financials', 'Diligence-ready', 'Valuation support'],
-        description: 'Get diligence-ready. We clean up your financials and provide valuation support so you exit on your terms, for maximum value.',
+        description:
+          'Get diligence-ready. We clean up your financials and provide valuation support so you exit on your terms, for maximum value.',
         icon: icons.exit,
       },
     ],
@@ -117,7 +121,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'One Operating System',
         tooltipSubhead: 'Everything connects',
         bullets: ['Lead → Review flow', 'Unified data', 'Single source of truth'],
-        description: 'No more disconnected tools. We unify your data into a single source of truth, connecting your entire flow from lead to review.',
+        description:
+          'No more disconnected tools. We unify your data into a single source of truth, connecting your entire flow from lead to review.',
         icon: icons.system,
       },
       {
@@ -133,7 +138,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'One Accountable Team',
         tooltipSubhead: 'Done-for-you execution',
         bullets: ['Not just advice', 'Implementation partner', 'Ongoing support'],
-        description: 'We aren\'t just consultants offering advice. We are your implementation partner providing ongoing, done-for-you execution.',
+        description:
+          "We aren't just consultants offering advice. We are your implementation partner providing ongoing, done-for-you execution.",
         icon: icons.team,
       },
       {
@@ -149,7 +155,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'One Clear Plan',
         tooltipSubhead: 'Partner → Exit',
         bullets: ['Align', 'Transform', 'Scale'],
-        description: 'A clear roadmap from partnership to IPO. We align our goals, transform your operations, and scale together.',
+        description:
+          'A clear roadmap from partnership to IPO. We align our goals, transform your operations, and scale together.',
         icon: icons.plan,
       },
     ],
@@ -175,7 +182,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Lead-to-Review OS',
         tooltipSubhead: 'End-to-end workflow',
         bullets: ['Demand', 'Sales', 'Production', 'Review'],
-        description: 'An end-to-end workflow managing demand, sales, production, and reviews seamlessly.',
+        description:
+          'An end-to-end workflow managing demand, sales, production, and reviews seamlessly.',
         icon: icons.flow,
       },
       {
@@ -190,7 +198,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'CRM + Marketing Engine',
         tooltipSubhead: 'Trackable & repeatable',
         bullets: ['CRM installation', 'Pipeline management', 'Marketing auto'],
-        description: 'Pipeline management and marketing automation that make your revenue trackable & repeatable.',
+        description:
+          'Pipeline management and marketing automation that make your revenue trackable & repeatable.',
         icon: icons.contact,
       },
       {
@@ -205,7 +214,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Unified Accounting',
         tooltipSubhead: 'Financial clarity',
         bullets: ['Job costing', 'Reporting', 'Operating system link'],
-        description: 'Connect your job costing directly to your operating system for complete reporting clarity.',
+        description:
+          'Connect your job costing directly to your operating system for complete reporting clarity.',
         icon: icons.ledger,
       },
       {
@@ -220,7 +230,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'RevOps Controls',
         tooltipSubhead: 'System becomes behavior',
         bullets: ['Governance', 'Playbooks', 'Adoption tracking'],
-        description: 'Playbooks, governance, and adoption tracking to ensure your team actually uses the tools.',
+        description:
+          'Playbooks, governance, and adoption tracking to ensure your team actually uses the tools.',
         icon: icons.control,
       },
       {
@@ -235,7 +246,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Efficiency Savings',
         tooltipSubhead: 'Cut leaks',
         bullets: ['Reduce overhead', 'Smoother handoffs', 'Standardization'],
-        description: 'Standardize handoffs, cut leaks, and reduce overhead to instantly boost your margins.',
+        description:
+          'Standardize handoffs, cut leaks, and reduce overhead to instantly boost your margins.',
         icon: icons.savings,
       },
       {
@@ -265,7 +277,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Scale + Leverage',
         tooltipSubhead: 'Group power',
         bullets: ['8-12 businesses', 'Leverage economies', 'Unified growth'],
-        description: 'Combine the power of 8–12 businesses for unified growth and massive economies of scale.',
+        description:
+          'Combine the power of 8–12 businesses for unified growth and massive economies of scale.',
         icon: icons.growth,
       },
       {
@@ -280,7 +293,8 @@ const layers: LayerData[] = [
         tooltipTitle: 'Institutional Exit Options',
         tooltipSubhead: 'Premium exit positioning',
         bullets: ['Audit logs', 'Data room', 'Transferability'],
-        description: 'Audit logs and clean data rooms that position your business for a premium public exit.',
+        description:
+          'Audit logs and clean data rooms that position your business for a premium public exit.',
         icon: icons.exitReady,
       },
     ],

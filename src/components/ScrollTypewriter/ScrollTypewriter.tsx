@@ -57,9 +57,7 @@ export default function ScrollTypewriter({
   const chars = useMemo(() => {
     const characters = Array.from(text);
     let nonSpaceIndex = 0;
-    const totalNonSpace = characters.filter(
-      (ch) => ch !== ' ' && ch !== '\u00A0',
-    ).length;
+    const totalNonSpace = characters.filter((ch) => ch !== ' ' && ch !== '\u00A0').length;
 
     return characters.map((char) => {
       const isSpace = char === ' ' || char === '\u00A0';
@@ -74,9 +72,7 @@ export default function ScrollTypewriter({
     });
   }, [text]);
 
-  const combinedClassName = ['scroll-typewriter', className]
-    .filter(Boolean)
-    .join(' ');
+  const combinedClassName = ['scroll-typewriter', className].filter(Boolean).join(' ');
 
   return createElement(
     Tag,

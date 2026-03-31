@@ -19,7 +19,17 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three-stdlib';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { palette } from '@/config/palette';
-import { readHeroLayout, computeModelXOffset, computeAvailableWidth, measureTextCenter, measureContainerContentWidth, computeModelYOffset, isoScreenToWorld, type HeroLayout, type HeroTextMeasurement } from '../utils/heroLayout';
+import {
+  readHeroLayout,
+  computeModelXOffset,
+  computeAvailableWidth,
+  measureTextCenter,
+  measureContainerContentWidth,
+  computeModelYOffset,
+  isoScreenToWorld,
+  type HeroLayout,
+  type HeroTextMeasurement,
+} from '../utils/heroLayout';
 
 // ─── Grid Constants ──────────────────────────────────────────────────────────
 const CUBE_COUNT = 64;
@@ -70,7 +80,9 @@ function usePrefersReducedMotion() {
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     ref.current = mq.matches;
-    const handler = (e: MediaQueryListEvent) => { ref.current = e.matches; };
+    const handler = (e: MediaQueryListEvent) => {
+      ref.current = e.matches;
+    };
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);
   }, []);
@@ -94,7 +106,17 @@ function MouseParallaxGroup({ children }: { children: React.ReactNode }) {
 }
 
 // ─── Viewport Offset Group — shifts children to right half of canvas ────────
-function ViewportOffsetGroup({ children, layoutRef, textMeasureRef, containerWidthRef }: { children: React.ReactNode; layoutRef: React.RefObject<HeroLayout | null>; textMeasureRef: React.RefObject<HeroTextMeasurement | null>; containerWidthRef: React.RefObject<number | null> }) {
+function ViewportOffsetGroup({
+  children,
+  layoutRef,
+  textMeasureRef,
+  containerWidthRef,
+}: {
+  children: React.ReactNode;
+  layoutRef: React.RefObject<HeroLayout | null>;
+  textMeasureRef: React.RefObject<HeroTextMeasurement | null>;
+  containerWidthRef: React.RefObject<number | null>;
+}) {
   const { camera, size } = useThree();
   const cam = camera as THREE.OrthographicCamera;
 
@@ -116,7 +138,12 @@ function ViewportOffsetGroup({ children, layoutRef, textMeasureRef, containerWid
 
   const layout = layoutRef.current ?? readHeroLayout();
   const xOffset = computeModelXOffset(layout, visibleW);
-  const yOffset = computeModelYOffset(textMeasureRef.current, visibleH, size.height, layout.isMobile);
+  const yOffset = computeModelYOffset(
+    textMeasureRef.current,
+    visibleH,
+    size.height,
+    layout.isMobile,
+  );
 
   // Convert screen-space offsets to world-space for isometric camera
   const [wx, wy, wz] = isoScreenToWorld(xOffset, yOffset);
@@ -126,13 +153,22 @@ function ViewportOffsetGroup({ children, layoutRef, textMeasureRef, containerWid
 
 // ─── Exploded Grid Model ────────────────────────────────────────────────────
 
-function ExplodedGridModel({ layoutRef, containerWidthRef }: { layoutRef: React.RefObject<HeroLayout | null>; containerWidthRef: React.RefObject<number | null> }) {
+function ExplodedGridModel({
+  layoutRef,
+  containerWidthRef,
+}: {
+  layoutRef: React.RefObject<HeroLayout | null>;
+  containerWidthRef: React.RefObject<number | null>;
+}) {
   const { camera, size } = useThree();
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const reducedMotion = usePrefersReducedMotion();
 
   // Rounded geometry matching the visual style of Pyramid & Rubik's Cube
-  const roundedGeom = useMemo(() => new RoundedBoxGeometry(CUBE_DIM, CUBE_DIM, CUBE_DIM, 4, CUBE_RADIUS), []);
+  const roundedGeom = useMemo(
+    () => new RoundedBoxGeometry(CUBE_DIM, CUBE_DIM, CUBE_DIM, 4, CUBE_RADIUS),
+    [],
+  );
   useEffect(() => () => roundedGeom.dispose(), [roundedGeom]);
 
   // Pre-compute per-cube data
@@ -195,7 +231,14 @@ function ExplodedGridModel({ layoutRef, containerWidthRef }: { layoutRef: React.
       tempScl.setScalar(1);
       tempMat4.compose(tempPos, tempQuat, tempScl);
       mesh.setMatrixAt(i, tempMat4);
-      mesh.setColorAt(i, new THREE.Color(instanceColors[i * 3], instanceColors[i * 3 + 1], instanceColors[i * 3 + 2]));
+      mesh.setColorAt(
+        i,
+        new THREE.Color(
+          instanceColors[i * 3],
+          instanceColors[i * 3 + 1],
+          instanceColors[i * 3 + 2],
+        ),
+      );
     }
     mesh.instanceMatrix.needsUpdate = true;
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
@@ -254,8 +297,12 @@ function ExplodedGridModel({ layoutRef, containerWidthRef }: { layoutRef: React.
       {/* Invisible hitbox covering the entire grid — eliminates hover flickering
           from gaps between cubes. Pointer events fire on this solid surface. */}
       <mesh
-        onPointerOver={() => { gridHovered = true; }}
-        onPointerOut={() => { gridHovered = false; }}
+        onPointerOver={() => {
+          gridHovered = true;
+        }}
+        onPointerOut={() => {
+          gridHovered = false;
+        }}
       >
         <boxGeometry args={[gridExtent, gridExtent, gridExtent]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -310,10 +357,7 @@ export default function HeroExplodedGrid3D({ className, onReady }: HeroExplodedG
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className={className}
-    >
+    <div ref={containerRef} className={className}>
       <Canvas
         orthographic
         camera={{ zoom: 65, position: [100, 100, 100], near: 0.1, far: 500 }}
@@ -329,7 +373,10 @@ export default function HeroExplodedGrid3D({ className, onReady }: HeroExplodedG
             requestAnimationFrame(() => onReady?.());
           }
           const canvas = state.gl.domElement;
-          canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); onReady?.(); });
+          canvas.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            onReady?.();
+          });
         }}
         dpr={[1, 2]}
         gl={{
@@ -346,7 +393,11 @@ export default function HeroExplodedGrid3D({ className, onReady }: HeroExplodedG
         <Suspense fallback={null}>
           <Environment files="/envmaps/venice_sunset_256.hdr" environmentIntensity={0.35} />
         </Suspense>
-        <ViewportOffsetGroup layoutRef={layoutRef} textMeasureRef={textMeasureRef} containerWidthRef={containerWidthRef}>
+        <ViewportOffsetGroup
+          layoutRef={layoutRef}
+          textMeasureRef={textMeasureRef}
+          containerWidthRef={containerWidthRef}
+        >
           <PresentationControls
             global={false}
             cursor={true}

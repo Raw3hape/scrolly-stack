@@ -50,7 +50,7 @@ export default function Layer({
   // visibility via visible={false} on its buildGroupRef. This allows exit
   // animations to play (block flies up) without the parent cutting them off.
   // Instant mode: Layer controls visibility at layer level.
-  const isLayerVisible = isProgressive ? true : (opacity > 0 || mosaicProgress > 0);
+  const isLayerVisible = isProgressive ? true : opacity > 0 || mosaicProgress > 0;
 
   return (
     <group visible={isLayerVisible}>
@@ -58,12 +58,10 @@ export default function Layer({
         const isActive = currentStep === block.id;
         const isAboveActive = allBlocksAboveActive.includes(block.id);
         const isNotYetSeenAbove = allBlocksNotYetSeenAbove.includes(block.id);
-        const blockStagger = staggerDelay + (blockIndex * 30);
+        const blockStagger = staggerDelay + blockIndex * 30;
 
         // Per-block opacity: progressive mode checks visibleBlockIds
-        const blockOpacity = isProgressive
-          ? (visibleBlockIds?.has(block.id) ? 1 : 0)
-          : opacity;
+        const blockOpacity = isProgressive ? (visibleBlockIds?.has(block.id) ? 1 : 0) : opacity;
 
         const blockMosaic = mosaicBlockData?.[block.id];
 
@@ -80,7 +78,9 @@ export default function Layer({
             label={block.label}
             isActive={isActive}
             isAboveActive={isAboveActive}
-            slideDirection={(block.slideDirection ?? animation.active.slideDirection) as [number, number]}
+            slideDirection={
+              (block.slideDirection ?? animation.active.slideDirection) as [number, number]
+            }
             aboveLiftSign={aboveLiftSign}
             isNotYetSeenAbove={isNotYetSeenAbove}
             onClick={onBlockClick}

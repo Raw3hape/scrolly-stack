@@ -21,13 +21,7 @@
 
 import { Suspense, useRef, useState, useCallback, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import {
-  Environment,
-  PresentationControls,
-  Text,
-  RoundedBox,
-  useTexture,
-} from '@react-three/drei';
+import { Environment, PresentationControls, Text, RoundedBox, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { palette } from '@/config/palette';
 
@@ -36,7 +30,10 @@ import { palette } from '@/config/palette';
  * on a transparent plane. Uses LinearFilter (no mipmaps) + max anisotropy
  * for sharp rendering at any viewing angle.
  */
-function LogoPlane({ position, scale }: {
+function LogoPlane({
+  position,
+  scale,
+}: {
   position: [number, number, number];
   scale: [number, number];
 }) {
@@ -51,12 +48,7 @@ function LogoPlane({ position, scale }: {
   return (
     <mesh position={position}>
       <planeGeometry args={scale} />
-      <meshBasicMaterial
-        map={texture}
-        transparent
-        alphaTest={0.1}
-        toneMapped={false}
-      />
+      <meshBasicMaterial map={texture} transparent alphaTest={0.1} toneMapped={false} />
     </mesh>
   );
 }
@@ -65,7 +57,7 @@ function LogoPlane({ position, scale }: {
 const COVER_W = 2.4;
 const COVER_H = 3.2;
 const COVER_THICK = 0.035;
-const SPINE_D = 0.14;      // slim journal/magazine thickness
+const SPINE_D = 0.14; // slim journal/magazine thickness
 const COVER_RADIUS = 0.02;
 
 const PAGE_OVERHANG = 0.06;
@@ -77,57 +69,74 @@ const PAGE_LAYER_COUNT = 3; // fewer visible page layers for slim book
 // ─── Brand Colors (sourced from palette.ts — single source of truth) ──────
 const C = {
   coverFront: palette.teal500,
-  coverBack:  palette.teal700,
-  spine:      palette.anchor700,
-  spineEdge:  palette.anchor900,
-  pages:      palette.sand100,
-  pageLines:  palette.sand200,
-  accent:     palette.gold500,
-  textLight:  palette.sand25,
-  textMuted:  palette.teal300,
-  textGold:   palette.gold300,
+  coverBack: palette.teal700,
+  spine: palette.anchor700,
+  spineEdge: palette.anchor900,
+  pages: palette.sand100,
+  pageLines: palette.sand200,
+  accent: palette.gold500,
+  textLight: palette.sand25,
+  textMuted: palette.teal300,
+  textGold: palette.gold300,
 } as const;
 
 // ─── Mouse Parallax Config ───────────────────────────────────────────────────
-const PARALLAX_X = 0.3;   // vertical tilt range (~17°)
-const PARALLAX_Y = 0.45;  // horizontal tilt range (~26°)
+const PARALLAX_X = 0.3; // vertical tilt range (~17°)
+const PARALLAX_Y = 0.45; // horizontal tilt range (~26°)
 const PARALLAX_LERP = 0.05;
 
 // ─── Materials ───────────────────────────────────────────────────────────────
 const matCoverFront = new THREE.MeshPhysicalMaterial({
   color: C.coverFront,
-  roughness: 0.25, metalness: 0.0,
-  clearcoat: 0.4, clearcoatRoughness: 0.1,
-  sheen: 0.3, sheenRoughness: 0.4,
+  roughness: 0.25,
+  metalness: 0.0,
+  clearcoat: 0.4,
+  clearcoatRoughness: 0.1,
+  sheen: 0.3,
+  sheenRoughness: 0.4,
   sheenColor: new THREE.Color('#e8ddd0'),
   envMapIntensity: 0.3,
 });
 const matCoverBack = new THREE.MeshPhysicalMaterial({
   color: C.coverBack,
-  roughness: 0.3, metalness: 0.0,
-  clearcoat: 0.3, clearcoatRoughness: 0.15,
-  sheen: 0.2, sheenRoughness: 0.5,
+  roughness: 0.3,
+  metalness: 0.0,
+  clearcoat: 0.3,
+  clearcoatRoughness: 0.15,
+  sheen: 0.2,
+  sheenRoughness: 0.5,
   sheenColor: new THREE.Color('#e8ddd0'),
   envMapIntensity: 0.25,
 });
 const matSpine = new THREE.MeshPhysicalMaterial({
   color: C.spine,
-  roughness: 0.2, metalness: 0.0,
-  clearcoat: 0.5, clearcoatRoughness: 0.08,
+  roughness: 0.2,
+  metalness: 0.0,
+  clearcoat: 0.5,
+  clearcoatRoughness: 0.08,
   envMapIntensity: 0.35,
 });
 const matSpineEdge = new THREE.MeshStandardMaterial({
-  color: C.spineEdge, roughness: 0.5, metalness: 0.06,
+  color: C.spineEdge,
+  roughness: 0.5,
+  metalness: 0.06,
 });
 const matPageBlock = new THREE.MeshStandardMaterial({
-  color: C.pages, roughness: 0.9, metalness: 0,
+  color: C.pages,
+  roughness: 0.9,
+  metalness: 0,
 });
 const matPageLine = new THREE.MeshStandardMaterial({
-  color: C.pageLines, roughness: 0.85, metalness: 0,
+  color: C.pageLines,
+  roughness: 0.85,
+  metalness: 0,
 });
 const matAccent = new THREE.MeshStandardMaterial({
-  color: C.accent, roughness: 0.25, metalness: 0.08,
-  emissive: C.accent, emissiveIntensity: 0.12,
+  color: C.accent,
+  roughness: 0.25,
+  metalness: 0.08,
+  emissive: C.accent,
+  emissiveIntensity: 0.12,
 });
 
 const PAGE_INDICES = Array.from({ length: PAGE_LAYER_COUNT }, (_, i) => i);
@@ -170,10 +179,7 @@ function BookModel({ title, subtitle }: BookModelProps) {
   const fovRad = THREE.MathUtils.degToRad(cam.fov);
   const visibleH = 2 * cam.position.z * Math.tan(fovRad / 2);
   const visibleW = visibleH * (size.width / size.height);
-  const scale = Math.min(
-    (visibleH * 0.78) / COVER_H,
-    (visibleW * 0.78) / COVER_W,
-  );
+  const scale = Math.min((visibleH * 0.78) / COVER_H, (visibleW * 0.78) / COVER_W);
 
   const px = PAGE_OVERHANG / 2;
 
@@ -259,10 +265,7 @@ function BookModel({ title, subtitle }: BookModelProps) {
 
           {/* ── Cover Typography ── */}
           {/* Logo — top of cover (1201×276px = 4.35:1 aspect) */}
-          <LogoPlane
-            position={[0.05, 1.0, SPINE_D / 2 + 0.004]}
-            scale={[0.75, 0.172]}
-          />
+          <LogoPlane position={[0.05, 1.0, SPINE_D / 2 + 0.004]} scale={[0.75, 0.172]} />
 
           <Text
             position={[0.05, 0.18, SPINE_D / 2 + 0.005]}
@@ -349,17 +352,20 @@ export default function FreebieBook3D({ title, subtitle, className }: FreebieBoo
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [handleMouseMove]);
 
-  const handleCreated = useCallback((state: { gl: any; scene: any; camera: any; invalidate: () => void }) => {
-    if (state.gl.compileAsync) {
-      state.gl.compileAsync(state.scene, state.camera).then(() => {
+  const handleCreated = useCallback(
+    (state: { gl: any; scene: any; camera: any; invalidate: () => void }) => {
+      if (state.gl.compileAsync) {
+        state.gl.compileAsync(state.scene, state.camera).then(() => {
+          state.invalidate();
+          setReady(true);
+        });
+      } else {
         state.invalidate();
-        setReady(true);
-      });
-    } else {
-      state.invalidate();
-      requestAnimationFrame(() => setReady(true));
-    }
-  }, []);
+        requestAnimationFrame(() => setReady(true));
+      }
+    },
+    [],
+  );
 
   return (
     <div

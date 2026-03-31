@@ -11,7 +11,9 @@
 
 import { test, expect } from '@playwright/test';
 
-function isMobile(width: number) { return width <= 768; }
+function isMobile(width: number) {
+  return width <= 768;
+}
 
 // ---------------------------------------------------------------------------
 // 1. HEADER/CONTENT STACKING — header doesn't occlude content
@@ -122,9 +124,7 @@ test.describe('Image integrity', () => {
     const logo = page.locator('.v2-header__logo');
     await expect(logo).toBeAttached();
 
-    const naturalWidth = await logo.evaluate(
-      (img) => (img as HTMLImageElement).naturalWidth
-    );
+    const naturalWidth = await logo.evaluate((img) => (img as HTMLImageElement).naturalWidth);
     expect(naturalWidth).toBeGreaterThan(0);
   });
 
@@ -163,8 +163,8 @@ test.describe('Scroll health', () => {
       await page.evaluate((scrollY) => window.scrollTo(0, scrollY), y);
       await page.waitForTimeout(100);
 
-      const overflow = await page.evaluate(() =>
-        document.documentElement.scrollWidth > document.documentElement.clientWidth
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
       );
       expect(overflow).toBe(false);
     }

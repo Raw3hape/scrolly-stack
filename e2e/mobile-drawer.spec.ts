@@ -29,7 +29,7 @@ test.describe('Mobile Drawer', () => {
     await expect(drawer).toBeVisible();
 
     // Drawer should have the --open class
-    const hasOpen = await drawer.evaluate(el => el.classList.contains('v2-drawer--open'));
+    const hasOpen = await drawer.evaluate((el) => el.classList.contains('v2-drawer--open'));
     expect(hasOpen).toBe(true);
   });
 
@@ -68,7 +68,7 @@ test.describe('Mobile Drawer', () => {
 
     // Drawer should be closed
     const drawer = page.locator('.v2-drawer');
-    const hasOpen = await drawer.evaluate(el => el.classList.contains('v2-drawer--open'));
+    const hasOpen = await drawer.evaluate((el) => el.classList.contains('v2-drawer--open'));
     expect(hasOpen).toBe(false);
   });
 
@@ -82,7 +82,7 @@ test.describe('Mobile Drawer', () => {
     await page.waitForTimeout(400);
 
     const drawer = page.locator('.v2-drawer');
-    const hasOpen = await drawer.evaluate(el => el.classList.contains('v2-drawer--open'));
+    const hasOpen = await drawer.evaluate((el) => el.classList.contains('v2-drawer--open'));
     expect(hasOpen).toBe(false);
   });
 
@@ -94,7 +94,7 @@ test.describe('Mobile Drawer', () => {
     await page.waitForTimeout(400);
 
     const drawer = page.locator('.v2-drawer');
-    const hasOpen = await drawer.evaluate(el => el.classList.contains('v2-drawer--open'));
+    const hasOpen = await drawer.evaluate((el) => el.classList.contains('v2-drawer--open'));
     expect(hasOpen).toBe(false);
   });
 
@@ -123,8 +123,8 @@ test.describe('Mobile Drawer', () => {
     await burger.click();
     await page.waitForTimeout(400);
 
-    const hasOpenClass = await burger.evaluate(
-      el => el.classList.contains('v2-header__burger--open')
+    const hasOpenClass = await burger.evaluate((el) =>
+      el.classList.contains('v2-header__burger--open'),
     );
     expect(hasOpenClass).toBe(true);
   });

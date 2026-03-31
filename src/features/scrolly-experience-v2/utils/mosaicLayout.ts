@@ -51,7 +51,6 @@ export function getMosaicRows(
   return Math.ceil(totalCols / cols);
 }
 
-
 /**
  * Calculate flat grid positions for all blocks in the mosaic.
  * Supports spanBlocks — blocks that occupy multiple columns.
@@ -110,8 +109,6 @@ export function calculateMosaicPositions(
   return result;
 }
 
-
-
 // =============================================================================
 // ARC CONTROL POINT (simple midpoint lift)
 // =============================================================================
@@ -164,11 +161,7 @@ export function precomputeTrajectories(
 
   return blocks.map((block, index) => {
     const mosaic = mosaicBlocks[index];
-    const arcControl = calculateArcControlPoint(
-      block.position,
-      mosaic.position,
-      mosaicCfg,
-    );
+    const arcControl = calculateArcControlPoint(block.position, mosaic.position, mosaicCfg);
 
     return {
       stackPosition: block.position,

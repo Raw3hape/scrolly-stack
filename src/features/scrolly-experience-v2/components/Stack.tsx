@@ -27,10 +27,7 @@ import {
   collectAllBlocks,
 } from '../hooks/useMosaicTransition';
 import type { MosaicBlockDataMap, MosaicBlockDatum } from '../hooks/useMosaicTransition';
-import {
-  lerp,
-  smoothProgress,
-} from '../utils/easings';
+import { lerp, smoothProgress } from '../utils/easings';
 import { animation } from '../config';
 import { computeMaxIsoZoom } from '../utils/computeMaxIsoZoom';
 import { TiltBatchContext } from '../hooks/useTiltBatch';
@@ -47,7 +44,8 @@ export type { MosaicBlockDataMap, MosaicBlockDatum };
 // =============================================================================
 
 const defaultBuildOffsetRef = { current: {} as Record<number, number> };
-export const BuildOffsetContext = createContext<React.RefObject<Record<number, number>>>(defaultBuildOffsetRef);
+export const BuildOffsetContext =
+  createContext<React.RefObject<Record<number, number>>>(defaultBuildOffsetRef);
 
 export function useBuildOffset() {
   return useContext(BuildOffsetContext);
@@ -79,11 +77,7 @@ const ISO_PROJECTION = (() => {
   const fwd: [number, number, number] = [-pos[0] / len, -pos[1] / len, -pos[2] / len];
 
   const dotUpFwd = up[0] * fwd[0] + up[1] * fwd[1] + up[2] * fwd[2];
-  const trueUp = [
-    up[0] - dotUpFwd * fwd[0],
-    up[1] - dotUpFwd * fwd[1],
-    up[2] - dotUpFwd * fwd[2],
-  ];
+  const trueUp = [up[0] - dotUpFwd * fwd[0], up[1] - dotUpFwd * fwd[1], up[2] - dotUpFwd * fwd[2]];
   const trueUpLen = Math.sqrt(trueUp[0] ** 2 + trueUp[1] ** 2 + trueUp[2] ** 2);
 
   return {
@@ -128,11 +122,11 @@ function getVisibleBlockIds(
 ): Set<number> {
   if (buildMode !== 'progressive') {
     const all = new Set<number>();
-    layers.forEach(l => l.blocks.forEach(b => all.add(b.id)));
+    layers.forEach((l) => l.blocks.forEach((b) => all.add(b.id)));
     return all;
   }
   if (isHeroStep(currentStep)) {
-    return new Set(layers[0]?.blocks.slice(0, 1).map(b => b.id) ?? []);
+    return new Set(layers[0]?.blocks.slice(0, 1).map((b) => b.id) ?? []);
   }
   const visible = new Set<number>();
   for (const layer of layers) {
@@ -148,7 +142,12 @@ function getVisibleBlockIds(
 // STACK COMPONENT
 // =============================================================================
 
-export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlockHover }: StackProps) {
+export default function Stack({
+  currentStep,
+  mosaicProgress,
+  onBlockClick,
+  onBlockHover,
+}: StackProps) {
   const { layers, steps, geometry: geo, mosaicConfig, scrollDirection, buildMode } = useVariant();
   const isProgressive = buildMode === 'progressive';
 
@@ -159,13 +158,8 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   // =========================================================================
   // BLOCK STATE — active, revealed, above-active
   // =========================================================================
-  const {
-    effectiveStep,
-    blocksAboveActive,
-    aboveLiftSign,
-    blocksNotYetSeenAbove,
-    isRevealed,
-  } = useBlockState(currentStep, mosaicProgress, layers, steps, scrollDirection, buildMode);
+  const { effectiveStep, blocksAboveActive, aboveLiftSign, blocksNotYetSeenAbove, isRevealed } =
+    useBlockState(currentStep, mosaicProgress, layers, steps, scrollDirection, buildMode);
 
   // =========================================================================
   // LAYOUT — layer positions and all blocks
@@ -180,10 +174,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     [layers, geo, isProgressive],
   );
 
-  const allBlocks = useMemo(
-    () => collectAllBlocks(layerPositions, geo),
-    [layerPositions, geo],
-  );
+  const allBlocks = useMemo(() => collectAllBlocks(layerPositions, geo), [layerPositions, geo]);
 
   // =========================================================================
   // HEADER MEASUREMENT — needed by adaptive mosaic (state) and scene offset (ref)
@@ -192,7 +183,9 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   // Initialize from actual viewport — avoids first-frame snap to desktop value
   // on mobile (0.45 → 0 drift visible as cube sliding left-to-right).
   const contentRatioRef = useRef(
-    typeof window !== 'undefined' && window.innerWidth <= animation.zoom.mobileBreakpoint ? 0 : 0.45
+    typeof window !== 'undefined' && window.innerWidth <= animation.zoom.mobileBreakpoint
+      ? 0
+      : 0.45,
   );
   // Mobile: hero content bottom (px from viewport top) — cached to avoid
   // getComputedStyle/DOM reads in useFrame (layout thrashing at 60fps).
@@ -211,9 +204,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
       // Measure REAL header height from DOM — CSS token is inaccurate on mobile
       // (--header-height-mobile = 64px, actual Header ≈ 90px due to padding)
       const headerEl = document.querySelector(SELECTOR_HEADER);
-      const h = headerEl
-        ? headerEl.getBoundingClientRect().height
-        : 72; // fallback
+      const h = headerEl ? headerEl.getBoundingClientRect().height : 72; // fallback
       headerPxRef.current = h;
       setHeaderPx(h);
 
@@ -321,7 +312,9 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
   if (isProgressive && Object.keys(buildOffsetMapRef.current).length === 0) {
     for (const layer of layers) {
       for (const block of layer.blocks) {
-        buildOffsetMapRef.current[block.id] = visibleBlockIds.has(block.id) ? 0 : animation.build.dropHeight;
+        buildOffsetMapRef.current[block.id] = visibleBlockIds.has(block.id)
+          ? 0
+          : animation.build.dropHeight;
         buildVelocityMapRef.current[block.id] = 0;
       }
     }
@@ -407,8 +400,12 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     const maxIso = maxIsoZoomRef.current || animation.zoom.desktop;
     // Progressive mode: always use isometric zoom (no hero zoom)
     const targetZoom = isHeroView
-      ? (isMobile ? animation.zoom.heroMobile : animation.zoom.heroDesktop)
-      : (isMobile ? animation.zoom.mobile : Math.min(animation.zoom.desktop, maxIso));
+      ? isMobile
+        ? animation.zoom.heroMobile
+        : animation.zoom.heroDesktop
+      : isMobile
+        ? animation.zoom.mobile
+        : Math.min(animation.zoom.desktop, maxIso);
 
     const worldPerPx = 1 / targetZoom;
     const targetOffsetX = size.width * contentRatioRef.current * 0.5 * worldPerPx;
@@ -420,12 +417,15 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     //    Iso camera: +Z = up-left on screen. Hero camera: +Z = down on screen.
     //    Blending prevents Z-offset from having wrong semantics during transition.
     //    Progressive mode: never apply hero blend (camera stays isometric).
-    const heroTarget = (isMobile && isHeroView) ? 1 : 0;
+    const heroTarget = isMobile && isHeroView ? 1 : 0;
 
     // 3. Header + visual-zone compensation.
     //    Blended via heroBlend instead of instant if/else — stays synced with
     //    CameraRig's damped camera transition.
-    const isoHeaderCompY = -(headerPxRef.current / (2 * targetZoom * ISO_PROJECTION.screenYPerWorldY));
+    const isoHeaderCompY = -(
+      headerPxRef.current /
+      (2 * targetZoom * ISO_PROJECTION.screenYPerWorldY)
+    );
     const hb = heroBlendRef.current;
     const headerCompY = isoHeaderCompY * (1 - hb);
 
@@ -505,7 +505,7 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
       let minY = Infinity;
       let maxY = -Infinity;
       for (let i = 0; i < layerPositions.length; i++) {
-        const hasVisible = layerPositions[i].layer.blocks.some(b => visibleBlockIds.has(b.id));
+        const hasVisible = layerPositions[i].layer.blocks.some((b) => visibleBlockIds.has(b.id));
         if (hasVisible) {
           const y = layerPositions[i].baseY;
           if (y < minY) minY = y;
@@ -533,7 +533,10 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
     const finalX = lerp(dampedOffsetXRef.current, 0, transitionProgress);
     // Use adaptive zoom (viewport-derived) for accurate header compensation
     const mosaicZoom = adaptiveFinalZoom;
-    const mosaicHeaderCompY = -(headerPxRef.current / (2 * mosaicZoom * ISO_PROJECTION.screenYPerWorldY));
+    const mosaicHeaderCompY = -(
+      headerPxRef.current /
+      (2 * mosaicZoom * ISO_PROJECTION.screenYPerWorldY)
+    );
     const mosaicTargetY = mosaicConfig.sceneOffset.mosaicY + mosaicHeaderCompY;
     const buildCenterY = isProgressive ? buildCenterRef.current : 0;
     const finalY = lerp(dampedOffsetYRef.current + buildCenterY, mosaicTargetY, transitionProgress);
@@ -544,54 +547,54 @@ export default function Stack({ currentStep, mosaicProgress, onBlockClick, onBlo
 
   return (
     <TiltBatchContext.Provider value={tiltBatchRef.current}>
-    <BuildOffsetContext.Provider value={buildOffsetMapRef}>
-    <group ref={groupRef}>
-      {layerPositions.map(({ layer, baseY }, index) => {
-        const totalLayers = layerPositions.length;
+      <BuildOffsetContext.Provider value={buildOffsetMapRef}>
+        <group ref={groupRef}>
+          {layerPositions.map(({ layer, baseY }, index) => {
+            const totalLayers = layerPositions.length;
 
-        // Progressive: per-block opacity via visibleBlockIds (passed to Layer).
-        // Instant: per-layer opacity via calculateLayerOpacity.
-        const layerOpacity = isProgressive
-          ? 1 // Layer always renders; per-block visibility handled inside
-          : calculateLayerOpacity(index, totalLayers, currentStep);
+            // Progressive: per-block opacity via visibleBlockIds (passed to Layer).
+            // Instant: per-layer opacity via calculateLayerOpacity.
+            const layerOpacity = isProgressive
+              ? 1 // Layer always renders; per-block visibility handled inside
+              : calculateLayerOpacity(index, totalLayers, currentStep);
 
-        let staggerDelay: number;
-        if (isProgressive) {
-          staggerDelay = 0;
-        } else {
-          staggerDelay = isRevealed
-            ? (scrollDirection === 'up'
-                ? (totalLayers - 1 - index) * 100
-                : index * 100)
-            : (scrollDirection === 'up'
-                ? index * 100
-                : (totalLayers - 1 - index) * 100);
-        }
+            let staggerDelay: number;
+            if (isProgressive) {
+              staggerDelay = 0;
+            } else {
+              staggerDelay = isRevealed
+                ? scrollDirection === 'up'
+                  ? (totalLayers - 1 - index) * 100
+                  : index * 100
+                : scrollDirection === 'up'
+                  ? index * 100
+                  : (totalLayers - 1 - index) * 100;
+            }
 
-        return (
-          <Layer
-            key={layer.id}
-            layer={layer}
-            baseY={baseY}
-            currentStep={effectiveStep}
-            allBlocksAboveActive={blocksAboveActive}
-            aboveLiftSign={aboveLiftSign}
-            allBlocksNotYetSeenAbove={blocksNotYetSeenAbove}
-            onBlockClick={onBlockClick}
-            onBlockHover={onBlockHover}
-            opacity={layerOpacity}
-            staggerDelay={staggerDelay}
-            isRevealed={isRevealed}
-            mosaicProgress={mosaicProgress}
-            mosaicBlockData={mosaicBlockData}
-            labelFontSize={adaptedMosaic.labelFontSize}
-            labelMaxWidth={adaptedMosaic.labelMaxWidth}
-            visibleBlockIds={visibleBlockIds}
-          />
-        );
-      })}
-    </group>
-    </BuildOffsetContext.Provider>
+            return (
+              <Layer
+                key={layer.id}
+                layer={layer}
+                baseY={baseY}
+                currentStep={effectiveStep}
+                allBlocksAboveActive={blocksAboveActive}
+                aboveLiftSign={aboveLiftSign}
+                allBlocksNotYetSeenAbove={blocksNotYetSeenAbove}
+                onBlockClick={onBlockClick}
+                onBlockHover={onBlockHover}
+                opacity={layerOpacity}
+                staggerDelay={staggerDelay}
+                isRevealed={isRevealed}
+                mosaicProgress={mosaicProgress}
+                mosaicBlockData={mosaicBlockData}
+                labelFontSize={adaptedMosaic.labelFontSize}
+                labelMaxWidth={adaptedMosaic.labelMaxWidth}
+                visibleBlockIds={visibleBlockIds}
+              />
+            );
+          })}
+        </group>
+      </BuildOffsetContext.Provider>
     </TiltBatchContext.Provider>
   );
 }

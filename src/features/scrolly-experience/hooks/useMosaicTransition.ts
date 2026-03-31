@@ -15,15 +15,8 @@
 import { useMemo } from 'react';
 import { getLayerHeight, calculateBlockPositions } from '../utils/layoutUtils';
 import type { ResolvedGeometry } from '../VariantContext';
-import {
-  precomputeTrajectories,
-  type BlockTrajectory,
-} from '../utils/mosaicLayout';
-import {
-  easeInOutCubic,
-  lerpV3,
-  quadraticBezierV3,
-} from '../utils/easings';
+import { precomputeTrajectories, type BlockTrajectory } from '../utils/mosaicLayout';
+import { easeInOutCubic, lerpV3, quadraticBezierV3 } from '../utils/easings';
 import type { LayerData, ComputedBlock } from '../types';
 import type { AdaptiveMosaicResult } from './useAdaptiveMosaic';
 
@@ -112,18 +105,9 @@ function interpolateMosaicPositions(
   for (let i = 0; i < trajectories.length; i++) {
     const traj = trajectories[i];
 
-    const pos = quadraticBezierV3(
-      traj.stackPosition,
-      traj.arcControlPoint,
-      traj.mosaicPosition,
-      t,
-    );
+    const pos = quadraticBezierV3(traj.stackPosition, traj.arcControlPoint, traj.mosaicPosition, t);
 
-    const dims = lerpV3(
-      traj.stackDimensions,
-      traj.mosaicDimensions,
-      t,
-    ) as [number, number, number];
+    const dims = lerpV3(traj.stackDimensions, traj.mosaicDimensions, t) as [number, number, number];
 
     result[allBlocks[i].id] = { position: pos, dimensions: dims };
   }
@@ -156,23 +140,30 @@ export function useMosaicTransition(
   mosaicProgress: number,
   settleThreshold: number,
 ): MosaicTransitionResult {
-  const trajectories = useMemo(
-    () => {
-      const trajs = precomputeTrajectories(allBlocks, adaptedMosaic);
-      return trajs.map((traj) => ({
-        ...traj,
-        arcControlPoint: computeArcControl(traj.stackPosition, traj.mosaicPosition),
-      }));
-    },
-    [allBlocks, adaptedMosaic],
-  );
+  const trajectories = useMemo(() => {
+    const trajs = precomputeTrajectories(allBlocks, adaptedMosaic);
+    return trajs.map((traj) => ({
+      ...traj,
+      arcControlPoint: computeArcControl(traj.stackPosition, traj.mosaicPosition),
+    }));
+  }, [allBlocks, adaptedMosaic]);
 
-  // Settle phase: delay mosaic override until viewStart threshold.
-  // During 0 -> viewStart, springs return blocks to base positions (drop lift/slide).
-  // This prevents the visible jerk when blocks teleport from lifted to mosaic start.
+  // SOFT SETTLE: Instead of a hard cutoff at settleThreshold, begin the Bezier
+  // arc as soon as mosaicProgress > 0, but remap the progress so the arc starts
+  // gently. Below settleThreshold the progress is compressed (slow start),
+  // above it the full range is used. This eliminates the hard
+  // spring→scroll-driven jump that caused visible jerks on reverse scroll.
   const mosaicBlockData = useMemo((): MosaicBlockDataMap | undefined => {
-    if (mosaicProgress <= settleThreshold) return undefined;
-    return interpolateMosaicPositions(mosaicProgress, trajectories, allBlocks);
+    if (mosaicProgress <= 0) return undefined;
+
+    // Remap: during settle phase (0→threshold), use a compressed progress
+    // so blocks begin moving toward their arc start instead of snapping.
+    const remapped =
+      mosaicProgress <= settleThreshold
+        ? (mosaicProgress / settleThreshold) * settleThreshold // slow ramp in
+        : mosaicProgress;
+
+    return interpolateMosaicPositions(remapped, trajectories, allBlocks);
   }, [mosaicProgress, settleThreshold, trajectories, allBlocks]);
 
   return {

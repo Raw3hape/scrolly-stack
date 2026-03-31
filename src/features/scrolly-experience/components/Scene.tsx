@@ -37,6 +37,21 @@ import type { SceneProps, RawBlockData, MousePosition } from '../types';
 // MAIN SCENE COMPONENT
 // =============================================================================
 
+/** Ensures demand-mode Canvas renders during scroll — critical for mobile touch
+ *  scroll where no other invalidation source may exist. Listens for scroll events
+ *  and calls invalidate() so the 3D scene updates during scroll momentum. */
+function ScrollInvalidator() {
+  const invalidate = useThree((s) => s.invalidate);
+
+  useEffect(() => {
+    const handler = () => invalidate();
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, [invalidate]);
+
+  return null;
+}
+
 /** Fires onReady after the first fully-rendered frames (shaders compiled, env loaded).
  *  Uses rAF + invalidate() instead of useFrame so it works with frameloop="demand". */
 function ReadySignal({ onReady }: { onReady?: () => void }) {
@@ -62,7 +77,12 @@ function ReadySignal({ onReady }: { onReady?: () => void }) {
   return null;
 }
 
-export default function Scene({ currentStep, mosaicProgress, onBlockClick, onReady }: SceneProps & { onReady?: () => void }) {
+export default function Scene({
+  currentStep,
+  mosaicProgress,
+  onBlockClick,
+  onReady,
+}: SceneProps & { onReady?: () => void }) {
   const { mosaicConfig, layers, geometry: geo } = useVariant();
 
   // Total block count — needed for adaptive zoom row calculation
@@ -88,7 +108,8 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
   const iosOverrides = getIOSGpuOverrides();
 
   // Use capped DPR on mobile to reduce GPU load (3× screens don't need 2× render)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= animation.zoom.mobileBreakpoint;
+  const isMobile =
+    typeof window !== 'undefined' && window.innerWidth <= animation.zoom.mobileBreakpoint;
   const activeDpr = isMobile && render.mobileDpr ? render.mobileDpr : render.dpr;
 
   // Hover state for tooltip (DOM overlay — needs state for re-render)
@@ -103,25 +124,31 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
    */
   const parallaxMouseRef = useRef({ x: 0, y: 0 });
 
-  const handleBlockClick = useCallback((blockId: number) => {
-    const stepElement = document.getElementById(getStepElementId(blockId));
-    if (stepElement) {
-      stepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-    if (onBlockClick) {
-      onBlockClick(blockId);
-    }
-  }, [onBlockClick]);
+  const handleBlockClick = useCallback(
+    (blockId: number) => {
+      const stepElement = document.getElementById(getStepElementId(blockId));
+      if (stepElement) {
+        stepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      if (onBlockClick) {
+        onBlockClick(blockId);
+      }
+    },
+    [onBlockClick],
+  );
 
-  const handleBlockHover = useCallback((blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => {
-    if (isHovered && blockData) {
-      setHoveredBlock(blockData);
-      setMousePosition(mousePos);
-    } else {
-      setHoveredBlock(null);
-      setMousePosition(null);
-    }
-  }, []);
+  const handleBlockHover = useCallback(
+    (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => {
+      if (isHovered && blockData) {
+        setHoveredBlock(blockData);
+        setMousePosition(mousePos);
+      } else {
+        setHoveredBlock(null);
+        setMousePosition(null);
+      }
+    },
+    [],
+  );
 
   // Track mouse for parallax (writes to ref, 0 re-renders)
   useEffect(() => {
@@ -155,9 +182,7 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
         gl={{
           antialias: true,
           alpha: true,
-          toneMapping: iosOverrides
-            ? ACESFilmicToneMapping
-            : AgXToneMapping,
+          toneMapping: iosOverrides ? ACESFilmicToneMapping : AgXToneMapping,
           ...(iosOverrides ? { powerPreference: iosOverrides.powerPreference } : {}),
         }}
         onCreated={(state) => {
@@ -185,6 +210,7 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
           canvas.addEventListener('webglcontextlost', handleContextLost);
         }}
       >
+        <ScrollInvalidator />
         <CameraRig isHero={isHero} mosaicProgress={mosaicProgress} />
         <ZoomController targetZoom={zoom} mosaicProgress={mosaicProgress} />
 
@@ -203,12 +229,12 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
             isHero={isHero}
             mosaicProgress={mosaicProgress}
           >
-              <Stack
-                currentStep={currentStep}
-                mosaicProgress={mosaicProgress}
-                onBlockClick={handleBlockClick}
-                onBlockHover={handleBlockHover}
-              />
+            <Stack
+              currentStep={currentStep}
+              mosaicProgress={mosaicProgress}
+              onBlockClick={handleBlockClick}
+              onBlockHover={handleBlockHover}
+            />
           </MouseParallaxGroup>
           <ReadySignal onReady={onReady} />
         </Suspense>
@@ -218,10 +244,7 @@ export default function Scene({ currentStep, mosaicProgress, onBlockClick, onRea
         </Suspense>
       </Canvas>
 
-      <HoverTooltip
-        hoveredBlock={hoveredBlock}
-        mousePosition={mousePosition}
-      />
+      <HoverTooltip hoveredBlock={hoveredBlock} mousePosition={mousePosition} />
     </div>
   );
 }

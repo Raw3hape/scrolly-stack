@@ -132,12 +132,12 @@ export default function ScrollDebugPanel() {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         const snap = measure();
-        setSnapshots(prev => [...prev, snap]);
+        setSnapshots((prev) => [...prev, snap]);
       }, 200);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     // Take initial snapshot
-    setSnapshots(prev => [...prev, measure()]);
+    setSnapshots((prev) => [...prev, measure()]);
     return () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(timeout);
@@ -184,20 +184,44 @@ export default function ScrollDebugPanel() {
     >
       <div style={{ display: 'flex', gap: 6, marginBottom: 6, flexWrap: 'wrap' }}>
         <button
-          onClick={() => setRecording(r => !r)}
-          style={{ fontSize: 10, padding: '2px 6px', cursor: 'pointer', background: recording ? '#f44' : '#444', color: '#fff', border: 'none', borderRadius: 4 }}
+          onClick={() => setRecording((r) => !r)}
+          style={{
+            fontSize: 10,
+            padding: '2px 6px',
+            cursor: 'pointer',
+            background: recording ? '#f44' : '#444',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 4,
+          }}
         >
           {recording ? '⏹ Stop' : '⏺ Record'}
         </button>
         <button
           onClick={handleCopy}
-          style={{ fontSize: 10, padding: '2px 6px', cursor: 'pointer', background: copied ? '#4a4' : '#444', color: '#fff', border: 'none', borderRadius: 4 }}
+          style={{
+            fontSize: 10,
+            padding: '2px 6px',
+            cursor: 'pointer',
+            background: copied ? '#4a4' : '#444',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 4,
+          }}
         >
           {copied ? '✓ Copied!' : '📋 Copy All'}
         </button>
         <button
           onClick={handleClear}
-          style={{ fontSize: 10, padding: '2px 6px', cursor: 'pointer', background: '#444', color: '#fff', border: 'none', borderRadius: 4 }}
+          style={{
+            fontSize: 10,
+            padding: '2px 6px',
+            cursor: 'pointer',
+            background: '#444',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 4,
+          }}
         >
           🗑 Clear
         </button>
@@ -206,7 +230,7 @@ export default function ScrollDebugPanel() {
 
       {s && (
         <pre style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-{`═══ VIEWPORT ═══
+          {`═══ VIEWPORT ═══
 ${s.vw}×${s.vh} dpr=${s.dpr} scroll=${s.scroll} docH=${s.docH}
 
 ═══ PROGRESS ═══
@@ -228,9 +252,12 @@ bot=${s.colContentBot} z=${s.colContentZ}
 h=${s.overlayH} pad-bot=${s.overlayPadBot}
 
 ═══ SECTIONS ═══
-${s.sections.map(sec => 
-  `S${sec.i}: top=${sec.top} bot=${sec.bot} z=${sec.z} ${sec.visible ? '👁️' : '  '} ${sec.classes}`
-).join('\n')}`}
+${s.sections
+  .map(
+    (sec) =>
+      `S${sec.i}: top=${sec.top} bot=${sec.bot} z=${sec.z} ${sec.visible ? '👁️' : '  '} ${sec.classes}`,
+  )
+  .join('\n')}`}
         </pre>
       )}
     </div>

@@ -21,18 +21,18 @@ const DESKTOP_ONLY = ['desktop-1920', 'desktop-1440'];
 const OUTPUT_DIR = '/tmp/scrolly-visual';
 
 const SCROLL_POINTS = [
-  { name: '01_hero_top',         frac: 0.00 },
-  { name: '02_hero_bottom',      frac: 0.03 },
-  { name: '03_iso_entry',        frac: 0.06 },
-  { name: '04_step_3',           frac: 0.12 },
-  { name: '05_step_8',           frac: 0.28 },
-  { name: '06_step_15',          frac: 0.50 },
-  { name: '07_mosaic_start',     frac: 0.55 },
-  { name: '08_mosaic_25pct',     frac: 0.60 },
-  { name: '09_mosaic_50pct',     frac: 0.65 },
-  { name: '10_mosaic_75pct',     frac: 0.72 },
-  { name: '11_mosaic_settled',   frac: 0.80 },
-  { name: '12_hold_zone',        frac: 0.90 },
+  { name: '01_hero_top', frac: 0.0 },
+  { name: '02_hero_bottom', frac: 0.03 },
+  { name: '03_iso_entry', frac: 0.06 },
+  { name: '04_step_3', frac: 0.12 },
+  { name: '05_step_8', frac: 0.28 },
+  { name: '06_step_15', frac: 0.5 },
+  { name: '07_mosaic_start', frac: 0.55 },
+  { name: '08_mosaic_25pct', frac: 0.6 },
+  { name: '09_mosaic_50pct', frac: 0.65 },
+  { name: '10_mosaic_75pct', frac: 0.72 },
+  { name: '11_mosaic_settled', frac: 0.8 },
+  { name: '12_hold_zone', frac: 0.9 },
 ];
 
 test.describe('Visual Regression — 3D Cube Stability', () => {
@@ -150,7 +150,7 @@ test.describe('Visual Regression — 3D Cube Stability', () => {
 
     const steps = 20;
     const startFrac = 0.48; // just before mosaic starts
-    const endFrac = 0.82;   // mosaic settled
+    const endFrac = 0.82; // mosaic settled
 
     for (let i = 0; i <= steps; i++) {
       const frac = startFrac + (endFrac - startFrac) * (i / steps);
@@ -177,8 +177,8 @@ test.describe('Visual Regression — 3D Cube Stability', () => {
     console.log('\n═══ HERO → ISOMETRIC TRANSITION ═══');
 
     const steps = 15;
-    const startFrac = 0.00;
-    const endFrac = 0.10;
+    const startFrac = 0.0;
+    const endFrac = 0.1;
 
     for (let i = 0; i <= steps; i++) {
       const frac = startFrac + (endFrac - startFrac) * (i / steps);

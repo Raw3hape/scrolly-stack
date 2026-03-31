@@ -3,13 +3,7 @@
   "compilerOptions": {
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "types": [
-      "node",
-      "@playwright/test"
-    ]
+    "types": ["node", "@playwright/test"]
   },
-  "include": [
-    "playwright.config.ts",
-    "e2e/**/*.ts"
-  ]
+  "include": ["playwright.config.ts", "e2e/**/*.ts"]
 }

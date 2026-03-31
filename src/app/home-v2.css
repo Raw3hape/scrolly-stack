@@ -103,7 +103,9 @@
   --_btn-icon-gap: 0.5rem;
   gap: var(--_btn-icon-gap);
   white-space: nowrap;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .stitch-theme .hero__cta-button::before {

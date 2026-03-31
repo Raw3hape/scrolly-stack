@@ -19,9 +19,8 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
   const { steps, scrollDirection } = useVariant();
 
   // For 'up' scroll, reverse the DOM order so bottom layers appear first
-  const orderedSteps = scrollDirection === 'up'
-    ? (steps as StepData[]).slice().reverse()
-    : (steps as StepData[]);
+  const orderedSteps =
+    scrollDirection === 'up' ? (steps as StepData[]).slice().reverse() : (steps as StepData[]);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const heroRef = useRef<HTMLElement>(null);
   const scrollHintRef = useRef<HTMLDivElement>(null);
@@ -100,8 +99,9 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
   // IO runs on a separate browser thread, fires callbacks only when visibility
   // changes at threshold crossings. Entry.boundingClientRect is pre-computed.
   useEffect(() => {
-    const elements = [heroRef.current, ...stepRefs.current]
-      .filter((el): el is HTMLElement => Boolean(el));
+    const elements = [heroRef.current, ...stepRefs.current].filter((el): el is HTMLElement =>
+      Boolean(el),
+    );
     if (elements.length === 0) return;
 
     // Track which elements are currently visible (Set, not Map).
@@ -173,9 +173,7 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
           <span className="hero__headline-accent">{heroContent.headlineAccent}</span>
         </h1>
 
-        <p className="hero__subheadline">
-          {heroContent.subheadline}
-        </p>
+        <p className="hero__subheadline">{heroContent.subheadline}</p>
 
         <div className="hero__cta-wrapper" data-hero-cta>
           <a
@@ -191,17 +189,20 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
             {heroContent.statusText}
           </p>
         </div>
-
       </header>
 
       {/* Scroll hint — glass card on the cube, dismisses on scroll */}
       <div ref={scrollHintRef} className="scroll-hint" aria-hidden="true">
-        <span className="scroll-hint__icon" aria-hidden="true">&#8595;</span>
+        <span className="scroll-hint__icon" aria-hidden="true">
+          &#8595;
+        </span>
         {heroContent.scrollHint}
       </div>
 
       {/* Tagline — centered under the cube */}
-      <p ref={taglineRef} className="hero__tagline">{heroContent.tagline}</p>
+      <p ref={taglineRef} className="hero__tagline">
+        {heroContent.tagline}
+      </p>
 
       {/* STEPS SECTION */}
       <div className="steps-container" role="region" aria-label="Business transformation steps">
@@ -209,7 +210,7 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
 
         {orderedSteps.map((step, index) => {
           const isActive = currentStep === step.id;
-          const currentIndex = orderedSteps.findIndex(s => s.id === currentStep);
+          const currentIndex = orderedSteps.findIndex((s) => s.id === currentStep);
           const isPrev = currentIndex >= 0 && currentIndex > index;
           const isNext = currentIndex >= 0 && currentIndex < index;
           const distance = currentIndex >= 0 ? Math.abs(currentIndex - index) : index;
@@ -219,12 +220,16 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
               key={step.id}
               id={getStepElementId(step.id)}
               data-step-id={step.id}
-              ref={(el) => { stepRefs.current[index] = el; }}
+              ref={(el) => {
+                stepRefs.current[index] = el;
+              }}
               className={`step ${isActive ? 'step--active' : ''} ${isPrev ? 'step--prev' : ''} ${isNext ? 'step--next' : ''}`}
-              style={{
-                '--step-color': step.color,
-                '--step-distance': distance,
-              } as React.CSSProperties}
+              style={
+                {
+                  '--step-color': step.color,
+                  '--step-distance': distance,
+                } as React.CSSProperties
+              }
             >
               <div
                 className={`step-content ${isActive ? 'step-content--active' : 'step-content--inactive'}`}
@@ -249,23 +254,18 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
                     />
                   </div>
 
-                  <h3 className="step-content__title">
-                    {step.tooltipTitle}
-                  </h3>
+                  <h3 className="step-content__title">{step.tooltipTitle}</h3>
                 </div>
 
-                <p
-                  className="step-content__subhead"
-                  style={{ color: step.color }}
-                >
+                <p className="step-content__subhead" style={{ color: step.color }}>
                   {step.tooltipSubhead}
                 </p>
 
-                <div className={`step-content__description-wrapper ${isActive ? 'step-content__description-wrapper--open' : ''}`}>
+                <div
+                  className={`step-content__description-wrapper ${isActive ? 'step-content__description-wrapper--open' : ''}`}
+                >
                   <div className="step-content__description-inner">
-                    <p className="step-content__description">
-                      {step.description}
-                    </p>
+                    <p className="step-content__description">{step.description}</p>
                   </div>
                 </div>
 
@@ -276,7 +276,9 @@ export default function Overlay({ currentStep, setStep, mosaicTriggerRef }: Over
                   tabIndex={isActive ? 0 : -1}
                 >
                   {stepCta.label}
-                  <span className="step-content__cta-arrow" aria-hidden="true">{stepCta.arrowText}</span>
+                  <span className="step-content__cta-arrow" aria-hidden="true">
+                    {stepCta.arrowText}
+                  </span>
                 </a>
               </div>
             </div>

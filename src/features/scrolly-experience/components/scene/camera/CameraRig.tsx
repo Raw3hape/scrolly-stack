@@ -39,8 +39,12 @@ interface CameraRigProps {
 
 export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps) {
   // Damped state (persists between frames for smooth hero↔iso transitions)
-  const dampedPosRef = useRef(new Vector3(...(animation.camera.positions.hero as [number, number, number])));
-  const dampedUpRef = useRef(new Vector3(...(animation.camera.upVectors.hero as [number, number, number])));
+  const dampedPosRef = useRef(
+    new Vector3(...(animation.camera.positions.hero as [number, number, number])),
+  );
+  const dampedUpRef = useRef(
+    new Vector3(...(animation.camera.upVectors.hero as [number, number, number])),
+  );
 
   // Scratch vectors for intermediate calculations (no GC)
   const basePosRef = useRef(new Vector3());
@@ -52,9 +56,11 @@ export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps
   const mosaicPosRef = useRef(new Vector3());
   const mosaicUpRef = useRef(new Vector3());
 
-
   // Track previous camera position for conditional invalidate
   const prevCamPosRef = useRef(new Vector3());
+  // Damped blend factor — prevents jarring direction flip when scroll reverses
+  // during crossfade. The blend "catches up" to transitionProgress smoothly.
+  const blendRef = useRef(0);
 
   useFrame((state, delta) => {
     const d = MathUtils.damp;
@@ -64,6 +70,10 @@ export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps
       mosaicConfig.motion.viewStart,
       mosaicConfig.motion.viewEnd,
     );
+
+    // Damp the blend factor so it follows scroll direction with momentum
+    blendRef.current = d(blendRef.current, transitionProgress, UNIFIED_LAMBDA, delta);
+    const blend = blendRef.current;
 
     // --- 1. Compute DAMPED position (hero↔iso, physical feel) ---
     if (isHero) {
@@ -87,12 +97,14 @@ export default function CameraRig({ isHero, mosaicProgress = 0 }: CameraRigProps
     mosaicPosRef.current.set(...mosaicConfig.camera.position);
     mosaicUpRef.current.set(...mosaicConfig.camera.upVector);
 
-    instantPosRef.current.lerpVectors(isoPosRef.current, mosaicPosRef.current, transitionProgress);
-    instantUpRef.current.lerpVectors(isoUpRef.current, mosaicUpRef.current, transitionProgress);
+    instantPosRef.current.lerpVectors(isoPosRef.current, mosaicPosRef.current, blend);
+    instantUpRef.current.lerpVectors(isoUpRef.current, mosaicUpRef.current, blend);
 
-    // --- 3. CROSSFADE: blend damped ↔ instant by transitionProgress ---
-    state.camera.position.lerpVectors(dampedPosRef.current, instantPosRef.current, transitionProgress);
-    state.camera.up.lerpVectors(dampedUpRef.current, instantUpRef.current, transitionProgress);
+    // --- 3. CROSSFADE: blend damped ↔ instant by damped blend factor ---
+    // Using damped blend instead of raw transitionProgress prevents jarring
+    // direction flips when scroll reverses during the crossfade.
+    state.camera.position.lerpVectors(dampedPosRef.current, instantPosRef.current, blend);
+    state.camera.up.lerpVectors(dampedUpRef.current, instantUpRef.current, blend);
 
     // --- 4. LOOK AT ORIGIN ---
     state.camera.lookAt(0, 0, 0);

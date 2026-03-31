@@ -275,7 +275,8 @@
 
 .v2-mission--vertical__quote-inner {
   background: var(--stitch-dark-bg);
-  padding: clamp(var(--space-2xl), 5vw, var(--space-3xl)) clamp(var(--space-xl), 5vw, var(--space-3xl));
+  padding: clamp(var(--space-2xl), 5vw, var(--space-3xl))
+    clamp(var(--space-xl), 5vw, var(--space-3xl));
   border-radius: var(--radius-xl);
   text-align: center;
   position: relative;

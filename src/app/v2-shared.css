@@ -63,9 +63,8 @@
   margin: calc(var(--expand-inset-start) * var(--_expand-inv));
   /* Pull-up fades as section expands; base spacing ensures gap at full expansion */
   margin-top: calc(
-    var(--space-xl)
-    + var(--expand-pull-up) * var(--_expand-inv)
-    + var(--expand-inset-start) * var(--_expand-inv)
+    var(--space-xl) + var(--expand-pull-up) * var(--_expand-inv) + var(--expand-inset-start) *
+      var(--_expand-inv)
   );
   border-radius: calc(var(--expand-radius-start) * var(--_expand-inv));
   overflow: hidden;
@@ -101,8 +100,18 @@
   background-position: right center;
   opacity: 0.35;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to right, transparent 10%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,1) 75%);
-  mask-image: linear-gradient(to right, transparent 10%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,1) 75%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 10%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 1) 75%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 10%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 1) 75%
+  );
 }
 
 /* Expand sections have their own photo bg — no texture overlay */
@@ -184,4 +193,3 @@
 .v2-reveal {
   display: contents; /* no-op wrapper — parallax is now on .px-layer elements */
 }
-

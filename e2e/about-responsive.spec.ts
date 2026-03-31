@@ -35,14 +35,12 @@ test.describe('About Page V2 — Responsive Layout', () => {
     const sections = page.locator('.v2-section');
     const count = await sections.count();
     for (let i = 0; i < count; i++) {
-      const padding = await sections.nth(i).evaluate(
-        (el) => parseFloat(window.getComputedStyle(el).paddingTop)
-      );
+      const padding = await sections
+        .nth(i)
+        .evaluate((el) => parseFloat(window.getComputedStyle(el).paddingTop));
       // CTA section has 0 padding (wrapper handles it) — skip check
       if (padding === 0) {
-        const isCta = await sections.nth(i).evaluate(
-          (el) => el.classList.contains('v2-cta')
-        );
+        const isCta = await sections.nth(i).evaluate((el) => el.classList.contains('v2-cta'));
         if (!isCta) {
           expect(padding).toBeGreaterThan(0);
         }

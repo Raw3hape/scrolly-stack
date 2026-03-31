@@ -14,9 +14,15 @@
   padding-right: var(--container-padding);
 }
 
-.container--narrow { max-width: var(--container-narrow); }
-.container--wide   { max-width: var(--container-wide); }
-.container--full   { max-width: none; }
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+.container--wide {
+  max-width: var(--container-wide);
+}
+.container--full {
+  max-width: none;
+}
 
 /* === Section === */
 .section {
@@ -45,35 +51,75 @@
 }
 
 /* === Flex === */
-.flex        { display: flex; }
-.flex-col    { display: flex; flex-direction: column; }
-.flex-center { display: flex; align-items: center; justify-content: center; }
-.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex {
+  display: flex;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
 /* === Grid === */
-.grid      { display: grid; }
-.grid-2    { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); }
-.grid-3    { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
-.grid-4    { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-lg); }
-.grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: var(--space-lg); }
+.grid {
+  display: grid;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: var(--space-lg);
+}
 
 /* Responsive grid collapse */
 @media (max-width: 768px) {
-  .grid-2, .grid-3, .grid-4 {
+  .grid-2,
+  .grid-3,
+  .grid-4 {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 1024px) and (min-width: 769px) {
-  .grid-3, .grid-4 {
+  .grid-3,
+  .grid-4 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* === Text === */
-.text-balance { text-wrap: balance; }
-.text-pretty  { text-wrap: pretty; }
-.text-center  { text-align: center; }
+.text-balance {
+  text-wrap: balance;
+}
+.text-pretty {
+  text-wrap: pretty;
+}
+.text-center {
+  text-align: center;
+}
 
 /* === Visual === */
 .glass {

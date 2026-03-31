@@ -384,13 +384,7 @@
   overflow: hidden;
 
   /* Edge fade masks -- cards always cut off at both sides */
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 4%,
-    black 96%,
-    transparent 100%
-  );
+  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,

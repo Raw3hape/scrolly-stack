@@ -34,10 +34,10 @@
   border-radius: var(--radius-lg);
   border: var(--line-thin) solid var(--border-subtle, transparent);
   transition:
-    opacity       var(--transition-smooth),
-    filter        var(--transition-smooth),
-    transform     var(--transition-fast),
-    box-shadow    var(--transition-fast);
+    opacity var(--transition-smooth),
+    filter var(--transition-smooth),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
   will-change: opacity, filter, transform;
 }
 

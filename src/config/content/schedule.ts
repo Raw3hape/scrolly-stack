@@ -89,8 +89,7 @@ export const scheduleContent: PageContent = {
       surface: 'dark',
       overline: 'Ready To Build The Exit?',
       heading: 'Your Big Exit Starts With A 30-Minute Call.',
-      microcopy:
-        'No commitments. Just a strategic conversation about your legacy.',
+      microcopy: 'No commitments. Just a strategic conversation about your legacy.',
       buttonLabel: 'Book A Call',
     },
   ],

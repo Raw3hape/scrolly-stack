@@ -77,13 +77,14 @@ function lerp(a: number, b: number, t: number): number {
  * Compute expected group position using the same formula as Stack.tsx useFrame.
  * CSS-dependent values (contentRatio, headerPx) are read from the DOM.
  */
-async function computeExpectedPosition(page: Page, mosaicProgress: number): Promise<{ x: number; y: number }> {
+async function computeExpectedPosition(
+  page: Page,
+  mosaicProgress: number,
+): Promise<{ x: number; y: number }> {
   const { contentRatio, headerPx, innerWidth } = await page.evaluate(() => {
     const root = getComputedStyle(document.documentElement);
     const rawContentWidth = root.getPropertyValue('--content-width').trim();
-    const contentRatio = rawContentWidth.endsWith('%')
-      ? parseFloat(rawContentWidth) / 100
-      : 0.45;
+    const contentRatio = rawContentWidth.endsWith('%') ? parseFloat(rawContentWidth) / 100 : 0.45;
     const headerPx = parseFloat(root.getPropertyValue('--header-height')) || 0;
     return {
       contentRatio: window.innerWidth < 768 ? 0 : contentRatio,
@@ -158,7 +159,14 @@ test.describe('3D Cube Position Tracking', () => {
     // =================================================================
     // PASS 1: FORWARD
     // =================================================================
-    type FwdRow = { name: string; scrollY: number; mosaic: number; step: number; posX: number; posY: number };
+    type FwdRow = {
+      name: string;
+      scrollY: number;
+      mosaic: number;
+      step: number;
+      posX: number;
+      posY: number;
+    };
     const forwardRows: FwdRow[] = [];
 
     for (const cp of CHECKPOINTS) {

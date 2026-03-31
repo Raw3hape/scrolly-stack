@@ -18,10 +18,7 @@ import type { LayerData } from '../types';
 /** Breathing room — 0.82 = fill 82% of available height */
 const FIT_MARGIN = 0.82;
 
-export function computeMaxIsoZoom(
-  layers: LayerData[],
-  geo: ResolvedGeometry,
-): number {
+export function computeMaxIsoZoom(layers: LayerData[], geo: ResolvedGeometry): number {
   if (typeof window === 'undefined') return animation.zoom.desktop;
 
   // ── Stack height from layers + geometry ─────────────────────────────
@@ -42,26 +39,23 @@ export function computeMaxIsoZoom(
   const len = Math.sqrt(pos[0] ** 2 + pos[1] ** 2 + pos[2] ** 2);
   const fwd = [-pos[0] / len, -pos[1] / len, -pos[2] / len];
   const dotUpFwd = up[0] * fwd[0] + up[1] * fwd[1] + up[2] * fwd[2];
-  const trueUp = [
-    up[0] - dotUpFwd * fwd[0],
-    up[1] - dotUpFwd * fwd[1],
-    up[2] - dotUpFwd * fwd[2],
-  ];
+  const trueUp = [up[0] - dotUpFwd * fwd[0], up[1] - dotUpFwd * fwd[1], up[2] - dotUpFwd * fwd[2]];
   const trueUpLen = Math.sqrt(trueUp[0] ** 2 + trueUp[1] ** 2 + trueUp[2] ** 2);
 
   // Visual height = projection of ALL THREE axes onto screen-Y
   const visualHeight =
-    stackHeight * Math.abs(trueUp[1] / trueUpLen) +   // Y axis (stack height)
-    totalWidth  * Math.abs(trueUp[0] / trueUpLen) +   // X axis (isometric tilt)
-    totalDepth  * Math.abs(trueUp[2] / trueUpLen);    // Z axis (isometric tilt)
+    stackHeight * Math.abs(trueUp[1] / trueUpLen) + // Y axis (stack height)
+    totalWidth * Math.abs(trueUp[0] / trueUpLen) + // X axis (isometric tilt)
+    totalDepth * Math.abs(trueUp[2] / trueUpLen); // Z axis (isometric tilt)
 
   // ── Header + viewport ───────────────────────────────────────────────
   const root = getComputedStyle(document.documentElement);
   const isMobile = window.innerWidth <= animation.zoom.mobileBreakpoint;
   const prop = isMobile ? '--header-height-mobile' : '--header-height';
-  const headerPx = parseFloat(root.getPropertyValue(prop))
-    || parseFloat(root.getPropertyValue('--header-height'))
-    || 0;
+  const headerPx =
+    parseFloat(root.getPropertyValue(prop)) ||
+    parseFloat(root.getPropertyValue('--header-height')) ||
+    0;
   const vpH = window.innerHeight;
 
   // On mobile, the cube is visible through the entire viewport (hero is
@@ -69,5 +63,5 @@ export function computeMaxIsoZoom(
   // handled by Stack.tsx heroBottomRef, not by a CSS token.
   const availableH = vpH - headerPx;
 
-  return FIT_MARGIN * availableH / visualHeight;
+  return (FIT_MARGIN * availableH) / visualHeight;
 }

@@ -31,7 +31,7 @@ export default function MouseParallaxGroup({
 
   // Detect touch device once (no mouse → no parallax needed)
   const isTouchRef = useRef(
-    typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+    typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0),
   );
 
   useFrame((state, delta) => {
@@ -40,11 +40,7 @@ export default function MouseParallaxGroup({
     // Touch devices: skip parallax entirely — zero GPU cost
     if (isTouchRef.current) return;
 
-    const fadeOut = smoothProgress(
-      mosaicProgress,
-      0,
-      mosaicConfig.motion.parallaxFadeEnd,
-    );
+    const fadeOut = smoothProgress(mosaicProgress, 0, mosaicConfig.motion.parallaxFadeEnd);
     const stackMultiplier = isHero ? 1 : animation.parallax.stackIntensityMultiplier;
     const intensity = animation.parallax.intensity * stackMultiplier * (1 - fadeOut);
 
@@ -81,9 +77,5 @@ export default function MouseParallaxGroup({
     }
   });
 
-  return (
-    <group ref={groupRef}>
-      {children}
-    </group>
-  );
+  return <group ref={groupRef}>{children}</group>;
 }

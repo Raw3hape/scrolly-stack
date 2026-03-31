@@ -7,16 +7,16 @@
  * ========================================================================== */
 
 :root {
-  --z-base:             1;
-  --z-overlay:          10;     /* Content column over visual column            */
-  --z-canvas:           50;     /* Fullscreen 3D canvas (below everything interactive) */
-  --z-content:          100;    /* Content sections that sit above canvas       */
-  --z-loading:          100;    /* Loading spinner overlays                     */
-  --z-tooltip:          500;    /* HoverTooltip (3D hover popup)               */
-  --z-header:           1000;   /* Fixed header                                */
-  --z-drawer-backdrop:  1100;   /* Mobile drawer scrim overlay                 */
-  --z-drawer:           1200;   /* Mobile navigation drawer                    */
-  --z-fps-counter:      9500;   /* Dev-only FPS counter overlay                */
-  --z-transition:       9999;   /* Fullscreen page-transition / loading overlay */
-  --z-skip-link:        10000;  /* Accessibility skip-to-content link          */
+  --z-base: 1;
+  --z-overlay: 10; /* Content column over visual column            */
+  --z-canvas: 50; /* Fullscreen 3D canvas (below everything interactive) */
+  --z-content: 100; /* Content sections that sit above canvas       */
+  --z-loading: 100; /* Loading spinner overlays                     */
+  --z-tooltip: 500; /* HoverTooltip (3D hover popup)               */
+  --z-header: 1000; /* Fixed header                                */
+  --z-drawer-backdrop: 1100; /* Mobile drawer scrim overlay                 */
+  --z-drawer: 1200; /* Mobile navigation drawer                    */
+  --z-fps-counter: 9500; /* Dev-only FPS counter overlay                */
+  --z-transition: 9999; /* Fullscreen page-transition / loading overlay */
+  --z-skip-link: 10000; /* Accessibility skip-to-content link          */
 }

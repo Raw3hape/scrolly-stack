@@ -144,7 +144,9 @@ export default function InteractiveGrid({
       {Array.from({ length: totalCells }, (_, i) => (
         <div
           key={i}
-          ref={(el) => { cellRefs.current[i] = el; }}
+          ref={(el) => {
+            cellRefs.current[i] = el;
+          }}
           className="interactive-grid__cell"
         />
       ))}

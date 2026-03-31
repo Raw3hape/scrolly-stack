@@ -11,7 +11,7 @@ import { routes } from '@/config/nav';
 
 /** Routes excluded from sitemap */
 const excludedRoutes: Set<string> = new Set([
-  routes.optIn,  // internal process page
+  routes.optIn, // internal process page
 ]);
 
 /** Priority overrides for specific routes */

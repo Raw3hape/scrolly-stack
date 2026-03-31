@@ -71,14 +71,7 @@ function StandardCarousel({
   heading,
   autoPlayInterval = 8000,
 }: StandardVariantProps) {
-  const {
-    activeIndex,
-    isAutoPlaying,
-    goTo,
-    next,
-    prev,
-    progressKey,
-  } = useCarousel({
+  const { activeIndex, isAutoPlaying, goTo, next, prev, progressKey } = useCarousel({
     totalSlides: testimonials.length,
     autoPlayInterval,
   });
@@ -111,18 +104,18 @@ function StandardCarousel({
 
   return (
     <div className="v2-container">
-      <div
-        className="v2-testimonial"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
+      <div className="v2-testimonial" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
         {/* Left column: heading + progress bar + arrows */}
         {heading && (
           <div className="v2-testimonial__left">
             <h2 className="v2-testimonial__heading px-layer--fg">{heading}</h2>
 
             {/* Progress bar segments */}
-            <div className="v2-testimonial__progress" role="tablist" aria-label="Testimonial navigation">
+            <div
+              className="v2-testimonial__progress"
+              role="tablist"
+              aria-label="Testimonial navigation"
+            >
               {testimonials.map((_, i) => (
                 <button
                   key={i}
@@ -154,7 +147,17 @@ function StandardCarousel({
                 onClick={prev}
                 aria-label="Previous testimonial"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
                   <polyline points="15 18 9 12 15 6" />
                 </svg>
               </button>
@@ -164,7 +167,17 @@ function StandardCarousel({
                 onClick={next}
                 aria-label="Next testimonial"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
                   <polyline points="9 18 15 12 9 6" />
                 </svg>
               </button>
@@ -185,7 +198,9 @@ function StandardCarousel({
                 data-px-delay="1"
                 aria-hidden={i !== activeIndex}
               >
-                <span className="v2-testimonial__quote-icon" aria-hidden="true">&ldquo;</span>
+                <span className="v2-testimonial__quote-icon" aria-hidden="true">
+                  &ldquo;
+                </span>
                 <p className="v2-testimonial__quote">&ldquo;{t.quote}&rdquo;</p>
                 <div className="v2-testimonial__attribution">
                   {t.avatarUrl && (
@@ -203,9 +218,7 @@ function StandardCarousel({
                     <cite className="v2-testimonial__author">{t.author}</cite>
                     <span className="v2-testimonial__company">{t.company}</span>
                   </div>
-                  {t.badge && (
-                    <span className="v2-testimonial__badge">{t.badge}</span>
-                  )}
+                  {t.badge && <span className="v2-testimonial__badge">{t.badge}</span>}
                 </div>
               </div>
             ))}
@@ -220,12 +233,7 @@ function StandardCarousel({
  * Opt-in variant — scroll-driven horizontal card strip with lerp animation
  * ═══════════════════════════════════════════════════════════════════════════ */
 
-function OptInStrip({
-  testimonials,
-  heading,
-  subtext,
-  pullQuote,
-}: OptInVariantProps) {
+function OptInStrip({ testimonials, heading, subtext, pullQuote }: OptInVariantProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -251,9 +259,7 @@ function OptInStrip({
     const vh = window.innerHeight;
 
     // progress: 0 -> 1 as section scrolls through viewport
-    const progress = Math.max(0, Math.min(1,
-      (vh - rect.top) / (vh + rect.height)
-    ));
+    const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
 
     const trackWidth = trackRef.current.scrollWidth;
     const visibleWidth = sectionRef.current.offsetWidth;
@@ -279,10 +285,7 @@ function OptInStrip({
       // Only update DOM when delta is meaningful (> 0.5px)
       if (Math.abs(dx) > 0.5) {
         currentX.current += dx * LERP_FACTOR;
-        trackRef.current?.style.setProperty(
-          '--scroll-x',
-          `${currentX.current}px`,
-        );
+        trackRef.current?.style.setProperty('--scroll-x', `${currentX.current}px`);
       }
 
       if (isVisible.current) {
@@ -328,9 +331,7 @@ function OptInStrip({
           </div>
           <div className="v2-optin-test__header-right">
             <span className="v2-optin-test__pull-quote">{pullQuote.text}</span>
-            <span className="v2-optin-test__pull-source">
-              — {pullQuote.source}
-            </span>
+            <span className="v2-optin-test__pull-source">— {pullQuote.source}</span>
           </div>
         </div>
       </div>
@@ -339,10 +340,7 @@ function OptInStrip({
       <div className="v2-optin-test__bleed">
         <div ref={trackRef} className="v2-optin-test__track">
           {testimonials.map((t, i) => (
-            <article
-              key={i}
-              className="v2-optin-test__card"
-            >
+            <article key={i} className="v2-optin-test__card">
               {/* Verified badge */}
               {t.verified && (
                 <div className="v2-optin-test__verified">
@@ -361,9 +359,7 @@ function OptInStrip({
               )}
 
               {/* Quote */}
-              <p className="v2-optin-test__quote">
-                &ldquo;{t.quote}&rdquo;
-              </p>
+              <p className="v2-optin-test__quote">&ldquo;{t.quote}&rdquo;</p>
 
               {/* Attribution */}
               <div className="v2-optin-test__attribution">

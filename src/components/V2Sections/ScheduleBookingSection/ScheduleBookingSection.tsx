@@ -39,8 +39,18 @@ function getFirstDayOfMonth(year: number, month: number): number {
 }
 
 const MONTH_NAMES = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -100,9 +110,7 @@ function BuiltInCalendar({ timeSlots, submitLabel }: BuiltInCalendarProps) {
   }, []);
 
   const isToday = (day: number) =>
-    viewYear === today.getFullYear() &&
-    viewMonth === today.getMonth() &&
-    day === today.getDate();
+    viewYear === today.getFullYear() && viewMonth === today.getMonth() && day === today.getDate();
 
   const isPast = (day: number) => {
     const d = new Date(viewYear, viewMonth, day);
@@ -126,7 +134,15 @@ function BuiltInCalendar({ timeSlots, submitLabel }: BuiltInCalendarProps) {
                 aria-label="Previous month"
                 type="button"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
                   <polyline points="15 18 9 12 15 6" />
                 </svg>
               </button>
@@ -136,7 +152,15 @@ function BuiltInCalendar({ timeSlots, submitLabel }: BuiltInCalendarProps) {
                 aria-label="Next month"
                 type="button"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
                   <polyline points="9 18 15 12 9 6" />
                 </svg>
               </button>
@@ -245,22 +269,11 @@ function BuiltInCalendar({ timeSlots, submitLabel }: BuiltInCalendarProps) {
 // =============================================================================
 
 function ExternalEmbed({ url, title }: { url: string; title: string }) {
-  return (
-    <iframe
-      className="v2-booking__embed"
-      src={url}
-      title={title}
-      loading="lazy"
-    />
-  );
+  return <iframe className="v2-booking__embed" src={url} title={title} loading="lazy" />;
 }
 
 function EmbedPlaceholder() {
-  return (
-    <div className="v2-booking__embed-placeholder">
-      Calendar integration coming soon.
-    </div>
-  );
+  return <div className="v2-booking__embed-placeholder">Calendar integration coming soon.</div>;
 }
 
 // =============================================================================
@@ -301,9 +314,7 @@ export default function ScheduleBookingSection({ data }: Props) {
         {/* ── Left: Sidebar ── */}
         <div className="v2-booking__sidebar px-layer--fg">
           <div>
-            <h2 className="v2-booking__sidebar-heading">
-              {data.sidebar.heading}
-            </h2>
+            <h2 className="v2-booking__sidebar-heading">{data.sidebar.heading}</h2>
           </div>
 
           <div className="v2-booking__expect-list">
@@ -333,13 +344,9 @@ export default function ScheduleBookingSection({ data }: Props) {
               >
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
-              <span className="v2-booking__trust-label">
-                {data.sidebar.trustBadge.label}
-              </span>
+              <span className="v2-booking__trust-label">{data.sidebar.trustBadge.label}</span>
             </div>
-            <p className="v2-booking__trust-text">
-              {data.sidebar.trustBadge.text}
-            </p>
+            <p className="v2-booking__trust-text">{data.sidebar.trustBadge.text}</p>
           </div>
         </div>
 
@@ -347,16 +354,10 @@ export default function ScheduleBookingSection({ data }: Props) {
         <div className="v2-booking__widget px-layer--fg" data-px-delay="1">
           <div className="v2-booking__widget-header">
             <div>
-              <span className="v2-booking__widget-label">
-                {data.widget.label}
-              </span>
-              <h3 className="v2-booking__widget-title">
-                {data.widget.title}
-              </h3>
+              <span className="v2-booking__widget-label">{data.widget.label}</span>
+              <h3 className="v2-booking__widget-title">{data.widget.title}</h3>
             </div>
-            <span className="v2-booking__widget-tz">
-              Timezone: {data.widget.timezone}
-            </span>
+            <span className="v2-booking__widget-tz">Timezone: {data.widget.timezone}</span>
           </div>
 
           {renderWidget()}

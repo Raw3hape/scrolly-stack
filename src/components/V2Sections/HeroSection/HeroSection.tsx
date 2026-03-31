@@ -20,7 +20,7 @@ import {
 import './HeroSection.css';
 
 const HERO_3D_MAP = {
-  'pyramid': HeroPyramid3DLoader,
+  pyramid: HeroPyramid3DLoader,
   'exploded-grid': HeroExplodedGrid3DLoader,
   'ascending-blocks': HeroAscendingBlocks3DLoader,
 } as const;
@@ -34,11 +34,7 @@ export default function HeroSection({ data }: Props) {
   const isEditorial = data.layout === 'editorial';
   const isLeft = data.layout === 'left';
 
-  const layoutClass = isEditorial
-    ? ' v2-hero--editorial'
-    : isLeft
-      ? ' v2-hero--left'
-      : '';
+  const layoutClass = isEditorial ? ' v2-hero--editorial' : isLeft ? ' v2-hero--left' : '';
 
   return (
     <div className="v2-container">
@@ -47,11 +43,8 @@ export default function HeroSection({ data }: Props) {
         {isEditorial ? (
           <>
             <div className="v2-hero__grid">
-
               <div className="v2-hero__content" data-hero-text>
-                {data.overline && (
-                  <span className="v2-hero__overline">{data.overline}</span>
-                )}
+                {data.overline && <span className="v2-hero__overline">{data.overline}</span>}
                 <h1 className="v2-hero__heading ">
                   {data.heading.split('\n').map((line, i, arr) => (
                     <span key={i} className={i > 0 ? 'v2-hero__heading-accent' : undefined}>
@@ -60,9 +53,7 @@ export default function HeroSection({ data }: Props) {
                     </span>
                   ))}
                 </h1>
-                {data.subtext && (
-                  <p className="v2-hero__subtext ">{data.subtext}</p>
-                )}
+                {data.subtext && <p className="v2-hero__subtext ">{data.subtext}</p>}
                 {data.buttonLabel && (
                   <div className="v2-hero__actions ">
                     <LinkButton href={ctaConfig.href} variant="primary" arrow>
@@ -115,20 +106,23 @@ export default function HeroSection({ data }: Props) {
           /* Default centered / left layout */
           <div className={Hero3D && isLeft ? 'v2-hero__split' : undefined}>
             <div data-hero-text>
-              {data.badge && (
-                <span className="v2-hero__badge">{data.badge}</span>
-              )}
+              {data.badge && <span className="v2-hero__badge">{data.badge}</span>}
               <h1 className="v2-hero__heading ">{data.heading}</h1>
-              {data.subtext && (
-                <p className="v2-hero__subtext ">{data.subtext}</p>
-              )}
+              {data.subtext && <p className="v2-hero__subtext ">{data.subtext}</p>}
               <div className="v2-hero__actions">
                 <LinkButton href={ctaConfig.href} variant="primary" arrow>
                   {data.buttonLabel ?? ctaConfig.label}
                 </LinkButton>
                 {data.trustBadge && !data.trustBadges && (
                   <span className="v2-hero__trust">
-                    <svg className="v2-hero__trust-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <svg
+                      className="v2-hero__trust-icon"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
                       <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
                     </svg>
                     {data.trustBadge}
@@ -139,7 +133,18 @@ export default function HeroSection({ data }: Props) {
                 <div className="v2-hero__trust-pills">
                   {data.trustBadges.map((label) => (
                     <span key={label} className="v2-hero__trust-pill">
-                      <svg className="v2-hero__trust-pill-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <svg
+                        className="v2-hero__trust-pill-icon"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                       {label}
@@ -166,9 +171,7 @@ export default function HeroSection({ data }: Props) {
       </div>
 
       {/* Optional background glow */}
-      {data.backgroundGlow && (
-        <div className="v2-hero__glow" aria-hidden="true" />
-      )}
+      {data.backgroundGlow && <div className="v2-hero__glow" aria-hidden="true" />}
     </div>
   );
 }

@@ -26,18 +26,12 @@ export default function UrgencySection({ data }: Props) {
     <div className="v2-container">
       <div className={`v2-urgency-card${centered ? ' v2-urgency-card--centered' : ''}`}>
         {/* Interactive grid background when no image */}
-        {centered && (
-          <InteractiveGrid cols={8} rows={5} glowRadius={2.5} glowIntensity={0.07} />
-        )}
+        {centered && <InteractiveGrid cols={8} rows={5} glowRadius={2.5} glowIntensity={0.07} />}
 
         {/* Text content */}
         <div className="v2-urgency-card__content px-layer--fg">
           <h2 className="v2-urgency-card__heading">
-            <ScrollTypewriter
-              text={data.heading}
-              as="span"
-              completionFactor={0.4}
-            />
+            <ScrollTypewriter text={data.heading} as="span" completionFactor={0.4} />
             {data.headingAccent && (
               <>
                 <br />

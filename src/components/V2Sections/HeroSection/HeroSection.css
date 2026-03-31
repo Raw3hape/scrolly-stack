@@ -24,8 +24,12 @@
 }
 
 @keyframes heroIntroFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ── 3D Canvas Background — decorative grid behind hero content ── */
@@ -44,8 +48,12 @@
 }
 
 @keyframes heroCanvasFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 0.35; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.35;
+  }
 }
 
 /* Hero content sits above the canvas */
@@ -169,7 +177,8 @@
     align-items: flex-start;
     justify-content: flex-start;
     text-align: left;
-    padding: calc(var(--header-height-mobile, 5.5rem) + env(safe-area-inset-top, 0px)) 0 var(--space-lg);
+    padding: calc(var(--header-height-mobile, 5.5rem) + env(safe-area-inset-top, 0px)) 0
+      var(--space-lg);
   }
 
   .v2-hero--left .v2-hero__heading {
@@ -285,11 +294,7 @@
   right: 0;
   width: clamp(20rem, 40vw, 38rem);
   height: clamp(20rem, 40vw, 38rem);
-  background: radial-gradient(
-    circle,
-    var(--teal-100-alpha-15) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle, var(--teal-100-alpha-15) 0%, transparent 70%);
   border-radius: var(--radius-full);
   transform: translate(25%, -50%);
   pointer-events: none;
@@ -308,23 +313,20 @@
 }
 
 .v2-hero:not(.v2-hero--editorial) .v2-hero__heading {
-  animation: heroIntroUp var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 1) both;
+  animation: heroIntroUp var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 1) both;
 }
 
 .v2-hero:not(.v2-hero--editorial) .v2-hero__subtext {
-  animation: heroIntroUp var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 2) both;
+  animation: heroIntroUp var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 2) both;
 }
 
 .v2-hero:not(.v2-hero--editorial) .v2-hero__actions {
-  animation: heroIntroUp var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 3) both;
+  animation: heroIntroUp var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 3) both;
 }
 
 .v2-hero:not(.v2-hero--editorial) ~ .v2-hero__glow {
-  animation: heroIntroFade var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 4) both;
+  animation: heroIntroFade var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 4)
+    both;
 }
 
 /* ── Trust badge entrance ── */
@@ -424,7 +426,9 @@
   object-fit: cover;
   filter: grayscale(1) contrast(1.25);
   opacity: 0.8;
-  transition: filter var(--transition-smooth), opacity var(--transition-smooth);
+  transition:
+    filter var(--transition-smooth),
+    opacity var(--transition-smooth);
 }
 
 .v2-hero__image-wrapper:hover .v2-hero__image {
@@ -445,20 +449,19 @@
 }
 
 .v2-hero--editorial .v2-hero__subtext {
-  animation: heroIntroUp var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 1) both;
+  animation: heroIntroUp var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 1) both;
 }
 
 .v2-hero--editorial .v2-hero__image-col {
-  animation: heroIntroRight var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 2) both;
+  animation: heroIntroRight var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 2)
+    both;
 }
 
 .v2-hero--editorial .v2-hero__scroll-hint {
   animation:
-    heroIntroFade var(--intro-duration) var(--intro-ease)
-      calc(var(--intro-stagger) * 5) both,
-    heroScrollPulse 2.4s var(--ease-in-out) calc(var(--intro-stagger) * 5 + var(--intro-duration)) infinite;
+    heroIntroFade var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 5) both,
+    heroScrollPulse 2.4s var(--ease-in-out) calc(var(--intro-stagger) * 5 + var(--intro-duration))
+      infinite;
 }
 
 /* ── Scroll Indicator ── */
@@ -492,14 +495,26 @@
 }
 
 @keyframes heroScrollPulse {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 @keyframes heroScrollLine {
-  0%   { transform: scaleY(0); }
-  50%  { transform: scaleY(1); }
-  100% { transform: scaleY(0); transform-origin: bottom center; }
+  0% {
+    transform: scaleY(0);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom center;
+  }
 }
 
 /* ── Tablet ── */
@@ -609,15 +624,15 @@
 /* ── Scroll hint in left layout (Roofers / Investors / About) ── */
 .v2-hero--left .v2-hero__scroll-hint {
   animation:
-    heroIntroFade var(--intro-duration) var(--intro-ease)
-      calc(var(--intro-stagger) * 5) both,
-    heroScrollPulse 2.4s var(--ease-in-out) calc(var(--intro-stagger) * 5 + var(--intro-duration)) infinite;
+    heroIntroFade var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 5) both,
+    heroScrollPulse 2.4s var(--ease-in-out) calc(var(--intro-stagger) * 5 + var(--intro-duration))
+      infinite;
 }
 
 /* ── 3D column in editorial layout (About page) ── */
 .v2-hero--editorial .v2-hero__3d-col {
-  animation: heroIntroRight var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 2) both;
+  animation: heroIntroRight var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 2)
+    both;
 }
 
 @media (min-width: 768px) {
@@ -680,14 +695,14 @@
   /* Soft edge fade — full coverage center, gentle fade at all borders */
   mask-image:
     linear-gradient(to bottom, transparent 0%, black 8%, black 85%, transparent 100%),
-    linear-gradient(to right,  transparent 0%, black 5%, black 95%, transparent 100%);
+    linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
   mask-composite: intersect;
   -webkit-mask-image:
     linear-gradient(to bottom, transparent 0%, black 8%, black 85%, transparent 100%),
-    linear-gradient(to right,  transparent 0%, black 5%, black 95%, transparent 100%);
+    linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
   -webkit-mask-composite: source-in;
-  animation: heroIntroFade var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 3) both;
+  animation: heroIntroFade var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 3)
+    both;
 }
 
 /* Enable pointer events on the canvas element itself for hover tracking */
@@ -749,8 +764,8 @@
 }
 
 .v2-hero--editorial .v2-hero__stat-col {
-  animation: heroIntroRight var(--intro-duration) var(--intro-ease)
-    calc(var(--intro-stagger) * 2) both;
+  animation: heroIntroRight var(--intro-duration) var(--intro-ease) calc(var(--intro-stagger) * 2)
+    both;
 }
 
 @media (max-width: 1024px) {

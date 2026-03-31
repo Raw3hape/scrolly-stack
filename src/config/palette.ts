@@ -17,11 +17,11 @@ export const palette = {
   anchor200: '#5A9DAB',
 
   // Systems — Process, Engineering, 'The Machine'
-  teal700:      '#1E5757',
-  teal500:      '#297373',
-  teal300:      '#3A8C8C',
-  teal100:      '#D0E8E8',
-  tealExLight:  '#5AABAB',
+  teal700: '#1E5757',
+  teal500: '#297373',
+  teal300: '#3A8C8C',
+  teal100: '#D0E8E8',
+  tealExLight: '#5AABAB',
 
   // Growth — Results, Dividends, 'The Yield'
   green700: '#2E6B42',
@@ -32,8 +32,8 @@ export const palette = {
   sand300: '#DDD5C8',
   sand200: '#E8E1D6',
   sand100: '#F2EDE4',
-  sand50:  '#F7F4EF',
-  sand25:  '#FDFCFA',
+  sand50: '#F7F4EF',
+  sand25: '#FDFCFA',
 
   // Value — Craft, Spark, 'The Second Mile'
   gold700: '#B87A2E',
@@ -41,15 +41,15 @@ export const palette = {
   gold300: '#E5AD6B',
 
   // Dark variants (used in 3D active states)
-  anchorDeep:   '#0A2B33',
-  tealDark:     '#153F3F',
-  greenDark:    '#1F5233',
-  goldDark:     '#9A6523',
+  anchorDeep: '#0A2B33',
+  tealDark: '#153F3F',
+  greenDark: '#1F5233',
+  goldDark: '#9A6523',
 
   // Scene lights
   ambientLight: '#e8e8ff',
-  white:        '#ffffff',
-  sceneBg:      '#0f172a',
+  white: '#ffffff',
+  sceneBg: '#0f172a',
 } as const;
 
 export type PaletteKey = keyof typeof palette;

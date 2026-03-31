@@ -14,9 +14,7 @@ export default function Error({
   return (
     <Section centered minHeight="60vh">
       <h1 className="status-page__title">Something went wrong</h1>
-      <p className="status-page__body">
-        {error.message || 'An unexpected error occurred.'}
-      </p>
+      <p className="status-page__body">{error.message || 'An unexpected error occurred.'}</p>
       <button onClick={reset} className="link-button link-button--primary">
         Try again
       </button>

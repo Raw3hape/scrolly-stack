@@ -8,7 +8,14 @@
  * This allows different variants to use different geometry settings.
  */
 
-import type { LayerData, GridLayer, RowLayer, FullLayer, ComputedBlock, RawBlockData } from '../types';
+import type {
+  LayerData,
+  GridLayer,
+  RowLayer,
+  FullLayer,
+  ComputedBlock,
+  RawBlockData,
+} from '../types';
 import type { ResolvedGeometry } from '../VariantContext';
 
 /**
@@ -30,7 +37,11 @@ export function getLayerHeight(layer: LayerData, geo: ResolvedGeometry): number 
 /**
  * Calculate block positions for a GRID layout (e.g., 2x2 quadrants)
  */
-export function calculateGridPositions(layer: GridLayer, baseY: number, geo: ResolvedGeometry): ComputedBlock[] {
+export function calculateGridPositions(
+  layer: GridLayer,
+  baseY: number,
+  geo: ResolvedGeometry,
+): ComputedBlock[] {
   const { cols, rows, blocks, gap } = layer;
   const { totalWidth, totalDepth, layerHeight } = geo.stack;
   const gapH = gap ?? geo.gaps.horizontal;
@@ -39,7 +50,7 @@ export function calculateGridPositions(layer: GridLayer, baseY: number, geo: Res
   const cellWidth = (totalWidth - gapH * (cols - 1)) / cols;
   const cellDepth = (totalDepth - gapH * (rows - 1)) / rows;
 
-  return blocks.map(block => {
+  return blocks.map((block) => {
     const [row, col] = block.gridPosition!;
 
     // Calculate center position for this cell
@@ -61,7 +72,11 @@ export function calculateGridPositions(layer: GridLayer, baseY: number, geo: Res
 /**
  * Calculate block positions for a ROW layout (e.g., 3 buttons in a row)
  */
-export function calculateRowPositions(layer: RowLayer, baseY: number, geo: ResolvedGeometry): ComputedBlock[] {
+export function calculateRowPositions(
+  layer: RowLayer,
+  baseY: number,
+  geo: ResolvedGeometry,
+): ComputedBlock[] {
   const { cols, blocks, depth, align = 'front', gap } = layer;
   const { totalWidth, totalDepth, layerHeight } = geo.stack;
   const gapH = gap ?? geo.gaps.horizontal;
@@ -95,7 +110,11 @@ export function calculateRowPositions(layer: RowLayer, baseY: number, geo: Resol
 /**
  * Calculate block positions for a FULL layout (full-width tiles)
  */
-export function calculateFullPositions(layer: FullLayer, baseY: number, geo: ResolvedGeometry): ComputedBlock[] {
+export function calculateFullPositions(
+  layer: FullLayer,
+  baseY: number,
+  geo: ResolvedGeometry,
+): ComputedBlock[] {
   const { blocks, gap } = layer;
   const { totalWidth, totalDepth, layerHeight } = geo.stack;
   const gapV = gap ?? geo.gaps.vertical;
@@ -115,7 +134,11 @@ export function calculateFullPositions(layer: FullLayer, baseY: number, geo: Res
 /**
  * Calculate positions based on layout type
  */
-export function calculateBlockPositions(layer: LayerData, baseY: number, geo: ResolvedGeometry): ComputedBlock[] {
+export function calculateBlockPositions(
+  layer: LayerData,
+  baseY: number,
+  geo: ResolvedGeometry,
+): ComputedBlock[] {
   switch (layer.layout) {
     case 'grid':
       return calculateGridPositions(layer, baseY, geo);

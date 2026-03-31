@@ -49,7 +49,9 @@ export default function CinematicSection({ data }: Props) {
 
         {/* Staggered grid: heading wide + card offset */}
         <div className="v2-cinematic__grid">
-          <h2 className="v2-cinematic__heading px-layer--fg" data-px-delay="1">{data.heading}</h2>
+          <h2 className="v2-cinematic__heading px-layer--fg" data-px-delay="1">
+            {data.heading}
+          </h2>
 
           <div className="v2-cinematic__card" data-px-delay="2">
             <h3 className="v2-cinematic__card-title">{data.card.title}</h3>

@@ -19,10 +19,11 @@ interface SectionRendererProps {
 export default function SectionRenderer({ section }: SectionRendererProps) {
   return (
     <ParallaxSection section={section}>
-      {isServerSection(section.type)
-        ? <ServerSectionRenderer section={section} />
-        : <ClientSectionRenderer section={section} />
-      }
+      {isServerSection(section.type) ? (
+        <ServerSectionRenderer section={section} />
+      ) : (
+        <ClientSectionRenderer section={section} />
+      )}
     </ParallaxSection>
   );
 }

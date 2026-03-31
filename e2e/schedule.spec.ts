@@ -114,9 +114,7 @@ test.describe('Schedule page — calendar interactions', () => {
 
   test('clicking a day selects it visually', async ({ page }) => {
     // Find a non-disabled day button
-    const days = page.locator(
-      '.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)'
-    );
+    const days = page.locator('.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)');
     const dayCount = await days.count();
     expect(dayCount).toBeGreaterThan(0);
 
@@ -141,9 +139,7 @@ test.describe('Schedule page — calendar interactions', () => {
   });
 
   test('clicking a different day deselects the previous one', async ({ page }) => {
-    const days = page.locator(
-      '.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)'
-    );
+    const days = page.locator('.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)');
     const dayCount = await days.count();
     if (dayCount < 2) return; // Not enough days to test
 
@@ -164,9 +160,7 @@ test.describe('Schedule page — calendar interactions', () => {
     await page.waitForTimeout(200);
 
     // Select a day first, THEN a time slot
-    const days = page.locator(
-      '.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)'
-    );
+    const days = page.locator('.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)');
     await days.first().scrollIntoViewIfNeeded();
     await days.first().click();
 
@@ -182,18 +176,14 @@ test.describe('Schedule page — calendar interactions', () => {
     await expect(slot).not.toHaveClass(/v2-booking__slot--selected/);
   });
 
-  test('submit button is disabled until both day and slot are selected', async ({
-    page,
-  }) => {
+  test('submit button is disabled until both day and slot are selected', async ({ page }) => {
     const submit = page.locator('.v2-booking__submit');
     await submit.scrollIntoViewIfNeeded();
     // Initially disabled
     await expect(submit).toBeDisabled();
 
     // Select a day
-    const days = page.locator(
-      '.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)'
-    );
+    const days = page.locator('.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)');
     if ((await days.count()) > 0) {
       await days.first().scrollIntoViewIfNeeded();
       await days.first().click();
@@ -359,9 +349,7 @@ test.describe('Schedule page — visual stability', () => {
     const widgetBefore = await page.locator('.v2-booking__widget').boundingBox();
 
     // Select a day and time
-    const days = page.locator(
-      '.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)'
-    );
+    const days = page.locator('.v2-booking__calendar-day:not(.v2-booking__calendar-day--disabled)');
     if ((await days.count()) > 0) {
       await days.first().click();
     }
@@ -415,10 +403,7 @@ test('schedule page loads without console errors', async ({ page }) => {
   });
 
   const fatalErrors = errors.filter(
-    (e) =>
-      !e.includes('WebGL') &&
-      !e.includes('THREE') &&
-      !e.includes('ResizeObserver')
+    (e) => !e.includes('WebGL') && !e.includes('THREE') && !e.includes('ResizeObserver'),
   );
   expect(fatalErrors).toHaveLength(0);
 });

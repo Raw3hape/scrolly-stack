@@ -18,8 +18,7 @@ export const optInContent: PageContent = {
       id: 'optin-hero',
       surface: 'base',
       overline: 'FREE, INSTANT DOWNLOAD',
-      heading:
-        '8 Things Private Equity Has Wrong About The Roofing Industry',
+      heading: '8 Things Private Equity Has Wrong About The Roofing Industry',
       subtext:
         'What brokers & private equity firms don\u2019t understand about this $60B industry\u2014 and why it\u2019s costing owners (and investors!) millions.',
       book: {
@@ -50,8 +49,7 @@ export const optInContent: PageContent = {
           },
         ],
         submitLabel: 'Get Instant Access - FREE',
-        disclaimer:
-          'Your data is secure. Architectural integrity in everything we do.',
+        disclaimer: 'Your data is secure. Architectural integrity in everything we do.',
       },
       valueProps: [
         {
@@ -77,8 +75,7 @@ export const optInContent: PageContent = {
       type: 'opt-in-testimonials',
       id: 'optin-testimonials',
       surface: 'low',
-      heading:
-        'The industry is changing. Don\u2019t be the last to know the new rules.',
+      heading: 'The industry is changing. Don\u2019t be the last to know the new rules.',
       subtext:
         'We\u2019ve spent a decade analyzing roofing assets from the inside. This guide is the synthesis of that architectural perspective.',
       pullQuote: {
@@ -101,8 +98,7 @@ export const optInContent: PageContent = {
           verified: true,
         },
         {
-          quote:
-            'The section on broker incentives was eye-opening. We almost made a huge mistake.',
+          quote: 'The section on broker incentives was eye-opening. We almost made a huge mistake.',
           role: 'Managing Partner',
           company: 'Skyline Labs',
           verified: true,
@@ -115,8 +111,7 @@ export const optInContent: PageContent = {
           verified: true,
         },
         {
-          quote:
-            'An architectural approach to business that was missing in our sector.',
+          quote: 'An architectural approach to business that was missing in our sector.',
           role: 'Managing Director',
           company: 'Summit Exteriors',
           verified: true,

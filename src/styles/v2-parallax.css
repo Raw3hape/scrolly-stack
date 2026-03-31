@@ -55,42 +55,45 @@
 .px-layer--accent {
   --_px-speed: var(--parallax-speed-accent);
   opacity: var(--_px-t);
-  transform:
-    translateY(calc(var(--parallax-rise-sm) * var(--_px-inv)))
+  transform: translateY(calc(var(--parallax-rise-sm) * var(--_px-inv)))
     scale(calc(var(--parallax-scale-from) + (1 - var(--parallax-scale-from)) * var(--_px-t)));
 }
 
 /* === Direction variants: horizontal slide === */
-.px-layer--bg[data-px-from="left"],
-.px-layer--fg[data-px-from="left"],
-.px-layer--accent[data-px-from="left"] {
+.px-layer--bg[data-px-from='left'],
+.px-layer--fg[data-px-from='left'],
+.px-layer--accent[data-px-from='left'] {
   transform: translateX(calc(var(--parallax-shift-x) * -1 * var(--_px-inv)));
 }
 
-.px-layer--bg[data-px-from="right"],
-.px-layer--fg[data-px-from="right"],
-.px-layer--accent[data-px-from="right"] {
+.px-layer--bg[data-px-from='right'],
+.px-layer--fg[data-px-from='right'],
+.px-layer--accent[data-px-from='right'] {
   transform: translateX(calc(var(--parallax-shift-x) * var(--_px-inv)));
 }
 
 /* Accent + horizontal needs scale too */
-.px-layer--accent[data-px-from="left"],
-.px-layer--accent[data-px-from="right"] {
-  transform:
-    translateX(calc(var(--parallax-shift-x) * var(--_px-inv)))
+.px-layer--accent[data-px-from='left'],
+.px-layer--accent[data-px-from='right'] {
+  transform: translateX(calc(var(--parallax-shift-x) * var(--_px-inv)))
     scale(calc(var(--parallax-scale-from) + (1 - var(--parallax-scale-from)) * var(--_px-t)));
 }
 
-.px-layer--accent[data-px-from="left"] {
-  transform:
-    translateX(calc(var(--parallax-shift-x) * -1 * var(--_px-inv)))
+.px-layer--accent[data-px-from='left'] {
+  transform: translateX(calc(var(--parallax-shift-x) * -1 * var(--_px-inv)))
     scale(calc(var(--parallax-scale-from) + (1 - var(--parallax-scale-from)) * var(--_px-t)));
 }
 
 /* === Stagger delays (shift progress backward) === */
-[data-px-delay="1"] { --_px-delay: var(--parallax-stagger-step); }
-[data-px-delay="2"] { --_px-delay: calc(var(--parallax-stagger-step) * 2); }
-[data-px-delay="3"] { --_px-delay: calc(var(--parallax-stagger-step) * 3); }
+[data-px-delay='1'] {
+  --_px-delay: var(--parallax-stagger-step);
+}
+[data-px-delay='2'] {
+  --_px-delay: calc(var(--parallax-stagger-step) * 2);
+}
+[data-px-delay='3'] {
+  --_px-delay: calc(var(--parallax-stagger-step) * 3);
+}
 
 /* === Accessibility: Reduced Motion === */
 @media (prefers-reduced-motion: reduce) {

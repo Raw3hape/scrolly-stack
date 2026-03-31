@@ -53,11 +53,7 @@
 .v2-split__image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    var(--anchor-900-alpha-80) 0%,
-    transparent 60%
-  );
+  background: linear-gradient(to top, var(--anchor-900-alpha-80) 0%, transparent 60%);
 }
 
 /* Quote at bottom of image */
@@ -171,10 +167,18 @@
 }
 
 /* Stagger: each bullet delayed incrementally */
-[data-visible] .v2-split__bullet:nth-child(1) { transition-delay: 0.3s; }
-[data-visible] .v2-split__bullet:nth-child(2) { transition-delay: 0.45s; }
-[data-visible] .v2-split__bullet:nth-child(3) { transition-delay: 0.6s; }
-[data-visible] .v2-split__bullet:nth-child(4) { transition-delay: 0.75s; }
+[data-visible] .v2-split__bullet:nth-child(1) {
+  transition-delay: 0.3s;
+}
+[data-visible] .v2-split__bullet:nth-child(2) {
+  transition-delay: 0.45s;
+}
+[data-visible] .v2-split__bullet:nth-child(3) {
+  transition-delay: 0.6s;
+}
+[data-visible] .v2-split__bullet:nth-child(4) {
+  transition-delay: 0.75s;
+}
 
 /* Image quote: slide up gently */
 .v2-split__image-quote {

@@ -71,9 +71,14 @@ for (const device of VIEWPORTS) {
         console.log(`  viewport: ${JSON.stringify(rect)}`);
         continue;
       }
-      if (!rect) { console.log(`  ${name}: NOT FOUND`); continue; }
+      if (!rect) {
+        console.log(`  ${name}: NOT FOUND`);
+        continue;
+      }
       const r = rect as Record<string, unknown>;
-      console.log(`  ${name.padEnd(14)} top=${String(r.top).padEnd(5)} bottom=${String(r.bottom).padEnd(5)} h=${String(r.height).padEnd(5)} z=${r.zIndex} pos=${r.position} bg=${String(r.background).slice(0,30)}`);
+      console.log(
+        `  ${name.padEnd(14)} top=${String(r.top).padEnd(5)} bottom=${String(r.bottom).padEnd(5)} h=${String(r.height).padEnd(5)} z=${r.zIndex} pos=${r.position} bg=${String(r.background).slice(0, 30)}`,
+      );
     }
     console.log(`\n  Screenshot: /tmp/hero-${device.name}.png`);
   });

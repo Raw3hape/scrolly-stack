@@ -19,13 +19,10 @@ import { mosaic as mosaicConfig } from '../config';
 
 export interface ScrollProgress {
   mosaic: number; // 0→1: assembly animation
-  exit: number;   // 0→1: grid exits upward
+  exit: number; // 0→1: grid exits upward
 }
 
 const INITIAL: ScrollProgress = { mosaic: 0, exit: 0 };
-
-
-
 
 export default function useScrollProgress(
   triggerRef: RefObject<HTMLDivElement | null>,
@@ -45,19 +42,13 @@ export default function useScrollProgress(
 
     // Zone hasn't entered viewport yet
     if (rect.top >= viewportHeight) {
-      setProgress((prev) =>
-        prev.mosaic === 0 && prev.exit === 0 ? prev : INITIAL,
-      );
+      setProgress((prev) => (prev.mosaic === 0 && prev.exit === 0 ? prev : INITIAL));
       return;
     }
 
     // Zone has fully passed
     if (rect.bottom <= 0) {
-      setProgress((prev) =>
-        prev.mosaic === 1 && prev.exit === 1
-          ? prev
-          : { mosaic: 1, exit: 1 },
-      );
+      setProgress((prev) => (prev.mosaic === 1 && prev.exit === 1 ? prev : { mosaic: 1, exit: 1 }));
       return;
     }
 
@@ -81,29 +72,24 @@ export default function useScrollProgress(
     const s = clamp(scrolledIn, 0, totalHeight);
 
     // Phase 1: Assembly (0 → assemblyPx)
-    const rawMosaic = s / assemblyPx;
-    // Snap to boundaries when very close — prevents hover being blocked by
-    // floating-point near-misses (e.g. 0.999 never reaching 1.0).
-    const SNAP = 0.005;
-    const mosaic = rawMosaic <= SNAP ? 0 : rawMosaic >= 1 - SNAP ? 1 : clamp(rawMosaic, 0, 1);
+    // Plain clamp — no snap tolerance. Snap at ±0.5% caused oscillation during
+    // scroll reversals (progress would jump 0→snap→spring→flicker).
+    const mosaic = clamp(s / assemblyPx, 0, 1);
 
     // Phase 2: Hold (assemblyPx → assemblyPx + holdPx) — nothing changes
     // Phase 3: Exit (assemblyPx + holdPx → assemblyPx + holdPx + exitPx)
     const exitStart = assemblyPx + holdPx;
-    const rawExit = (s - exitStart) / exitPx;
-    const exit = rawExit <= SNAP ? 0 : rawExit >= 1 - SNAP ? 1 : clamp(rawExit, 0, 1);
+    const exit = clamp((s - exitStart) / exitPx, 0, 1);
 
-    // Keep progress precise enough for smooth motion without spamming state updates.
-    const STEP = 0.001;
+    // Finer granularity (0.02%) for smoother motion. rAF already throttles to
+    // 60fps, so the extra precision costs nothing.
+    const STEP = 0.0002;
     setProgress((prev) => {
       const mDelta = Math.abs(mosaic - prev.mosaic);
       const eDelta = Math.abs(exit - prev.exit);
 
-      // Snap to boundary values
-      const newM =
-        mosaic <= 0 ? 0 : mosaic >= 1 ? 1 : mDelta >= STEP ? mosaic : prev.mosaic;
-      const newE =
-        exit <= 0 ? 0 : exit >= 1 ? 1 : eDelta >= STEP ? exit : prev.exit;
+      const newM = mosaic <= 0 ? 0 : mosaic >= 1 ? 1 : mDelta >= STEP ? mosaic : prev.mosaic;
+      const newE = exit <= 0 ? 0 : exit >= 1 ? 1 : eDelta >= STEP ? exit : prev.exit;
 
       if (newM === prev.mosaic && newE === prev.exit) return prev;
       return { mosaic: newM, exit: newE };

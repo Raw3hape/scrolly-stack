@@ -22,9 +22,7 @@ const FreebieBook3D = dynamic(
   () => import('@/features/scrolly-experience/heroes').then((module) => module.FreebieBook3D),
   {
     ssr: false,
-    loading: () => (
-      <div className="v2-optin__book-canvas" aria-label="Loading 3D book preview" />
-    ),
+    loading: () => <div className="v2-optin__book-canvas" aria-label="Loading 3D book preview" />,
   },
 );
 
@@ -40,14 +38,11 @@ export default function OptInHeroSection({ data }: Props) {
     setFormState((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      // UI-only for now — backend TBD
-      setSubmitted(true);
-    },
-    [],
-  );
+  const handleSubmit = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    // UI-only for now — backend TBD
+    setSubmitted(true);
+  }, []);
 
   return (
     <div className="v2-container">
@@ -111,16 +106,10 @@ export default function OptInHeroSection({ data }: Props) {
                 </p>
               </div>
             ) : (
-              <form
-                className="v2-optin__form"
-                onSubmit={handleSubmit}
-              >
+              <form className="v2-optin__form" onSubmit={handleSubmit}>
                 {data.form.fields.map((field) => (
                   <div key={field.name} className="v2-optin__field">
-                    <label
-                      htmlFor={`optin-${field.name}`}
-                      className="v2-optin__label"
-                    >
+                    <label htmlFor={`optin-${field.name}`} className="v2-optin__label">
                       {field.label}
                     </label>
                     <input

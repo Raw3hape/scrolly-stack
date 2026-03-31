@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      'three$': require.resolve('three/src/Three.js'),
+      three$: require.resolve('three/src/Three.js'),
     };
     return config;
   },
@@ -38,7 +38,7 @@ const nextConfig: NextConfig = {
   // Better tree-shaking for three.js (ESM source entry)
   turbopack: {
     resolveAlias: {
-      'three': 'three/src/Three.js',
+      three: 'three/src/Three.js',
     },
   },
 

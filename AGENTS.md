@@ -20,6 +20,7 @@ Foundation Projects is a marketing website for a roofing business consulting com
 ## Critical Rules
 
 ### Server vs Client Components
+
 - **Default is server component** — no `'use client'` directive needed
 - Add `'use client'` **only** when using: React hooks, browser APIs (window, document), Three.js, event handlers
 - **NEVER** import `three`, `@react-three/fiber`, `@react-three/drei`, or `@react-three/postprocessing` in a server component — they crash the server at import time
@@ -28,10 +29,12 @@ Foundation Projects is a marketing website for a roofing business consulting com
 - 3D scene: `page.tsx` (Server) → `ScrollyLoader.tsx` (Client, `dynamic ssr:false`) → `ScrollyExperience`
 
 ### CTA / URLs
+
 - **All CTA URLs must come from `src/config/nav.ts`** (`ctaConfig.href`) — never hardcode URLs
 - CTA text labels can differ per surface (header vs hero vs steps)
 
 ### Styling
+
 - **Always use design tokens** — never hardcode colors, sizes, radii, spacing, or transitions
 - **Zero hardcode policy:** component CSS must contain 0 `rgba(...)`, 0 `#hex`, 0 hardcoded `font-size`, 0 hardcoded `transition` values
 - Tokens are in `src/styles/tokens/` — single source of truth for visual design
@@ -42,6 +45,7 @@ Foundation Projects is a marketing website for a roofing business consulting com
 - Full token reference: **`DESIGN_SYSTEM.md`** in project root
 
 ### File Structure
+
 - Pages: `src/app/[route]/page.tsx`
 - Home route wrapper: `src/app/page.tsx` → `src/app/HomeV2Client.tsx` (canvas fade-in, no fullscreen loader)
 - Features: `src/features/[name]/` with barrel `index.ts`
@@ -55,6 +59,7 @@ Foundation Projects is a marketing website for a roofing business consulting com
 - Tokens: `src/styles/tokens/`
 
 ### Data Flow
+
 - **Page content:** `src/config/content/[page].ts` → `page.tsx` → `SectionRenderer` → `ServerSectionRenderer` (server-safe sections) or `ClientSectionRenderer` (interactive sections, dynamic imports)
 - **Server sections:** split, cinematic, trust, benefits-grid, schedule-hero, schedule-quote, cards, mission, urgency, cta
 - **Client sections:** steps, hero, team, testimonial, timeline, bento, opt-in-hero, opt-in-testimonials, schedule-booking
@@ -67,6 +72,7 @@ Foundation Projects is a marketing website for a roofing business consulting com
 ## Common Tasks
 
 ### Adding a new page (data-driven)
+
 1. Add section type interface to `src/config/types.ts` (if new section type needed)
 2. Add the type to the `Section` union in `src/config/types.ts`
 3. Create section component in `src/components/V2Sections/[Name]/Name.tsx` + `Name.css`
@@ -78,6 +84,7 @@ Foundation Projects is a marketing website for a roofing business consulting com
 9. Run `npm run typecheck && npm run lint` to verify
 
 ### Changing brand colors/fonts
+
 1. Edit `src/styles/tokens/colors.css` — palette hex values + semantic tokens
 2. Edit `src/styles/tokens/effects.css` — shadows, glass, glow (rgba values)
 3. For fonts: update `next/font` imports in `src/app/layout.tsx`
@@ -85,6 +92,7 @@ Foundation Projects is a marketing website for a roofing business consulting com
 5. **See `DESIGN_SYSTEM.md`** for full rebrand checklist and token reference
 
 ### Modifying the 3D experience
+
 1. All 3D code lives in `src/features/scrolly-experience/`
 2. Scene config: `config.ts` (geometry, lighting, animations)
 3. Block data: `variants/` (content, colors, layout)

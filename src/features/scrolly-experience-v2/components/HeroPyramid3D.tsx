@@ -6,7 +6,17 @@ import { Environment, PresentationControls, RoundedBox } from '@react-three/drei
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import { palette } from '@/config/palette';
-import { readHeroLayout, computeModelXOffset, computeAvailableWidth, measureTextCenter, measureContainerContentWidth, computeModelYOffset, isoScreenToWorld, type HeroLayout, type HeroTextMeasurement } from '../utils/heroLayout';
+import {
+  readHeroLayout,
+  computeModelXOffset,
+  computeAvailableWidth,
+  measureTextCenter,
+  measureContainerContentWidth,
+  computeModelYOffset,
+  isoScreenToWorld,
+  type HeroLayout,
+  type HeroTextMeasurement,
+} from '../utils/heroLayout';
 
 // ─── Layer Config ───
 const LAYERS = [
@@ -73,7 +83,7 @@ function MouseParallaxGroup({ children }: { children: React.ReactNode }) {
 }
 
 // ─── Single Pyramid Layer ───
-const HOVER_SPREAD = 1.35;        // Y positions scale factor on hover (1 = no spread)
+const HOVER_SPREAD = 1.35; // Y positions scale factor on hover (1 = no spread)
 
 function PyramidLayer({
   size,
@@ -92,7 +102,12 @@ function PyramidLayer({
     if (!meshRef.current) return;
     // Spread: expand layers apart on hover (yPosition is centered around 0)
     const yTarget = pyramidHovered ? yPosition * HOVER_SPREAD : yPosition;
-    meshRef.current.position.y = THREE.MathUtils.damp(meshRef.current.position.y, yTarget, 4, delta);
+    meshRef.current.position.y = THREE.MathUtils.damp(
+      meshRef.current.position.y,
+      yTarget,
+      4,
+      delta,
+    );
   });
 
   return (
@@ -108,7 +123,15 @@ function PyramidLayer({
 }
 
 // ─── Pyramid Model ───
-function PyramidModel({ layoutRef, textMeasureRef, containerWidthRef }: { layoutRef: React.RefObject<HeroLayout | null>; textMeasureRef: React.RefObject<HeroTextMeasurement | null>; containerWidthRef: React.RefObject<number | null> }) {
+function PyramidModel({
+  layoutRef,
+  textMeasureRef,
+  containerWidthRef,
+}: {
+  layoutRef: React.RefObject<HeroLayout | null>;
+  textMeasureRef: React.RefObject<HeroTextMeasurement | null>;
+  containerWidthRef: React.RefObject<number | null>;
+}) {
   const { camera, size } = useThree();
   const groupRef = useRef<THREE.Group>(null);
 
@@ -135,13 +158,15 @@ function PyramidModel({ layoutRef, textMeasureRef, containerWidthRef }: { layout
   // Layout tokens from CSS custom properties (read once on mount)
   const layout = layoutRef.current ?? readHeroLayout();
   const xOffset = computeModelXOffset(layout, visibleW);
-  const yOffset = computeModelYOffset(textMeasureRef.current, visibleH, size.height, layout.isMobile);
+  const yOffset = computeModelYOffset(
+    textMeasureRef.current,
+    visibleH,
+    size.height,
+    layout.isMobile,
+  );
   const availableW = computeAvailableWidth(layout, visibleW);
   const fillFactor = layout.isMobile ? layout.fillMobile : layout.fill;
-  const scale = Math.min(
-    (visibleH * fillFactor) / totalH,
-    (availableW * fillFactor) / maxSize,
-  );
+  const scale = Math.min((visibleH * fillFactor) / totalH, (availableW * fillFactor) / maxSize);
 
   // Compute Y positions (centered vertically)
   const yPositions: number[] = [];
@@ -246,7 +271,10 @@ export default function HeroPyramid3D({ className, onReady }: HeroPyramid3DProps
             requestAnimationFrame(() => onReady?.());
           }
           const canvas = state.gl.domElement;
-          canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); onReady?.(); });
+          canvas.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            onReady?.();
+          });
         }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true, toneMapping: THREE.AgXToneMapping }}
@@ -259,7 +287,11 @@ export default function HeroPyramid3D({ className, onReady }: HeroPyramid3DProps
         <Suspense fallback={null}>
           <Environment files="/envmaps/venice_sunset_256.hdr" environmentIntensity={0.35} />
         </Suspense>
-        <PyramidModel layoutRef={layoutRef} textMeasureRef={textMeasureRef} containerWidthRef={containerWidthRef} />
+        <PyramidModel
+          layoutRef={layoutRef}
+          textMeasureRef={textMeasureRef}
+          containerWidthRef={containerWidthRef}
+        />
         <EffectComposer multisampling={2}>
           <Bloom intensity={0.08} luminanceThreshold={0.85} luminanceSmoothing={0.4} mipmapBlur />
         </EffectComposer>

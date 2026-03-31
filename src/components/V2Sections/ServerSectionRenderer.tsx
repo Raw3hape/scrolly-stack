@@ -38,16 +38,27 @@ export function isServerSection(type: string): boolean {
 
 export default function ServerSectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
-    case 'cinematic':       return <CinematicSection data={section} />;
-    case 'split':           return <SplitSection data={section} />;
-    case 'trust':           return <TrustSection data={section} />;
-    case 'benefits-grid':   return <BenefitsGridSection data={section} />;
-    case 'schedule-hero':   return <ScheduleHeroSection data={section} />;
-    case 'schedule-quote':  return <ScheduleQuoteSection data={section} />;
-    case 'cards':           return <CardsSection data={section} />;
-    case 'mission':         return <MissionSection data={section} />;
-    case 'urgency':         return <UrgencySection data={section} />;
-    case 'cta':             return <CtaSection data={section} />;
-    default:                return null;
+    case 'cinematic':
+      return <CinematicSection data={section} />;
+    case 'split':
+      return <SplitSection data={section} />;
+    case 'trust':
+      return <TrustSection data={section} />;
+    case 'benefits-grid':
+      return <BenefitsGridSection data={section} />;
+    case 'schedule-hero':
+      return <ScheduleHeroSection data={section} />;
+    case 'schedule-quote':
+      return <ScheduleQuoteSection data={section} />;
+    case 'cards':
+      return <CardsSection data={section} />;
+    case 'mission':
+      return <MissionSection data={section} />;
+    case 'urgency':
+      return <UrgencySection data={section} />;
+    case 'cta':
+      return <CtaSection data={section} />;
+    default:
+      return null;
   }
 }

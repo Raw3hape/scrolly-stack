@@ -147,9 +147,7 @@ export default function StepsSection({ data }: Props) {
         <div>
           <h2 className="v2-steps-header__heading px-layer--fg">{data.heading}</h2>
         </div>
-        {data.subtext && (
-          <p className="v2-steps-header__subtext">{data.subtext}</p>
-        )}
+        {data.subtext && <p className="v2-steps-header__subtext">{data.subtext}</p>}
       </div>
 
       {/* Steps grid */}
@@ -190,27 +188,28 @@ export default function StepsSection({ data }: Props) {
 
               <h3 className="v2-step__title">{step.title}</h3>
               <p className="v2-step__text">{step.text}</p>
-              {step.footnote && (
-                <p className="v2-step__footnote">{step.footnote}</p>
-              )}
+              {step.footnote && <p className="v2-step__footnote">{step.footnote}</p>}
 
               {/* Progress bar */}
               <div className="v2-step__bar" aria-hidden="true">
-                <div
-                  className="v2-step__bar-fill"
-                  style={{ width: `${barWidth}%` }}
-                />
+                <div className="v2-step__bar-fill" style={{ width: `${barWidth}%` }} />
               </div>
 
               {/* Contextual CTA */}
               {isCurrent && step.ctaLabel && (
-                <a
-                  href={ctaHref}
-                  className="v2-step__cta"
-                  onClick={(e) => e.stopPropagation()}
-                >
+                <a href={ctaHref} className="v2-step__cta" onClick={(e) => e.stopPropagation()}>
                   {step.ctaLabel}
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </a>

@@ -63,7 +63,7 @@
   white-space: nowrap;
   transition:
     opacity var(--transition-base),
-    filter  var(--transition-base);
+    filter var(--transition-base);
 }
 
 /* Hover: highlight individual partner (guarded for pointer devices) */

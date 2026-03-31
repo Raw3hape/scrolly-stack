@@ -27,7 +27,9 @@ export default function TrustSection({ data }: Props) {
         {/* Badge pill — slow background reveal */}
         {data.badge && (
           <div className="v2-trust__badge px-layer--bg">
-            <span className="v2-trust__badge-icon" aria-hidden="true">✓</span>
+            <span className="v2-trust__badge-icon" aria-hidden="true">
+              ✓
+            </span>
             <span className="v2-trust__badge-text">{data.badge}</span>
           </div>
         )}

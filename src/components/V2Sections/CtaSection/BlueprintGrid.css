@@ -13,7 +13,8 @@
   will-change: transform;
 
   /* Gradient fade: invisible top → visible bottom */
-  -webkit-mask-image: linear-gradient(to bottom,
+  -webkit-mask-image: linear-gradient(
+    to bottom,
     transparent 0%,
     transparent 15%,
     var(--overlay-dark-5) 30%,
@@ -22,7 +23,8 @@
     var(--overlay-dark-80) 75%,
     var(--overlay-dark-100) 90%
   );
-  mask-image: linear-gradient(to bottom,
+  mask-image: linear-gradient(
+    to bottom,
     transparent 0%,
     transparent 15%,
     var(--overlay-dark-5) 30%,

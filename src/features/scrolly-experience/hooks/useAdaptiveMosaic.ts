@@ -59,31 +59,28 @@ export function useAdaptiveMosaic(
   // On mobile: the grid has MORE rows (2-3 cols → 7-10 rows), so keeping
   // finalZoom would make the visible area too small. Use mobile zoom (40)
   // which gives a larger visible area to fit the taller grid.
-  const zoom = isMobile
-    ? animation.zoom.mobile
-    : baseMosaic.camera.finalZoom;
+  const zoom = isMobile ? animation.zoom.mobile : baseMosaic.camera.finalZoom;
   const visW = size.width / zoom;
   const visH = size.height / zoom;
 
   // ── 1. Responsive cols ──────────────────────────────────────────────
   // Auto: how many default-sized cells fit in viewport width?
   // Clamp to [2, baseMosaic.cols] — never more than desktop, never less than 2
-  const autoCols = Math.max(2, Math.min(
-    baseMosaic.cols,
-    Math.floor(visW / baseMosaic.cellSize),
-  ));
+  const autoCols = Math.max(2, Math.min(baseMosaic.cols, Math.floor(visW / baseMosaic.cellSize)));
   const cols = isMobile ? autoCols : baseMosaic.cols;
 
   // ── 1b. Scale multi-span blocks to fill full row on mobile ──────────
   // Prevents trailing gaps (e.g. IPO span=2 on 3-col → gap in last row).
   // On mobile with fewer cols, scale any multi-span to fill the full row.
-  const spanBlocks = isMobile && cols < (baseMosaic.cols ?? cols)
-    ? Object.fromEntries(
-        Object.entries(baseMosaic.spanBlocks ?? {}).map(
-          ([id, span]) => [Number(id), (span as number) > 1 ? cols : 1]
+  const spanBlocks =
+    isMobile && cols < (baseMosaic.cols ?? cols)
+      ? Object.fromEntries(
+          Object.entries(baseMosaic.spanBlocks ?? {}).map(([id, span]) => [
+            Number(id),
+            (span as number) > 1 ? cols : 1,
+          ]),
         )
-      )
-    : baseMosaic.spanBlocks;
+      : baseMosaic.spanBlocks;
 
   // ── 2. Row count (pure function, supports spanBlocks with clamping) ─
   const rows = getMosaicRows(blocks, cols, spanBlocks);
@@ -93,9 +90,9 @@ export function useAdaptiveMosaic(
   // Using symmetric "header pad * 2" can force cellSize below fit bounds on
   // short viewports, and a hard minCell then causes bottom clipping.
   const headerWorld = headerPx / zoom;
-  const padX = baseMosaic.gap;                 // side breathing room
+  const padX = baseMosaic.gap; // side breathing room
   const padTop = headerWorld + baseMosaic.gap; // reserve area under fixed header
-  const padBottom = baseMosaic.gap;            // bottom breathing room
+  const padBottom = baseMosaic.gap; // bottom breathing room
 
   // ── 4. Adaptive cellSize — fit grid into visible area ───────────────
   const maxByH = (visH - (rows - 1) * baseMosaic.gap - padTop - padBottom) / rows;

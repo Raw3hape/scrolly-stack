@@ -16,8 +16,8 @@ import type { HeroGridConfig } from './types';
 export const HERO_GRID_FULLSCREEN: HeroGridConfig = {
   breakpoints: [
     { minWidth: 1024, cols: 18, rows: 18 },
-    { minWidth: 640,  cols: 14, rows: 14 },
-    { minWidth: 0,    cols: 10, rows: 10 },
+    { minWidth: 640, cols: 14, rows: 14 },
+    { minWidth: 0, cols: 10, rows: 10 },
   ],
 
   tile: {
@@ -95,7 +95,7 @@ export const HERO_GRID_FULLSCREEN: HeroGridConfig = {
 export const HERO_GRID_SECTION: HeroGridConfig = {
   breakpoints: [
     { minWidth: 768, cols: 16, rows: 12 },
-    { minWidth: 0,   cols: 10, rows: 10 },
+    { minWidth: 0, cols: 10, rows: 10 },
   ],
 
   tile: {

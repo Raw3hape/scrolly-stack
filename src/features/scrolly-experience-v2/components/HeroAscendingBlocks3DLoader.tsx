@@ -4,16 +4,12 @@ import { useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { PAGE_READY_EVENT } from '@/config/dom-contracts';
 
-const HeroAscendingBlocks3D = dynamic(
-  () => import('./HeroAscendingBlocks3D'),
-  { ssr: false },
-);
+const HeroAscendingBlocks3D = dynamic(() => import('./HeroAscendingBlocks3D'), { ssr: false });
 
 export default function HeroAscendingBlocks3DLoader({ className }: { className?: string }) {
   const [ready, setReady] = useState(false);
   const reducedMotion = useRef(
-    typeof window !== 'undefined' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
 
   const handleReady = useCallback(() => {

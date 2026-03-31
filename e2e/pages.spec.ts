@@ -33,7 +33,7 @@ for (const route of ROUTES) {
 
     // No fatal console errors (filter out known WebGL warnings)
     const fatalErrors = errors.filter(
-      (e) => !e.includes('WebGL') && !e.includes('THREE') && !e.includes('ResizeObserver')
+      (e) => !e.includes('WebGL') && !e.includes('THREE') && !e.includes('ResizeObserver'),
     );
     expect(fatalErrors).toHaveLength(0);
   });

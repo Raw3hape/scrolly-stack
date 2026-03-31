@@ -1,6 +1,6 @@
 /**
  * Comprehensive Variant System Tests
- * 
+ *
  * Run: npx tsx tests/test-variant-system.mts
  */
 
@@ -68,20 +68,28 @@ assert(countBlocks(exact) === 19, `Exact: 19 blocks (got ${countBlocks(exact)})`
 assert(exact.layers.length === 14, `Exact: 14 layers (got ${exact.layers.length})`);
 assert(countBlocks(exactDown) === 19, `ExactDown: 19 blocks (got ${countBlocks(exactDown)})`);
 assert(exactDown.layers.length === 14, `ExactDown: 14 layers (got ${exactDown.layers.length})`);
-assert(countBlocks(exactFlipped) === 19, `ExactFlipped: 19 blocks (got ${countBlocks(exactFlipped)})`);
-assert(exactFlipped.layers.length === 14, `ExactFlipped: 14 layers (got ${exactFlipped.layers.length})`);
+assert(
+  countBlocks(exactFlipped) === 19,
+  `ExactFlipped: 19 blocks (got ${countBlocks(exactFlipped)})`,
+);
+assert(
+  exactFlipped.layers.length === 14,
+  `ExactFlipped: 14 layers (got ${exactFlipped.layers.length})`,
+);
 
 // Unique block IDs
 for (const v of [classic, journey, reverse, exact, exactDown, exactFlipped]) {
-  const allIds = v.layers.flatMap(l => l.blocks.map(b => b.id));
+  const allIds = v.layers.flatMap((l) => l.blocks.map((b) => b.id));
   const uniqueIds = new Set(allIds);
   assert(uniqueIds.size === allIds.length, `${v.name}: all ${allIds.length} block IDs unique`);
 }
 
 // Required fields
 for (const v of [classic, journey, reverse, exact]) {
-  const blocks = v.layers.flatMap(l => l.blocks);
-  const ok = blocks.every(b => b.label && b.color && b.tooltipTitle && b.icon && b.description !== undefined);
+  const blocks = v.layers.flatMap((l) => l.blocks);
+  const ok = blocks.every(
+    (b) => b.label && b.color && b.tooltipTitle && b.icon && b.description !== undefined,
+  );
   assert(ok, `${v.name}: all blocks have required fields`);
 }
 
@@ -89,8 +97,14 @@ for (const v of [classic, journey, reverse, exact]) {
 
 section('3. Scroll Direction');
 
-assert(classic.scrollDirection === undefined, 'Classic: scrollDirection = undefined (default down)');
-assert(journey.scrollDirection === undefined, 'Journey: scrollDirection = undefined (default down)');
+assert(
+  classic.scrollDirection === undefined,
+  'Classic: scrollDirection = undefined (default down)',
+);
+assert(
+  journey.scrollDirection === undefined,
+  'Journey: scrollDirection = undefined (default down)',
+);
 assert(reverse.scrollDirection === 'up', 'Reverse: scrollDirection = "up"');
 assert(exact.scrollDirection === 'up', 'Exact: scrollDirection = "up"');
 assert(exactDown.scrollDirection === 'down', 'ExactDown: scrollDirection = "down"');
@@ -102,13 +116,16 @@ section('4. blocksAboveActive Logic');
 
 function testBlocksAbove(step: number, layers: typeof classic.layers, dir: 'down' | 'up') {
   if (step === -1) return [];
-  const idx = layers.findIndex(l => l.blocks.some(b => b.id === step));
+  const idx = layers.findIndex((l) => l.blocks.some((b) => b.id === step));
   if (idx < 0) return [];
   const ids: number[] = [];
   layers.forEach((l, i) => {
     const seen = dir === 'up' ? i > idx : i < idx;
-    if (seen) l.blocks.forEach(b => ids.push(b.id));
-    else if (i === idx) l.blocks.forEach(b => { if (b.id !== step && b.id < step) ids.push(b.id); });
+    if (seen) l.blocks.forEach((b) => ids.push(b.id));
+    else if (i === idx)
+      l.blocks.forEach((b) => {
+        if (b.id !== step && b.id < step) ids.push(b.id);
+      });
   });
   return ids;
 }
@@ -133,7 +150,7 @@ assert(ru7.length === expected, `Reverse up step=7: ${expected} above (got ${ru7
 // Down and Up don't overlap (same step, different directions)
 const downSet = new Set(testBlocksAbove(7, journey.layers, 'down'));
 const upSet = new Set(testBlocksAbove(7, journey.layers, 'up'));
-assert([...downSet].filter(id => upSet.has(id)).length === 0, 'Down vs Up sets don\'t overlap');
+assert([...downSet].filter((id) => upSet.has(id)).length === 0, "Down vs Up sets don't overlap");
 
 // ─── 5. LAYER OPACITY ───────────────────────────────────────────────────────
 
@@ -170,7 +187,7 @@ assert(testStagger(0, 12, true, 'up') === 1100, 'Up reveal: layer 0 (top) delay=
 section('7. Overlay Step Ordering');
 
 function getOrderedSteps(v: typeof classic) {
-  const steps = v.layers.flatMap(l => l.blocks.map(b => ({ ...b, level: l.level })));
+  const steps = v.layers.flatMap((l) => l.blocks.map((b) => ({ ...b, level: l.level })));
   const dir = v.scrollDirection ?? 'down';
   return dir === 'up' ? steps.slice().reverse() : steps;
 }
@@ -196,8 +213,11 @@ assert(edo[0].id === 0, 'ExactDown: first step id=0 (Partnership — top-down)')
 assert(edo[edo.length - 1].id === 18, 'ExactDown: last step id=18 (IPO — reached last)');
 
 // Exact mirror
-const mirrorIds = jo.map(s => s.id).reverse();
-assert(JSON.stringify(ro.map(s => s.id)) === JSON.stringify(mirrorIds), 'Reverse is exact mirror of Journey');
+const mirrorIds = jo.map((s) => s.id).reverse();
+assert(
+  JSON.stringify(ro.map((s) => s.id)) === JSON.stringify(mirrorIds),
+  'Reverse is exact mirror of Journey',
+);
 
 // ─── 8. MOSAIC SPAN BLOCKS ──────────────────────────────────────────────────
 
@@ -214,12 +234,15 @@ assert(exactFlipped.mosaicOverrides?.spanBlocks?.[18] === 2, 'ExactFlipped: IPO 
 function checkFill(v: typeof classic) {
   const cols = v.mosaicOverrides?.cols ?? 5;
   const spans = v.mosaicOverrides?.spanBlocks ?? {};
-  const blocks = v.layers.flatMap(l => l.blocks);
+  const blocks = v.layers.flatMap((l) => l.blocks);
   let slots = 0;
   let col = 0;
   for (const b of blocks) {
     const span = spans[b.id] ?? 1;
-    if (col + span > cols) { slots = Math.ceil(slots / cols) * cols; col = 0; }
+    if (col + span > cols) {
+      slots = Math.ceil(slots / cols) * cols;
+      col = 0;
+    }
     slots += span;
     col += span;
     if (col >= cols) col = 0;
@@ -251,7 +274,7 @@ assert(journey.scrollDirection === undefined, 'Journey untouched');
 section('10. Geometry & Mosaic Overrides');
 
 assert(journey.geometryOverrides?.layerHeight === 0.38, 'Journey layerHeight = 0.38');
-assert(journey.geometryOverrides?.gapVertical === 0.30, 'Journey gapVertical = 0.30');
+assert(journey.geometryOverrides?.gapVertical === 0.3, 'Journey gapVertical = 0.30');
 assert(journey.mosaicOverrides?.cols === 5, 'Journey mosaic cols = 5');
 assert(journey.mosaicOverrides?.finalZoom === 65, 'Journey finalZoom = 65');
 assert(classic.geometryOverrides === undefined, 'Classic: no overrides');

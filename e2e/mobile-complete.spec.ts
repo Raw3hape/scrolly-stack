@@ -15,7 +15,9 @@ import { test, expect } from '@playwright/test';
 // ---------------------------------------------------------------------------
 
 /** Whether the current viewport is mobile-sized */
-function isMobile(width: number) { return width <= 768; }
+function isMobile(width: number) {
+  return width <= 768;
+}
 
 // All pages to validate
 const ALL_PAGES = [
@@ -35,8 +37,8 @@ test.describe('No horizontal overflow — all pages', () => {
     test(`${p.name} — no horizontal scrollbar`, async ({ page }) => {
       await page.goto(p.path, { waitUntil: 'domcontentloaded' });
 
-      const overflow = await page.evaluate(() =>
-        document.documentElement.scrollWidth > document.documentElement.clientWidth
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
       );
       expect(overflow).toBe(false);
     });
@@ -256,8 +258,8 @@ test.describe('Header', () => {
     await page.waitForTimeout(500);
 
     const header = page.locator('.v2-header');
-    const hasScrolledClass = await header.evaluate(
-      el => el.classList.contains('v2-header--scrolled')
+    const hasScrolledClass = await header.evaluate((el) =>
+      el.classList.contains('v2-header--scrolled'),
     );
     expect(hasScrolledClass).toBe(true);
   });

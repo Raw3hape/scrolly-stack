@@ -48,8 +48,7 @@ export default function useAdaptiveFinalZoom(
     const { cols, cellSize, gap, spanBlocks } = mosaicConfig;
 
     // Row count — derived from total blocks + span adjustments
-    const spanExtra = Object.values(spanBlocks ?? {})
-      .reduce((sum, span) => sum + (span - 1), 0);
+    const spanExtra = Object.values(spanBlocks ?? {}).reduce((sum, span) => sum + (span - 1), 0);
     const effectiveCells = totalBlocks + spanExtra;
     const rows = Math.ceil(effectiveCells / cols);
 
@@ -57,8 +56,8 @@ export default function useAdaptiveFinalZoom(
     const gridH = rows * cellSize + (rows - 1) * gap;
 
     // Padding: breathing room so tiles don't touch edges
-    const padX = gap * 2;         // left + right
-    const padY = gap * 2;         // above grid (below header) + bottom
+    const padX = gap * 2; // left + right
+    const padY = gap * 2; // above grid (below header) + bottom
 
     // ── Optimal zoom: largest zoom where grid fits in both axes ─────────
     const vpW = window.innerWidth;

@@ -86,7 +86,17 @@ export interface HeroGridConfig {
     fillIntensity?: number;
     fillColor?: string;
     /** Environment preset from drei (e.g. 'sunset'). If omitted, no Environment is rendered. */
-    envPreset?: 'sunset' | 'dawn' | 'night' | 'warehouse' | 'forest' | 'apartment' | 'studio' | 'city' | 'park' | 'lobby';
+    envPreset?:
+      | 'sunset'
+      | 'dawn'
+      | 'night'
+      | 'warehouse'
+      | 'forest'
+      | 'apartment'
+      | 'studio'
+      | 'city'
+      | 'park'
+      | 'lobby';
     envIntensity?: number;
   };
 

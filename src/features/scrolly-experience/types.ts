@@ -141,7 +141,11 @@ export interface BlockProps {
   isNotYetSeenAbove?: boolean;
   slideDirection?: [number, number];
   onClick?: (blockId: number) => void;
-  onHoverChange?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
+  onHoverChange?: (
+    blockData: RawBlockData | null,
+    isHovered: boolean,
+    mousePos: MousePosition | null,
+  ) => void;
   blockData?: RawBlockData;
   blockId?: number;
   opacity?: number;
@@ -170,14 +174,21 @@ export interface LayerProps {
   /** Block IDs of not-yet-seen layers above active (reverse only) — these lift UP */
   allBlocksNotYetSeenAbove?: number[];
   onBlockClick?: (blockId: number) => void;
-  onBlockHover?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
+  onBlockHover?: (
+    blockData: RawBlockData | null,
+    isHovered: boolean,
+    mousePos: MousePosition | null,
+  ) => void;
   opacity?: number;
   staggerDelay?: number;
   isRevealed?: boolean;
   /** Mosaic transition progress (0 = stack, >0 = transitioning) */
   mosaicProgress?: number;
   /** Pre-computed mosaic positions/dimensions per block id */
-  mosaicBlockData?: Map<number, { position: [number, number, number]; dimensions: [number, number, number] }>;
+  mosaicBlockData?: Map<
+    number,
+    { position: [number, number, number]; dimensions: [number, number, number] }
+  >;
   /** Adaptive label font size from useAdaptiveMosaic */
   labelFontSize?: number;
   /** Adaptive label max width from useAdaptiveMosaic */
@@ -189,7 +200,11 @@ export interface StackProps {
   currentStep: number;
   mosaicProgress: number;
   onBlockClick?: (blockId: number) => void;
-  onBlockHover?: (blockData: RawBlockData | null, isHovered: boolean, mousePos: MousePosition | null) => void;
+  onBlockHover?: (
+    blockData: RawBlockData | null,
+    isHovered: boolean,
+    mousePos: MousePosition | null,
+  ) => void;
 }
 
 /** HoverTooltip component props */

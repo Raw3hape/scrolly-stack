@@ -29,10 +29,13 @@ test.describe('Race Conditions', () => {
     const envResponse = await envLoaded;
     const envLoadedAt = Date.now();
 
-    await page.waitForFunction(() => {
-      const el = document.querySelector('.col-visual');
-      return el && getComputedStyle(el).opacity === '1';
-    }, { timeout: 8000 });
+    await page.waitForFunction(
+      () => {
+        const el = document.querySelector('.col-visual');
+        return el && getComputedStyle(el).opacity === '1';
+      },
+      { timeout: 8000 },
+    );
     const canvasVisibleAt = Date.now();
 
     // HDR should load before or around the same time canvas becomes visible.
@@ -45,10 +48,13 @@ test.describe('Race Conditions', () => {
     // the canvas should still become visible via timeout.
     await page.goto('/');
 
-    await page.waitForFunction(() => {
-      const el = document.querySelector('.col-visual');
-      return el && getComputedStyle(el).opacity === '1';
-    }, { timeout: 6000 });
+    await page.waitForFunction(
+      () => {
+        const el = document.querySelector('.col-visual');
+        return el && getComputedStyle(el).opacity === '1';
+      },
+      { timeout: 6000 },
+    );
   });
 
   test('sub-page hero models become visible (no timeout safety net)', async ({ page }) => {
@@ -167,10 +173,13 @@ test.describe('Performance Budget', () => {
     const start = Date.now();
     await page.goto('/');
 
-    await page.waitForFunction(() => {
-      const el = document.querySelector('.col-visual');
-      return el && getComputedStyle(el).opacity === '1';
-    }, { timeout: 7000 });
+    await page.waitForFunction(
+      () => {
+        const el = document.querySelector('.col-visual');
+        return el && getComputedStyle(el).opacity === '1';
+      },
+      { timeout: 7000 },
+    );
 
     const elapsed = Date.now() - start;
     console.log(`Homepage 3D visible in ${elapsed}ms`);
@@ -273,10 +282,13 @@ test.describe('Visual Quality', () => {
     // After approval, uncomment toHaveScreenshot() for automated regression.
 
     await page.goto('/');
-    await page.waitForFunction(() => {
-      const el = document.querySelector('.col-visual');
-      return el && getComputedStyle(el).opacity === '1';
-    }, { timeout: 10000 });
+    await page.waitForFunction(
+      () => {
+        const el = document.querySelector('.col-visual');
+        return el && getComputedStyle(el).opacity === '1';
+      },
+      { timeout: 10000 },
+    );
     await page.waitForTimeout(1500); // Wait for Environment to apply
 
     const homeCanvas = page.locator('canvas').first();

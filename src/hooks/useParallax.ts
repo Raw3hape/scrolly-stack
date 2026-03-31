@@ -45,9 +45,7 @@ function quantize(v: number): number {
   return Math.round(v * 1000) / 1000;
 }
 
-export default function useParallax<T extends HTMLElement>(
-  options: UseParallaxOptions = {},
-) {
+export default function useParallax<T extends HTMLElement>(options: UseParallaxOptions = {}) {
   const { threshold = 0, rootMargin = '100px 0px', completionFactor = 0.45 } = options;
   const ref = useRef<T>(null);
 
@@ -67,7 +65,7 @@ export default function useParallax<T extends HTMLElement>(
     //   0 = element's top edge arrives at the bottom of the viewport
     //   1 = element's top edge reaches completionFactor from the top
     const completionTarget = vh * completionFactor;
-    const scrolled = vh - rect.top;          // how far the top edge has entered
+    const scrolled = vh - rect.top; // how far the top edge has entered
     const raw = scrolled / completionTarget;
     const progress = quantize(Math.max(0, Math.min(1, raw)));
 

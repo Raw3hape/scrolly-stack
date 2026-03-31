@@ -18,8 +18,12 @@ const TestimonialSection = dynamic(() => import('./TestimonialSection/Testimonia
 const TimelineSection = dynamic(() => import('./TimelineSection/TimelineSection'));
 const BentoSection = dynamic(() => import('./BentoSection/BentoSection'));
 const OptInHeroSection = dynamic(() => import('./OptInHeroSection/OptInHeroSection'));
-const OptInTestimonialsSection = dynamic(() => import('./OptInTestimonialsSection/OptInTestimonialsSection'));
-const ScheduleBookingSection = dynamic(() => import('./ScheduleBookingSection/ScheduleBookingSection'));
+const OptInTestimonialsSection = dynamic(
+  () => import('./OptInTestimonialsSection/OptInTestimonialsSection'),
+);
+const ScheduleBookingSection = dynamic(
+  () => import('./ScheduleBookingSection/ScheduleBookingSection'),
+);
 
 function assertNever(value: never): never {
   throw new Error(`Unhandled section type: ${JSON.stringify(value)}`);
@@ -27,15 +31,24 @@ function assertNever(value: never): never {
 
 export default function ClientSectionRenderer({ section }: { section: Section }) {
   switch (section.type) {
-    case 'steps':               return <StepsSection data={section} />;
-    case 'hero':                return <HeroSection data={section} />;
-    case 'team':                return <TeamSection data={section} />;
-    case 'testimonial':         return <TestimonialSection data={section} />;
-    case 'timeline':            return <TimelineSection data={section} />;
-    case 'bento':               return <BentoSection data={section} />;
-    case 'opt-in-hero':         return <OptInHeroSection data={section} />;
-    case 'opt-in-testimonials': return <OptInTestimonialsSection data={section} />;
-    case 'schedule-booking':    return <ScheduleBookingSection data={section} />;
+    case 'steps':
+      return <StepsSection data={section} />;
+    case 'hero':
+      return <HeroSection data={section} />;
+    case 'team':
+      return <TeamSection data={section} />;
+    case 'testimonial':
+      return <TestimonialSection data={section} />;
+    case 'timeline':
+      return <TimelineSection data={section} />;
+    case 'bento':
+      return <BentoSection data={section} />;
+    case 'opt-in-hero':
+      return <OptInHeroSection data={section} />;
+    case 'opt-in-testimonials':
+      return <OptInTestimonialsSection data={section} />;
+    case 'schedule-booking':
+      return <ScheduleBookingSection data={section} />;
     /* Server-handled types never reach here; catch unknown types at compile time */
     case 'cinematic':
     case 'split':

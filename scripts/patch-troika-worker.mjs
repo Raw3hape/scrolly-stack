@@ -39,7 +39,7 @@ if (source.includes(MARKER)) {
 }
 
 // 1. Inject _isErr helper inside workerBootstrap, right after the first statement
-const anchor = "var modules = Object.create(null);";
+const anchor = 'var modules = Object.create(null);';
 if (!source.includes(anchor)) {
   console.error('[patch-troika-worker] could not find anchor in workerBootstrap — aborting.');
   process.exit(1);

@@ -78,7 +78,9 @@
   font: var(--font-button);
   font-weight: var(--weight-bold);
   text-decoration: none;
-  transition: filter var(--transition-fast), transform var(--transition-fast);
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .v2-benefits__cta:hover {
@@ -108,7 +110,9 @@
   background: var(--glass-white-5);
   backdrop-filter: var(--blur-md) saturate(150%);
   border: var(--line-thin) solid var(--glass-white-10);
-  transition: background var(--transition-base), transform var(--transition-fast);
+  transition:
+    background var(--transition-base),
+    transform var(--transition-fast);
 }
 
 .v2-benefits__card:hover {
@@ -185,10 +189,18 @@
   transform: translateY(0) scale(1);
 }
 
-[data-visible] .v2-benefits__card:nth-child(1) { transition-delay: calc(var(--benefits-stagger) * 1); }
-[data-visible] .v2-benefits__card:nth-child(2) { transition-delay: calc(var(--benefits-stagger) * 2); }
-[data-visible] .v2-benefits__card:nth-child(3) { transition-delay: calc(var(--benefits-stagger) * 3); }
-[data-visible] .v2-benefits__card:nth-child(4) { transition-delay: calc(var(--benefits-stagger) * 4); }
+[data-visible] .v2-benefits__card:nth-child(1) {
+  transition-delay: calc(var(--benefits-stagger) * 1);
+}
+[data-visible] .v2-benefits__card:nth-child(2) {
+  transition-delay: calc(var(--benefits-stagger) * 2);
+}
+[data-visible] .v2-benefits__card:nth-child(3) {
+  transition-delay: calc(var(--benefits-stagger) * 3);
+}
+[data-visible] .v2-benefits__card:nth-child(4) {
+  transition-delay: calc(var(--benefits-stagger) * 4);
+}
 
 /* Icon: subtle glow on card hover */
 .v2-benefits__card:hover .v2-benefits__card-icon {

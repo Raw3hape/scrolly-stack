@@ -225,9 +225,11 @@ export default function TimelineSection({ data }: Props) {
         <div
           className="v2-timeline__line-active"
           aria-hidden="true"
-          style={{
-            '--tl-line-progress': lineProgress,
-          } as React.CSSProperties}
+          style={
+            {
+              '--tl-line-progress': lineProgress,
+            } as React.CSSProperties
+          }
         />
 
         {data.steps.map((step, i) => {
@@ -248,10 +250,7 @@ export default function TimelineSection({ data }: Props) {
             >
               {/* Content side — sequential stagger: number → title → text */}
               <div
-                className={[
-                  'v2-timeline__content',
-                  isEven && 'v2-timeline__content--right-align',
-                ]
+                className={['v2-timeline__content', isEven && 'v2-timeline__content--right-align']
                   .filter(Boolean)
                   .join(' ')}
               >

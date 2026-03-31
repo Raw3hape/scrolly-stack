@@ -179,7 +179,9 @@
   color: var(--stitch-dark-text);
   font: var(--font-body-sm);
   outline: none;
-  transition: border-color var(--transition-fast), background var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
   min-width: 0;
   min-height: 44px; /* Apple HIG minimum touch target */
 }
@@ -209,9 +211,11 @@
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--stitch-dark-bg);
   cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
   flex-shrink: 0;
-  min-width: 44px;  /* Apple HIG minimum touch target */
+  min-width: 44px; /* Apple HIG minimum touch target */
   min-height: 44px; /* Apple HIG minimum touch target */
 }
 

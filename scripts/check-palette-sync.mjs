@@ -73,9 +73,7 @@ for (const [paletteKey, cssToken] of Object.entries(MAPPING)) {
   }
 
   if (paletteHex !== cssHex) {
-    console.error(
-      `DRIFT: ${paletteKey} -> palette=${paletteHex} vs css=${cssHex} (--${cssToken})`
-    );
+    console.error(`DRIFT: ${paletteKey} -> palette=${paletteHex} vs css=${cssHex} (--${cssToken})`);
     driftCount++;
   }
 }
@@ -115,16 +113,16 @@ for (const match of stitchSource.matchAll(/--([\w-]+):\s*#([0-9a-fA-F]{3,8})\s*;
  */
 const STITCH_MAPPING = {
   // Tokens that intentionally override palette values
-  'color-teal-500':   { paletteKey: 'teal500',  expectedStitchHex: '#1B6969' },
-  'color-teal-700':   { paletteKey: 'teal700',  expectedStitchHex: '#004F50' },
-  'color-teal-300':   { paletteKey: 'teal300',  expectedStitchHex: '#8CD3D2' },
-  'color-gold-300':   { paletteKey: 'gold300',  expectedStitchHex: '#FFB86A' },
+  'color-teal-500': { paletteKey: 'teal500', expectedStitchHex: '#1B6969' },
+  'color-teal-700': { paletteKey: 'teal700', expectedStitchHex: '#004F50' },
+  'color-teal-300': { paletteKey: 'teal300', expectedStitchHex: '#8CD3D2' },
+  'color-gold-300': { paletteKey: 'gold300', expectedStitchHex: '#FFB86A' },
 
   // Tokens that should match palette exactly
-  'color-gold-500':   { paletteKey: 'gold500' },
+  'color-gold-500': { paletteKey: 'gold500' },
 
   // Derived / semantic tokens sourced from a palette key
-  'stitch-dark-bg':   { paletteKey: 'anchor900' },
+  'stitch-dark-bg': { paletteKey: 'anchor900' },
 };
 
 let stitchDriftCount = 0;
@@ -149,7 +147,7 @@ for (const [cssToken, spec] of Object.entries(STITCH_MAPPING)) {
     // Intentional override — verify it hasn't drifted from its documented value
     if (stitchHex !== spec.expectedStitchHex) {
       console.error(
-        `STITCH DRIFT: --${cssToken} expected override ${spec.expectedStitchHex} but found ${stitchHex}`
+        `STITCH DRIFT: --${cssToken} expected override ${spec.expectedStitchHex} but found ${stitchHex}`,
       );
       stitchDriftCount++;
     }
@@ -157,7 +155,7 @@ for (const [cssToken, spec] of Object.entries(STITCH_MAPPING)) {
     // Must match palette
     if (stitchHex !== paletteHex) {
       console.error(
-        `STITCH DRIFT: --${cssToken} -> palette.${spec.paletteKey}=${paletteHex} vs stitch=${stitchHex}`
+        `STITCH DRIFT: --${cssToken} -> palette.${spec.paletteKey}=${paletteHex} vs stitch=${stitchHex}`,
       );
       stitchDriftCount++;
     }
@@ -165,7 +163,9 @@ for (const [cssToken, spec] of Object.entries(STITCH_MAPPING)) {
 }
 
 if (stitchDriftCount === 0) {
-  console.log(`✓ stitch-overrides.css sync OK: ${Object.keys(STITCH_MAPPING).length} tokens verified`);
+  console.log(
+    `✓ stitch-overrides.css sync OK: ${Object.keys(STITCH_MAPPING).length} tokens verified`,
+  );
 }
 
 /* =========================================================================

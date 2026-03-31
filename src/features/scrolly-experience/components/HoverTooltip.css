@@ -11,31 +11,29 @@
   --tooltip-accent-height: var(--icon-sm);
 
   /* Component-level font sizes (mapped to global design tokens) */
-  --tooltip-font-title:   var(--font-size-base);  /* 16px   */
-  --tooltip-font-subhead: 0.85rem;                /* 13.6px — intentional, between tokens */
-  --tooltip-font-bullet:  var(--font-size-sm);    /* 12.8px */
+  --tooltip-font-title: var(--font-size-base); /* 16px   */
+  --tooltip-font-subhead: 0.85rem; /* 13.6px — intentional, between tokens */
+  --tooltip-font-bullet: var(--font-size-sm); /* 12.8px */
   position: fixed;
   z-index: var(--z-tooltip);
   pointer-events: none;
-  
+
   /* Frosted glass effect */
   backdrop-filter: var(--blur-lg);
   background: var(--glass-card-bg);
   border: var(--glass-card-border);
-  box-shadow: 
-    var(--tooltip-shadow),
-    var(--inset-highlight);
-  
+  box-shadow: var(--tooltip-shadow), var(--inset-highlight);
+
   /* Shape */
   border-radius: var(--radius-xl);
   padding: var(--space-md) var(--space-lg);
   max-width: var(--tooltip-max-width);
   min-width: var(--tooltip-min-width);
-  
+
   /* Smooth transitions */
   opacity: 0;
   transform: translateY(8px) scale(0.96);
-  transition: 
+  transition:
     opacity var(--transition-fast),
     transform var(--transition-fast);
 }
@@ -48,7 +46,7 @@
 .hover-tooltip--hiding {
   opacity: 0;
   transform: translateY(-4px) scale(0.98);
-  transition: 
+  transition:
     opacity var(--transition-micro),
     transform var(--transition-micro);
 }

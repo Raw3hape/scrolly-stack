@@ -46,8 +46,7 @@ export function isIOS(): boolean {
   // 1. Old iPads: "iPad" in UA string
   // 2. iPadOS 13+: reports as Mac, but has touch (real Macs don't)
   const isIPad =
-    /iPad/.test(ua) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    /iPad/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
   _isIOS = isIPhoneOrIPod || isIPad;
   return _isIOS;

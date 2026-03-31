@@ -9,34 +9,32 @@ description: How to add a shared UI component to Foundation Projects
 
 2. Create the component file:
    `src/components/ComponentName/ComponentName.tsx`
+
    ```tsx
    // Only add 'use client' if the component uses hooks, browser APIs, or event handlers
    import './ComponentName.css';
-   
+
    interface ComponentNameProps {
      children: React.ReactNode;
      variant?: 'default' | 'primary';
    }
-   
+
    /** Brief description of what this component does */
    export default function ComponentName({ children, variant = 'default' }: ComponentNameProps) {
-     return (
-       <div className={`component-name component-name--${variant}`}>
-         {children}
-       </div>
-     );
+     return <div className={`component-name component-name--${variant}`}>{children}</div>;
    }
    ```
 
 3. Create the CSS file:
    `src/components/ComponentName/ComponentName.css`
+
    ```css
    .component-name {
      /* Always use design tokens */
      padding: var(--space-md);
      border-radius: var(--radius-md);
    }
-   
+
    .component-name--primary {
      background: var(--gradient-primary);
      color: var(--text-inverse);

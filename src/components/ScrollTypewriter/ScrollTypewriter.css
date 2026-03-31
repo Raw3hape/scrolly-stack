@@ -16,11 +16,7 @@
 /* Characters inherit parent font — this component is purely about animation */
 
 .scroll-typewriter__char {
-  opacity: clamp(
-    0,
-    (var(--px-progress, 0) * var(--char-total, 1) - var(--char-index, 0)) * 3.5,
-    1
-  );
+  opacity: clamp(0, (var(--px-progress, 0) * var(--char-total, 1) - var(--char-index, 0)) * 3.5, 1);
   will-change: opacity;
 }
 
@@ -30,7 +26,7 @@
 }
 
 /* When fully revealed, remove will-change to free GPU memory */
-.scroll-typewriter[data-visible="true"] .scroll-typewriter__char {
+.scroll-typewriter[data-visible='true'] .scroll-typewriter__char {
   will-change: auto;
 }
 

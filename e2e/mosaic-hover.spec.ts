@@ -75,7 +75,7 @@ async function scrollToSettledMosaic(page: import('@playwright/test').Page) {
     const exit = await debugProbe.getAttribute('data-exit-progress');
     throw new Error(
       `Failed to reach settled mosaic after ${maxIterations} scroll steps. ` +
-      `Final state: mosaic=${mosaic}, exit=${exit}`
+        `Final state: mosaic=${mosaic}, exit=${exit}`,
     );
   }
 
@@ -132,7 +132,7 @@ test.describe('Mosaic Hover & Tilt', () => {
 
     // Verify computed pointer-events
     const pointerEvents = await colVisual.evaluate(
-      (el) => window.getComputedStyle(el).pointerEvents
+      (el) => window.getComputedStyle(el).pointerEvents,
     );
     expect(pointerEvents).toBe('auto');
   });
@@ -165,10 +165,26 @@ test.describe('Mosaic Hover & Tilt', () => {
     // Try multiple positions across the canvas to find a block.
     // In settled mosaic, blocks fill the full canvas as a 5×4 grid (v6-exact-flipped).
     const positions = [
-      [0.15, 0.15], [0.35, 0.15], [0.55, 0.15], [0.75, 0.15], [0.9, 0.15],
-      [0.15, 0.4],  [0.35, 0.4],  [0.55, 0.4],  [0.75, 0.4],  [0.9, 0.4],
-      [0.15, 0.65], [0.35, 0.65], [0.55, 0.65], [0.75, 0.65], [0.9, 0.65],
-      [0.15, 0.9],  [0.35, 0.9],  [0.55, 0.9],  [0.75, 0.9],  [0.9, 0.9],
+      [0.15, 0.15],
+      [0.35, 0.15],
+      [0.55, 0.15],
+      [0.75, 0.15],
+      [0.9, 0.15],
+      [0.15, 0.4],
+      [0.35, 0.4],
+      [0.55, 0.4],
+      [0.75, 0.4],
+      [0.9, 0.4],
+      [0.15, 0.65],
+      [0.35, 0.65],
+      [0.55, 0.65],
+      [0.75, 0.65],
+      [0.9, 0.65],
+      [0.15, 0.9],
+      [0.35, 0.9],
+      [0.55, 0.9],
+      [0.75, 0.9],
+      [0.9, 0.9],
     ];
 
     let tooltipFound = false;
@@ -193,7 +209,9 @@ test.describe('Mosaic Hover & Tilt', () => {
     // In headless Chromium with demand frameloop, raycast may not work — soft-skip.
     if (!tooltipFound) {
       console.warn('[SOFT-SKIP] Tooltip not found — likely headless WebGL raycast limitation');
-      test.info().annotations.push({ type: 'skip', description: 'Headless WebGL raycast limitation' });
+      test
+        .info()
+        .annotations.push({ type: 'skip', description: 'Headless WebGL raycast limitation' });
       return;
     }
     expect(tooltipFound).toBe(true);
@@ -216,8 +234,12 @@ test.describe('Mosaic Hover & Tilt', () => {
 
     // Move across canvas trying to hit a block
     const positions = [
-      [0.15, 0.2], [0.35, 0.5], [0.55, 0.5],
-      [0.75, 0.5], [0.5, 0.8], [0.9, 0.5],
+      [0.15, 0.2],
+      [0.35, 0.5],
+      [0.55, 0.5],
+      [0.75, 0.5],
+      [0.5, 0.8],
+      [0.9, 0.5],
     ];
 
     let cursorChanged = false;
@@ -238,7 +260,9 @@ test.describe('Mosaic Hover & Tilt', () => {
     // In headless Chromium with demand frameloop, raycast may not work — soft-skip.
     if (!cursorChanged) {
       console.warn('[SOFT-SKIP] Cursor not changed — likely headless WebGL raycast limitation');
-      test.info().annotations.push({ type: 'skip', description: 'Headless WebGL raycast limitation' });
+      test
+        .info()
+        .annotations.push({ type: 'skip', description: 'Headless WebGL raycast limitation' });
       return;
     }
     expect(cursorChanged).toBe(true);
@@ -261,7 +285,9 @@ test.describe('Mosaic Hover & Tilt', () => {
 
     // Find a block by scanning
     const positions = [
-      [0.35, 0.5], [0.55, 0.5], [0.75, 0.5],
+      [0.35, 0.5],
+      [0.55, 0.5],
+      [0.75, 0.5],
     ];
 
     let tooltipWasVisible = false;
@@ -272,7 +298,7 @@ test.describe('Mosaic Hover & Tilt', () => {
       await page.waitForTimeout(400);
 
       const tooltip = page.locator('.hover-tooltip--visible');
-      if (await tooltip.count() > 0) {
+      if ((await tooltip.count()) > 0) {
         tooltipWasVisible = true;
         break;
       }

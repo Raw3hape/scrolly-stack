@@ -57,7 +57,8 @@ export const metadata: Metadata = {
     default: 'Foundation Projects — We Take Roofing Companies Public',
     template: '%s | Foundation Projects',
   },
-  description: 'We\'re building a roofing company that goes public. Best-in-class operators get 7–10× what PE would pay.',
+  description:
+    "We're building a roofing company that goes public. Best-in-class operators get 7–10× what PE would pay.",
   openGraph: {
     type: 'website',
     siteName: 'Foundation Projects',
@@ -71,13 +72,13 @@ export const metadata: Metadata = {
  * Root layout — wraps all pages.
  * Provides: Newsreader + Inter fonts, Header, Footer, stitch-theme.
  */
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${newsreader.variable} ${inter.variable}`} style={{ background: '#fef9f0' }}>
+    <html
+      lang="en"
+      className={`${newsreader.variable} ${inter.variable}`}
+      style={{ background: '#fef9f0' }}
+    >
       <head>
         {/* Reset scroll on reload — in <head> to avoid blocking body parsing */}
         <script
@@ -86,8 +87,19 @@ export default function RootLayout({
           }}
         />
         {/* Preload 3D assets — start downloading before JS evaluates */}
-        <link rel="preload" href="/envmaps/venice_sunset_256.hdr" as="fetch" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/Inter-Regular.woff" as="font" type="font/woff" crossOrigin="anonymous" />
+        <link
+          rel="preload"
+          href="/envmaps/venice_sunset_256.hdr"
+          as="fetch"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/Inter-Regular.woff"
+          as="font"
+          type="font/woff"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="stitch-theme" style={{ background: '#fef9f0' }}>
         <a href="#main" className="skip-link">

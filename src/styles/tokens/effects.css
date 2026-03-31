@@ -8,14 +8,14 @@
 :root {
   /* === Border Radius === */
   --radius-none: 0;
-  --radius-xs:   2px;
-  --radius-sm:   4px;
-  --radius-md:   8px;
-  --radius-lg:   12px;
-  --radius-xl:   16px;
-  --radius-2xl:  24px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
   --radius-full: 9999px;
-  --btn-radius:  10px;   /* Between md(8) and lg(12) — intentional design choice for buttons */
+  --btn-radius: 10px; /* Between md(8) and lg(12) — intentional design choice for buttons */
 
   /* === Shadows === */
   /* RESKIN: base = #103740 (anchor-900) — recalculate rgba when anchor changes */
@@ -26,57 +26,55 @@
 
   /* === Glass effect (warm cream base) === */
   /* RESKIN: base = #F2EDE4 (sand-100) — recalculate rgba when sand changes */
-  --glass-blur:            blur(32px);
-  --glass-saturation:      saturate(180%);
-  --glass-backdrop:        saturate(180%) blur(32px);
+  --glass-blur: blur(32px);
+  --glass-saturation: saturate(180%);
+  --glass-backdrop: saturate(180%) blur(32px);
   --glass-backdrop-strong: saturate(200%) blur(40px);
-  --glass-border:          1px solid rgba(242, 237, 228, 0.35);
-  --glass-bg:              rgba(242, 237, 228, 0.45);
-  --glass-bg-scrolled:     rgba(242, 237, 228, 0.6);
-  --glass-bg-sticky:       rgba(242, 237, 228, 0.72);
-  --glass-card-bg:         rgba(242, 237, 228, 0.65);
+  --glass-border: 1px solid rgba(242, 237, 228, 0.35);
+  --glass-bg: rgba(242, 237, 228, 0.45);
+  --glass-bg-scrolled: rgba(242, 237, 228, 0.6);
+  --glass-bg-sticky: rgba(242, 237, 228, 0.72);
+  --glass-card-bg: rgba(242, 237, 228, 0.65);
   /* RESKIN: shadow base = #103740 (anchor-900) */
-  --glass-shadow:          0 4px 40px rgba(16, 55, 64, 0.03), 0 12px 60px rgba(16, 55, 64, 0.02);
+  --glass-shadow: 0 4px 40px rgba(16, 55, 64, 0.03), 0 12px 60px rgba(16, 55, 64, 0.02);
   --glass-shadow-scrolled: 0 8px 50px rgba(16, 55, 64, 0.05), 0 20px 80px rgba(16, 55, 64, 0.03);
 
   /* === Glow / accent effects (subtle, not neon) === */
   /* RESKIN: base = #297373 (teal-500) + #103740 (anchor-900) */
-  --glow-primary:         0 0 15px rgba(41, 115, 115, 0.2), 0 0 30px rgba(41, 115, 115, 0.1);
+  --glow-primary: 0 0 15px rgba(41, 115, 115, 0.2), 0 0 30px rgba(41, 115, 115, 0.1);
   --glow-primary-intense: 0 0 20px rgba(41, 115, 115, 0.3), 0 0 40px rgba(41, 115, 115, 0.15);
-  --btn-shadow-primary:   0 1px 3px rgba(16, 55, 64, 0.08), 0 4px 15px rgba(41, 115, 115, 0.12);
+  --btn-shadow-primary: 0 1px 3px rgba(16, 55, 64, 0.08), 0 4px 15px rgba(41, 115, 115, 0.12);
 
   /* === Neutral decorative effects (brand-agnostic but tokenized) === */
 
   /* Overlay / scrim */
-  --overlay-scrim:        rgba(0, 0, 0, 0.4);
+  --overlay-scrim: rgba(0, 0, 0, 0.4);
 
   /* Inset highlights (white glints on glass) */
-  --inset-highlight:      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --inset-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.6);
   --inset-highlight-strong: inset 0 1px 0 rgba(255, 255, 255, 0.8);
   --inset-highlight-subtle: inset 0 1px 2px rgba(255, 255, 255, 0.3);
 
   /* Shimmer (button hover sweep) */
-  --shimmer-color:        rgba(255, 255, 255, 0.2);
+  --shimmer-color: rgba(255, 255, 255, 0.2);
 
   /* Timeline dot & icon decorative effects */
-  --dot-border:           2px solid rgba(255, 255, 255, 0.6);
-  --dot-border-active:    rgba(255, 255, 255, 0.9);
-  --dot-ring-active:      0 0 0 3px rgba(255, 255, 255, 0.4);
-  --dot-shadow:           0 2px 8px rgba(0, 0, 0, 0.1);
-  --dot-shadow-active:    0 4px 15px rgba(0, 0, 0, 0.15);
-  --dot-icon-shadow:      drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+  --dot-border: 2px solid rgba(255, 255, 255, 0.6);
+  --dot-border-active: rgba(255, 255, 255, 0.9);
+  --dot-ring-active: 0 0 0 3px rgba(255, 255, 255, 0.4);
+  --dot-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --dot-shadow-active: 0 4px 15px rgba(0, 0, 0, 0.15);
+  --dot-icon-shadow: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
   --dot-icon-shadow-active: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 
   /* Glass card border (mobile step cards, tooltip) */
-  --glass-card-border:    1px solid rgba(255, 255, 255, 0.5);
+  --glass-card-border: 1px solid rgba(255, 255, 255, 0.5);
 
   /* Mobile step card shadows */
-  --glass-card-shadow:    0 12px 50px rgba(0, 0, 0, 0.08),
-                          0 30px 80px rgba(0, 0, 0, 0.05);
+  --glass-card-shadow: 0 12px 50px rgba(0, 0, 0, 0.08), 0 30px 80px rgba(0, 0, 0, 0.05);
 
   /* Tooltip shadows */
-  --tooltip-shadow:       0 8px 32px rgba(0, 0, 0, 0.12),
-                          0 2px 8px rgba(0, 0, 0, 0.06);
+  --tooltip-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
 
   /* === Button tokens === */
   --btn-padding: 0.75rem 1.5rem;
@@ -90,40 +88,40 @@
 
   /* === Interaction transforms === */
   /* Hover lift — vertical translation on hover */
-  --hover-lift-sm:  -1px;   /* LinkButton, StepsSection, ScheduleBooking */
-  --hover-lift-md:  -2px;   /* BenefitsGrid, BentoSection, stitch CTA default */
-  --hover-lift-lg:  -4px;   /* CardsSection, MissionSection */
+  --hover-lift-sm: -1px; /* LinkButton, StepsSection, ScheduleBooking */
+  --hover-lift-md: -2px; /* BenefitsGrid, BentoSection, stitch CTA default */
+  --hover-lift-lg: -4px; /* CardsSection, MissionSection */
 
   /* Active press — scale on click/tap */
-  --active-scale:       0.97;   /* Default press scale (Header, CtaSection) */
-  --active-scale-sm:    0.98;   /* Subtle press (LinkButton, OptInHero) */
-  --active-scale-lg:    0.96;   /* Deeper press (Footer) */
+  --active-scale: 0.97; /* Default press scale (Header, CtaSection) */
+  --active-scale-sm: 0.98; /* Subtle press (LinkButton, OptInHero) */
+  --active-scale-lg: 0.96; /* Deeper press (Footer) */
 
   /* Hover scale — subtle grow on hover */
-  --hover-scale-sm:     1.02;   /* LinkButton, ScheduleBooking slots */
-  --hover-scale-md:     1.03;   /* CtaSection secondary */
-  --hover-scale-lg:     1.05;   /* Feature icons */
+  --hover-scale-sm: 1.02; /* LinkButton, ScheduleBooking slots */
+  --hover-scale-md: 1.03; /* CtaSection secondary */
+  --hover-scale-lg: 1.05; /* Feature icons */
 
   /* === Backdrop blur scale === */
-  --blur-xs:   blur(4px);    /* TestimonialCarousel card blur */
-  --blur-sm:   blur(8px);    /* Overlay mobile step */
-  --blur-md:   blur(12px);   /* Header default, BenefitsGrid, CtaSection */
-  --blur-lg:   blur(16px);   /* Header scrolled, HoverTooltip */
+  --blur-xs: blur(4px); /* TestimonialCarousel card blur */
+  --blur-sm: blur(8px); /* Overlay mobile step */
+  --blur-md: blur(12px); /* Header default, BenefitsGrid, CtaSection */
+  --blur-lg: blur(16px); /* Header scrolled, HoverTooltip */
   /* --glass-blur: blur(32px) already defined above */
-  --blur-xl:   blur(80px);   /* HeroSection glow */
+  --blur-xl: blur(80px); /* HeroSection glow */
 
   /* === Opacity scale (semantic) === */
-  --opacity-subtle:     0.05;   /* Decorative backgrounds */
-  --opacity-faint:      0.12;   /* Grid canvas, mesh background */
-  --opacity-muted:      0.35;   /* Dimmed siblings, inactive steps */
-  --opacity-secondary:  0.55;   /* Decorative icons, secondary content */
-  --opacity-tertiary:   0.7;    /* Body text secondary, captions */
-  --opacity-hover:      0.85;   /* Hover brightness */
+  --opacity-subtle: 0.05; /* Decorative backgrounds */
+  --opacity-faint: 0.12; /* Grid canvas, mesh background */
+  --opacity-muted: 0.35; /* Dimmed siblings, inactive steps */
+  --opacity-secondary: 0.55; /* Decorative icons, secondary content */
+  --opacity-tertiary: 0.7; /* Body text secondary, captions */
+  --opacity-hover: 0.85; /* Hover brightness */
 
   /* === Button size tokens === */
-  --btn-padding-sm:  var(--space-xs) var(--space-md);     /* StepsSection CTA */
-  --btn-padding-md:  0.75rem 1.5rem;                       /* Default (= current --btn-padding) */
-  --btn-padding-lg:  var(--space-md) var(--space-2xl);     /* CtaSection, OptInHero */
+  --btn-padding-sm: var(--space-xs) var(--space-md); /* StepsSection CTA */
+  --btn-padding-md: 0.75rem 1.5rem; /* Default (= current --btn-padding) */
+  --btn-padding-lg: var(--space-md) var(--space-2xl); /* CtaSection, OptInHero */
 
   /* === Timeline interactive tokens === */
   --timeline-dot-size: 1.125rem;

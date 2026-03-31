@@ -14,7 +14,11 @@
  */
 
 import { BREAKPOINTS } from '@/config/breakpoints';
-import { SELECTOR_HERO_VARIANTS, SELECTOR_HERO_SPLIT, SELECTOR_HERO_BASE } from '@/config/dom-contracts';
+import {
+  SELECTOR_HERO_VARIANTS,
+  SELECTOR_HERO_SPLIT,
+  SELECTOR_HERO_BASE,
+} from '@/config/dom-contracts';
 
 export interface HeroLayout {
   /** Text column width as fraction of container (0–1) */
@@ -51,8 +55,8 @@ export function readHeroLayout(): HeroLayout {
   return {
     textColRatio: parseCssRatio(styles.getPropertyValue('--hero-text-col'), 0.55),
     gapRatio: parseCssRatio(styles.getPropertyValue('--hero-3d-gap-ratio'), 0.04),
-    fill: parseCssRatio(styles.getPropertyValue('--hero-3d-fill'), 0.80),
-    fillAnimated: parseCssRatio(styles.getPropertyValue('--hero-3d-fill-animated'), 0.70),
+    fill: parseCssRatio(styles.getPropertyValue('--hero-3d-fill'), 0.8),
+    fillAnimated: parseCssRatio(styles.getPropertyValue('--hero-3d-fill-animated'), 0.7),
     fillMobile: parseCssRatio(styles.getPropertyValue('--hero-3d-fill-mobile'), 0.85),
     isMobile,
   };
@@ -76,7 +80,7 @@ export function computeModelXOffset(layout: HeroLayout, visibleW: number): numbe
 
   // Convert from [0,1] screen ratio to 3D world offset
   // NDC = ratio * 2 - 1, then world = NDC * visibleW / 2
-  return (modelCenterRatio * 2 - 1) * visibleW / 2;
+  return ((modelCenterRatio * 2 - 1) * visibleW) / 2;
 }
 
 /**
@@ -170,9 +174,9 @@ export function measureContainerContentWidth(canvasContainer: HTMLElement): numb
  * worldPos = screenX × screenRight + screenY × screenUp
  */
 export function isoScreenToWorld(screenX: number, screenY: number): [number, number, number] {
-  const INV_SQRT2 = 1 / Math.SQRT2;        // ≈ 0.7071
-  const INV_SQRT6 = 1 / Math.sqrt(6);      // ≈ 0.4082
-  const TWO_INV_SQRT6 = 2 * INV_SQRT6;     // ≈ 0.8165
+  const INV_SQRT2 = 1 / Math.SQRT2; // ≈ 0.7071
+  const INV_SQRT6 = 1 / Math.sqrt(6); // ≈ 0.4082
+  const TWO_INV_SQRT6 = 2 * INV_SQRT6; // ≈ 0.8165
   return [
     screenX * INV_SQRT2 - screenY * INV_SQRT6,
     screenY * TWO_INV_SQRT6,

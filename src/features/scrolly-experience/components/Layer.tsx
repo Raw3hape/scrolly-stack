@@ -29,7 +29,10 @@ export default function Layer({
   allBlocksNotYetSeenAbove = [],
   labelFontSize,
   labelMaxWidth,
-}: Omit<LayerProps, 'mosaicBlockData'> & { mosaicBlockData?: MosaicBlockDataMap; aboveLiftSign?: number }) {
+}: Omit<LayerProps, 'mosaicBlockData'> & {
+  mosaicBlockData?: MosaicBlockDataMap;
+  aboveLiftSign?: number;
+}) {
   const { geometry } = useVariant();
   const blocks: ComputedBlock[] = calculateBlockPositions(layer, baseY, geometry);
 
@@ -39,7 +42,7 @@ export default function Layer({
         const isActive = currentStep === block.id;
         const isAboveActive = allBlocksAboveActive.includes(block.id);
         const isNotYetSeenAbove = allBlocksNotYetSeenAbove.includes(block.id);
-        const blockStagger = staggerDelay + (blockIndex * 30);
+        const blockStagger = staggerDelay + blockIndex * 30;
 
         // Get mosaic data for this specific block (Record lookup, not Map.get)
         const blockMosaic = mosaicBlockData?.[block.id];
@@ -57,7 +60,9 @@ export default function Layer({
             label={block.label}
             isActive={isActive}
             isAboveActive={isAboveActive}
-            slideDirection={(block.slideDirection ?? animation.active.slideDirection) as [number, number]}
+            slideDirection={
+              (block.slideDirection ?? animation.active.slideDirection) as [number, number]
+            }
             aboveLiftSign={aboveLiftSign}
             isNotYetSeenAbove={isNotYetSeenAbove}
             onClick={onBlockClick}

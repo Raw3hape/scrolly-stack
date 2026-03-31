@@ -31,8 +31,7 @@ export const aboutContent: PageContent = {
       surface: 'dark',
       chapterLabel: 'Chapter I',
       chapterSubtitle: 'The Trap',
-      heading:
-        'Too Many Roofing Company Owners Get Taken Advantage Of When They Exit',
+      heading: 'Too Many Roofing Company Owners Get Taken Advantage Of When They Exit',
       card: {
         title: 'The 3× vs 10× Flip',
         text: 'You\u2019d spend 10, 15, 20 years building a roofing business with strong revenue, loyal crews, happy customers\u2014 and then a PE firm shows up and offers you 3x. Take it or leave it. Most owners take it. Then watched the buyer flip it for 10x a few years later.',
@@ -123,8 +122,7 @@ export const aboutContent: PageContent = {
       type: 'cinematic',
       id: 'results',
       surface: 'dark',
-      heading:
-        'Now, Owners Like You Get A Better Roofing Company AND The Exit They Deserve',
+      heading: 'Now, Owners Like You Get A Better Roofing Company AND The Exit They Deserve',
       card: {
         title: 'Better Business. Bigger Exit.',
         text: 'The first owners who joined the platform didn\u2019t just get a better exit. Their businesses got better, too \u2014 meaning they were worth more. We helped them tighten their operations, grow revenue, and found the owners who had been fielding lowball offers were suddenly sitting on a roofing company that was inherently worth a lot more.',

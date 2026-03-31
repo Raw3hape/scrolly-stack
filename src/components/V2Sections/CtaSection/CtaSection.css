@@ -245,7 +245,7 @@
 }
 
 /* Remove will-change after section fully revealed to free GPU memory */
-[data-visible="true"] .v2-cta__reveal {
+[data-visible='true'] .v2-cta__reveal {
   will-change: auto;
 }
 
@@ -257,4 +257,3 @@
     will-change: auto;
   }
 }
-

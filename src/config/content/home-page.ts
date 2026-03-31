@@ -13,10 +13,10 @@ import { ctaConfig } from '../nav';
 
 export const heroContent = {
   eyebrow: 'Get A Big Exit From Your Roofing Company',
-  headline: 'We\'re building a roofing company that goes public — and we want yours',
+  headline: "We're building a roofing company that goes public — and we want yours",
   headlineAccent: 'in it.',
   subheadline:
-    'You did the hard work to grow your business. You shouldn\'t have to hand it to a broker or a PE firm to finally get the exit you deserve. With us, you won\'t have to.',
+    "You did the hard work to grow your business. You shouldn't have to hand it to a broker or a PE firm to finally get the exit you deserve. With us, you won't have to.",
   ctaLabel: 'Book A Call',
   ctaHref: ctaConfig.href,
   ctaAriaLabel: 'Book a call to discuss your roofing business exit',
@@ -91,8 +91,7 @@ export const stakesContent = {
 export const homeFinalCta = {
   heading: 'Your Big Exit Starts With A 30-Minute Call.',
   subheading: 'Book Your Call Today.',
-  body:
-    'We’ll learn about your business, share how the platform works, and tell you honestly whether we think it’s a good match.',
+  body: 'We’ll learn about your business, share how the platform works, and tell you honestly whether we think it’s a good match.',
   ctaLabel: ctaConfig.label,
   ctaHref: ctaConfig.href,
 } as const;
@@ -102,7 +101,7 @@ export const homeContent: PageContent = {
   metadata: {
     title: 'Foundation Projects — We Take Roofing Companies Public',
     description:
-      'We\'re building a roofing company that goes public. Best-in-class operators get 7–10× what PE would pay.',
+      "We're building a roofing company that goes public. Best-in-class operators get 7–10× what PE would pay.",
   },
   sections: [
     // ── S0: Value Props (Timeline) ──

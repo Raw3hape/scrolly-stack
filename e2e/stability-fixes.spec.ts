@@ -55,7 +55,6 @@ function fmt(n: number): string {
 // PURE MATH TESTS — always run, no browser needed
 // =========================================================================
 test.describe('Stability Fixes — Math Validation', () => {
-
   test('dimensionScale interpolation: easeOutQuart eliminates binary jump', () => {
     // At mosaicProgress = 0.01 (first frame): scale should be near 1
     const t_001 = easeOutQuart(0.01);
@@ -76,7 +75,9 @@ test.describe('Stability Fixes — Math Validation', () => {
     expect(easeOutQuart(1)).toBe(1);
 
     console.log('\n═══ DIMENSION SCALE INTERPOLATION ═══');
-    console.log(`  progress=0.01 → easeOutQuart=${t_001.toFixed(4)} → scaleX=${scaleX_first.toFixed(4)} (was 0.545 before fix)`);
+    console.log(
+      `  progress=0.01 → easeOutQuart=${t_001.toFixed(4)} → scaleX=${scaleX_first.toFixed(4)} (was 0.545 before fix)`,
+    );
     console.log(`  progress=0.50 → easeOutQuart=${t_05.toFixed(4)}`);
     console.log('  ✅ No binary jump at mosaicProgress > 0');
   });
@@ -107,23 +108,27 @@ test.describe('Stability Fixes — Math Validation', () => {
       return Math.max(0, (p - 0.9) / 0.1);
     }
 
-    expect(mosaicLabelFade(0)).toBe(1);     // stack: visible
-    expect(mosaicLabelFade(0.5)).toBe(0);   // mid-flight: hidden
+    expect(mosaicLabelFade(0)).toBe(1); // stack: visible
+    expect(mosaicLabelFade(0.5)).toBe(0); // mid-flight: hidden
     expect(mosaicLabelFade(0.95)).toBeCloseTo(0.5, 1); // emerging
-    expect(mosaicLabelFade(1.0)).toBe(1);   // settled: visible
+    expect(mosaicLabelFade(1.0)).toBe(1); // settled: visible
 
     console.log('\n═══ LABEL FADE ═══');
-    console.log('  p=0 → 1 (stack) ✅, p=0.5 → 0 (flight) ✅, p=0.95 → 0.5 ✅, p=1 → 1 (settled) ✅');
+    console.log(
+      '  p=0 → 1 (stack) ✅, p=0.5 → 0 (flight) ✅, p=0.95 → 0.5 ✅, p=1 → 1 (settled) ✅',
+    );
   });
 
   test('monotonic zoom formula: no V-shape', () => {
     // Old: lerp(65,42,t) then lerp(42,75,t) → zoom dipped to 42
     // New: lerp(65,75,transitionProgress) → always ≥ 65
     const fractions = [0, 0.1, 0.2, 0.3, 0.5, 0.7, 0.9, 1.0];
-    const zooms = fractions.map(f => lerp(65, 75, f));
+    const zooms = fractions.map((f) => lerp(65, 75, f));
 
     for (let i = 1; i < zooms.length; i++) {
-      expect(zooms[i], `zoom at f=${fractions[i]} should be ≥ previous`).toBeGreaterThanOrEqual(zooms[i - 1]);
+      expect(zooms[i], `zoom at f=${fractions[i]} should be ≥ previous`).toBeGreaterThanOrEqual(
+        zooms[i - 1],
+      );
       expect(zooms[i], `zoom should never go below 65`).toBeGreaterThanOrEqual(65);
     }
 
@@ -143,7 +148,7 @@ test.describe('Stability Fixes — Math Validation', () => {
       const transitionProgress = smoothProgress(mosaicProgress, MOSAIC_VIEW_START, MOSAIC_VIEW_END);
       const stackOffsetX = innerWidth * contentRatio * 0.5 * stableWorldPerPx;
       const headerCompensation = headerPx * stableWorldPerPx * 0.35;
-      const stackOffsetY = -0.10 + headerCompensation;
+      const stackOffsetY = -0.1 + headerCompensation;
       return {
         x: lerp(stackOffsetX, 0, transitionProgress),
         y: lerp(stackOffsetY, 0.12, transitionProgress),
@@ -184,9 +189,13 @@ test.describe('Stability Fixes — Math Validation', () => {
 
     console.log('\n═══ SMOOTH PROGRESS ═══');
     console.log(`  sp(0)    = ${smoothProgress(0, MOSAIC_VIEW_START, MOSAIC_VIEW_END).toFixed(4)}`);
-    console.log(`  sp(0.08) = ${smoothProgress(0.08, MOSAIC_VIEW_START, MOSAIC_VIEW_END).toFixed(4)}`);
+    console.log(
+      `  sp(0.08) = ${smoothProgress(0.08, MOSAIC_VIEW_START, MOSAIC_VIEW_END).toFixed(4)}`,
+    );
     console.log(`  sp(0.50) = ${mid.toFixed(4)}`);
-    console.log(`  sp(0.92) = ${smoothProgress(0.92, MOSAIC_VIEW_START, MOSAIC_VIEW_END).toFixed(4)}`);
+    console.log(
+      `  sp(0.92) = ${smoothProgress(0.92, MOSAIC_VIEW_START, MOSAIC_VIEW_END).toFixed(4)}`,
+    );
     console.log('  ✅ All boundaries correct');
   });
 });
@@ -251,8 +260,11 @@ test.describe('Stability Fixes — Browser Tests', () => {
     }
 
     const criticalErrors = errors.filter(
-      (e) => !e.includes('THREE.') && !e.includes('WebGL') &&
-             !e.includes('Deprecation') && !e.includes('Failed to load resource')
+      (e) =>
+        !e.includes('THREE.') &&
+        !e.includes('WebGL') &&
+        !e.includes('Deprecation') &&
+        !e.includes('Failed to load resource'),
     );
 
     expect(criticalErrors).toHaveLength(0);
@@ -264,13 +276,19 @@ test.describe('Stability Fixes — Browser Tests', () => {
     type DataPoint = { frac: number; mosaicProgress: number };
     const fwdData: DataPoint[] = [];
     for (const frac of checkpoints) {
-      const debug = await (async () => { await scrollTo(page, frac); return readDebug(page); })();
+      const debug = await (async () => {
+        await scrollTo(page, frac);
+        return readDebug(page);
+      })();
       fwdData.push({ frac, mosaicProgress: debug.mosaicProgress });
     }
 
     const bwdData: DataPoint[] = [];
     for (const frac of [...checkpoints].reverse()) {
-      const debug = await (async () => { await scrollTo(page, frac); return readDebug(page); })();
+      const debug = await (async () => {
+        await scrollTo(page, frac);
+        return readDebug(page);
+      })();
       bwdData.push({ frac, mosaicProgress: debug.mosaicProgress });
     }
     bwdData.reverse();
@@ -283,7 +301,9 @@ test.describe('Stability Fixes — Browser Tests', () => {
       const bwdTP = smoothProgress(bwdData[i].mosaicProgress, MOSAIC_VIEW_START, MOSAIC_VIEW_END);
       const diff = Math.abs(fwdTP - bwdTP);
       const pass = diff < POSITION_TOLERANCE;
-      console.log(`  frac=${checkpoints[i].toFixed(2)} fwd_tp=${fwdTP.toFixed(4)} bwd_tp=${bwdTP.toFixed(4)} Δ=${diff.toFixed(4)} ${pass ? '✅' : '❌'}`);
+      console.log(
+        `  frac=${checkpoints[i].toFixed(2)} fwd_tp=${fwdTP.toFixed(4)} bwd_tp=${bwdTP.toFixed(4)} Δ=${diff.toFixed(4)} ${pass ? '✅' : '❌'}`,
+      );
       if (!pass) failures.push(`frac=${checkpoints[i]}: Δ=${diff.toFixed(4)}`);
     }
 
