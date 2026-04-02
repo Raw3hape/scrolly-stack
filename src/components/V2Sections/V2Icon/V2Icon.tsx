@@ -12,6 +12,17 @@ interface Props {
   size?: number;
 }
 
+/* Pod Sales uses multiple paths for the compound icon */
+const POD_SALES_PATHS = [
+  'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20', // outer circle
+  'M12 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5', // center person head
+  'M8.5 19c0-2.2 1.6-4 3.5-4s3.5 1.8 3.5 4', // center person body
+  'M6 12.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3', // left person head
+  'M3.5 18c0-1.7 1.1-3 2.5-3s2.5 1.3 2.5 3', // left person body
+  'M18 12.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3', // right person head
+  'M15.5 18c0-1.7 1.1-3 2.5-3s2.5 1.3 2.5 3', // right person body
+];
+
 const paths: Record<V2IconName, string> = {
   'chart-bar': 'M3 20h18M5 20V10h3v10M10 20V4h3v16M17 20V8h3v12',
   lock: 'M7 11V7a5 5 0 0 1 10 0v4M5 11h14a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2z',
@@ -27,6 +38,7 @@ const paths: Record<V2IconName, string> = {
     'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
   target:
     'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+  'pod-sales': '', // rendered via POD_SALES_PATHS
 };
 
 export default function V2Icon({ name, size = 24 }: Props) {
@@ -42,7 +54,11 @@ export default function V2Icon({ name, size = 24 }: Props) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <path d={paths[name]} />
+      {name === 'pod-sales' ? (
+        POD_SALES_PATHS.map((d, i) => <path key={i} d={d} />)
+      ) : (
+        <path d={paths[name]} />
+      )}
     </svg>
   );
 }

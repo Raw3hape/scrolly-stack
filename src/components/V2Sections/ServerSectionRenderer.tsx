@@ -16,6 +16,7 @@ import CardsSection from './CardsSection/CardsSection';
 import MissionSection from './MissionSection/MissionSection';
 import UrgencySection from './UrgencySection/UrgencySection';
 import CtaSection from './CtaSection/CtaSection';
+import FounderNoteSection from './FounderNoteSection/FounderNoteSection';
 
 /** Server-safe section type identifiers */
 const SERVER_TYPES = new Set([
@@ -29,6 +30,7 @@ const SERVER_TYPES = new Set([
   'mission',
   'urgency',
   'cta',
+  'founder-note',
 ]);
 
 /** Type guard: returns true if the section type can be rendered on the server */
@@ -58,6 +60,8 @@ export default function ServerSectionRenderer({ section }: { section: Section })
       return <UrgencySection data={section} />;
     case 'cta':
       return <CtaSection data={section} />;
+    case 'founder-note':
+      return <FounderNoteSection data={section} />;
     default:
       return null;
   }

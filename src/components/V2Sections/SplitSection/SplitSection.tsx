@@ -21,9 +21,17 @@ interface Props {
 }
 
 export default function SplitSection({ data }: Props) {
+  const classNames = [
+    'v2-split',
+    data.reverse && 'v2-split--reverse',
+    data.darkContent && 'v2-split--dark-content',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <div className="v2-container">
-      <div className={`v2-split${data.reverse ? ' v2-split--reverse' : ''}`}>
+      <div className={classNames}>
         {/* Image column */}
         <div className="v2-split__image-col px-layer--bg" data-px-from="left">
           <div className="v2-split__image-wrapper">
@@ -63,6 +71,12 @@ export default function SplitSection({ data }: Props) {
               </li>
             ))}
           </ul>
+
+          {data.ctaLabel && (
+            <a href={data.ctaHref ?? '#'} className="v2-split__cta">
+              {data.ctaLabel}
+            </a>
+          )}
         </div>
       </div>
     </div>

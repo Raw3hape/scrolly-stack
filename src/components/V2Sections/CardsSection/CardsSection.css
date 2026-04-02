@@ -67,7 +67,8 @@
 }
 
 .v2-card__title {
-  font: var(--font-h4);
+  font: var(--font-h3);
+  font-family: var(--font-family-serif);
   color: var(--text-primary);
   margin-bottom: var(--space-sm);
 }
@@ -90,7 +91,7 @@
   }
 }
 
-/* ── Mobile: no hover effect ── */
+/* ── Mobile: no hover effect, hide card body text ── */
 @media (max-width: 768px) {
   .v2-cards-grid {
     grid-template-columns: 1fr;
@@ -98,6 +99,10 @@
 
   .v2-card:last-child {
     grid-column: auto;
+  }
+
+  .v2-card__text {
+    display: none;
   }
 
   .v2-cards-grid:hover .v2-card {

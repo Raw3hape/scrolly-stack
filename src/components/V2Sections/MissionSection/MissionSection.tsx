@@ -76,9 +76,13 @@ export default function MissionSection({ data }: Props) {
     );
   }
 
-  /* ── Default: horizontal 2-col layout (unchanged, used by Home page) ── */
+  /* ── Default: horizontal 2-col layout (used by Home page) ── */
+  const hasSteps = data.steps.length > 0;
+
   return (
-    <div className={`v2-mission${data.backgroundUrl ? ' v2-mission--cinematic' : ''}`}>
+    <div
+      className={`v2-mission${data.backgroundUrl ? ' v2-mission--cinematic' : ''}${!hasSteps ? ' v2-mission--no-steps' : ''}`}
+    >
       {/* Optional background layer — cinematic mode */}
       {data.backgroundUrl && (
         <div className="v2-mission__bg" aria-hidden="true">
@@ -104,19 +108,21 @@ export default function MissionSection({ data }: Props) {
               )}
             </h2>
 
-            <div className="v2-mission__steps">
-              {data.steps.map((step) => (
-                <div key={step.title} className="v2-mission__step">
-                  <div className="v2-mission__step-icon">
-                    <V2Icon name={step.icon} />
+            {hasSteps && (
+              <div className="v2-mission__steps">
+                {data.steps.map((step) => (
+                  <div key={step.title} className="v2-mission__step">
+                    <div className="v2-mission__step-icon">
+                      <V2Icon name={step.icon} />
+                    </div>
+                    <div>
+                      <h3 className="v2-mission__step-title">{step.title}</h3>
+                      <p className="v2-mission__step-text">{step.text}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="v2-mission__step-title">{step.title}</h3>
-                    <p className="v2-mission__step-text">{step.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="v2-mission__quote-card" data-px-delay="2">

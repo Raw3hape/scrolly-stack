@@ -149,6 +149,12 @@
   letter-spacing: var(--tracking-widest);
 }
 
+/* ── No-steps variant: heading + quote card centered ── */
+.v2-mission--no-steps .v2-mission__inner {
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
 /* Tablet */
 @media (max-width: 1024px) {
   .v2-mission__inner {

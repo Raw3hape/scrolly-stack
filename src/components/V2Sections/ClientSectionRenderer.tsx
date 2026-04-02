@@ -60,6 +60,7 @@ export default function ClientSectionRenderer({ section }: { section: Section })
     case 'mission':
     case 'urgency':
     case 'cta':
+    case 'founder-note':
       return null;
     default:
       return assertNever(section);

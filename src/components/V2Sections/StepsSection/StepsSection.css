@@ -179,6 +179,11 @@
   opacity: 0.85;
 }
 
+.v2-step__footnote--bold {
+  font-weight: 700;
+  font-style: normal;
+}
+
 /* === Progress bar === */
 .v2-step__bar {
   height: var(--border-width-bar, 4px);

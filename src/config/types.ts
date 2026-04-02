@@ -27,7 +27,8 @@ export type V2Icon =
   | 'arrow-up'
   | 'clock'
   | 'users'
-  | 'target';
+  | 'target'
+  | 'pod-sales';
 
 // =============================================================================
 // SECTION DATA TYPES — discriminated union by `type`
@@ -71,6 +72,10 @@ export interface CinematicSection extends SectionBase {
   };
   /** Background photo URL (fullscreen, grayscale + dark overlay) */
   backgroundUrl: string;
+  /** Optional CTA button label */
+  ctaLabel?: string;
+  /** Optional CTA button href */
+  ctaHref?: string;
 }
 
 /** Dark mission block with steps + quote card */
@@ -299,6 +304,21 @@ export interface SplitSection extends SectionBase {
   };
   /** Reverse column order (image right, text left) */
   reverse?: boolean;
+  /** CTA button label */
+  ctaLabel?: string;
+  /** CTA button href */
+  ctaHref?: string;
+  /** Dark navy background on text column with light/amber text */
+  darkContent?: boolean;
+}
+
+/** Personal note from founders with inset image */
+export interface FounderNoteSection extends SectionBase {
+  type: 'founder-note';
+  heading: string;
+  text: string;
+  image: { url: string; alt: string };
+  signature?: string;
 }
 
 /** Dark benefits grid: heading + body + CTA (left) + glassmorphism card grid (right) */
@@ -452,7 +472,8 @@ export type Section =
   | OptInTestimonialsSection
   | ScheduleHeroSection
   | ScheduleBookingSection
-  | ScheduleQuoteSection;
+  | ScheduleQuoteSection
+  | FounderNoteSection;
 
 // =============================================================================
 // PAGE CONTENT — typed page-level structure

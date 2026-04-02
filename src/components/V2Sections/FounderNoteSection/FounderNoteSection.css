@@ -1,0 +1,72 @@
+/* === FounderNoteSection — personal trust block === */
+.v2-founder-note {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: clamp(var(--space-xl), 4vw, var(--space-3xl));
+  align-items: center;
+}
+
+/* ── Image ── */
+.v2-founder-note__image-col {
+  position: relative;
+}
+
+.v2-founder-note__image-wrapper {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.v2-founder-note__image {
+  object-fit: cover;
+}
+
+/* ── Content ── */
+.v2-founder-note__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.v2-founder-note__heading {
+  font: var(--font-h2);
+  font-family: var(--font-family-serif);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+}
+
+.v2-founder-note__text {
+  font: var(--font-body-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.v2-founder-note__signature {
+  font: var(--font-body);
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: var(--space-sm);
+}
+
+/* ── Tablet ── */
+@media (max-width: 1024px) {
+  .v2-founder-note {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .v2-founder-note {
+    grid-template-columns: 1fr;
+  }
+
+  .v2-founder-note__image-wrapper {
+    aspect-ratio: 16 / 9;
+  }
+
+  .v2-founder-note__heading {
+    font-size: var(--font-size-3xl);
+  }
+}

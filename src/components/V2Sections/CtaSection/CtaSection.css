@@ -159,6 +159,25 @@
   margin-top: calc(-1 * var(--space-md));
 }
 
+/* Minimal variant — tighter spacing, wider text */
+.v2-cta--minimal .v2-cta__heading {
+  max-width: 28ch;
+  margin-bottom: var(--space-md);
+}
+
+.v2-cta--minimal .v2-cta__heading--accent {
+  margin-top: calc(-1 * var(--space-sm));
+  margin-bottom: var(--space-lg);
+}
+
+.v2-cta--minimal .v2-cta__wrapper {
+  padding: clamp(3rem, 6vw, 6rem) 0;
+}
+
+.v2-cta--minimal .v2-cta__overline {
+  margin-bottom: var(--space-md);
+}
+
 /* 5. Microcopy — subtle text below heading, above buttons */
 .v2-cta__microcopy {
   font: var(--font-body);

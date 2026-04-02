@@ -152,6 +152,20 @@ export const materials = {
     sheenColor: '#e8ddd0', // Warm tint (matches palette)
   },
 
+  // Mobile-simplified physical material (lighter GPU load)
+  mobilePhysical: {
+    transmission: 0,
+    ior: 1.5,
+    thickness: 0.5,
+    iridescence: 0, // Disabled on mobile
+    iridescenceIOR: 1.3,
+    clearcoat: 0, // Disabled on mobile
+    clearcoatRoughness: 0.1,
+    sheen: 0, // Disabled on mobile
+    sheenRoughness: 0.4,
+    sheenColor: '#e8ddd0',
+  },
+
   // Color transition
   colorTransition: {
     speed: 4,
@@ -272,10 +286,11 @@ export const labels = {
 // =============================================================================
 
 export const render = {
-  dpr: [1, 2], // Restored full Retina resolution
-  mobileDpr: [1, 1.5], // Mobile: balanced sharpness vs GPU load (1.5× = sweet spot)
+  dpr: [1, 2], // Full Retina resolution on desktop
+  mobileDpr: [1, 1], // Mobile: reduced to 1× for lighter GPU load (was 1.5×)
   shadows: true,
-  shadowMapType: 'VSMShadowMap', // Restored premium butter-soft shadows
+  shadowMapType: 'VSMShadowMap', // Premium butter-soft shadows
+  mobileShadowMapSize: 512, // Reduced from 1024 on mobile
 };
 
 // =============================================================================

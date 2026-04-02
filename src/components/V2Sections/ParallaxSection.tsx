@@ -38,6 +38,7 @@ const layoutMeta: Record<Section['type'], SectionLayoutMeta> = {
   'schedule-hero': {},
   'schedule-booking': {},
   'schedule-quote': {},
+  'founder-note': {},
 };
 
 const surfaceMap: Record<string, string> = {

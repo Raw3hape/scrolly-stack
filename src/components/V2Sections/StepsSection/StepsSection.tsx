@@ -31,9 +31,9 @@ interface Props {
  * with some padding at start/end so no step activates at 0%.
  */
 function progressToIndex(progress: number, count: number): number {
-  // Start activating step 0 at 15%, finish at 85%
-  const start = 0.15;
-  const end = 0.85;
+  // Start activating step 0 at 20%, finish at 90%
+  const start = 0.2;
+  const end = 0.9;
   const clamped = Math.max(0, Math.min(1, (progress - start) / (end - start)));
   // -1 means no step active yet
   if (clamped <= 0) return -1;
@@ -188,7 +188,13 @@ export default function StepsSection({ data }: Props) {
 
               <h3 className="v2-step__title">{step.title}</h3>
               <p className="v2-step__text">{step.text}</p>
-              {step.footnote && <p className="v2-step__footnote">{step.footnote}</p>}
+              {step.footnote && (
+                <p
+                  className={`v2-step__footnote${i === data.steps.length - 1 ? ' v2-step__footnote--bold' : ''}`}
+                >
+                  {step.footnote}
+                </p>
+              )}
 
               {/* Progress bar */}
               <div className="v2-step__bar" aria-hidden="true">

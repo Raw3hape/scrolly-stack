@@ -85,7 +85,7 @@ export const stakesContent = {
   body: 'You’ve spent years building your business. The window to get a return on that business is open.',
   accent: 'It won’t stay open forever.',
   detail:
-    'The roofing industry is consolidating right now. The first platforms are already forming. Owners who get in early will lock in better valuations and a bigger share of what the platform is worth when it goes public. Owners who wait will be selling into a crowded market with fewer buyers and less leverage.',
+    'The roofing industry is consolidating right now — 17 platforms in early 2023 grew to 56 by the end of 2024. The first platforms are already forming. Owners who get in early will lock in better valuations and a bigger share of what the platform is worth when it goes public. Owners who wait will be selling into a crowded market with fewer buyers and less leverage.',
 } as const;
 
 export const homeFinalCta = {
@@ -169,21 +169,10 @@ export const homeContent: PageContent = {
       surface: 'dark',
       heading: 'Foundation Projects is assembling a platform of best-in-class roofing companies —',
       headingAccent: 'not to flip them to private equity, but to take them public.',
-      steps: [
-        {
-          icon: 'shield',
-          title: 'Aligned Partnership',
-          text: 'We don’t buy your company to change your culture. We partner with you to build the systems, operations, and scale that make your business worth more.',
-        },
-        {
-          icon: 'arrow-up',
-          title: 'Public Market Path',
-          text: 'By combining high-performing roofing companies into one platform, we unlock the valuations only available on the public exchange — and you keep the majority.',
-        },
-      ],
+      steps: [],
       quote: {
-        text: '“Our Promise”',
-        body: 'You keep running your business. We just make it worth a lot more.',
+        text: '“Roofer Centric”',
+        body: 'Build an exit strategy you and your team can be excited to work towards, together!',
         label: 'Our Philosophy',
       },
       backgroundUrl: '/images/mission-roofing-bg.jpg',
@@ -230,11 +219,72 @@ export const homeContent: PageContent = {
       heading: stakesContent.body,
       headingAccent: stakesContent.accent,
       text: stakesContent.detail,
-      ctaLabel: 'Book A Call',
-      image: '/images/urgency-building.png',
+      image: '/images/luxury-fishing-boat.png',
     },
 
-    // ── S5: Final CTA ──
+    // ── S5: "Future Pacing" — clean minimal CTA ──
+    {
+      type: 'cta',
+      id: 'future-pacing',
+      surface: 'base',
+      overline: 'THE FREEDOM YOU BUILT THIS FOR',
+      heading: 'Your next chapter isn\u2019t on a roof.',
+      headingAccent: 'It\u2019s on your own land.',
+      microcopy:
+        'You didn\u2019t build your company just to work forever. You built it for the freedom that comes next \u2014 whether that means 50 acres, a few head of cattle, or just the time to load up the side-by-side with your kids on a Tuesday morning.',
+      buttonLabel: 'Map Out Your Exit',
+      showArrow: true,
+      minimal: true,
+    },
+
+    // ── S6: "Founder to Founder" — testimonial carousel ──
+    {
+      type: 'testimonial' as const,
+      id: 'founder-trust',
+      surface: 'base' as const,
+      heading: 'We know what you\u2019re actually working for.',
+      autoPlayInterval: 8000,
+      testimonials: [
+        {
+          quote:
+            'At Foundation Projects, we don\u2019t just look at spreadsheets and EBITDA. We look at what that number means for your life. It means no more 5 AM phone calls about a delayed material drop. It means trading the stress of managing crews for the peace of managing your own land. We engineer your exit so you can get back to living.',
+          author: 'Jacob Sterling',
+          company: 'Founder, Foundation Projects',
+          badge: 'Founder',
+        },
+        {
+          quote:
+            'I started Foundation Projects because I watched my father sell his 40-year roofing company for pennies on the dollar. Good owners deserve better than a 3\u00d7 multiple and a handshake. We built this so no one else has to make that trade.',
+          author: 'Marcus Thorne',
+          company: 'Operations Principal',
+          badge: 'Leadership',
+        },
+        {
+          quote:
+            'Every roofing owner I meet has the same story: they built something incredible and have no idea what it\u2019s actually worth. Our job is to show them \u2014 and then get them there.',
+          author: 'Rachel Foster',
+          company: 'VP Growth',
+          badge: 'Leadership',
+        },
+      ],
+    },
+
+    // ── S7: "FOMO" Anchor — cinematic with CTA ──
+    {
+      type: 'cinematic' as const,
+      id: 'fomo-anchor',
+      surface: 'dark' as const,
+      heading: 'The window is open. It won\u2019t stay open forever.',
+      card: {
+        title: 'The Consolidation Clock',
+        text: 'The roofing industry is consolidating rapidly. Owners who get in early will lock in the valuations needed to fund their dream acreage, their passions, and their family\u2019s legacy. Those who wait will be selling into a crowded market with fewer buyers and less leverage. Your quiet acreage is waiting. Don\u2019t leave it on the table.',
+      },
+      backgroundUrl: '/images/estate-pool-pasture-fixed.png',
+      ctaLabel: 'Book Your Strategy Call \u2192',
+      ctaHref: ctaConfig.href,
+    },
+
+    // ── S8: Final CTA ──
     {
       type: 'cta',
       id: 'final-cta',
