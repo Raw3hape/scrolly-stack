@@ -18,7 +18,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import type { StepsSection as StepsSectionData } from '@/config/types';
 import { ctaConfig } from '@/config/nav';
-import V2Icon from '../V2Icon/V2Icon';
 import './StepsSection.css';
 
 interface Props {
@@ -176,13 +175,8 @@ export default function StepsSection({ data }: Props) {
               {/* Mobile timeline dot */}
               <div className="v2-step__dot" aria-hidden="true" />
 
-              {/* Icon + Number */}
+              {/* Number */}
               <div className="v2-step__header">
-                {step.icon && (
-                  <div className="v2-step__icon">
-                    <V2Icon name={step.icon} size={18} />
-                  </div>
-                )}
                 <span className="v2-step__number">{step.number}</span>
               </div>
 

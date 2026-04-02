@@ -219,11 +219,18 @@
   min-height: 44px; /* Apple HIG minimum touch target */
 }
 
+.footer__subscribe-btn svg {
+  transition: transform var(--transition-fast);
+}
+
 @media (hover: hover) {
   .footer__subscribe-btn:hover {
     background: var(--color-gold-300);
     border-color: var(--color-gold-300);
-    transform: translateX(2px);
+  }
+
+  .footer__subscribe-btn:hover svg {
+    transform: translateX(3px);
   }
 }
 

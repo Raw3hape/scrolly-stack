@@ -35,7 +35,11 @@
   }
 }
 
-/* ── Image column ── */
+/* ── Image column — override parallax fade so image is always fully visible ── */
+.v2-split__image-col.px-layer--bg {
+  opacity: 1;
+}
+
 .v2-split__image-wrapper {
   position: relative;
   aspect-ratio: 4 / 5;
@@ -53,7 +57,7 @@
 .v2-split__image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, var(--anchor-900-alpha-80) 0%, transparent 60%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 30%);
 }
 
 /* Quote at bottom of image */
@@ -151,7 +155,7 @@
 
 .v2-split__cta:hover {
   background: var(--accent-brand-hover);
-  transform: translateY(var(--hover-lift-sm));
+  transform: translateY(var(--hover-lift-md)) scale(var(--hover-scale-sm));
 }
 
 /* ── Dark content variant ── */

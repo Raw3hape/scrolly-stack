@@ -80,7 +80,7 @@
   --stitch-cta-gradient: linear-gradient(135deg, #002128, #103740);
   --stitch-cta-hover-bg: #004f50;
   --stitch-cta-hover-shadow: 0 12px 40px rgba(16, 55, 64, 0.12);
-  --stitch-cta-hover-lift: translateY(-2px);
+  --stitch-cta-hover-lift: translateY(-2px) scale(1.02);
 
   /* === Sizing tokens for v2 sections === */
   --border-width-accent: 2px;
@@ -91,7 +91,7 @@
   --container-narrow: 40rem;
 
   /* === Cinematic section (fullscreen photo + overlay) === */
-  --stitch-cinematic-overlay: rgba(16, 55, 64, 0.3);
+  --stitch-cinematic-overlay: rgba(16, 55, 64, 0.45);
   --stitch-cinematic-chapter-color: var(--color-gold-300);
 
   /* === Force light mode === */

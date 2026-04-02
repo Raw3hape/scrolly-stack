@@ -36,7 +36,7 @@ export const roofersContent: PageContent = {
       heading: 'Don\u2019t Leave Money On The Table When You Exit',
       text: 'Brokers take 20% to list you. PE firms offer 3x and lock you in before you\u2019re ready. And if you try to sell on your own, you\u2019re looking at 12\u201318 months of due diligence and cleanup. Every path leaves money on the table \u2014 and most of it ends up in someone else\u2019s pocket.',
       image: {
-        url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCRoMJRRV0WMKNLuCiYV-djrerCmLe5gN4_7VnxcvKF2ygW7PLbi4sEe2LV_osyIVkx2s9x6il66jg_6xsZ2o0mvWbv5vwiPSHMWROJ76cK8ZQDksUHG67FkgEHliOLYDnPBuzzXVCBoVSCH_dtZUjPsSuLKNKfa57seVH9jAuBMSv07Xq3Ks6-h1kfZasfZ_ln3aP7-FVIfMmundePpt88oJ2m7WcUCbH36Sm_OrAbGJ4gZOOZ5RIaZG0yc64yRvWF19xr3Zrn9vBB',
+        url: '/images/estate-pool-pasture-fixed.png',
         quote: '\u201CThe traditional exit model is broken for independent roofers.\u201D',
       },
       bullets: [

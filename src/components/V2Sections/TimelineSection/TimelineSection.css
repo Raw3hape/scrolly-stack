@@ -20,7 +20,7 @@
 /* ── Header ── */
 .v2-timeline__header {
   text-align: center;
-  margin-bottom: clamp(var(--space-2xl), 6vw, 6rem);
+  margin-bottom: clamp(var(--space-2xl), 4vw, 4rem);
 }
 
 .v2-timeline__heading {
@@ -92,8 +92,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-xl);
-  /* Generous vertical spacing between steps */
-  margin-bottom: clamp(5rem, 12vw, 10rem);
+  margin-bottom: clamp(3rem, 8vw, 6rem);
   align-items: center;
 }
 

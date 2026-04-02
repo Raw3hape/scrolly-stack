@@ -93,31 +93,6 @@
   margin-bottom: var(--space-lg);
 }
 
-.v2-step__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: var(--radius-md);
-  background: var(--gradient-subtle);
-  color: var(--text-subtle);
-  flex-shrink: 0;
-  transition:
-    color var(--transition-smooth),
-    background var(--transition-smooth),
-    transform var(--transition-spring);
-}
-
-.v2-step--active .v2-step__icon {
-  color: var(--accent-brand);
-  background: var(--selection-bg);
-}
-
-.v2-step--current .v2-step__icon {
-  transform: scale(1.1);
-}
-
 /* === Number === */
 .v2-step__number {
   font-size: var(--font-size-display);
@@ -226,7 +201,7 @@
 .v2-step__cta:hover {
   background: var(--accent-brand);
   color: var(--text-inverse);
-  transform: translateY(var(--hover-lift-sm));
+  transform: translateY(var(--hover-lift-md)) scale(var(--hover-scale-sm));
 }
 
 .v2-step__cta:focus-visible {

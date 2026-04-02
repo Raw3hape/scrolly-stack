@@ -37,7 +37,7 @@ export const aboutContent: PageContent = {
         text: 'You\u2019d spend 10, 15, 20 years building a roofing business with strong revenue, loyal crews, happy customers\u2014 and then a PE firm shows up and offers you 3x. Take it or leave it. Most owners take it. Then watched the buyer flip it for 10x a few years later.',
         footnote: 'That\u2019s not a bad deal. That\u2019s a bad system.',
       },
-      backgroundUrl: '/images/cinematic-roofing-bg.jpg',
+      backgroundUrl: '/images/urgency-building.png',
     },
     {
       type: 'mission',
@@ -127,7 +127,7 @@ export const aboutContent: PageContent = {
         title: 'Better Business. Bigger Exit.',
         text: 'The first owners who joined the platform didn\u2019t just get a better exit. Their businesses got better, too \u2014 meaning they were worth more. We helped them tighten their operations, grow revenue, and found the owners who had been fielding lowball offers were suddenly sitting on a roofing company that was inherently worth a lot more.',
       },
-      backgroundUrl: '/images/cinematic-roofing-bg.jpg',
+      backgroundUrl: '/images/final-walkway.png',
     },
     {
       type: 'testimonial',

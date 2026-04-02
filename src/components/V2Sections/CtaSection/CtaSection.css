@@ -97,7 +97,7 @@
   line-height: var(--leading-tight);
   color: var(--text-primary);
   max-width: 18ch;
-  margin: 0 auto var(--space-xl);
+  margin: 0 auto var(--space-md);
 }
 
 /* 3. Button — large, centered, prominent */
@@ -119,6 +119,28 @@
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
   min-width: 12rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.v2-cta__button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--shimmer-color, rgba(255, 255, 255, 0.15)),
+    transparent
+  );
+  transition: left var(--transition-shimmer, 0.6s ease);
+}
+
+.v2-cta__button:hover::before {
+  left: 100%;
 }
 
 .v2-cta__button:hover {
