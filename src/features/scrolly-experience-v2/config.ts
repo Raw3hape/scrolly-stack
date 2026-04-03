@@ -115,7 +115,7 @@ export const animation = {
   build: {
     dropHeight: 2.5, // World units above target Y where layer starts
     stiffness: 120, // Spring stiffness (higher = faster drop, snappier)
-    damping: 14, // Damping (lower = more bounce on landing)
+    damping: 20, // Damping — reduced bounce to prevent block overlap on landing
   },
 };
 

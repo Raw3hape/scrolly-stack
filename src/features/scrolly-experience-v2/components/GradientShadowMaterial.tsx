@@ -232,10 +232,10 @@ export default function GradientShadowMaterial({
           state.invalidate();
         }
 
-        // Dynamic depthWrite: ON when fully opaque, OFF when fading.
-        // Prevents semi-transparent blocks from clipping each other via depth buffer.
+        // Dynamic depthWrite: ON when mostly opaque, OFF when clearly fading.
+        // Threshold at 0.5 prevents "ghost" transparency overlap during block drops.
         if (materialRef.current) {
-          const shouldWriteDepth = val > 0.99;
+          const shouldWriteDepth = val > 0.5;
           if (materialRef.current.depthWrite !== shouldWriteDepth) {
             materialRef.current.depthWrite = shouldWriteDepth;
           }
