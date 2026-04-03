@@ -268,7 +268,7 @@ export const postProcessing = {
 // =============================================================================
 
 export const labels = {
-  fontSize: 0.36,
+  fontSize: 0.3,
   font: '/fonts/Inter-Regular.woff',
   color: 'white',
   maxWidth: 1.5,
@@ -276,7 +276,7 @@ export const labels = {
   // Position offset from corner
   padding: {
     x: 0.15,
-    y: 0.011,
+    y: 0.02,
     z: 0.15,
   },
 };

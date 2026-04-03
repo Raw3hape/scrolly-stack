@@ -63,7 +63,7 @@ function BlockLabel({
       anchorY="bottom"
       color={color}
       fillOpacity={opacity}
-      maxWidth={labelMaxWidth ?? labels.maxWidth}
+      maxWidth={Math.min(labelMaxWidth ?? labels.maxWidth, w - labels.padding.x * 2)}
       lineHeight={labels.lineHeight}
       characters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+"
     >
